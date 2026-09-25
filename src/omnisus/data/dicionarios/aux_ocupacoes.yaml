@@ -1,0 +1,20 @@
+name: aux_ocupacoes
+title: Ocupações — CBO 2002 (TabWin) e TABOCUP (DATASUS)
+profile: tabular-data-resource
+encoding: utf-8
+schema:
+  fields:
+    - name: esquema
+      type: string
+      constraints: { required: true, enum: [cbo2002, tabocup] }
+      description: "cbo2002: CBO2002.CNV de OBITOS_CID10_TAB.zip, um código por linha; tabocup: TABOCUP.DBF, vários títulos por código"
+    - name: codigo
+      type: string
+      constraints: { required: true }
+      description: "Como publicado: cbo2002 tem 6 dígitos e, para códigos iniciados em 0, também a variante de 5; tabocup tem 3"
+    - name: descricao
+      type: string
+      constraints: { required: true }
+x-version: "1.0.0"
+x-source: DATASUS
+x-source-url: "ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID10/TAB/OBITOS_CID10_TAB.zip"

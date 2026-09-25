@@ -1,0 +1,75 @@
+site_name: omnisus
+site_description: Brazilian public health database ingestion library
+site_url: https://raphaelfh.github.io/omnisus
+repo_url: https://github.com/raphaelfh/omnisus
+repo_name: raphaelfh/omnisus
+copyright: "(c) 2026 Raphael Federicci"
+
+# Contributor-only pages: read in the repository, not published on the site.
+exclude_docs: |
+  agents/
+
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - content.code.copy
+    - search.suggest
+  palette:
+    - scheme: default
+      primary: teal
+      accent: amber
+
+nav:
+  - Home: index.md
+  - Guia do pesquisador:
+      - Comece aqui: pesquisa/index.md
+      - Bases:
+          - SIM · óbitos: sources/sim_obitos.md
+          - SINASC · nascidos vivos: sources/sinasc_nascidos_vivos.md
+          - SIH · AIH reduzida: sources/sih_aih_reduzida.md
+          - SIA · produção ambulatorial: sources/sia.md
+          - CNES · estabelecimentos: sources/cnes_estabelecimentos.md
+          - IBGE · população: sources/ibge_populacao.md
+          - SINAN · Chagas aguda: sources/sinan_chagas.md
+          - SINAN · hanseníase: sources/sinan_hanseniase.md
+          - SINAN · tuberculose: sources/sinan_tuberculose.md
+          - Medicamentos: sources/medicamentos.md
+          - Vocabulários e SIGTAP: sources/vocabularios.md
+      - Indicadores: pesquisa/indicadores.md
+      - Reprodutibilidade: pesquisa/reprodutibilidade.md
+  - Guides:
+      - Getting Started: guides/getting-started.md
+      - Knowing what exists: guides/inventory.md
+      - Reprocessing and maintenance: guides/reprocessing-and-maintenance.md
+  - Datasets: datasets.md
+  - Dicionário de dados:
+      - Visão geral: dicionario/index.md
+      - Contrato por coluna: dicionario/contrato.md
+      - Manutenção: dicionario/manutencao.md
+      - Consumo e integração: dicionario/consumo.md
+  - API reference: api.md
+  - Architecture: architecture.md
+  - Decisions:
+      - 0001 Rust DBF: decisions/0001-rust-dbf.md
+      - 0002 Registry as Catalog: decisions/0002-registry-as-catalog.md
+      - 0003 Harmonised Categories: decisions/0003-harmonised-categories-only-for-validated-sources.md
+
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - pymdownx.details
+  - tables
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: google

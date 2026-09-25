@@ -1,0 +1,12 @@
+; SAIDAHANS.CNV
+10 1
+      1  Não preenchido                                      ,0
+      2  Cura                                               1
+      3  Transf. para o mesmo município                     2
+      4  Transf. para outro município                       3
+      5  Transf. para o outro estado                        4
+      6  Transf. para outro Pais                            5
+      7  Óbito                                              6
+      8  Abandono                                           7
+      9  Erro diagnóstico                                   8
+     10  Trans. não especificada                            9 

@@ -1,0 +1,382 @@
+name: sia_psicossocial
+title: SIASUS — RAAS Psicossocial (PS)
+profile: tabular-data-resource
+# Gerado do header DBF REAL (PSRR2401.dbf), nao do informe tecnico.
+# latin-1 obrigatorio: cifra do CNS usa 0x7B-0x84 (0x81 quebra cp1252).
+encoding: latin-1
+x-version: "0.2.0"
+schema:
+  fields:
+    - name: cnes_exec
+      type: string
+      label: Cnes exec
+    - name: gestao
+      type: string
+      label: Gestao
+    - name: condic
+      type: string
+      label: Condic
+    - name: ufmun
+      type: string
+      label: Ufmun
+    - name: tpups
+      type: string
+      label: Tpups
+    - name: tippre
+      type: string
+      label: Tippre
+      description: >-
+        O descritor do arquivo grava o nome como "TIPPRE" seguido de dois espaços
+        (PSRR2401); a importação remove os espaços.
+    - name: mn_ind
+      type: string
+      label: Mn ind
+    - name: cnpjcpf
+      type: string
+      label: Cnpjcpf
+    - name: cnpjmnt
+      type: string
+      label: Cnpjmnt
+    - name: dt_process
+      type: yearmonth
+      label: Dt process
+    - name: dt_atend
+      type: yearmonth
+      label: Dt atend
+    - name: cns_pac
+      type: string
+      label: CNS do paciente (criptografado; chave de linkage intra-SIA)
+      x-crypto: datasus-cns
+    - name: dtnasc
+      type: date
+      label: Data de nascimento
+      x-format: yyyyMMdd
+    - name: tpidadepac
+      type: string
+      label: Tpidadepac
+    - name: idadepac
+      type: string
+      label: Idadepac
+      x-metadata:
+        physical_name: IDADEPAC
+        unit: encoded
+        derivation:
+          kind: coded_age
+          inputs:
+          - idadepac
+          - tpidadepac
+          rule_version: 1.0.0
+          output:
+          - idade_anos_completos
+          - idade_quantidade
+          - idade_unidade
+        applicability:
+          status: confirmed
+          data_period: null
+          valid_from: null
+          valid_until: null
+          conditions:
+          - Only the exact source identities in dataset.analytics.validated_sources.
+          reason: RAAS_Psicossocial.def binds TPIDADEPAC to IDADEDET.CNV; PSRR2401 audited,
+            every row equal in SQL and Python.
+          evidence:
+          - source_id: sia-tab-e5812b51d802
+            pages: []
+            locator: 'RAAS_Psicossocial.def and Atencao_Domiciliar.def: XIdade detalhada, TPIDADEPAC, 1, CNV/IDADEDET.CNV; CNV/IDADEDET.CNV compares 3 characters'
+          - source_id: siasus-70fe69dbd4cf
+            pages: [15, 16, 17]
+            locator: 'TPIDADEPAC CHAR (1) then IDADEPAC CHAR (2), with the same description in the SAD (p. 15), PS (p. 16) and BI (p. 17) layouts'
+    - name: nacion_pac
+      type: string
+      label: Nacion pac
+    - name: sexopac
+      type: string
+      label: Sexo do paciente
+      x-decode:
+        ? ''
+        : Não exigido
+        '0': Não exigido
+        F: Feminino
+        M: Masculino
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 7fee0ffdb9777cfb61481409bb715059d63990a439b59979623692f27044f97f
+          status: verified_in_source
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sia-tab-e5812b51d802
+            pages: []
+            locator: 'RAAS_Psicossocial.def: LSexo do Paciente, SEXOPAC, 1, CNV/SEXO.CNV; CNV/SEXO.CNV'
+          note: Mapa do CNV.
+    - name: racacor
+      type: string
+      label: Racacor
+      x-decode:
+        ? ''
+        : SEM INFORMAÇÃO
+        ' D': RAÇA/COR  (OUTROS INDEVIDOS)
+        '00': RAÇA/COR NÃO EXIGIDO
+        '01': BRANCA
+        '02': PRETA
+        '03': PARDA
+        '04': AMARELA
+        '05': INDIGENA
+        '06': RAÇA/COR=06 (INDEVIDO)
+        '09': RAÇA/COR=09 (INDEVIDO)
+        1C: RAÇA/COR  (OUTROS INDEVIDOS)
+        1G: RAÇA/COR  (OUTROS INDEVIDOS)
+        1M: RAÇA/COR  (OUTROS INDEVIDOS)
+        '87': RAÇA/COR  (OUTROS INDEVIDOS)
+        '99': SEM INFORMAÇÃO
+        DE: RAÇA/COR  (OUTROS INDEVIDOS)
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 11f9e1a29e3a04fb0a890a686809c331693322d2b5badf0fc35f78a4b193f082
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sia-tab-e5812b51d802
+            pages: []
+            locator: 'RAAS_Psicossocial.def: LRaça/Cor Paciente, RACACOR, 1, CNV/RACA_COR.CNV; CNV/RACA_COR.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''01'' era ''Branca'', CNV ''BRANCA'';
+            ''02'' era ''Preta'', CNV ''PRETA''; ''03'' era ''Parda'', CNV ''PARDA''; ''04'' era ''Amarela'',
+            CNV ''AMARELA''; ''05'' era ''Indígena'', CNV ''INDIGENA''; ''99'' era ''Sem informação'', CNV
+            ''SEM INFORMAÇÃO'''
+    - name: etnia
+      type: string
+      label: Etnia
+    - name: munpac
+      type: string
+      label: Município de residência (UF+IBGE)
+    - name: mot_cob
+      type: string
+      label: Mot cob
+    - name: dt_motcob
+      type: date
+      label: Dt motcob
+      x-format: yyyyMMdd
+    - name: catend
+      type: string
+      label: Catend
+    - name: cidpri
+      type: string
+      label: CID-10 principal (sem ponto)
+    - name: cidassoc
+      type: string
+      label: CID-10 associado
+    - name: origem_pac
+      type: string
+      label: Origem do paciente
+    - name: dt_inicio
+      type: date
+      label: Dt inicio
+      x-format: yyyyMMdd
+    - name: dt_fim
+      type: date
+      label: Dt fim
+      x-format: yyyyMMdd
+    - name: cob_esf
+      type: string
+      label: Coberto pela ESF
+      x-decode:
+        N: Não
+        S: Sim
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: eddb50b1af6e1f632a58d2c7540613d248114024eec49a9d80fd54c7a086ca3a
+          status: verified_in_source
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sia-tab-e5812b51d802
+            pages: []
+            locator: 'RAAS_Psicossocial.def: LCobertura ESF, COB_ESF, 1, CNV/COBERTURA.CNV; CNV/COBERTURA.CNV'
+          note: Mapa do CNV.
+    - name: cnes_esf
+      type: string
+      label: CNES da equipe ESF
+    - name: destinopac
+      type: string
+      label: Destino do paciente
+    - name: pa_proc_id
+      type: string
+      label: Ação realizada (SIGTAP)
+    - name: pa_qtdpro
+      type: string
+      label: Pa qtdpro
+    - name: pa_qtdapr
+      type: string
+      label: Pa qtdapr
+    - name: pa_srv
+      type: string
+      label: Pa srv
+    - name: pa_class_s
+      type: string
+      label: Pa class s
+    - name: sit_rua
+      type: string
+      label: Paciente em situação de rua
+      x-decode:
+        N: NÃO
+        S: SIM
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 694c023c50452a20868e25f318399ba00a863d813a83f28fd07191aa22332639
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sia-tab-e5812b51d802
+            pages: []
+            locator: 'RAAS_Psicossocial.def: XSituação Rua (S/N), SIT_RUA, 1, CNV/SIT_RUA.CNV; CNV/SIT_RUA.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''S'' era ''Sim'', CNV ''SIM''; ''N''
+            era ''Não'', CNV ''NÃO'''
+    - name: tp_droga
+      type: string
+      label: Substância (álcool/crack/outras)
+      x-decode:
+        A: Álcool
+        C: Crack
+        O: Outras
+        AC: Alcool e Crack
+        A O: Alcool e Outras Drogas
+        ACO: Alcool, Crack e Outras Drogas
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: feb7c9c0f9485d1bb9b84099ccbed842918db1aa6db1f19b863b81a973810e2e
+          status: conflicting
+          checked_at: '2026-09-23'
+          method: cnv-read
+          reviewer: maintainer review
+          evidence:
+          - source_id: sia-tab-e5812b51d802
+            pages: []
+            locator: 'RAAS_Psicossocial.def: XTipo Droga, TP_DROGA, 1, CNV/TP_DROGA.CNV; CNV/TP_DROGA.cnv,
+              linhas 2-8: ''A  '' Alcool, ''AC '' Alcool e Crack, ''A O'' Alcool e Outras Drogas, ''ACO''
+              Alcool, Crack e Outras Drogas, '' C '' Crack, '' CO'' Crack e Outras Drogas, ''  O'' Outras
+              Drogas'
+          - source_id: siasus-70fe69dbd4cf
+            pages:
+            - 16
+            locator: TP_DROGA CHAR (3) TIPO DE DROGA (A - Álcool, C - Crack, O - Outros)
+          note: '''A'', ''AC'', ''A O'' e ''ACO'' são códigos do CNV como o arquivo os grava; ''C'' e ''O''
+            são o mapa anterior, porque o CNV grava '' C '' e ''  O'' (posicionais) e os arquivos gravam as
+            letras à esquerda.'
+        issues:
+        - id: tp_droga-combinacao-sem-fonte
+          status: open
+          description: '''AO'', ''CO'', ''CA'', ''OA'', ''OC'' e ''OCA'' ficam sem rótulo: TP_DROGA.CNV lista
+            só códigos posicionais (A na 1ª posição, C na 2ª, O na 3ª), e os arquivos gravam as letras à esquerda
+            e em outras ordens. PSRR2401: ''AO'' em 907 de 1.670 linhas, ''CO'' em 2. PSSP2212 (288.019 linhas):
+            ''AO'' 11.985, ''CO'' 1.793, ''OCA'' 233, ''OA'' 232, ''CA'' 166, ''OC'' 5.'
+    - name: loc_realiz
+      type: string
+      label: Local de realização (CAPS/território)
+      x-decode:
+        C: CAPS
+        T: Território
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 5df89990ff8c05e305ff46934a6f902f18162431dc7498a7dced9c0643d8c7ab
+          status: verified_in_source
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sia-tab-e5812b51d802
+            pages: []
+            locator: 'RAAS_Psicossocial.def: XLocal de Realização, LOC_REALIZ, 1, CNV/LOC_REALIZ.CNV; CNV/LOC_REALIZ.CNV'
+          note: Mapa do CNV.
+    - name: inicio
+      type: date
+      label: Início do período assistencial
+      x-format: yyyyMMdd
+    - name: fim
+      type: date
+      label: Fim do período assistencial
+      x-format: yyyyMMdd
+    - name: permanen
+      type: string
+      label: Dias de permanência
+    - name: qtdate
+      type: string
+      label: Qtdate
+    - name: qtdpcn
+      type: string
+      label: Qtdpcn
+    - name: nat_jur
+      type: string
+      label: Nat jur
+# Identidade do arquivo: dt_process vale 202401 nos 1.670 registros de PSRR2401 e ufmun
+# começa por 14 (RR) em todos; mesma regra do BPA-I.
+x-identity:
+  month_column: dt_process
+  uf_column: ufmun
+
+x-analytics:
+  version: 1.0.0
+  applicability_policy: exact_audited_source_identity
+  validated_sources:
+  - uf: RR
+    ano: 2024
+    mes: 1
+    release: final
+    source_sha256: 56022bfa7245e8d57530c74e7f3144ec797c14736e94e873ba25e0ffb5c2b5d7
+  age:
+    field: idadepac
+    kind: sih
+    unit_field: tpidadepac
+    units:
+      '2':
+        unit: day
+        minimum_value: 0
+        maximum_value: 29
+      '3':
+        unit: month
+        minimum_value: 1
+        maximum_value: 11
+      '4':
+        unit: year
+        minimum_value: 1
+        maximum_value: 99
+      '5':
+        unit: year
+        offset: 100
+        minimum_value: 0
+        maximum_value: 30
+    maximum_value: 99
+    invalid_composites:
+    - '000'
+    - '999'
+    evidence:
+    - source_id: sia-tab-e5812b51d802
+      pages: []
+      locator: 'RAAS_Psicossocial.def and Atencao_Domiciliar.def: XIdade detalhada, TPIDADEPAC, 1, CNV/IDADEDET.CNV; CNV/IDADEDET.CNV compares 3 characters'
+    - source_id: siasus-70fe69dbd4cf
+      pages: [15, 16, 17]
+      locator: 'TPIDADEPAC CHAR (1) then IDADEPAC CHAR (2), with the same description in the SAD (p. 15), PS (p. 16) and BI (p. 17) layouts'
+    notes:
+    - Kind sih is the encoding, not the system - a unit code in its own field and a two-digit quantity, read as the 3 characters IDADEDET.CNV compares.
+    - 000 and 999 are "Idade inválida" in IDADEDET.CNV. 230 ("1 mês") and 312 ("11 meses") are second codes of a category; this exact-quantity rule leaves them unsupported.
+    - The DBF header of PSRR2401 puts IDADEPAC right after TPIDADEPAC (offsets 90 and 91).
+    - Audit on 2026-09-23 - all 1,666 unit-4 rows of PSRR2401 equal the completed years from DTNASC to DT_INICIO.

@@ -1,0 +1,109 @@
+name: sih_servicos_profissionais
+title: SIHSUS — Serviços profissionais (SP)
+profile: tabular-data-resource
+encoding: latin-1
+x-version: 1.1.0
+x-source-format: dbc
+x-partitions:
+- _source_ano
+x-evidence:
+  physical_schema: sih_sp_rr_2024_01_mini.dbc, 36 fields; observed 2026-09-22
+  semantic_status: Physical inventory. Category maps only where a TabWin CNV binds the
+    field and decodes every non-blank value of the fixture (vinculos.json); no inferred
+    mappings.
+  dictionary_url: ftp://ftp.datasus.gov.br/dissemin/publicos/SIHSUS/200801_/Doc/IT_SIHSUS_1603.pdf
+  source_url: ftp://ftp.datasus.gov.br/dissemin/publicos/SIHSUS/200801_/Dados/SPRR2401.dbc
+schema:
+  fields:
+  - name: sp_gestor
+    type: string
+  - name: sp_uf
+    type: string
+  - name: sp_aa
+    type: string
+  - name: sp_mm
+    type: string
+  - name: sp_cnes
+    type: string
+  - name: sp_naih
+    type: string
+  - name: sp_procrea
+    type: string
+  - name: sp_dtinter
+    type: string
+  - name: sp_dtsaida
+    type: string
+  - name: sp_num_pr
+    type: string
+  - name: sp_tipo
+    type: string
+  - name: sp_cpfcgc
+    type: string
+  - name: sp_atoprof
+    type: string
+  - name: sp_tp_ato
+    type: string
+  - name: sp_qtd_ato
+    type: integer
+  - name: sp_ptsp
+    type: string
+  - name: sp_nf
+    type: string
+  - name: sp_valato
+    type: number
+  - name: sp_m_hosp
+    type: string
+  - name: sp_m_pac
+    type: string
+  - name: sp_des_hos
+    type: string
+  - name: sp_des_pac
+    type: string
+  - name: sp_complex
+    type: string
+  - name: sp_financ
+    type: string
+  - name: sp_co_faec
+    type: string
+  - name: sp_pf_cbo
+    type: string
+  - name: sp_pf_doc
+    type: string
+  - name: sp_pj_doc
+    type: string
+  - name: in_tp_val
+    type: string
+    x-decode:
+      '1': Valor SH
+      '2': Valor SP
+      '3': Valor do complemento federal - SH
+      '4': Valor do complemento federal - SP
+      '5': Valor do complemento local - SH
+      '6': Valor do complemento local - SP
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 764dc5e127d5ba6c62f2b641a0393465ef039a279e55c87ffad827ccfa596af3
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sih-tab-f05b32f32908
+          pages: []
+          locator: 'SP2008.DEF: XTipo de Valor, IN_TP_VAL, 1, CNV/TP_VAL.CNV; CNV/TP_VAL.CNV'
+        note: Mapa do CNV.
+  - name: sequencia
+    type: integer
+  - name: remessa
+    type: string
+  - name: serv_cla
+    type: string
+  - name: sp_cidpri
+    type: string
+  - name: sp_cidsec
+    type: string
+  - name: sp_qt_proc
+    type: integer
+  - name: sp_u_aih
+    type: string

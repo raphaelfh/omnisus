@@ -1,0 +1,522 @@
+; Produção Ambulatorial_de Procedimentos da Tabela Unificada
+; a partir de Janeiro de 2008
+;
+ADADOS\PA*.DBC
+?.\HELP\PRODUÇÃO_2008.HLP
+GPA_QTDAPR
+IValor Aprovado            , PA_VALAPR
+IQuantidade Apresentada    , PA_QTDPRO
+IValor Apresentado         , PA_VALPRO
+IValor Complemento Federal , PA_VL_CF
+IValor Complemento Local   , PA_VL_CL
+IValor Incremento          , PA_VL_INC
+IDiferença Valor            , PA_DIF_VAL
+; ===========================================================================
+;
+; Esses dois incrementos só valem como documentação do valor e verificação das
+; diferenças entre o procedimento no SIGTAW e de fato o praticado pelo gestor
+;
+;IVl. Proc.SIGTAW   , NU_PA_TOT
+;IVl. Proc.VPA      , NU_VPA_TOT
+;
+; ===========================================================================
+;
+XProdução Aprovada/Não  , PA_INDICA  , 1 , CNV/INDICA.CNV
+LDetalhes_Aprovação     , PA_CODOCO  , 1 , CNV/CODOCO.CNV
+SDetalhes_Aprovação     , PA_CODOCO  , 1 , CNV/CODOCO.CNV
+LCessão de Crédito      , PA_CNPJ_CC , FOR_RZSOC , DBF/S_FORNEC.DBF
+SCessão de Crédito      , PA_CNPJ_CC , FOR_RZSOC , DBF/S_FORNEC.DBF
+;
+;*************************************************************************
+;  Variáveis referentes a dados das COMPETENCIAS
+;*************************************************************************
+;
+;X**  COMPETENCIAS  ** , TITULO,LINHA_COMENTARIO_REFERENTE_DADOS_DE_COMPETENCIAS
+TMês de Processamento           , PA_MVM    , 1 , CNV/ANOMES2008.CNV
+SMês de Processamento           , PA_MVM    , 1 , CNV/ANOMES2008.CNV
+TSemestre de Processamento      , PA_MVM    , 1 , CNV/SEME2008.CNV
+SSemestre de Processamento      , PA_MVM    , 1 , CNV/SEME2008.CNV
+TAno de Processamento           , PA_MVM    , 1 , CNV/ANO_2008.CNV
+SAno de Processamento           , PA_MVM    , 1 , CNV/ANO_2008.CNV
+TMês de Atendimento             , PA_CMP    , 1 , CNV/ANOMES2008.CNV
+SMês de Atendimento             , PA_CMP    , 1 , CNV/ANOMES2008.CNV
+TSemestre de Atendimento        , PA_CMP    , 1 , CNV/Seme2008.CNV
+SSemestre de Atendimento        , PA_CMP    , 1 , CNV/Seme2008.CNV
+TAno de Atendimento             , PA_CMP    , 1 , CNV/ANO_2008.CNV
+SAno de Atendimento             , PA_CMP    , 1 , CNV/ANO_2008.CNV
+;
+;*************************************************************************
+;  Variáveis referentes ao GESTOR
+;*************************************************************************
+;X**     GESTOR    **  , TITULO,LINHA_COMENTARIO_REFERENTE_DADOS_DE_COMPETENCIAS
+LTipo de Gestão       , PA_CONDIC  , 1 , CNV/TP_GESTAO.CNV
+QTipo de Gestão       , PA_CONDIC  , 1 , CNV/TP_GESTAO.CNV
+CTipo de Gestão       , PA_CONDIC  , 1 , CNV/TP_GEST_C.CNV
+STipo de Gestão       , PA_CONDIC  , 1 , CNV/TP_GESTAO.CNV
+;DGestor Produção     , PA_GESTAO  , 1 , CNV/MUNICBR.CNV
+;SGestor Produção     , PA_GESTAO  , 1 , CNV/MUNICBR.CNV
+LGestor da Produção   , PA_GESTAO  , 1 , CNV/br_municgestor.CNV
+SGestor da Produção   , PA_GESTAO  , 1 , CNV/br_municgestor.CNV
+TInvasão Estadual     , PA_UFDIF   , 1 , CNV/INVASAO.CNV
+SInvasão Estadual     , PA_UFDIF   , 1 , CNV/INVASAO.CNV
+TInvasão Municipal    , PA_MNDIF   , 1 , CNV/INVASAO.CNV
+SInvasão Municipal    , PA_MNDIF   , 1 , CNV/INVASAO.CNV
+;
+;*************************************************************************
+;  Variáveis referentes ao INTRUMENTO DE REGISTRO
+;*************************************************************************
+;
+LInstrumento de registro, PA_DOCORIG , 1 , CNV/DOCORIG.CNV
+SInstrumento de registro, PA_DOCORIG , 1 , CNV/DOCORIG.CNV
+CInstrumento de registro, PA_DOCORIG , 1 , CNV/DO_ORIGC.CNV
+;
+;*************************************************************************
+;  Variáveis referentes ao procedimento SEGUNDO A TABELA UNIFICADA DE 2008
+;*************************************************************************
+;
+;x** PROCEDIMENTOS **  , TITULO     , LINHA_COMENTARIO_REFERENTE_DADOS_DOS_PROCEDIMENTOS_DA_TABELA_UNIFICADA
+LProcedimentos realizados  , PA_PROC_ID , IP_DSCR , DBF/TB_SIGTAW.DBF
+SProcedimentos realizados  , PA_PROC_ID , IP_DSCR , DBF/TB_SIGTAW.DBF
+LGrupo de Procedimentos    , PA_PROC_ID , NO_GRUPO  ,DBF/TB_GRUPO.DBF
+CGrupo de Procedimentos    , PA_PROC_ID , NO_GRUPO  ,DBF/TB_GRUPO.DBF
+SGrupo de Procedimentos    , PA_PROC_ID , NO_GRUPO  ,DBF/TB_GRUPO.DBF
+LSubGrupo de Procedimentos , PA_PROC_ID , NO_SUB_GRU,DBF/TB_SUBGR.DBF
+CSubGrupo de Procedimentos , PA_PROC_ID , CO_SUB_GRU,DBF/TB_SUBGR.DBF
+SSubGrupo de Procedimentos , PA_PROC_ID , NO_SUB_GRU,DBF/TB_SUBGR.DBF
+LForma de  Organização     , PA_PROC_ID , NO_FORMA  ,DBF/TB_FORMA.DBF
+CForma de  Organização     , PA_PROC_ID , CO_FORMA  ,DBF/TB_FORMA.DBF
+SForma de  Organização     , PA_PROC_ID , NO_FORMA  ,DBF/TB_FORMA.DBF
+LComplexidade Procedimento , PA_NIVCPL  , 1 , CNV/COMPLEX.CNV
+CComplexidade Procedimento , PA_NIVCPL  , 1 , CNV/COMPLEX.CNV
+SComplexidade Procedimento , PA_NIVCPL  , 1 , CNV/COMPLEX.CNV
+XTipo de Financiamento     , PA_TPFIN   , 1 , CNV/FINANC.CNV
+XTipoFin/Subtipo Financiamento   ,PA_TPFIN , 1 , CNV/TP_FINAN.CNV
+XFonte Orçamentária        , PA_FNTORC  , 1 , CNV/fonterem.CNV
+XIncremento OUTROS         , PA_INCOUT  , 1 , CNV/INCREMENTO.CNV
+XIncremento URGENCIA       , PA_INCURG  , 1 , CNV/INCREMENTO.CNV
+;XIncremento OUTROS        , PA_INCOUT  , 1 , CNV/INCREMENTO.CNV
+;XIncremento URGENCIA      , PA_INCURG  , 1 , CNV/INCREMENTO.CNV
+XRegra Contratual          , PA_REGCT   , 1 , CNV/REGRA_C.CNV
+XCarater de Atendimento.   , PA_CATEND  , 1 , CNV/CARAT_AT.CNV
+XMotivo Saida-Permanência  , PA_MOTSAI  , 1 , CNV/MOTSAIPE.CNV
+XMotivo Saida-Alta         , PA_ALTA    , 1 , CNV/ALTA.CNV
+XMotivo Saida-Óbito        , PA_OBITO   , 1 , CNV/OBITO.CNV
+XMotivo Saida-Encerramento , PA_ENCERR  , 1 , CNV/ENCERRAM.CNV
+XMotivo Saida-Permanência  , PA_PERMAN  , 1 , CNV/PERMANEN.CNV
+XMotivo Saida-Transferência, PA_TRANSF  , 1 , CNV/TRANSFER.CNV
+;
+;*************************************************************************
+;  Variáveis referentes ao DIAGNOSTICO
+;*************************************************************************
+;
+LCID Principal/Topografia  , PA_CIDPRI   , CD_DESCR , DBF/S_CID.DBF, CD_DESCR , DBF/S_CID.DBF
+SCID Principal/Topografia  , PA_CIDPRI   , CD_DESCR , DBF/S_CID.DBF, CD_DESCR , DBF/S_CID.DBF
+LCID Secundário            , PA_CIDSEC   , CD_DESCR , DBF/S_CID.DBF, CD_DESCR , DBF/S_CID.DBF
+SCID Secundário            , PA_CIDSEC   , CD_DESCR , DBF/S_CID.DBF, CD_DESCR , DBF/S_CID.DBF
+LCID Causas Associadas     , PA_CIDCAS   , CD_DESCR , DBF/S_CID.DBF, CD_DESCR , DBF/S_CID.DBF
+SCID Causas Associadas     , PA_CIDCAS   , CD_DESCR , DBF/S_CID.DBF, CD_DESCR , DBF/S_CID.DBF
+;
+;*************************************************************************
+;  Variáveis referentes ao PROFISSIONAL DE SAUDE
+;*************************************************************************
+;L*  PROFISSIONAL  * , TITULO     , LINHA_COMENTARIO_REFERENTE_DADOS_DIAGNOSTICO_DO_PROFISSIONAL_DE_SAUDE
+;S*  PROFISSIONAL  * , TITULO     , LINHA_COMENTARIO_REFERENTE_DADOS_DIAGNOSTICO_DO_PROFISSIONAL_DE_SAUDE
+LProfissional - CBO  , PA_CBOCOD  , ds_cbo, DBF/CBO.DBF
+SProfissional - CBO  , PA_CBOCOD  , ds_cbo, DBF/CBO.DBF
+;*************************************************************************
+;  Variáveis referentes ao ESTABELECIMENTO
+;*************************************************************************
+;X* ESTABELECIMENTO* ,TITULO     ,LINHA_COMENTARIO_REFERENTE_DADOS_DO_ESTABELECIMENTO
+DEsfera Administrativa  , PA_TIPPRE  , 1 , CNV/ESFERA.CNV
+CEsfera Administrativa  , PA_TIPPRE  , 1 , CNV/ESFERA_C.CNV
+SEsfera Administrativa  , PA_TIPPRE  , 1 , CNV/ESFERA.CNV
+XTipo Estabelecimento.  , PA_TPUPS   , 1 , CNV/TP_ESTAB.CNV
+DTipo Prestador         , PA_TIPPRE  , 1 , CNV/TIPOPRES.CNV
+CTipo Prestador         , PA_TIPPRE  , 1 , CNV/TIPOPRES.CNV
+STipo Prestador         , PA_TIPPRE  , 1 , CNV/TIPOPRES.CNV
+LNatureza Jurídica      , PA_NAT_JUR , 1 , CNV/NATJUR.CNV
+CNatureza Jurídica      , PA_NAT_JUR , 1 , CNV/NATJURC.CNV
+SNatureza Jurídica      , PA_NAT_JUR , 1 , CNV/NATJURC.CNV
+LEsfera Jurídica        , PA_NAT_JUR , 1 , CNV/ESFERAJUR.CNV
+CEsfera Jurídica        , PA_NAT_JUR , 1 , CNV/ESFERAJURC.CNV
+SEsfera Jurídica        , PA_NAT_JUR , 1 , CNV/ESFERAJURC.CNV
+XMantida/Individual     , PA_MN_IND  , 1 , CNV/MANT_IND.CNV
+;
+L + NOME FANTASIA   , TITULO     , LINHA_COMENTARIO_REFERENTE_DADOS_DO_ESTABELECIMENTO_EXECUTANTE
+S + NOME FANTASIA   , TITULO     , LINHA_COMENTARIO_REFERENTE_DADOS_DO_ESTABELECIMENTO_EXECUTANTE
+LEstabel_MEC EBSERH (CNES),PA_CODUNI  , NOMEFANT  ,DBF/HUF_MEC.DBF
+SEstabel_MEC EBSERH (CNES),PA_CODUNI  , NOMEFANT  ,DBF/HUF_MEC.DBF
+LEstabel_Filiados EBSERH (CNES)  , PA_CODUNI,NOMEFANT,DBF/HUF_FILIAL.DBF
+SEstabel_Filiados EBSERH (CNES)  , PA_CODUNI,NOMEFANT,DBF/HUF_FILIAL.DBF
+;DEstabelecimentos CNES-BR    , PA_CODUNI  , FANTASIA ,  DBF/CADGERBR.DBF
+;SEstabelecimentos CNES-BR    , PA_CODUNI  , FANTASIA ,  DBF/CADGERBR.DBF
+DEstabelecimentos CNES-AC    , PA_CODUNI  , FANTASIA ,  DBF/CADGERAC.DBF
+SEstabelecimentos CNES-AC    , PA_CODUNI  , FANTASIA ,  DBF/CADGERAC.DBF
+SEstabelecimentos CNES-AL    , PA_CODUNI  , FANTASIA ,  DBF/CADGERAL.DBF
+DEstabelecimentos CNES-AL    , PA_CODUNI  , FANTASIA ,  DBF/CADGERAL.DBF
+DEstabelecimentos CNES-AM    , PA_CODUNI  , FANTASIA ,  DBF/CADGERAM.DBF
+SEstabelecimentos CNES-AM    , PA_CODUNI  , FANTASIA ,  DBF/CADGERAM.DBF
+DEstabelecimentos CNES-AP    , PA_CODUNI  , FANTASIA ,  DBF/CADGERAP.DBF
+SEstabelecimentos CNES-AP    , PA_CODUNI  , FANTASIA ,  DBF/CADGERAP.DBF
+DEstabelecimentos CNES-BA    , PA_CODUNI  , FANTASIA ,  DBF/CADGERBA.DBF
+SEstabelecimentos CNES-BA    , PA_CODUNI  , FANTASIA ,  DBF/CADGERBA.DBF
+DEstabelecimentos CNES-CE    , PA_CODUNI  , FANTASIA ,  DBF/CADGERCE.DBF
+SEstabelecimentos CNES-CE    , PA_CODUNI  , FANTASIA ,  DBF/CADGERCE.DBF
+SEstabelecimentos CNES-DF    , PA_CODUNI  , FANTASIA ,  DBF/CADGERDF.DBF
+DEstabelecimentos CNES-DF    , PA_CODUNI  , FANTASIA ,  DBF/CADGERDF.DBF
+DEstabelecimentos CNES-ES    , PA_CODUNI  , FANTASIA ,  DBF/CADGERES.DBF
+SEstabelecimentos CNES-ES    , PA_CODUNI  , FANTASIA ,  DBF/CADGERES.DBF
+SEstabelecimentos CNES-GO    , PA_CODUNI  , FANTASIA ,  DBF/CADGERGO.DBF
+DEstabelecimentos CNES-GO    , PA_CODUNI  , FANTASIA ,  DBF/CADGERGO.DBF
+DEstabelecimentos CNES-MA    , PA_CODUNI  , FANTASIA ,  DBF/CADGERMA.DBF
+SEstabelecimentos CNES-MA    , PA_CODUNI  , FANTASIA ,  DBF/CADGERMA.DBF
+SEstabelecimentos CNES-MG    , PA_CODUNI  , FANTASIA ,  DBF/CADGERMG.DBF
+DEstabelecimentos CNES-MG    , PA_CODUNI  , FANTASIA ,  DBF/CADGERMG.DBF
+SEstabelecimentos CNES-MS    , PA_CODUNI  , FANTASIA ,  DBF/CADGERMS.DBF
+DEstabelecimentos CNES-MS    , PA_CODUNI  , FANTASIA ,  DBF/CADGERMS.DBF
+DEstabelecimentos CNES-MT    , PA_CODUNI  , FANTASIA ,  DBF/CADGERMT.DBF
+SEstabelecimentos CNES-MT    , PA_CODUNI  , FANTASIA ,  DBF/CADGERMT.DBF
+DEstabelecimentos CNES-PA    , PA_CODUNI  , FANTASIA ,  DBF/CADGERPA.DBF
+SEstabelecimentos CNES-PA    , PA_CODUNI  , FANTASIA ,  DBF/CADGERPA.DBF
+SEstabelecimentos CNES-PB    , PA_CODUNI  , FANTASIA ,  DBF/CADGERPB.DBF
+DEstabelecimentos CNES-PB    , PA_CODUNI  , FANTASIA ,  DBF/CADGERPB.DBF
+DEstabelecimentos CNES-PE    , PA_CODUNI  , FANTASIA ,  DBF/CADGERPE.DBF
+SEstabelecimentos CNES-PE    , PA_CODUNI  , FANTASIA ,  DBF/CADGERPE.DBF
+SEstabelecimentos CNES-PI    , PA_CODUNI  , FANTASIA ,  DBF/CADGERPI.DBF
+DEstabelecimentos CNES-PI    , PA_CODUNI  , FANTASIA ,  DBF/CADGERPI.DBF
+DEstabelecimentos CNES-PR    , PA_CODUNI  , FANTASIA ,  DBF/CADGERPR.DBF
+SEstabelecimentos CNES-PR    , PA_CODUNI  , FANTASIA ,  DBF/CADGERPR.DBF
+SEstabelecimentos CNES-RJ    , PA_CODUNI  , FANTASIA ,  DBF/CADGERRJ.DBF
+DEstabelecimentos CNES-RJ    , PA_CODUNI  , FANTASIA ,  DBF/CADGERRJ.DBF
+SEstabelecimentos CNES-RN    , PA_CODUNI  , FANTASIA ,  DBF/CADGERRN.DBF
+DEstabelecimentos CNES-RN    , PA_CODUNI  , FANTASIA ,  DBF/CADGERRN.DBF
+DEstabelecimentos CNES-RO    , PA_CODUNI  , FANTASIA ,  DBF/CADGERRO.DBF
+SEstabelecimentos CNES-RO    , PA_CODUNI  , FANTASIA ,  DBF/CADGERRO.DBF
+SEstabelecimentos CNES-RR    , PA_CODUNI  , FANTASIA ,  DBF/CADGERRR.DBF
+DEstabelecimentos CNES-RR    , PA_CODUNI  , FANTASIA ,  DBF/CADGERRR.DBF
+DEstabelecimentos CNES-RS    , PA_CODUNI  , FANTASIA ,  DBF/CADGERRS.DBF
+SEstabelecimentos CNES-RS    , PA_CODUNI  , FANTASIA ,  DBF/CADGERRS.DBF
+DEstabelecimentos CNES-SC    , PA_CODUNI  , FANTASIA ,  DBF/CADGERSC.DBF
+SEstabelecimentos CNES-SC    , PA_CODUNI  , FANTASIA ,  DBF/CADGERSC.DBF
+DEstabelecimentos CNES-SE    , PA_CODUNI  , FANTASIA ,  DBF/CADGERSE.DBF
+SEstabelecimentos CNES-SE    , PA_CODUNI  , FANTASIA ,  DBF/CADGERSE.DBF
+DEstabelecimentos CNES-SP    , PA_CODUNI  , FANTASIA ,  DBF/CADGERSP.DBF
+SEstabelecimentos CNES-SP    , PA_CODUNI  , FANTASIA ,  DBF/CADGERSP.DBF
+SEstabelecimentos CNES-TO    , PA_CODUNI  , FANTASIA ,  DBF/CADGERTO.DBF
+DEstabelecimentos CNES-TO    , PA_CODUNI  , FANTASIA ,  DBF/CADGERTO.DBF
+;L + RAZÃO SOCIAL    , TITULO     , LINHA_COMENTARIO_REFERENTE_DADOS_DO_ESTABELECIMENTO_EXECUTANTE
+;S + RAZÃO SOCIAL    , TITULO     , LINHA_COMENTARIO_REFERENTE_DADOS_DO_ESTABELECIMENTO_EXECUTANTE
+DEstabelecimentos CNPJ/CPF-AC  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERAC.DBF
+SEstabelecimentos CNPJ/CPF-AC  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERAC.DBF
+DEstabelecimentos CNPJ/CPF-AL  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERAL.DBF
+SEstabelecimentos CNPJ/CPF-AL  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERAL.DBF
+DEstabelecimentos CNPJ/CPF-AM  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERAM.DBF
+SEstabelecimentos CNPJ/CPF-AM  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERAM.DBF
+DEstabelecimentos CNPJ/CPF-AP  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERAP.DBF
+SEstabelecimentos CNPJ/CPF-AP  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERAP.DBF
+DEstabelecimentos CNPJ/CPF-BA  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERBA.DBF
+SEstabelecimentos CNPJ/CPF-BA  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERBA.DBF
+DEstabelecimentos CNPJ/CPF-CE  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERCE.DBF
+SEstabelecimentos CNPJ/CPF-CE  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERCE.DBF
+SEstabelecimentos CNPJ/CPF-DF  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERDF.DBF
+DEstabelecimentos CNPJ/CPF-DF  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERDF.DBF
+SEstabelecimentos CNPJ/CPF-ES  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERES.DBF
+DEstabelecimentos CNPJ/CPF-ES  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERES.DBF
+DEstabelecimentos CNPJ/CPF-GO  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERGO.DBF
+SEstabelecimentos CNPJ/CPF-GO  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERGO.DBF
+SEstabelecimentos CNPJ/CPF-MA  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERMA.DBF
+DEstabelecimentos CNPJ/CPF-MA  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERMA.DBF
+DEstabelecimentos CNPJ/CPF-MG  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERMG.DBF
+SEstabelecimentos CNPJ/CPF-MG  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERMG.DBF
+DEstabelecimentos CNPJ/CPF-MS  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERMS.DBF
+SEstabelecimentos CNPJ/CPF-MS  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERMS.DBF
+SEstabelecimentos CNPJ/CPF-MT  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERMT.DBF
+DEstabelecimentos CNPJ/CPF-MT  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERMT.DBF
+SEstabelecimentos CNPJ/CPF-PA  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERPA.DBF
+DEstabelecimentos CNPJ/CPF-PA  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERPA.DBF
+DEstabelecimentos CNPJ/CPF-PB  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERPB.DBF
+SEstabelecimentos CNPJ/CPF-PB  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERPB.DBF
+SEstabelecimentos CNPJ/CPF-PE  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERPE.DBF
+DEstabelecimentos CNPJ/CPF-PE  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERPE.DBF
+DEstabelecimentos CNPJ/CPF-PI  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERPI.DBF
+SEstabelecimentos CNPJ/CPF-PI  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERPI.DBF
+SEstabelecimentos CNPJ/CPF-PR  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERPR.DBF
+DEstabelecimentos CNPJ/CPF-PR  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERPR.DBF
+DEstabelecimentos CNPJ/CPF-RJ  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERRJ.DBF
+SEstabelecimentos CNPJ/CPF-RJ  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERRJ.DBF
+SEstabelecimentos CNPJ/CPF-RN  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERRN.DBF
+DEstabelecimentos CNPJ/CPF-RN  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERRN.DBF
+DEstabelecimentos CNPJ/CPF-RO  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERRO.DBF
+SEstabelecimentos CNPJ/CPF-RO  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERRO.DBF
+DEstabelecimentos CNPJ/CPF-RR  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERRR.DBF
+SEstabelecimentos CNPJ/CPF-RR  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERRR.DBF
+DEstabelecimentos CNPJ/CPF-RS  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERRS.DBF
+SEstabelecimentos CNPJ/CPF-RS  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERRS.DBF
+SEstabelecimentos CNPJ/CPF-SC  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERSC.DBF
+DEstabelecimentos CNPJ/CPF-SC  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERSC.DBF
+SEstabelecimentos CNPJ/CPF-SE  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERSE.DBF
+DEstabelecimentos CNPJ/CPF-SE  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERSE.DBF
+SEstabelecimentos CNPJ/CPF-SP  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERSP.DBF
+DEstabelecimentos CNPJ/CPF-SP  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERSP.DBF
+SEstabelecimentos CNPJ/CPF-TO  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERTO.DBF
+DEstabelecimentos CNPJ/CPF-TO  , PA_CODUNI  , RAZ_SOCI ,  DBF/CADGERTO.DBF
+;*************************************************************************
+;Variável referente à equipe
+;*************************************************************************
+LINE Equipe - BR       , PA_INE     , NO_REF,      DBF/INE_EQUIPE_BR.DBF
+SINE Equipe - BR       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_BR.DBF
+LINE Equipe - AC       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_AC.DBF
+SINE Equipe - AC       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_AC.DBF
+LINE Equipe - AL       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_AL.DBF
+SINE Equipe - AL       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_AL.DBF
+LINE Equipe - AM       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_AM.DBF
+SINE Equipe - AM       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_AM.DBF
+LINE Equipe - AP       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_AP.DBF
+SINE Equipe - AP       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_AP.DBF
+LINE Equipe - BA       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_BA.DBF
+SINE Equipe - BA       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_BA.DBF
+LINE Equipe - CE       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_CE.DBF
+SINE Equipe - CE       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_CE.DBF
+LINE Equipe - DF       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_DF.DBF
+SINE Equipe - DF       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_DF.DBF
+LINE Equipe - ES       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_ES.DBF
+SINE Equipe - ES       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_ES.DBF
+LINE Equipe - GO       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_GO.DBF
+SINE Equipe - GO       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_GO.DBF
+LINE Equipe - MA       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_MA.DBF
+SINE Equipe - MA       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_MA.DBF
+LINE Equipe - MG       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_MG.DBF
+SINE Equipe - MG       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_MG.DBF
+LINE Equipe - MS       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_MS.DBF
+SINE Equipe - MS       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_MS.DBF
+LINE Equipe - MT       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_MT.DBF
+SINE Equipe - MT       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_MT.DBF
+LINE Equipe - PA       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_PA.DBF
+SINE Equipe - PA       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_PA.DBF
+LINE Equipe - PB       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_PB.DBF
+SINE Equipe - PB       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_PB.DBF
+LINE Equipe - PE       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_PE.DBF
+SINE Equipe - PE       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_PE.DBF
+LINE Equipe - PI       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_PI.DBF
+SINE Equipe - PI       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_PI.DBF
+LINE Equipe - PR       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_PR.DBF
+SINE Equipe - PR       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_PR.DBF
+LINE Equipe - RJ       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_RJ.DBF
+SINE Equipe - RJ       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_RJ.DBF
+LINE Equipe - RN       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_RN.DBF
+SINE Equipe - RN       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_RN.DBF
+LINE Equipe - RO       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_RO.DBF
+SINE Equipe - RO       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_RO.DBF
+LINE Equipe - RR       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_RR.DBF
+SINE Equipe - RR       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_RR.DBF
+LINE Equipe - RS       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_RS.DBF
+SINE Equipe - RS       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_RS.DBF
+LINE Equipe - SC       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_SC.DBF
+SINE Equipe - SC       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_SC.DBF
+LINE Equipe - SE       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_SE.DBF
+SINE Equipe - SE       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_SE.DBF
+LINE Equipe - SP       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_SP.DBF
+SINE Equipe - SP       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_SP.DBF
+LINE Equipe - TO       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_TO.DBF
+SINE Equipe - TO       , PA_INE     , DS_REGRA,    DBF/INE_EQUIPE_TO.DBF
+;*************************************************************************
+;  Variáveis referentes ao LOCALIZAÇÃO DO ESTABELECIMENTO
+;*************************************************************************
+;X* LOCALIZ. ESTAB.* , TITULO     ,LINHA_COMENTARIO_LOCALIZACAO_ESTABELECIMENTO
+;TReg. Norte        , PA_UFMUN   , 1 , CNV/regiaono.cnv
+;SReg. Norte        , PA_UFMUN   , 1 , CNV/regiaono.cnv
+;TReg. Nordeste     , PA_UFMUN   , 1 , CNV/regiaone.cnv
+;SReg. Nordeste     , PA_UFMUN   , 1 , CNV/regiaone.cnv
+;TReg. Centro       , PA_UFMUN   , 1 , CNV/regiaoco.cnv
+;SReg. Centro       , PA_UFMUN   , 1 , CNV/regiaoco.cnv
+;TReg. Sudeste      , PA_UFMUN   , 1 , CNV/regiaose.cnv
+;SReg. Sudeste      , PA_UFMUN   , 1 , CNV/regiaose.cnv
+;TReg. Sul          , PA_UFMUN   , 1 , CNV/regiaosu.cnv
+;SReg. Sul          , PA_UFMUN   , 1 , CNV/regiaosu.cnv
+;-------------------------------------------
+;Alteração da base territorial - 20/05/2015
+;-------------------------------------------
+;TRegioes BR-Estabelecimentos        , PA_UFMUN   , 1 , CNV/REGIAOBR.CNV
+;SRegioes BR-Estabelecimentos        , PA_UFMUN   , 1 , CNV/REGIAOBR.CNV
+;DUF Estabelecimentos.               , PA_UFMUN   , 1 , CNV/UF.CNV
+;CUF Estabelecimentos                , PA_UFMUN   , 1 , CNV/UF_COL.CNV
+;SUF Estabelecimentos                , PA_UFMUN   , 1 , CNV/UF.CNV
+;DMunicípio do Estabelecimentos      , PA_UFMUN   , 1 , CNV/MUNICBR.CNV
+;SMunicípio do Estabelecimentos      , PA_UFMUN   , 1 , CNV/MUNICBR.CNV
+;DMicrorregião de saúde-Estabel.     , PA_UFMUN   , 1 , CNV/CSAUDBR.CNV
+;SMicrorregião.de saúde-Est          , PA_UFMUN   , 1 , CNV/CSAUDBR.CNV
+;DRegional de saúde-Estabelecimentos , PA_UFMUN   , 1 , CNV/RSAUDBR.CNV
+;SRegional de saúde-Estabelecimentos , PA_UFMUN   , 1 , CNV/RSAUDBR.CNV
+;DMacrorregião dos Estabelecimentos  , PA_UFMUN   , 1 , CNV/MSAUDBR.CNV
+;SMacrorregião dos Estabelecimentos  , PA_UFMUN   , 1 , CNV/MSAUDBR.CNV
+;DMesorregião dos Estabelecimentos   , PA_UFMUN   , 1 , CNV/MESOBR.CNV
+;SMesorregião dos Estabelecimentos   , PA_UFMUN   , 1 , CNV/MESOBR.CNV
+;DMicrordegião dos Estabelecimentos  , PA_UFMUN   , 1 , CNV/MICROBR.CNV
+;SMicrorregião dos Estabelecimentos  , PA_UFMUN   , 1 , CNV/MICROBR.CNV
+;DRegional metropol.-Estab           , PA_UFMUN   , 1 , CNV/RMETRBR.CNV
+;SRegional metropol.-Estab           , PA_UFMUN   , 1 , CNV/RMETRBR.CNV
+;XEstabelecimentos em Brasília       , PA_UFMUN   , 1 , CNV/MUNIC_DF.CNV
+;-------------------------------------------
+;Final da Alteração da base territorial - 20/05/2015
+;-------------------------------------------
+;       Definições  para município de Atendimento - 20/05/2015
+LUF Atendimento                       , PA_UFMUN , 1,  CNV/BR_UF.CNV
+LUF Atendimento Sigla                 , PA_UFMUN , 1,  CNV/BR_UFSIGLA.CNV
+CUF Atendimento                       , PA_UFMUN , 1,  CNV/BR_UFSIGLA.CNV
+SUF Atendimento                       , PA_UFMUN , 1,  CNV/BR_UF.CNV
+LRegião Atendimento                   , PA_UFMUN , 1,  CNV/BR_REGIAO.CNV
+CRegião Atendimento                   , PA_UFMUN , 1,  CNV/BR_REGIAO.CNV
+SRegião Atendimento                   , PA_UFMUN , 1,  CNV/BR_REGIAO.CNV
+LRegião/UF Atendimento                , PA_UFMUN , 1,  CNV/BR_REGIAOUF.CNV
+XMunicípio Atendimento - BR           , PA_UFMUN , 1,  CNV/BR_MUNICIP.CNV
+XMunicípio Atendimento - AC           , PA_UFMUN , 1,  CNV/AC_MUNICIP.CNV
+XMunicípio Atendimento - AL           , PA_UFMUN , 1,  CNV/AL_MUNICIP.CNV
+XMunicípio Atendimento - AM           , PA_UFMUN , 1,  CNV/AM_MUNICIP.CNV
+XMunicípio Atendimento - AP           , PA_UFMUN , 1,  CNV/AP_MUNICIP.CNV
+XMunicípio Atendimento - BA           , PA_UFMUN , 1,  CNV/BA_MUNICIP.CNV
+XMunicípio Atendimento - CE           , PA_UFMUN , 1,  CNV/CE_MUNICIP.CNV
+XMunicípio Atendimento - DF           , PA_UFMUN , 1,  CNV/DF_MUNICIP.CNV
+XMunicípio Atendimento - ES           , PA_UFMUN , 1,  CNV/ES_MUNICIP.CNV
+XMunicípio Atendimento - GO           , PA_UFMUN , 1,  CNV/GO_MUNICIP.CNV
+XMunicípio Atendimento - MA           , PA_UFMUN , 1,  CNV/MA_MUNICIP.CNV
+XMunicípio Atendimento - MG           , PA_UFMUN , 1,  CNV/MG_MUNICIP.CNV
+XMunicípio Atendimento - MS           , PA_UFMUN , 1,  CNV/MS_MUNICIP.CNV
+XMunicípio Atendimento - MT           , PA_UFMUN , 1,  CNV/MT_MUNICIP.CNV
+XMunicípio Atendimento - PA           , PA_UFMUN , 1,  CNV/PA_MUNICIP.CNV
+XMunicípio Atendimento - PB           , PA_UFMUN , 1,  CNV/PB_MUNICIP.CNV
+XMunicípio Atendimento - PE           , PA_UFMUN , 1,  CNV/PE_MUNICIP.CNV
+XMunicípio Atendimento - PI           , PA_UFMUN , 1,  CNV/PI_MUNICIP.CNV
+XMunicípio Atendimento - PR           , PA_UFMUN , 1,  CNV/PR_MUNICIP.CNV
+XMunicípio Atendimento - RJ           , PA_UFMUN , 1,  CNV/RJ_MUNICIP.CNV
+XMunicípio Atendimento - RN           , PA_UFMUN , 1,  CNV/RN_MUNICIP.CNV
+XMunicípio Atendimento - RO           , PA_UFMUN , 1,  CNV/RO_MUNICIP.CNV
+XMunicípio Atendimento - RR           , PA_UFMUN , 1,  CNV/RR_MUNICIP.CNV
+XMunicípio Atendimento - RS           , PA_UFMUN , 1,  CNV/RS_MUNICIP.CNV
+XMunicípio Atendimento - SC           , PA_UFMUN , 1,  CNV/SC_MUNICIP.CNV
+XMunicípio Atendimento - SE           , PA_UFMUN , 1,  CNV/SE_MUNICIP.CNV
+XMunicípio Atendimento - SP           , PA_UFMUN , 1,  CNV/SP_MUNICIP.CNV
+XMunicípio Atendimento - TO           , PA_UFMUN , 1,  CNV/TO_MUNICIP.CNV
+LCapital Atendimento                  , PA_UFMUN , 1,  CNV/BR_CAPITAL.CNV
+CCapital Atendimento                  , PA_UFMUN , 1,  CNV/BR_CAPITAL.CNV
+SCapital Atendimento                  , PA_UFMUN , 1,  CNV/BR_CAPITAL.CNV
+LRegião Saúde Atendimento             , PA_UFMUN , 1,  CNV/BR_REGSAUD.CNV
+LMacro Reg.Saúde Atendimento          , PA_UFMUN , 1,  CNV/BR_MACSAUD.CNV
+LDivisão Adm. Atendimento             , PA_UFMUN , 1,  CNV/BR_DIVADM.CNV
+LMicro IBGE Atendimento               , PA_UFMUN , 1,  CNV/BR_MICIBGE.CNV
+LRegião Metr Atendimento              , PA_UFMUN , 1,  CNV/BR_REGMETR.CNV
+LTerritório Cidade Atendimento        , PA_UFMUN , 1,  CNV/BR_TERRCID.CNV
+LMacro PNDR Atendimento               , PA_UFMUN , 1,  CNV/BR_PNDR.CNV
+CRegional Saúde Atendimento           , PA_UFMUN , 1,  CNV/BR_REGSAUD.CNV
+CMacro Região Saúde Atendimento       , PA_UFMUN , 1,  CNV/BR_MACSAUD.CNV
+CDivisão Adm. Atendimento             , PA_UFMUN , 1,  CNV/BR_DIVADM.CNV
+CMicro IBGE Atendimento               , PA_UFMUN , 1,  CNV/BR_MICIBGE.CNV
+CRegião Metr Atendimento              , PA_UFMUN , 1,  CNV/BR_REGMETR.CNV
+CTerritório Cidade Atendimento        , PA_UFMUN , 1,  CNV/BR_TERRCID.CNV
+CMacro PNDR Atendimento               , PA_UFMUN , 1,  CNV/BR_PNDR.CNV
+SRegional Saúde Atendimento           , PA_UFMUN , 1,  CNV/BR_REGSAUD.CNV
+SMacro Reg.Saúde Atendimento          , PA_UFMUN , 1,  CNV/BR_MACSAUD.CNV
+SDivisão Adm. Atendimento             , PA_UFMUN , 1,  CNV/BR_DIVADM.CNV
+SMicro IBGE Atendimento               , PA_UFMUN , 1,  CNV/BR_MICIBGE.CNV
+SRegião Metr Atendimento              , PA_UFMUN , 1,  CNV/BR_REGMETR.CNV
+STerritório Cidade.Atendimento        , PA_UFMUN , 1,  CNV/BR_TERRCID.CNV
+SMacro PNDR Atendimento               , PA_UFMUN , 1,  CNV/BR_PNDR.CNV
+SMun Amazonia Legal Ate               , PA_UFMUN , 1,  CNV/BR_AMAZLEGAL.CNV
+SMun Extr.Pobreza Atendimento         , PA_UFMUN , 1,  CNV/BR_EXTRPOBREZ.CNV
+SMun Faixa Front Atendimento          , PA_UFMUN , 1,  CNV/BR_FRONTFAIXA.CNV
+SMun Zona Front Atend.                , PA_UFMUN , 1,  CNV/BR_FRONTZONA.CNV
+SMun Semi Árido Atend.                , PA_UFMUN , 1,  CNV/BR_SEMIARIDO.CNV
+;*************************************************************************
+;  Variáveis referentes ao PACIENTE
+;*************************************************************************
+;X*    PACIENTE    * , TITULO     ,LINHA_COMENTARIO_REFERENTE_DADOS_DO_PACIENTE
+XSexo do Paciente   , PA_SEXO        , 1 , CNV/SEXO.CNV
+XIdade do Paciente  , PA_IDADE       , 1 , CNV/IDADE.CNV
+XDetalhes_Idade Paciente, PA_FLIDADE , 1 , CNV/FL_IDADE.CNV
+;XIdade MÍNIMA      , IDADEMIN       , 1 , CNV/idade_.cnv
+;XIdade MÁXIMA      , IDADEMAX       , 1 , CNV/idade_.cnv
+XRaça/Cor Paciente  , PA_RACACOR     , 1 , CNV/RACA_COR.CNV
+DRegioes BR-Res.Pac., PA_MUNPCN      , 1 , CNV/REGIAOBR.CNV
+SRegioes BR-Res.Pac., PA_MUNPCN      , 1 , CNV/REGIAOBR.CNV
+;TReg. Norte        , PA_MUNPCN      , 1 , CNV/regiaono.cnv
+;SReg. Norte        , PA_MUNPCN      , 1 , CNV/regiaono.cnv
+;TReg. Nordeste     , PA_MUNPCN      , 1 , CNV/regiaone.cnv
+;SReg. Nordeste     , PA_MUNPCN      , 1 , CNV/regiaone.cnv
+;TReg. Centro       , PA_MUNPCN      , 1 , CNV/regiaoco.cnv
+;SReg. Centro       , PA_MUNPCN      , 1 , CNV/regiaoco.cnv
+;TReg. Sudeste      , PA_MUNPCN      , 1 , CNV/regiaose.cnv
+;SReg. Sudeste      , PA_MUNPCN      , 1 , CNV/regiaose.cnv
+;TReg. Sul          , PA_MUNPCN      , 1 , CNV/regiaosu.cnv
+;SReg. Sul          , PA_MUNPCN      , 1 , CNV/regiaosu.cnv
+;-------------------------------------------
+;Alteração da base territorial - 20/05/2015
+;-------------------------------------------
+;DUF Munic.Resid.Pac., PA_MUNPCN     , 1 , CNV/UF.CNV
+;CUF Munic.Resid.Pac., PA_MUNPCN     , 1 , CNV/UF_COL.CNV
+;SUF Munic.Resid.Pac., PA_MUNPCN     , 1 , CNV/UF.CNV
+;DMunic.da Resid.Pac., PA_MUNPCN     , 1 , CNV/MUNICBR.CNV
+;SMunic.da Resid.Pac., PA_MUNPCN     , 1 , CNV/MUNICBR.CNV
+;XRes.Pac.em Brasília , PA_MUNPCN    , 1 , CNV/MUNIC_DF.cnv
+;-------------------------------------------
+;Final da Alteração da base territorial - 20/05/2015
+;-------------------------------------------
+;   Definições para residência - 20/05/2015
+XMunicípio Residência - BR,  PA_MUNPCN ,  1,  CNV/BR_MUNICIP.CNV
+XMunicípio Residência - AC,  PA_MUNPCN ,  1,  CNV/AC_MUNICIP.CNV
+XMunicípio Residência - AL,  PA_MUNPCN ,  1,  CNV/AL_MUNICIP.CNV
+XMunicípio Residência - AM,  PA_MUNPCN ,  1,  CNV/AM_MUNICIP.CNV
+XMunicípio Residência - AP,  PA_MUNPCN ,  1,  CNV/AP_MUNICIP.CNV
+XMunicípio Residência - BA,  PA_MUNPCN ,  1,  CNV/BA_MUNICIP.CNV
+XMunicípio Residência - CE,  PA_MUNPCN ,  1,  CNV/CE_MUNICIP.CNV
+XMunicípio Residência - DF,  PA_MUNPCN ,  1,  CNV/DF_MUNICIP.CNV
+XMunicípio Residência - ES,  PA_MUNPCN ,  1,  CNV/ES_MUNICIP.CNV
+XMunicípio Residência - GO,  PA_MUNPCN ,  1,  CNV/GO_MUNICIP.CNV
+XMunicípio Residência - MA,  PA_MUNPCN ,  1,  CNV/MA_MUNICIP.CNV
+XMunicípio Residência - MG,  PA_MUNPCN ,  1,  CNV/MG_MUNICIP.CNV
+XMunicípio Residência - MS,  PA_MUNPCN ,  1,  CNV/MS_MUNICIP.CNV
+XMunicípio Residência - MT,  PA_MUNPCN ,  1,  CNV/MT_MUNICIP.CNV
+XMunicípio Residência - PA,  PA_MUNPCN ,  1,  CNV/PA_MUNICIP.CNV
+XMunicípio Residência - PB,  PA_MUNPCN ,  1,  CNV/PB_MUNICIP.CNV
+XMunicípio Residência - PE,  PA_MUNPCN ,  1,  CNV/PE_MUNICIP.CNV
+XMunicípio Residência - PI,  PA_MUNPCN ,  1,  CNV/PI_MUNICIP.CNV
+XMunicípio Residência - PR,  PA_MUNPCN ,  1,  CNV/PR_MUNICIP.CNV
+XMunicípio Residência - RJ,  PA_MUNPCN ,  1,  CNV/RJ_MUNICIP.CNV
+XMunicípio Residência - RN,  PA_MUNPCN ,  1,  CNV/RN_MUNICIP.CNV
+XMunicípio Residência - RO,  PA_MUNPCN ,  1,  CNV/RO_MUNICIP.CNV
+XMunicípio Residência - RR,  PA_MUNPCN ,  1,  CNV/RR_MUNICIP.CNV
+XMunicípio Residência - RS,  PA_MUNPCN ,  1,  CNV/RS_MUNICIP.CNV
+XMunicípio Residência - SC,  PA_MUNPCN ,  1,  CNV/SC_MUNICIP.CNV
+XMunicípio Residência - SE,  PA_MUNPCN ,  1,  CNV/SE_MUNICIP.CNV
+XMunicípio Residência - SP,  PA_MUNPCN ,  1,  CNV/SP_MUNICIP.CNV
+XMunicípio Residência - TO,  PA_MUNPCN ,  1,  CNV/TO_MUNICIP.CNV
+LCapital Residência       ,  PA_MUNPCN ,  1,  CNV/BR_CAPITAL.CNV
+CCapital Residência       ,  PA_MUNPCN ,  1,  CNV/BR_CAPITAL.CNV
+SCapital Residência       ,  PA_MUNPCN ,  1,  CNV/BR_CAPITAL.CNV
+LRegião Saúde Residência  ,  PA_MUNPCN ,  1,  CNV/BR_REGSAUD.CNV
+LMacro Região Saúde Resid.,  PA_MUNPCN ,  1,  CNV/BR_MACSAUD.CNV
+LDivisão Adm. Residência  ,  PA_MUNPCN ,  1,  CNV/BR_DIVADM.CNV
+LMicro IBGE Residência    ,  PA_MUNPCN ,  1,  CNV/BR_MICIBGE.CNV
+LRegião Metro Residência  ,  PA_MUNPCN ,  1,  CNV/BR_REGMETR.CNV
+LTerritório Cidade Resid. ,  PA_MUNPCN ,  1,  CNV/BR_TERRCID.CNV
+LMacro PNDR Residência    ,  PA_MUNPCN ,  1,  CNV/BR_PNDR.CNV
+CRegião Saúde Residência  ,  PA_MUNPCN ,  1,  CNV/BR_REGSAUD.CNV
+CMacro Reg.Saúde Resid.   ,  PA_MUNPCN ,  1,  CNV/BR_MACSAUD.CNV
+CDivisão Adm. Residência  ,  PA_MUNPCN ,  1,  CNV/BR_DIVADM.CNV
+CMicro IBGE Residência    ,  PA_MUNPCN ,  1,  CNV/BR_MICIBGE.CNV
+CRegião Metr Residência   ,  PA_MUNPCN ,  1,  CNV/BR_REGMETR.CNV
+CTerritório Cidade Resid. ,  PA_MUNPCN ,  1,  CNV/BR_TERRCID.CNV
+CMacro PNDR Residência    ,  PA_MUNPCN ,  1,  CNV/BR_PNDR.CNV
+SRegião Saúde Residência  ,  PA_MUNPCN ,  1,  CNV/BR_REGSAUD.CNV
+SMacro Reg.Saúde Res      ,  PA_MUNPCN ,  1,  CNV/BR_MACSAUD.CNV
+SDivisão Adm. Residência  ,  PA_MUNPCN ,  1,  CNV/BR_DIVADM.CNV
+SMicro IBGE Residência    ,  PA_MUNPCN ,  1,  CNV/BR_MICIBGE.CNV
+SRegião Metr Residência   ,  PA_MUNPCN ,  1,  CNV/BR_REGMETR.CNV
+STerritório Cidade Resid. ,  PA_MUNPCN ,  1,  CNV/BR_TERRCID.CNV
+SMacro PNDR Residência    ,  PA_MUNPCN ,  1,  CNV/BR_PNDR.CNV
+SMun Amazonia Legal Resid.,  PA_MUNPCN ,  1,  CNV/BR_AMAZLEGAL.CNV
+SMun Extrema Pobreza Resid,  PA_MUNPCN ,  1,  CNV/BR_EXTRPOBREZ.CNV
+SMun Faixa Fronteira Resid,  PA_MUNPCN ,  1,  CNV/BR_FRONTFAIXA.CNV
+SMun Zona  Fronteira Resid,  PA_MUNPCN ,  1,  CNV/BR_FRONTZONA.CNV
+SMun Semi Árido Residência,  PA_MUNPCN ,  1,  CNV/BR_SEMIARIDO.CNV
+;-------------------------------------------
+;Alteração da base territorial - 20/05/2015
+;-------------------------------------------

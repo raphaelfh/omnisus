@@ -1,0 +1,55 @@
+{
+  "url": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIHSUS/200801_/Auxiliar/TAB_SIH.zip",
+  "retrieved_on": "2026-09-14",
+  "sha256": "714ed980d483c038dc8245be5c40c39062ebfa55a7f6288ab4a87587ef199874",
+  "members": [
+    {
+      "path": "CNV/SEXO.CNV",
+      "sha256": "003e1b250d26b987867b9d0c1d155c42e340c4a62bffdcd4db85c7c41e60691e",
+      "archive_date": [
+        2026,
+        8,
+        17,
+        22,
+        7,
+        2
+      ]
+    },
+    {
+      "path": "CNV/IDADEBAS.CNV",
+      "sha256": "a361977bb022a05097505e554a47644731d31c78c76580ddd45db1d237ca89a8",
+      "archive_date": [
+        2026,
+        8,
+        17,
+        22,
+        7,
+        2
+      ]
+    },
+    {
+      "path": "CNV/IDADEDET.CNV",
+      "sha256": "47e02370f68924ac1748e526215b95a12a2942a97ea216e96f4ad9c562954d6e",
+      "archive_date": [
+        2026,
+        8,
+        17,
+        22,
+        7,
+        2
+      ]
+    },
+    {
+      "path": "RD2008.DEF",
+      "sha256": "15376fb2e56917b4122fa475b15f1e270e9daa4238f518d75e6bb6044372c652",
+      "archive_date": [
+        2026,
+        8,
+        17,
+        22,
+        7,
+        2
+      ]
+    }
+  ]
+}

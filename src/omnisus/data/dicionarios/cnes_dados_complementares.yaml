@@ -1,0 +1,532 @@
+name: cnes_dados_complementares
+title: CNES — Dados complementares (DC)
+profile: tabular-data-resource
+encoding: latin-1
+x-version: 1.1.0
+x-source-format: dbc
+x-partitions:
+- _source_ano
+x-evidence:
+  physical_schema: cnes_dc_rr_2024_01_mini.dbc, 171 fields; observed 2026-09-22
+  semantic_status: Physical inventory. Category maps only where a TabWin CNV binds the
+    field and decodes every non-blank value of the fixture (vinculos.json); no inferred
+    mappings.
+  dictionary_url: ftp://ftp.datasus.gov.br/dissemin/publicos/CNES/200508_/Doc/IT_CNES_1706.pdf
+  source_url: ftp://ftp.datasus.gov.br/dissemin/publicos/CNES/200508_/Dados/DC/DCRR2401.dbc
+schema:
+  fields:
+  - name: cnes
+    type: string
+  - name: codufmun
+    type: string
+  - name: cpf_cnpj
+    type: string
+  - name: pf_pj
+    type: string
+  - name: niv_dep
+    type: string
+    x-decode:
+      '1': Individual
+      '3': Mantido
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 06b79bb2766644cc147b887eabea3057c02a6c51d20d3d3391cb42571c53cf13
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: cnes-tab-50988af5d88b
+          pages: []
+          locator: 'DadosComplementares.def: XMantida/Individual, NIV_DEP, 1, CNV\NIVELDEP.CNV; CNV/NIVELDEP.CNV'
+        note: Mapa do CNV.
+  - name: cnpj_man
+    type: string
+  - name: cod_ir
+    type: string
+  - name: regsaude
+    type: string
+  - name: micr_reg
+    type: string
+  - name: distrsan
+    type: string
+  - name: vinc_sus
+    type: string
+    x-decode:
+      '0': Estabelecimento SEM vínculo SUS
+      '1': Estabelecimento COM vínculo SUS
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 8a2ae79f475d7a43237fb2fbbd595510ee4eb4a93b0bee6399e0fff73e963e86
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: cnes-tab-50988af5d88b
+          pages: []
+          locator: 'DadosComplementares.def: XVínculos com SUS, VINC_SUS, 1, CNV\VINC_SUS.CNV; CNV/Vinc_SUS.cnv'
+        note: Mapa do CNV.
+  - name: distradm
+    type: string
+  - name: tpgestao
+    type: string
+    x-decode:
+      ' -Z': NÃO INFORMADO
+      D: DUPLA
+      E: ESTADUAL
+      M: MUNICIPAL
+      S: SEM GESTÃO
+      Z: SEM GESTÃO
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 4e19874712cc932b3dcb5c72ef3152e133de422bc5c73fa8ed6ede2a1a049b9f
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: cnes-tab-50988af5d88b
+          pages: []
+          locator: 'DadosComplementares.def: XTipo de Gestão, TPGESTAO, 1, CNV\TPGESTAO.CNV; CNV/TPGESTAO.CNV'
+        note: Mapa do CNV.
+  - name: esfera_a
+    type: string
+  - name: retencao
+    type: string
+  - name: atividad
+    type: string
+    x-decode:
+      '  -99': Atividade Ensino não informada
+      '01': Unidade Universitária
+      '02': Unidade Escola Superior Isolada
+      '03': Unidade Auxiliar de Ensino
+      '04': Unidade SEM atividade de Ensino
+      '05': Hospital de Ensino
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 452f208feb79f719f41403bc4ca413a72002a1adccc147f1c0d23d129ceeff38
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: cnes-tab-50988af5d88b
+          pages: []
+          locator: 'DadosComplementares.def: XAtividade Ensino/Pesquisa, ATIVIDAD, 1, CNV\Ativ_Ens.CNV;
+            CNV/Ativ_Ens.CNV'
+        note: Mapa do CNV.
+  - name: natureza
+    type: string
+  - name: clientel
+    type: string
+    x-decode:
+      '  -99': Fluxo de Clientela não informado
+      '00': Fluxo de Clientela não exigido
+      '01': Atendimento de demanda espontânea
+      '02': Atendimento de demanda referenciada
+      '03': Atendimento de demanda espontânea e referenciada
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 0df38183c1f4e5cda27b486d63e6d35ed05cb8c4f099e95e46c9db09c868936f
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: cnes-tab-50988af5d88b
+          pages: []
+          locator: 'DadosComplementares.def: XFluxo Clientela, CLIENTEL, 1, CNV\FLUX_CLI.CNV; CNV/Flux_Cli.CNV'
+        note: Mapa do CNV.
+  - name: tp_unid
+    type: string
+    x-decode:
+      '01': POSTO DE SAUDE
+      '02': CENTRO DE SAUDE/UNIDADE BASICA
+      '04': POLICLINICA
+      '05': HOSPITAL GERAL
+      '07': HOSPITAL ESPECIALIZADO
+      '09': PRONTO SOCORRO DE HOSPITAL GERAL (ANTIGO)
+      '12': PRONTO SOCORRO TRAUMATO-ORTOPEDICO (ANTIGO)
+      '15': UNIDADE MISTA
+      '20': PRONTO SOCORRO GERAL
+      '21': PRONTO SOCORRO ESPECIALIZADO
+      '22': CONSULTORIO ISOLADO
+      '32': UNIDADE MOVEL FLUVIAL
+      '36': CLINICA/CENTRO DE ESPECIALIDADE
+      '39': UNIDADE DE APOIO DIAGNOSE E TERAPIA (SADT ISOLADO)
+      '40': UNIDADE MOVEL TERRESTRE
+      '42': UNIDADE MOVEL DE NIVEL PRE-HOSPITALAR NA AREA DE URGENCIA
+      '43': FARMACIA
+      '45': UNIDADE DE SAUDE DA FAMILIA
+      '50': UNIDADE DE VIGILANCIA EM SAUDE
+      '60': COOPERATIVA OU EMPRESA DE CESSAO DE TRABALHADORES NA SAUDE
+      '61': CENTRO DE PARTO NORMAL - ISOLADO
+      '62': HOSPITAL/DIA - ISOLADO
+      '63': UNIDADE AUTORIZADORA
+      '64': CENTRAL DE REGULACAO DE SERVICOS DE SAUDE
+      '65': UNIDADE DE VIGILANCIA EPIDEMIOLOGIA (ANTIGO)
+      '66': UNIDADE DE VIGILANCIA SANITARIA (ANTIGO)
+      '67': LABORATORIO CENTRAL DE SAUDE PUBLICA LACEN
+      '68': CENTRAL DE GESTAO EM SAUDE
+      '69': CENTRO DE ATENCAO HEMOTERAPIA E OU HEMATOLOGICA
+      '70': CENTRO DE ATENCAO PSICOSSOCIAL
+      '71': CENTRO DE APOIO A SAUDE DA FAMILIA
+      '72': UNIDADE DE ATENCAO A SAUDE INDIGENA
+      '73': PRONTO ATENDIMENTO
+      '74': POLO ACADEMIA DA SAUDE
+      '75': TELESSAUDE
+      '76': CENTRAL DE REGULACAO MEDICA DAS URGENCIAS
+      '77': SERVICO DE ATENCAO DOMICILIAR ISOLADO(HOME CARE)
+      '78': UNIDADE DE ATENCAO EM REGIME RESIDENCIAL
+      '79': OFICINA ORTOPEDICA
+      '80': LABORATORIO DE SAUDE PUBLICA
+      '81': CENTRAL DE REGULACAO DO ACESSO
+      '82': CENTRAL DE NOTIFICACAO,CAPTACAO E DISTRIB DE ORGAOS ESTADUAL
+      '83': POLO DE PREVENCAO DE DOENCAS E AGRAVOS E PROMOCAO DA SAUDE
+      '84': CENTRAL DE ABASTECIMENTO
+      '85': CENTRO DE IMUNIZACAO
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 69bb9effc85c90811cf4e7ebd21a31189a28aac2b860a92e8488aacf425b8925
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: cnes-tab-50988af5d88b
+          pages: []
+          locator: 'DadosComplementares.def: XTipo de Estabelecimento, TP_UNID, 1, CNV\TP_ESTAB.CNV; CNV/TP_ESTAB.CNV'
+        note: Mapa do CNV.
+  - name: turno_at
+    type: string
+    x-decode:
+      '  -99': Turno não informado
+      '01': ATENDIMENTO TURNOS INTERMITENTES
+      '02': ATENDIMENTO CONTÍNUO 24 HORAS/DIA (Pl Sab Dom Fer)
+      '03': ATENDIMENTO TURNOS MANHÃ/TARDE/NOITE
+      '04': ATENDIMENTO SOMENTE PELA MANHÃ
+      '05': ATENDIMENTO SOMENTE À TARDE
+      '06': ATENDIMENTO TURNOS MANHÃ/TARDE
+      '07': ATENDIMENTO SOMENTE À NOITE
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 9f63ab7b7e25166ccc2991a16b4235862478859cbbb1226fe0063ce110716eee
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: cnes-tab-50988af5d88b
+          pages: []
+          locator: 'DadosComplementares.def: XTurno Atendimento, TURNO_AT, 1, CNV\TurnosAt.cnv; CNV/TurnosAt.CNV'
+        note: Mapa do CNV.
+  - name: niv_hier
+    type: string
+  - name: tp_prest
+    type: string
+  - name: s_hbsagp
+    type: integer
+  - name: s_hbsagn
+    type: integer
+  - name: s_dpi
+    type: integer
+  - name: s_dpac
+    type: integer
+  - name: s_reagp
+    type: integer
+  - name: s_reagn
+    type: integer
+  - name: s_rehcv
+    type: integer
+  - name: maq_prop
+    type: integer
+  - name: maq_outr
+    type: integer
+  - name: f_areia
+    type: string
+  - name: f_carvao
+    type: string
+  - name: abrandad
+    type: string
+  - name: deioniza
+    type: string
+  - name: osmose_r
+    type: string
+  - name: out_trat
+    type: string
+  - name: cns_nefr
+    type: string
+  - name: dialise
+    type: string
+  - name: simul_rd
+    type: integer
+  - name: planj_rd
+    type: integer
+  - name: armaz_ft
+    type: integer
+  - name: conf_mas
+    type: integer
+  - name: sala_mol
+    type: integer
+  - name: blocoper
+    type: integer
+  - name: s_armaze
+    type: integer
+  - name: s_prepar
+    type: integer
+  - name: s_qcdura
+    type: integer
+  - name: s_qldura
+    type: integer
+  - name: s_cpflux
+    type: integer
+  - name: s_simula
+    type: integer
+  - name: s_acell6
+    type: integer
+  - name: s_alseme
+    type: integer
+  - name: s_alcome
+    type: integer
+  - name: ortv1050
+    type: integer
+  - name: orv50150
+    type: integer
+  - name: ov150500
+    type: integer
+  - name: un_cobal
+    type: integer
+  - name: eqbrbaix
+    type: integer
+  - name: eqbrmedi
+    type: integer
+  - name: eqbralta
+    type: integer
+  - name: eq_marea
+    type: integer
+  - name: eq_mindi
+    type: integer
+  - name: eqsispln
+    type: integer
+  - name: eqdoscli
+    type: integer
+  - name: eqfonsel
+    type: integer
+  - name: cns_adm
+    type: string
+  - name: cns_oped
+    type: string
+  - name: cns_conc
+    type: string
+  - name: cns_oclin
+    type: string
+  - name: cns_mrad
+    type: string
+  - name: cns_fnuc
+    type: string
+  - name: quimradi
+    type: string
+  - name: s_recepc
+    type: integer
+  - name: s_trihmt
+    type: integer
+  - name: s_tricli
+    type: integer
+  - name: s_coleta
+    type: integer
+  - name: s_aferes
+    type: integer
+  - name: s_preest
+    type: integer
+  - name: s_proces
+    type: integer
+  - name: s_estoqu
+    type: integer
+  - name: s_distri
+    type: integer
+  - name: s_sorolo
+    type: integer
+  - name: s_imunoh
+    type: integer
+  - name: s_pretra
+    type: integer
+  - name: s_hemost
+    type: integer
+  - name: s_contrq
+    type: integer
+  - name: s_biomol
+    type: integer
+  - name: s_imunfe
+    type: integer
+  - name: s_transf
+    type: integer
+  - name: s_sgdoad
+    type: integer
+  - name: qt_cadre
+    type: integer
+  - name: qt_cenre
+    type: integer
+  - name: qt_refsa
+    type: integer
+  - name: qt_conra
+    type: integer
+  - name: qt_extpl
+    type: integer
+  - name: qt_fre18
+    type: integer
+  - name: qt_fre30
+    type: integer
+  - name: qt_agipl
+    type: integer
+  - name: qt_selad
+    type: integer
+  - name: qt_irrhe
+    type: integer
+  - name: qt_agltn
+    type: integer
+  - name: qt_maqaf
+    type: integer
+  - name: qt_refre
+    type: integer
+  - name: qt_refas
+    type: integer
+  - name: qt_capfl
+    type: integer
+  - name: cns_hmtr
+    type: string
+  - name: cns_hmtl
+    type: string
+  - name: cns_cres
+    type: string
+  - name: cns_rtec
+    type: string
+  - name: hemotera
+    type: string
+  - name: ap01cv01
+    type: string
+  - name: ap01cv02
+    type: string
+  - name: ap01cv03
+    type: string
+  - name: ap01cv04
+    type: string
+  - name: ap01cv05
+    type: string
+  - name: ap01cv06
+    type: string
+  - name: ap01cv07
+    type: string
+  - name: ap02cv01
+    type: string
+  - name: ap02cv02
+    type: string
+  - name: ap02cv03
+    type: string
+  - name: ap02cv04
+    type: string
+  - name: ap02cv05
+    type: string
+  - name: ap02cv06
+    type: string
+  - name: ap02cv07
+    type: string
+  - name: ap03cv01
+    type: string
+  - name: ap03cv02
+    type: string
+  - name: ap03cv03
+    type: string
+  - name: ap03cv04
+    type: string
+  - name: ap03cv05
+    type: string
+  - name: ap03cv06
+    type: string
+  - name: ap03cv07
+    type: string
+  - name: ap04cv01
+    type: string
+  - name: ap04cv02
+    type: string
+  - name: ap04cv03
+    type: string
+  - name: ap04cv04
+    type: string
+  - name: ap04cv05
+    type: string
+  - name: ap04cv06
+    type: string
+  - name: ap04cv07
+    type: string
+  - name: ap05cv01
+    type: string
+  - name: ap05cv02
+    type: string
+  - name: ap05cv03
+    type: string
+  - name: ap05cv04
+    type: string
+  - name: ap05cv05
+    type: string
+  - name: ap05cv06
+    type: string
+  - name: ap05cv07
+    type: string
+  - name: ap06cv01
+    type: string
+  - name: ap06cv02
+    type: string
+  - name: ap06cv03
+    type: string
+  - name: ap06cv04
+    type: string
+  - name: ap06cv05
+    type: string
+  - name: ap06cv06
+    type: string
+  - name: ap06cv07
+    type: string
+  - name: ap07cv01
+    type: string
+  - name: ap07cv02
+    type: string
+  - name: ap07cv03
+    type: string
+  - name: ap07cv04
+    type: string
+  - name: ap07cv05
+    type: string
+  - name: ap07cv06
+    type: string
+  - name: ap07cv07
+    type: string
+  - name: atend_pr
+    type: string
+  - name: gesprg3e
+    type: string
+  - name: gesprg3m
+    type: string
+  - name: gesprg4e
+    type: string
+  - name: gesprg4m
+    type: string
+  - name: gesprg6e
+    type: string
+  - name: gesprg6m
+    type: string
+  - name: nivate_a
+    type: string
+  - name: nivate_h
+    type: string
+  - name: competen
+    type: string
+  - name: nat_jur
+    type: string

@@ -1,0 +1,103 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  # Stacked pushes otherwise race each other.
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: test (${{ matrix.os }}, py${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
+    # Time budget: measured 8 min (Linux, with checks and coverage) and 6.6 min
+    # (Windows) on 2026-09-25. A job that crosses 12 min fails: find the slow test
+    # (pytest --durations=20) before raising this number.
+    timeout-minutes: 12
+    env:
+      # Every `uv run` must use the matrix interpreter. Without this, uv run
+      # falls back to its default Python, recreates .venv without the dev
+      # extra, and the 3.12 cell fails with "Failed to spawn: ruff".
+      UV_PYTHON: ${{ matrix.python }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # Linux runs the checks and the coverage gate once. Windows because our
+        # users are epidemiologists on Windows and we have FTP and path code.
+        # The 3.12 floor is checked statically (ruff py312, mypy 3.12) and by the
+        # install gate; macOS by the install gate and native.yml.
+        include:
+          - { os: ubuntu-latest, python: "3.13", checks: true }
+          - { os: windows-latest, python: "3.13", checks: false }
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+      - name: Setup Python
+        run: uv python install ${{ matrix.python }}
+      - name: Sync deps
+        # --frozen enforces the committed lockfile. Without it, green CI does
+        # not mean the lockfile resolves.
+        run: uv sync --frozen -p ${{ matrix.python }} --extra dev
+      - name: Lint
+        if: matrix.checks
+        run: uv run ruff check .
+      - name: Notebook check
+        if: matrix.checks
+        # A folder, not a glob: Windows runners do not expand globs.
+        # --ignore-scripts skips helper modules; the offline-open test still
+        # imports every notebook, so a notebook marimo cannot parse still fails.
+        run: uv run marimo check --strict --ignore-scripts notebooks
+      - name: Format check
+        if: matrix.checks
+        run: uv run ruff format --check .
+      - name: Type check
+        if: matrix.checks
+        # We ship py.typed and verified it nowhere.
+        run: uv run mypy src
+      - name: Generated docs are current
+        if: matrix.checks
+        run: uv run python scripts/gen_datasets_doc.py --check
+      - name: Unit + integration tests
+        # `not e2e` is what keeps DATASUS off the pull-request path. Anything
+        # that touches the live server must carry BOTH markers.
+        # -n auto: one worker per runner CPU. Coverage only where it is gated.
+        run: uv run -p ${{ matrix.python }} pytest -m "not e2e and not perf" -n auto ${{ matrix.checks && '--cov=omnisus --cov-fail-under=85' || '' }}
+
+  install-gate:
+    # The real "does it install for a user": build the wheel, then install it
+    # where NOTHING may be built from source. Everything else in CI is green
+    # only because the runners ship a Rust toolchain that users do not have.
+    # Every supported Python must pass; DBC decompression is pure Python unless
+    # the optional native wheel is installed.
+    name: wheel-only install (${{ matrix.os }}, py${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
+    # Measured under 30 s; 5 min leaves room for a slow runner.
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        # Each OS and each supported Python once; release.yml runs the full 3x3.
+        include:
+          - { os: ubuntu-latest, python: "3.12" }
+          - { os: macos-latest, python: "3.13" }
+          - { os: windows-latest, python: "3.14" }
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v7
+      - run: uv python install ${{ matrix.python }}
+      - name: Build the wheel
+        run: uv build --wheel
+      - name: Install it, binary dependencies only
+        shell: bash
+        run: |
+          uv venv -p ${{ matrix.python }} .gate
+          uv pip install --python .gate --only-binary=:all: dist/*.whl
+      - name: Import the installed package
+        shell: bash
+        run: uv run --no-project --python .gate python -c "import omnisus; print(omnisus.__version__)"

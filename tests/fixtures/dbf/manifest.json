@@ -1,0 +1,23 @@
+[
+  {
+    "file": "text-latin1.dbf",
+    "sha256": "9da6f916ce91ce696c67d31fa04cbf472832f58943f437e939e68d636a1ef22c",
+    "encoding": "latin-1",
+    "purpose": "text-latin1",
+    "rust_supported": true
+  },
+  {
+    "file": "numeric-exact.dbf",
+    "sha256": "0b43d8cf7eb9fda6123d10f77c078a4c5dff66b37a03d70e9c16f2d2106f1f86",
+    "encoding": "cp1252",
+    "purpose": "numeric-exact",
+    "rust_supported": true
+  },
+  {
+    "file": "unsupported-date.dbf",
+    "sha256": "023abc4b841f7d194b44e6ce7212657f420ba881759975276d29620da22d21a5",
+    "encoding": "cp1252",
+    "purpose": "unsupported-date",
+    "rust_supported": false
+  }
+]

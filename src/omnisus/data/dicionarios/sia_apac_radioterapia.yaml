@@ -1,0 +1,564 @@
+name: sia_apac_radioterapia
+title: SIASUS — APAC de Radioterapia (AR)
+profile: tabular-data-resource
+encoding: latin-1
+x-version: 1.0.0
+x-source-format: dbc
+x-partitions:
+- _source_ano
+x-evidence:
+  physical_schema: sia_ar_ac_2024_01_mini.dbc, 74 fields; observed 2026-09-23
+  semantic_status: Physical inventory. Category maps only where a TabWin CNV binds the
+    field and decodes every non-blank value of the fixture (vinculos.json); no inferred
+    mappings.
+  dictionary_url: ftp://ftp.datasus.gov.br/dissemin/publicos/SIASUS/200801_/Doc/Informe_Tecnico_SIASUS_2019_07.pdf
+  source_url: ftp://ftp.datasus.gov.br/dissemin/publicos/SIASUS/200801_/Dados/ARAC2401.dbc
+schema:
+  fields:
+  - name: ap_mvm
+    type: string
+  - name: ap_condic
+    type: string
+    x-decode:
+      EC: EC Estado Convencional
+      EP: EP Estado Pleno
+      MN: MN Municipio Pleno NOAS
+      MP: MP Municipio Pleno NOB
+      PA: PA Municipio Pleno da Atenção Básica NOAS
+      PB: PB Municipio Pleno da Atenção Básica NOB 96
+      PG: PG Pacto de Gestão
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 72f3ca35c0ecc8e4db4af7064ff53b13ef82152293010c35bdc942fb930b930c
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Radioterapia.DEF: DTipo de Gestão, AP_CONDIC, 1, CNV/TP_GESTAO.CNV; CNV/TP_GESTAO.CNV'
+        note: Mapa do CNV.
+  - name: ap_gestao
+    type: string
+  - name: ap_coduni
+    type: string
+  - name: ap_autoriz
+    type: string
+  - name: ap_cmp
+    type: string
+  - name: ap_pripal
+    type: string
+  - name: ap_vl_ap
+    type: number
+  - name: ap_ufmun
+    type: string
+  - name: ap_tpups
+    type: string
+  - name: ap_tippre
+    type: string
+  - name: ap_mn_ind
+    type: string
+    x-decode:
+      I: Individual
+      M: Mantida
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: ed2c4ff4dd32b1a26949333be7166d041d821686abb6546494a31a3621f83697
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Radioterapia.DEF: XMantida/Individual, AP_MN_IND, 1, CNV/MANT_IND.CNV; CNV/MANT_IND.CNV'
+        note: Mapa do CNV.
+  - name: ap_cnpjcpf
+    type: string
+  - name: ap_cnpjmnt
+    type: string
+  - name: ap_cnspcn
+    type: string
+  - name: ap_coidade
+    type: string
+    x-decode:
+      '2': Dias
+      '3': Meses
+      '4': Anos
+    x-metadata:
+      issues:
+      - id: ap_coidade-sem-tabela
+        status: open
+        description: '''0'' e ''5'', se aparecerem, ficam sem rótulo, e ''2'', ''3'' e ''4'' foram medidos,
+          não lidos: nenhuma tabela rotula o código de 1 caractere. IDADEDET.CNV e IDADE18.CNV (TAB_SIA),
+          ligados a AP_COIDADE em todos os DEF de APAC, leem 3 caracteres, AP_COIDADE seguido de AP_NUIDADE:
+          ''000'' é ''Idade inválida'' e 500 a 530 são 100 a 130 anos. O Informe Técnico SIASUS 2019-07
+          descreve AP_COIDADE (CHAR 1, ''Código da Idade'') sem códigos (pp. 6-14). O mapa é o de AQ: APAC_Radioterapia.DEF
+          (linhas 411-412) liga AP_COIDADE aos mesmos IDADEDET.CNV e IDADE18.CNV que APAC_Quimioterapia.DEF
+          (linhas 416-417).'
+  - name: ap_nuidade
+    type: string
+  - name: ap_sexo
+    type: string
+    x-decode:
+      ? ''
+      : Não exigido
+      '0': Não exigido
+      F: Feminino
+      M: Masculino
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 7fee0ffdb9777cfb61481409bb715059d63990a439b59979623692f27044f97f
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Radioterapia.DEF: XSexo do Paciente, AP_SEXO, 1, CNV/SEXO.CNV; CNV/SEXO.CNV'
+        note: Mapa do CNV.
+  - name: ap_racacor
+    type: string
+    x-decode:
+      ? ''
+      : SEM INFORMAÇÃO
+      ' D': RAÇA/COR  (OUTROS INDEVIDOS)
+      '00': RAÇA/COR NÃO EXIGIDO
+      '01': BRANCA
+      '02': PRETA
+      '03': PARDA
+      '04': AMARELA
+      '05': INDIGENA
+      '06': RAÇA/COR=06 (INDEVIDO)
+      '09': RAÇA/COR=09 (INDEVIDO)
+      1C: RAÇA/COR  (OUTROS INDEVIDOS)
+      1G: RAÇA/COR  (OUTROS INDEVIDOS)
+      1M: RAÇA/COR  (OUTROS INDEVIDOS)
+      '87': RAÇA/COR  (OUTROS INDEVIDOS)
+      '99': SEM INFORMAÇÃO
+      DE: RAÇA/COR  (OUTROS INDEVIDOS)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 11f9e1a29e3a04fb0a890a686809c331693322d2b5badf0fc35f78a4b193f082
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Radioterapia.DEF: XRaça/Cor Paciente, AP_RACACOR, 1, CNV/RACA_COR.CNV; CNV/RACA_COR.CNV'
+        note: Mapa do CNV.
+  - name: ap_munpcn
+    type: string
+  - name: ap_ufnacio
+    type: string
+  - name: ap_ceppcn
+    type: string
+  - name: ap_ufdif
+    type: string
+    x-decode:
+      ? ''
+      : Não identificado
+      '0': Não houve invasão
+      '1': Sim (houve invasão)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: e50f214e8c49075d2672a183e5995237d51ee9f06cdf659957ead39c951de0a2
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Radioterapia.DEF: TInvasão Estadual, AP_UFDIF, 1, CNV/INVASAO.CNV; CNV/Invasao.CNV'
+        note: Mapa do CNV.
+  - name: ap_mndif
+    type: string
+    x-decode:
+      ? ''
+      : Não identificado
+      '0': Não houve invasão
+      '1': Sim (houve invasão)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: e50f214e8c49075d2672a183e5995237d51ee9f06cdf659957ead39c951de0a2
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Radioterapia.DEF: TInvasão Municipal, AP_MNDIF, 1, CNV/INVASAO.CNV; CNV/Invasao.CNV'
+        note: Mapa do CNV.
+  - name: ap_dtinic
+    type: string
+  - name: ap_dtfim
+    type: string
+  - name: ap_tpaten
+    type: string
+    x-decode:
+      '00': LAUDO GERAL
+      '01': MEDICAMENTOS
+      '02': NEFROLOGIA
+      '03': QUIMIOTERAPIA
+      '04': RADIOTERAPIA
+      '05': CIRURGIA BARIATRICA
+      '06': MEDICAMENTOS
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: d24bffc9535b6cf9c8d0e9d1cfb26ebb6e01d7c8c2480e012bf7255b09d58658
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Radioterapia.DEF: XTipo de Atendimento, AP_TPATEN, 1, CNV/TP_ATEND.CNV; CNV/TP_ATEND.CNV'
+        note: Mapa do CNV.
+  - name: ap_tpapac
+    type: string
+  - name: ap_motsai
+    type: string
+    x-decode:
+      '00': PRODUÇÃO SEM MOTIVO DE SAÍDA (BPA-C / BPA-I)
+      '11': ALTA CURADO
+      '12': ALTA MELHORADO
+      '13': ALTA DA PUÉRPERA E PERMANÊNCIA DO RECÉM NASCIDO
+      '14': ALTA A PEDIDO
+      '15': ALTA COM PREVISÃO DE RETORNO P/ ACOMPAN. DO PACIENT
+      '16': ALTA POR EVASÃO
+      '17': ALTA DA PUÉRPERA E RECÉM NASCIDO
+      '18': ALTA POR OUTROS MOTIVOS
+      '21': PERMANÊNCIA POR CARACTERÍSTICAS PRÓPRIAS DA DOENÇA
+      '22': PERMANÊNCIA POR INTERCORRÊNCIA
+      '23': PERMANÊNCIA POR IMPOSSIBILIDADE SÓCIO-FAMILIAR
+      '24': PERMAN. POR PROCESSO-DOAÇÃO DE ÓRGÃOS-DOADOR VIVO
+      '25': PERMAN. POR PROCESSO-DOAÇÃO DE ÓRGÃOS-DOADOR MORTO
+      '26': PERMANÊNCIA POR MUDANÇA DE PROCEDIMENTO
+      '27': PERMANÊNCIA POR REOPERAÇÃO
+      '28': PERMANÊNCIA POR OUTROS MOTIVOS
+      '31': TRANSFERIDO PARA OUTRO ESTABELECIMENTO
+      '41': ÓBITO COM DECLARAÇÃO DE ÓBITO FORNEC. MÉDICO ASSIST
+      '42': ÓBITO COM DECLARAÇÃO DE ÓBITO FORNECIDA PELO I.M.L
+      '43': ÓBITO COM DECLARAÇÃO DE ÓBITO FORNECIDA PELO S.V.O
+      '51': ENCERRAMENTO ADMINSTRATIVO
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: c32352b40748bdd2b73db7c50eb49d646a98fd5b0185f4c0bbb871ed8a07be42
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Radioterapia.DEF: XMotivo Saída-Permanência, AP_MOTSAI, 1, CNV/MOTSAIPE.CNV; CNV/MOTSAIPE.CNV'
+        note: Mapa do CNV.
+  - name: ap_obito
+    type: string
+    x-decode:
+      '0': Nao houve ÓBITO
+      '1': Sim (motivo de saída-ÓBITO)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: f5896878b93ad73959088576ab8ceaa69528b4d54f750cd3759ec97717f18e7e
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Radioterapia.DEF: XMotivo Saída-Óbito, AP_OBITO, 1, CNV/OBITO.CNV; CNV/OBITO.CNV'
+        note: Mapa do CNV.
+  - name: ap_encerr
+    type: string
+    x-decode:
+      '0': Nao houve ENCERRAMENTO
+      '1': Sim (motivo de saída-ENCERRAMENTO)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: e635d1da58b87ea0ec3801d432e2b2ff8c11f90d86601aca7e2edd9e41c0d6c9
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Radioterapia.DEF: XMotivo Saida-Encerramento, AP_ENCERR, 1, CNV/ENCERRAM.CNV; CNV/ENCERRAM.CNV'
+        note: Mapa do CNV.
+  - name: ap_perman
+    type: string
+    x-decode:
+      '0': Nao houve a PERMANÊNCIA do paciente na unidade
+      '1': Sim (motivo de saída-PERMANÊNCIA)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: fa823e6bcb07e76b0a6d4d83367443c3e034857df377dc01fe721632f97911ee
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Radioterapia.DEF: XMotivo Saida-Permanência, AP_PERMAN, 1, CNV/PERMANEN.CNV; CNV/PERMANEN.CNV'
+        note: Mapa do CNV.
+  - name: ap_alta
+    type: string
+    x-decode:
+      '0': Nao foi dado ALTA ao paciente
+      '1': Sim (motivo de saída-ALTA)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: cc9bf92868dea681ca88cae93255f8d624435f2ce36d34a9a13c45dfa4a6fb79
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Radioterapia.DEF: XMotivo Saída-Alta, AP_ALTA, 1, CNV/ALTA.CNV; CNV/ALTA.CNV'
+        note: Mapa do CNV.
+  - name: ap_transf
+    type: string
+    x-decode:
+      '0': Nao houve TRANSFERÊNCIA do paciente
+      '1': Sim (motivo de saída-TRANSFERÊNCIA)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 798a13f55c387349e223abc2e3856a3924595eb6d7cc80a312297326d79d9fc1
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Radioterapia.DEF: XMotivo Saida-Transferência, AP_TRANSF, 1, CNV/TRANSFER.CNV;
+            CNV/TRANSFER.CNV'
+        note: Mapa do CNV.
+  - name: ap_dtocor
+    type: string
+  - name: ap_codemi
+    type: string
+  - name: ap_catend
+    type: string
+    x-decode:
+      ? ''
+      : CARATER DE ATENDIMENTO NÃO INFORMADO
+      0-: CARATER DE ATENDIMENTO INVALIDO
+      '00': CARATER DE ATENDIMENTO NÃO INFORMADO
+      '01': ELETIVO
+      '02': URGÊNCIA
+      '03': ACIDENTE NO LOCAL TRABALHO OU A SERViÇO DA EMPRESA
+      '04': ACIDENTE NO TRAJETO PARA O TRABALHO
+      '05': OUTROS TIPOS DE ACIDENTE DE TRÂNSITO
+      '06': OUTROS TIPOS LESÕES/ENVENENAMENTOS(AGENT.FIS./QUIM.
+      '07': CARATER DE ATENDIMENTO INVALIDO
+      0E: CARATER DE ATENDIMENTO INVALIDO
+      0U: CARATER DE ATENDIMENTO INVALIDO
+      '10': CARATER DE ATENDIMENTO INVALIDO
+      '12': CARATER DE ATENDIMENTO INVALIDO
+      '20': CARATER DE ATENDIMENTO INVALIDO
+      '53': CARATER DE ATENDIMENTO INVALIDO
+      '54': CARATER DE ATENDIMENTO INVALIDO
+      '57': CARATER DE ATENDIMENTO INVALIDO
+      '99': INFORMAÇÃO INEXISTENTE  (BPA-C)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: d25d681486c1cc8a64ead3cc4cf8284925e623abd08d89a0ef734c88ed18eea1
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Radioterapia.DEF: XCarater Atendimento, AP_CATEND, 1, CNV/CARAT_AT.CNV; CNV/CARAT_AT.CNV'
+        note: Mapa do CNV.
+  - name: ap_apacant
+    type: string
+  - name: ap_unisol
+    type: string
+  - name: ap_dtsolic
+    type: string
+  - name: ap_dtaut
+    type: string
+  - name: ap_cidcas
+    type: string
+  - name: ap_cidpri
+    type: string
+  - name: ap_cidsec
+    type: string
+  - name: ap_etnia
+    type: string
+  - name: ar_smrd
+    type: string
+  - name: ar_cid10
+    type: string
+  - name: ar_linfin
+    type: string
+    x-decode:
+      '3': Não Avaliáveis
+      N: Nao (Linfonodos regionais invadidos)
+      S: Sim (Linfonodos regionais invadidos)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: ad15efcd1ec86fb514d2b2b3e4c205e16f5de4cace0556c3c031484946ad91a4
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Radioterapia.DEF: XLinfonodos Regionais Invadidos, AR_LINFIN, 1, CNV/LINF_INV.CNV;
+            CNV/LINF_INV.CNV'
+        note: Mapa do CNV.
+  - name: ar_estadi
+    type: string
+    x-decode:
+      ? ''
+      : Não informado
+      '0': 0_ESTADIO
+      '1': 1_ESTADIO
+      '2': 2_ESTADIO
+      '3': 3_ESTADIO
+      '4': 4_ESTADIO
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 260f6c4e42c719fe4c1d1778564b26524a22baf669ef02f8153e4880ea01de47
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Radioterapia.DEF: XEstádio - UICC, AR_ESTADI, 1, CNV/ESTADIO.CNV; CNV/ESTADIO.CNV'
+        note: Mapa do CNV.
+  - name: ar_grahis
+    type: string
+  - name: ar_dtiden
+    type: string
+  - name: ar_trante
+    type: string
+  - name: ar_cidini1
+    type: string
+  - name: ar_dtini1
+    type: string
+  - name: ar_cidini2
+    type: string
+  - name: ar_dtini2
+    type: string
+  - name: ar_cidini3
+    type: string
+  - name: ar_dtini3
+    type: string
+  - name: ar_conttr
+    type: string
+    x-decode:
+      N: Nao (Não houve continuidade do tratamento)
+      S: Sim (houve continuidade do tratamento)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 640ec336c166a0d75027c287ab0c20681f6f3e92de6495b758ba63615741db13
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Radioterapia.DEF: XContinuidade Tratamento, AR_CONTTR, 1, CNV/CONT_TRAT.CNV; CNV/CONT_TRAT.CNV'
+        note: Mapa do CNV.
+  - name: ar_dtintr
+    type: string
+  - name: ar_finali
+    type: string
+    x-decode:
+      ? ''
+      : Não informado
+      '1': RADICAL
+      '2': ADJUNVANTE
+      '3': ANTIÁLGICA
+      '4': PALIATIVA
+      '5': PREVIA
+      '6': ANTIHEMORRAGICA
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: c8259e38a87fc6167a7c351a75389323eb90dbb270c12c672a780319e6809a07
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Radioterapia.DEF: XFinalidade do Tratamento, AR_FINALI, 1, CNV/FINALID.CNV; CNV/FINALID.CNV'
+        note: Mapa do CNV.
+      issues:
+      - id: ar_finali-7-sem-fonte
+        status: open
+        description: '''7'' fica sem rótulo: FINALID.CNV (TAB_SIA) lista 1 a 6 e dá ''Não informado'' ao
+          branco; o 7 da sua linha 7 é o número da categoria, não um código. O Informe Técnico SIASUS 2019-07
+          lista 1 a 6 (p. 11). SP 2022: 41 linhas (4 em ARSP2212).'
+  - name: ar_cidtr1
+    type: string
+  - name: ar_cidtr2
+    type: string
+  - name: ar_cidtr3
+    type: string
+  - name: ar_numc1
+    type: string
+  - name: ar_iniar1
+    type: string
+  - name: ar_iniar2
+    type: string
+  - name: ar_iniar3
+    type: string
+  - name: ar_fimar1
+    type: string
+  - name: ar_fimar2
+    type: string
+  - name: ar_fimar3
+    type: string
+  - name: ar_numc2
+    type: string
+  - name: ar_numc3
+    type: string
+  - name: ap_natjur
+    type: string
+# Identidade do arquivo: ap_mvm vale o mês do arquivo e ap_ufmun começa pelo código IBGE
+# da UF em todos os registros da fixture (tests/fixtures/FIXTURES.md); mesma regra das
+# outras APAC.
+x-identity:
+  month_column: ap_mvm
+  uf_column: ap_ufmun

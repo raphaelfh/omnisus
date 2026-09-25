@@ -1,0 +1,443 @@
+;Dados Complementares dos Estabelecimentos de Saúde do CNES
+;===========================================================================================
+;
+AESTABEL\DC*.DB?
+?DADOS COMPLEMENTARES.HLP
+;
+;===========================================================================================
+;Variáveis referentes aos Dados Gerais dos Estabelecimentos
+;===========================================================================================
+X* DADOS GERAIS *,      TITULO,LINHA_COMENTARIO_DADOS GERAIS_DOS_ESTABELECIMENTOS
+;=>  Mês/Ano da Informação-ATUALIZAÇÃO/Competência da EXTRAÇÃO DO BANCO
+;XMês de Atualização, DT_ATUAL,             1, CNV\ANO_MES.CNV
+XMês de Competência, COMPETEN,              1, CNV\COMPETEN.CNV
+XTipo de Gestão,     TPGESTAO,              1, CNV\TPGESTAO.CNV
+XMantida/Individual, NIV_DEP,               1, CNV\NIVELDEP.CNV
+XPessoa Física/Jurídica, PF_PJ,             1, CNV\TP_PFPJ.CNV
+;XÉ Terceiro?,        TERCEIRO,             1, CNV\TERCEIRO.CNV
+XFluxo Clientela,    CLIENTEL,              1, CNV\FLUX_CLI.CNV
+XNatureza da Organização, NATUREZA,         1, CNV\NATUREZA.CNV
+LNatureza Jurídica, NAT_JUR ,               1, CNV\NATJUR.CNV
+CNatureza Jurídica, NAT_JUR ,               1, CNV\NATJURC.CNV
+SNatureza Jurídica, NAT_JUR ,               1, CNV\NATJURC.CNV
+LEsfera Jurídica,   NAT_JUR ,               1, CNV\ESFERAJUR.CNV
+CEsfera Jurídica,   NAT_JUR ,               1, CNV\ESFERAJURC.CNV
+SEsfera Jurídica,   NAT_JUR ,               1, CNV\ESFERAJURC.CNV
+XRetenção Tributos ESTABEL. ,  RETENCAO,    1, CNV\RETENCAO.CNV
+XRetenção Tributos MANTENEDORA,  COD_IR,    1, CNV\RETENMAN.CNV
+XNível Hierarquia,   NIV_HIER,              1, CNV\NIV_HIER.CNV
+XEsfera Administrativa, ESFERA_A,           1, CNV\EsferAdm.cnv
+XAtividade Ensino/Pesquisa,  ATIVIDAD,      1, CNV\Ativ_Ens.CNV
+XTipo de Estabelecimento, TP_UNID,          1, CNV\TP_ESTAB.CNV
+XTurno Atendimento,  TURNO_AT,              1, CNV\TurnosAt.cnv
+XTipo de Prestador,  TP_PREST,              1, CNV\TIPOPRES.CNV
+;
+;=>  Vínculos com o SUS do LFCES011
+X* VÍNCULOS *,         COMENTARIO,1, VÍNCULOS
+XVínculos com SUS,   VINC_SUS,              1, CNV\VINC_SUS.CNV
+;
+;Manten.por CNPJ,    CNPJ_MAN,  1, (FALTA gerar DBF de MANTENEDORAS com nomes e CNPJ)
+;===========================================================================================
+; Características do Serviço de Diálise do LFCES012
+;===========================================================================================
+I*HEMODIÁLISE *,      DIALISE
+IQuantidade salas HBsAG+,    S_HBSAGP
+IQuantidade salas HBsAG-,    S_HBsAGN
+IQuantidade salas DPI,       S_DPI
+IQuantidade salas DPAC,      S_DPAC
+IQuantidade salas reusoHBsAG+,  S_REAGP
+IQuantidade salas reusoHBsAG-,  S_REAGN
+IQuantidade salas proporção,   MAQ_PROP
+IQuantidade Outras máquinas,   MAQ_OUTR
+ITratamento Filtro de Areia, F_AREIA
+ITratamento Filtro de Carvão,F_CARVAO
+ITratamento Ag.Abrandador, ABRANDAD
+ITratamento Ag.Deionizador , DEIONIZA
+ITratamento Ag.Osmose Reversa,OSMOSE_R
+ITratamento Ag.OUTROS S/N, OUT_TRAT
+;===========================================================================================
+; Características do Serviço de Químio-Rádio do LFCES013
+;===========================================================================================
+I* QUÍMIO-RADIO *,     QUIMRADI
+IQuantidade salas simulação, SIMUL_RD
+IQuantidade salas planejamento, PLANJ_RD
+IQuantidade salas armaz.fontes, ARMAZ_FT
+IQuantidade salas confinamento masc.,   CONF_MAS
+IQuantidade salas de molde,  SALA_MOL
+IQuantidade salas bloco pers.,  BLOCOPER
+IQuantidade salas armazenagem,  S_ARMAZE
+IQuantidade salas preparo,   S_PREPAR
+IQuantidade Quimio Curta dur.,  S_QCDURA
+IQuantidade Quimio Longa dur.,  S_QLDURA
+IQuantidade sl.CapelaFlx.lam,S_CPFLUX
+IQuantidade Simuladores,     S_SIMULA
+IQuantidade Ac.Ln.até 6MeV,  S_ACELL6
+IQuantidade A.L.>6MeV s/elet,S_ALSEME
+IQuantidade A.L.>6MeV c/elet,S_ALCOME
+IQuantidade Ortov.10-50Kv,   ORTV1050
+IQuantidade Orto.50-150Kv,   ORV50150
+IQuantidade Ort.150-500Kv,   OV150500
+IQuantidade unidade Cobalto, UN_COBAL
+IQuantidade Braquiterapia Baixo,  EQBRBAIX
+IQuantidade Braquiterapia Médio, EQBRMEDI
+IQuantidade Braquiterapia Alto,  EQBRALTA
+IQuantidade Monitor de área, EQ_MAREA
+IQuantidade Monitor individual.,EQ_MINDI
+IQuantidade Sis.Comp.Planej.,EQSISPLN
+IQuantidade Dosímetro Clínico,EQDOSCLI
+IQuantidade Fontes Seladas,  EQFONSEL
+;===========================================================================================
+;=>  Características do Serviço de Hemoterapia do LFCES027
+;===========================================================================================
+I* HEMOTERAPIA *,      HEMOTERA
+IQuantidade salas recepção,  S_RECEPC
+IQuantidade salas Triagem Hemato,  S_TRIHMT
+IQuantidade salas Triagem Clínica.,  S_TRICLI
+IQuantidade salas de Coleta,    S_COLETA
+IQuantidade salas de Aférese,   S_AFERES
+IQuantidade salas Pré-Estoque,  S_PREEST
+IQuantidade salas Processamento,S_PROCES
+IQuantidade salas Estoque,   S_ESTOQU
+IQuantidade salas Distribuição, S_DISTRI
+IQuantidade salas de Sorologia, S_SOROLO
+IQuantidade salas Imunohematologia ,S_IMUNOH
+IQuantidade salas Pré-Transfusão, S_PRETRA
+IQuantidade salas Hemostasia,   S_HEMOST
+IQuantidade salas Contr.Qualidade, S_CONTRQ
+IQuantidade salas Biolog.Molec.,S_BIOMOL
+IQuantidade salas Imunofenotipo,S_IMUNFE
+IQuantidade salas Transfusão,   S_TRANSF
+IQuantidade salas Segm.Doador,  S_SGDOAD
+IQuantidade Cadeira Reclinável, QT_CADRE
+IQuantidade Centrífuga Refr.,  QT_CENRE
+IQuantidade R.Guarda Sangue,  QT_REFSA
+IQuantidade R.Amostra Sangue,  QT_REFAS
+IQuantidade R.Guarda Reagen,  QT_REFRE
+IQuantidade Congel.Rápidos,  QT_CONRA
+IQuantidade Extr.Aut.Plasma, QT_EXTPL
+IQuantidade Freezers -18ºC,  QT_FRE18
+IQuantidade Freezers -30ºC,  QT_FRE30
+IQuantidade Agitador Plaquetas,QT_AGIPL
+IQuantidade de Seladoras,    QT_SELAD
+IQuantidade Irradiação Hemocomp,  QT_IRRHE
+IQuantidade Aglutinoscópios, QT_AGLTN
+IQuantidade Máquina Aférese, QT_MAQAF
+IQuantidade Capel.Flux.Lam,  QT_CAPFL
+;===========================================================================================
+; Variáveis referentes a Hemodiálise
+;===========================================================================================
+;C* HEMODIÁLISE,      COMENTARIO,1, HEMODIALISE
+;CTratamento Filtro de Areia, F_AREIA,   1, F_AREIA.CNV
+;CTratamento Filtro de Carvão, F_CARVAO,  1, F_CARVAO.CNV
+;CTratamento Agente Abrandador, ABRANDAD,  1, ABRANDAD.CNV
+;CTratamento Agente Deionizador, DEIONIZA,  1, DEIONIZA.CNV
+;CTratamento Ag.Osmose Reversa.,OSMOSE_R,  1, OSMOSE_R.CNV
+;CTratamento Ag.OUTROS S/N, OUT_TRAT,  1, OUT_TRAT.CNV
+;S* HEMODIÁLISE,      COMENTARIO,1, HEMODIALISE
+;STratamento Filtro de Areia, F_AREIA,   1, F_AREIA.CNV
+;STratamento Filtro de Carvão, F_CARVAO,  1, F_CARVAO.CNV
+;STratamento Ag.Abrandador, ABRANDAD,  1, ABRANDAD.CNV
+;STratatamento Ag.Deionizador, DEIONIZA,  1, DEIONIZA.CNV
+;STratamento Ag.Osmose Rev.,OSMOSE_R,  1, OSMOSE_R.CNV
+;STratamento Ag.OUTROS S/N, OUT_TRAT,  1, OUT_TRAT.CNV
+;===========================================================================================
+; Gestão/Esfera de Atividades/Programas (NÍVEL DE ATENÇÃO) do LFCES007
+;===========================================================================================
+;I* GESTÃOdePROGRAMA, PROGRAMA
+I* NÍV.ATENÇÃO_AMB. *, NIVATE_A
+IAmbulatorial Estadual  ALTA, GESPRG4E
+IAmbulatorial Municipal ALTA, GESPRG4M
+I* NÍV.ATENÇÃO_HOSP *, NIVATE_H
+IHospital Estadual ALTA,  GESPRG6E
+IHospital Municipal ALTA,  GESPRG6M
+IInternação Estadual (ANTIGO), GESPRG3E
+IInternação Municipal(ANTIGO), GESPRG3M
+X* NÍVEL DE ATENÇÃO *, COMENTARIO,1, NÍVEL DE ATENÇÃO
+XAmbulatorial ALTA,  GESPRG4E,  1, CNV\GESPROG4.CNV
+XHospitalar ALTA,    GESPRG6E,  1, CNV\GESPROG6.CNV
+XInternação(ANTIGO), GESPRG3E,  1, CNV\GESPROG3.CNV
+;===========================================================================================
+; Atendimento Prestado do LFCES006
+;===========================================================================================
+;
+I* ATENDIM.PRESTADO *, ATEND_PR,
+;
+;===========================================================================================
+; Atendimento Prestado - "Outros"  PODE SER Farmácia ou Cooperativa
+;===========================================================================================
+IINTERNAÇÃO/SUS,     AP01CV01
+IINTERNAÇÃO/Particular, AP01CV02
+;PLANO de SAUDE PUBLICO
+IINTERNAÇÃO/Plano Publico,AP01CV05
+;PLANO de SAUDE PRIVADO
+IINTERNAÇÃO/Plano Privado,AP01CV06
+IINTERNAÇÃO/Seguro Próprio, AP01CV03
+IINTERNAÇÃO/Seguro Terceiro, AP01CV04
+;===========================================================================================
+; Atendimento Prestado - Ambulatório
+;===========================================================================================
+IAMBULATÓRIO/SUS,    AP02CV01
+IAMBULATÓRIO/Particular,AP02CV02
+;PLANO de SAUDE PUBLICO
+IAMBULATÓRIO/Plano Publico,AP02CV05
+;PLANO de SAUDE PRIVADO
+IAMBULATÓRIO/Plano Privado,AP02CV06
+IAMBULATÓRIO/Seguro Próprio,AP02CV03
+IAMBULATÓRIO/Seguro Terceiro,AP02CV04
+;===========================================================================================
+; Atendimento Prestado - SADT
+;===========================================================================================
+ISADT/SUS,           AP03CV01
+ISADT/Particular,    AP03CV02
+;PLANO de SAUDE PUBLICO
+ISADT/Plano Publico,  AP03CV05
+;PLANO de SAUDE PRIVADO
+ISADT/Plano Privado,  AP03CV06
+ISADT/Seguro Próprio,AP03CV03
+ISADT/Seguro Terceiro,AP03CV04
+;===========================================================================================
+; Atendimento Prestado - Urgência
+;===========================================================================================
+IURGÊNCIA/SUS,        AP04CV01
+IURGÊNCIA/Particular, AP04CV02
+;PLANO de SAUDE PUBLICO
+IURGÊNCIA/Plano Publico,AP04CV05
+;PLANO de SAUDE PRIVADO
+IURGÊNCIA/Plano Privado,AP04CV06
+IURGÊNCIA/Seguro Próprio,AP04CV03
+IURGÊNCIA/Seguro Terceiro,AP04CV04
+;===========================================================================================
+; Atendimento Prestado - "Outros"  PODE SER Farmácia ou Cooperativa
+;===========================================================================================
+;ESTAB. C/ ATEND.PREST. "outros" PODE SER Farmácia ou Cooperativa
+IOUTROS/SUS,         AP05CV01
+IOUTROS/Particular,  AP05CV02
+;PLANO de SAUDE PUBLICO
+IOUTROS/Plano Publico,AP05CV05
+;PLANO de SAUDE PRIVADO
+IOUTROS/Plano Privado,AP05CV06
+IOUTROS/Seguro Próprio, AP05CV03
+IOUTROS/Seguro Terceiro,AP05CV04
+;===========================================================================================
+; Atendimento Prestado - Vigilância
+;===========================================================================================
+IVIGILÂNCIA/SUS,     AP06CV01
+IVIGILÂNCIA/Particular., AP06CV02
+;PLANO de SAUDE PUBLICO
+IVIGILÂNCIA/Plano Publico,AP06CV05
+;PLANO de SAUDE PRIVADO
+IVIGILÂNCIA/Plano Privado,AP06CV06
+IVIGILÂNCIA/Seguro Próprio,AP06CV03
+IVIGILÂNCIA/Seguro Terceiro,AP06CV04
+;===========================================================================================
+; Atendimento Prestado - Regulação
+;===========================================================================================
+IREGULAÇÃO/SUS,      AP07CV01
+IREGULAÇÃO/Particular,  AP07CV02
+;PLANO de SAUDE PUBLICO
+IREGULAÇÃO/Plano Publico,AP07CV05
+;PLANO de SAUDE PRIVADO
+IREGULAÇÃO/Plano Privado,AP07CV06
+IREGULAÇÃO/Seguro Próprio, AP07CV03
+IREGULAÇÃO/Seguro Terceiro, AP07CV04
+;
+;
+L* ATENDIMENTO PRESTADO *, COMENTARIO,1, ATENDIM.PRESTADO
+S* ATENDIMENTO PRESTADO *, COMENTARIO,1, ATENDIM.PRESTADO
+LINTERNAÇÃO,         AP01CV01,            1, CNV\ATPRES01.cnv
+LAMBULATÓRIO,        AP02CV01,            1, CNV\ATPRES02.cnv
+LSADT,               AP03CV01,            1, CNV\ATPRES03.cnv
+LURGÊNCIA,           AP04CV01,            1, CNV\ATPRES04.cnv
+;ESTAB. C/ ATEND.PREST. "outros" PODE SER Farmácia ou Cooperativa
+LOUTROS,             AP05CV01,            1, CNV\ATPRES05.cnv
+LVIGILÂNCIA,         AP06CV01,            1, CNV\ATPRES06.cnv
+LREGULAÇÃO,          AP07CV01,            1, CNV\ATPRES07.cnv
+LINT. Seguro Próprio/Terceiro, AP01CV03,  1, CNV\ATPRES1X.cnv
+LAMB. Seguro Próprio/Terceiro, AP02CV03,  1, CNV\ATPRES2X.cnv
+LSADT Seguro Próprio/Terceiro, AP03CV03,  1, CNV\ATPRES3X.cnv
+LURG. Seguro Próprio/Terceiro, AP04CV03,  1, CNV\ATPRES4X.cnv
+LOUT. Seguro Próprio/Terceiro, AP05CV03,  1, CNV\ATPRES5X.cnv
+LVIG. Seguro Próprio/Terceiro, AP06CV03,  1, CNV\ATPRES6X.cnv
+LREG. Seguro Próprio/Terceiro, AP07CV03,  1, CNV\ATPRES7X.cnv
+SINTERNAÇÃO,         AP01CV01,            1, CNV\ATPRES01.cnv
+SAMBULATÓRIO,        AP02CV01,            1, CNV\ATPRES02.cnv
+SSADT,               AP03CV01,            1, CNV\ATPRES03.cnv
+SURGÊNCIA,           AP04CV01,            1, CNV\ATPRES04.cnv
+;ESTAB. C/ ATEND.PREST. "outros" PODE SER Farmácia ou Cooperativa
+SOUTROS,             AP05CV01,            1, CNV\ATPRES05.cnv
+SVIGILÂNCIA,         AP06CV01,            1, CNV\ATPRES06.cnv
+SREGULAÇÃO,          AP07CV01,            1, CNV\ATPRES07.cnv
+SINT. Seguro Próprio/Terceiro, AP01CV03,  1, CNV\ATPRES1X.cnv
+SAMB. Seguro Próprio/Terceiro, AP02CV03,  1, CNV\ATPRES2X.cnv
+SSADT Seguro Próprio/Terceiro, AP03CV03,  1, CNV\ATPRES3X.cnv
+SURG. Seguro Próprio/Terceiro, AP04CV03,  1, CNV\ATPRES4X.cnv
+SOUT. Seguro Próprio/Terceiro, AP05CV03,  1, CNV\ATPRES5X.cnv
+SVIG. Seguro Próprio/Terceiro, AP06CV03,  1, CNV\ATPRES6X.cnv
+SREG. Seguro Próprio/Terceiro, AP07CV03,  1, CNV\ATPRES7X.cnv
+;
+;
+;===========================================================================================
+;Variáveis de Localização dos Estabelecimentos de Saúde - CNES
+;===========================================================================================
+X* LOCALIZAÇÃO *,    COMENTARIO,1, LOCALIZAÇÃO_ESTABELECIMENTO
+LRegião,                        CODUFMUN, 1 , CNV\br_regiao.cnv
+CRegião,                        CODUFMUN, 1 , CNV\br_regiao.cnv
+SRegião,                        CODUFMUN, 1 , CNV\br_regiao.cnv
+LRegião/Unidade da Federação,   CODUFMUN, 1 , CNV\br_regiaouf.cnv
+LUnidade da Federação,          CODUFMUN, 1 , CNV\br_uf.cnv
+CUnidade da Federação,          CODUFMUN, 1 , CNV\br_ufsigla.cnv
+SUnidade da Federação,          CODUFMUN, 1 , CNV\br_ufalfa.cnv
+LMunicípio,                     CODUFMUN, 1 , CNV\br_municip.cnv
+SMunicípio,                     CODUFMUN, 1 , CNV\br_municip.cnv
+LCapital,                       CODUFMUN, 1 , CNV\br_capital.cnv
+CCapital,                       CODUFMUN, 1 , CNV\br_capital.cnv
+SCapital,                       CODUFMUN, 1 , CNV\br_capital.cnv
+LRegião de Saúde (CIR),         CODUFMUN, 1 , CNV\br_regsaud.cnv
+SRegião de Saúde (CIR),         CODUFMUN, 1 , CNV\br_regsaud.cnv
+LMacrorregião de Saúde,         CODUFMUN, 1 , CNV\br_macsaud.cnv
+SMacrorregião de Saúde,         CODUFMUN, 1 , CNV\br_macsaud.cnv
+LMicrorregião IBGE,             CODUFMUN, 1 , CNV\br_micibge.cnv
+SMicrorregião IBGE,             CODUFMUN, 1 , CNV\br_micibge.cnv
+LRegião Metropolitana - RIDE,   CODUFMUN, 1 , CNV\br_regmetr.cnv
+SRegião Metropolitana - RIDE,   CODUFMUN, 1 , CNV\br_regmetr.cnv
+LTerritório da Cidadania,       CODUFMUN, 1 , CNV\br_terrcid.cnv
+STerritório da Cidadania,       CODUFMUN, 1 , CNV\br_terrcid.cnv
+LMacrorregião PNDR,             CODUFMUN, 1 , CNV\br_pndr.cnv
+SMacrorregião PNDR,             CODUFMUN, 1 , CNV\br_pndr.cnv
+SAmazônia Legal,                CODUFMUN, 1 , CNV\br_amazlegal.cnv
+SSemiárido,                     CODUFMUN, 1 , CNV\br_semiarido.cnv
+SFaixa de Fronteira,            CODUFMUN, 1 , CNV\br_frontfaixa.cnv
+SZona de Fronteira,             CODUFMUN, 1 , CNV\br_frontzona.cnv
+SMunicípio de extrema pobreza,  CODUFMUN, 1 , CNV\br_extrpobrez.cnv
+;============================================================================================
+;;Cadastros Nacional de Estabelecimentos de Saúde - CNES - BR por Ano
+;;===========================================================================================
+LES Nome Fantasia MEC EBSERH      , CNES     , NOMEFANT ,  DBF\HUF_MEC.DBF
+SES Nome Fantasia MEC EBSERH      , CNES     , NOMEFANT ,  DBF\HUF_MEC.DBF
+LES Nome Fant. Filiados EBSERH     , CNES     , NOMEFANT ,  DBF\HUF_FILIAL.DBF
+SES Nome Fant. Filiados EBSERH     , CNES     , NOMEFANT ,  DBF\HUF_FILIAL.DBF
+DES Nome Fantasia - AC, CNES             ,FANTASIA,DBF\CADGERAC.DBF
+SES Nome Fantasia - AC, CNES             ,FANTASIA,DBF\CADGERAC.DBF
+SES Nome Fantasia - AL, CNES             ,FANTASIA,DBF\CADGERAL.DBF
+DES Nome Fantasia - AL, CNES             ,FANTASIA,DBF\CADGERAL.DBF
+SES Nome Fantasia - AM, CNES             ,FANTASIA,DBF\CADGERAM.DBF
+DES Nome Fantasia - AM, CNES             ,FANTASIA,DBF\CADGERAM.DBF
+SES Nome Fantasia - AP, CNES             ,FANTASIA,DBF\CADGERAP.DBF
+DES Nome Fantasia - AP, CNES             ,FANTASIA,DBF\CADGERAP.DBF
+DES Nome Fantasia - BA, CNES             ,FANTASIA,DBF\CADGERBA.DBF
+SES Nome Fantasia - BA, CNES             ,FANTASIA,DBF\CADGERBA.DBF
+SES Nome Fantasia - CE, CNES             ,FANTASIA,DBF\CADGERCE.DBF
+DES Nome Fantasia - CE, CNES             ,FANTASIA,DBF\CADGERCE.DBF
+DES Nome Fantasia - DF, CNES             ,FANTASIA,DBF\CADGERDF.DBF
+SES Nome Fantasia - DF, CNES             ,FANTASIA,DBF\CADGERDF.DBF
+DES Nome Fantasia - ES, CNES             ,FANTASIA,DBF\CADGERES.DBF
+SES Nome Fantasia - ES, CNES             ,FANTASIA,DBF\CADGERES.DBF
+DES Nome Fantasia - GO, CNES             ,FANTASIA,DBF\CADGERGO.DBF
+SES Nome Fantasia - GO, CNES             ,FANTASIA,DBF\CADGERGO.DBF
+SES Nome Fantasia - MA, CNES             ,FANTASIA,DBF\CADGERMA.DBF
+DES Nome Fantasia - MA, CNES             ,FANTASIA,DBF\CADGERMA.DBF
+SES Nome Fantasia - MG, CNES             ,FANTASIA,DBF\CADGERMG.DBF
+DES Nome Fantasia - MG, CNES             ,FANTASIA,DBF\CADGERMG.DBF
+DES Nome Fantasia - MS, CNES             ,FANTASIA,DBF\CADGERMS.DBF
+SES Nome Fantasia - MS, CNES             ,FANTASIA,DBF\CADGERMS.DBF
+DES Nome Fantasia - MT, CNES             ,FANTASIA,DBF\CADGERMT.DBF
+SES Nome Fantasia - MT, CNES             ,FANTASIA,DBF\CADGERMT.DBF
+DES Nome Fantasia - PA, CNES             ,FANTASIA,DBF\CADGERPA.DBF
+SES Nome Fantasia - PA, CNES             ,FANTASIA,DBF\CADGERPA.DBF
+SES Nome Fantasia - PB, CNES             ,FANTASIA,DBF\CADGERPB.DBF
+DES Nome Fantasia - PB, CNES             ,FANTASIA,DBF\CADGERPB.DBF
+DES Nome Fantasia - PE, CNES             ,FANTASIA,DBF\CADGERPE.DBF
+SES Nome Fantasia - PE, CNES             ,FANTASIA,DBF\CADGERPE.DBF
+DES Nome Fantasia - PI, CNES             ,FANTASIA,DBF\CADGERPI.DBF
+SES Nome Fantasia - PI, CNES             ,FANTASIA,DBF\CADGERPI.DBF
+SES Nome Fantasia - PR, CNES             ,FANTASIA,DBF\CADGERPR.DBF
+DES Nome Fantasia - PR, CNES             ,FANTASIA,DBF\CADGERPR.DBF
+DES Nome Fantasia - RJ, CNES             ,FANTASIA,DBF\CADGERRJ.DBF
+SES Nome Fantasia - RJ, CNES             ,FANTASIA,DBF\CADGERRJ.DBF
+SES Nome Fantasia - RN, CNES             ,FANTASIA,DBF\CADGERRN.DBF
+DES Nome Fantasia - RN, CNES             ,FANTASIA,DBF\CADGERRN.DBF
+SES Nome Fantasia - RO, CNES             ,FANTASIA,DBF\CADGERRO.DBF
+DES Nome Fantasia - RO, CNES             ,FANTASIA,DBF\CADGERRO.DBF
+DES Nome Fantasia - RR, CNES             ,FANTASIA,DBF\CADGERRR.DBF
+SES Nome Fantasia - RR, CNES             ,FANTASIA,DBF\CADGERRR.DBF
+SES Nome Fantasia - RS, CNES             ,FANTASIA,DBF\CADGERRS.DBF
+DES Nome Fantasia - RS, CNES             ,FANTASIA,DBF\CADGERRS.DBF
+SES Nome Fantasia - SC, CNES             ,FANTASIA,DBF\CADGERSC.DBF
+DES Nome Fantasia - SC, CNES             ,FANTASIA,DBF\CADGERSC.DBF
+DES Nome Fantasia - SE, CNES             ,FANTASIA,DBF\CADGERSE.DBF
+SES Nome Fantasia - SE, CNES             ,FANTASIA,DBF\CADGERSE.DBF
+SES Nome Fantasia - SP, CNES             ,FANTASIA,DBF\CADGERSP.DBF
+DES Nome Fantasia - SP, CNES             ,FANTASIA,DBF\CADGERSP.DBF
+DES Nome Fantasia - TO, CNES             ,FANTASIA,DBF\CADGERTO.DBF
+SES Nome Fantasia - TO, CNES     ,FANTASIA,DBF\CADGERTO.DBF
+;
+L* RAZAO SOCIAL  *, TITULO   , COMENTARIO_REFERENTE_A_CNES_POR_RAZAO
+S* RAZAO SOCIAL  *, TITULO   , COMENTARIO_REFERENTE_A_CNES_POR_RAZAO
+;
+SES Razao Social - AC, CNES     , RAZ_SOCI , DBF\CADGERAC.DBF
+DES Razao Social - AC, CNES     , RAZ_SOCI , DBF\CADGERAC.DBF
+DES Razao Social - AL, CNES     , RAZ_SOCI , DBF\CADGERAL.DBF
+SES Razao Social - AL, CNES     , RAZ_SOCI , DBF\CADGERAL.DBF
+DES Razao Social - AM, CNES     , RAZ_SOCI , DBF\CADGERAM.DBF
+SES Razao Social - AM, CNES     , RAZ_SOCI , DBF\CADGERAM.DBF
+SES Razao Social - AP, CNES     , RAZ_SOCI , DBF\CADGERAP.DBF
+DES Razao Social - AP, CNES     , RAZ_SOCI , DBF\CADGERAP.DBF
+SES Razao Social - BA, CNES     , RAZ_SOCI , DBF\CADGERBA.DBF
+DES Razao Social - BA, CNES     , RAZ_SOCI , DBF\CADGERBA.DBF
+SES Razao Social - CE, CNES     , RAZ_SOCI , DBF\CADGERCE.DBF
+DES Razao Social - CE, CNES     , RAZ_SOCI , DBF\CADGERCE.DBF
+SES Razao Social - DF, CNES     , RAZ_SOCI , DBF\CADGERDF.DBF
+DES Razao Social - DF, CNES     , RAZ_SOCI , DBF\CADGERDF.DBF
+SES Razao Social - ES, CNES     , RAZ_SOCI , DBF\CADGERES.DBF
+DES Razao Social - ES, CNES     , RAZ_SOCI , DBF\CADGERES.DBF
+DES Razao Social - GO, CNES     , RAZ_SOCI , DBF\CADGERGO.DBF
+SES Razao Social - GO, CNES     , RAZ_SOCI , DBF\CADGERGO.DBF
+DES Razao Social - MA, CNES     , RAZ_SOCI , DBF\CADGERMA.DBF
+SES Razao Social - MA, CNES     , RAZ_SOCI , DBF\CADGERMA.DBF
+DES Razao Social - MG, CNES     , RAZ_SOCI , DBF\CADGERMG.DBF
+SES Razao Social - MG, CNES     , RAZ_SOCI , DBF\CADGERMG.DBF
+SES Razao Social - MS, CNES     , RAZ_SOCI , DBF\CADGERMS.DBF
+DES Razao Social - MS, CNES     , RAZ_SOCI , DBF\CADGERMS.DBF
+SES Razao Social - MT, CNES     , RAZ_SOCI , DBF\CADGERMT.DBF
+DES Razao Social - MT, CNES     , RAZ_SOCI , DBF\CADGERMT.DBF
+DES Razao Social - PA, CNES     , RAZ_SOCI , DBF\CADGERPA.DBF
+SES Razao Social - PA, CNES     , RAZ_SOCI , DBF\CADGERPA.DBF
+DES Razao Social - PB, CNES     , RAZ_SOCI , DBF\CADGERPB.DBF
+SES Razao Social - PB, CNES     , RAZ_SOCI , DBF\CADGERPB.DBF
+SES Razao Social - PE, CNES     , RAZ_SOCI , DBF\CADGERPE.DBF
+DES Razao Social - PE, CNES     , RAZ_SOCI , DBF\CADGERPE.DBF
+DES Razao Social - PI, CNES     , RAZ_SOCI , DBF\CADGERPI.DBF
+SES Razao Social - PI, CNES     , RAZ_SOCI , DBF\CADGERPI.DBF
+SES Razao Social - PR, CNES     , RAZ_SOCI , DBF\CADGERPR.DBF
+DES Razao Social - PR, CNES     , RAZ_SOCI , DBF\CADGERPR.DBF
+DES Razao Social - RJ, CNES     , RAZ_SOCI , DBF\CADGERRJ.DBF
+SES Razao Social - RJ, CNES     , RAZ_SOCI , DBF\CADGERRJ.DBF
+SES Razao Social - RN, CNES     , RAZ_SOCI , DBF\CADGERRN.DBF
+DES Razao Social - RN, CNES     , RAZ_SOCI , DBF\CADGERRN.DBF
+DES Razao Social - RO, CNES     , RAZ_SOCI , DBF\CADGERRO.DBF
+SES Razao Social - RO, CNES     , RAZ_SOCI , DBF\CADGERRO.DBF
+DES Razao Social - RR, CNES     , RAZ_SOCI , DBF\CADGERRR.DBF
+SES Razao Social - RR, CNES     , RAZ_SOCI , DBF\CADGERRR.DBF
+SES Razao Social - RS, CNES     , RAZ_SOCI , DBF\CADGERRS.DBF
+DES Razao Social - RS, CNES     , RAZ_SOCI , DBF\CADGERRS.DBF
+DES Razao Social - SC, CNES     , RAZ_SOCI , DBF\CADGERSC.DBF
+SES Razao Social - SC, CNES     , RAZ_SOCI , DBF\CADGERSC.DBF
+SES Razao Social - SE, CNES     , RAZ_SOCI , DBF\CADGERSE.DBF
+DES Razao Social - SE, CNES     , RAZ_SOCI , DBF\CADGERSE.DBF
+SES Razao Social - SP, CNES     , RAZ_SOCI , DBF\CADGERSP.DBF
+DES Razao Social - SP, CNES     , RAZ_SOCI , DBF\CADGERSP.DBF
+SES Razao Social - TO, CNES     , RAZ_SOCI , DBF\CADGERTO.DBF
+DES Razao Social - TO, CNES     , RAZ_SOCI , DBF\CADGERTO.DBF
+;;===========================================================================================
+;;Seleção de Registros de outros Arquivos do TabwinCNES
+;;===========================================================================================
+;S* REGISTdeSERVIÇO *, COMENTARIO,1, SELEÇÃO_de_SERVIÇO
+;SArq. selec_SR.dbf,CNES,  CNES,      C:\TEMP\selec_SR.dbf
+;S* REGISTdeEQUIPAM *, COMENTARIO,1, SELEÇÃO_de_EQUIPAMENTO
+;SArq. selec_EQ.dbf,CNES,  CNES,      C:\TEMP\selec_EQ.dbf
+;S* REGISTdePROFISS *, COMENTARIO,1, SELEÇÃO_de_PROFISSIONAL
+;SArq. selec_PF.dbf,CNES,  CNES,      C:\TEMP\selec_PF.dbf
+;S* REGISTdeLEITOS *,  COMENTARIO,1, SELEÇÃO_de_LEITOS
+;SArq. selec_LT.dbf,CNES,  CNES,      C:\TEMP\selec_LT.dbf
+;S* REGISTdeHABILIT *, COMENTARIO,1, SELEÇÃO_de_HABILITAÇÕES
+;SArq. selec_HB.dbf,CNES,  CNES,      C:\TEMP\selec_HB.dbf

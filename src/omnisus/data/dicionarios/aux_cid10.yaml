@@ -1,0 +1,25 @@
+name: aux_cid10
+title: CID-10 completa com capítulos (DATASUS CID10 e CIDCAP10)
+profile: tabular-data-resource
+encoding: utf-8
+schema:
+  fields:
+    - name: codigo
+      type: string
+      constraints: { required: true, pattern: "^[A-Z]\\d{2}[0-9X]?$" }
+      description: "Código sem ponto, como os sistemas gravam (B571); CID10.CID10"
+    - name: descricao
+      type: string
+      constraints: { required: true }
+      description: "CID10.DESCR sem o código impresso no início (abreviada como publicada)"
+    - name: capitulo
+      type: integer
+      constraints: { minimum: 1, maximum: 22 }
+      description: "Posição do capítulo em CIDCAP10 cuja faixa contém os três primeiros caracteres"
+    - name: capitulo_descricao
+      type: string
+      description: "CIDCAP10.DESCRICAO"
+  primaryKey: [codigo]
+x-version: "2.0.0"
+x-source: DATASUS
+x-source-url: "ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID10/TABELAS/CID10.DBF"

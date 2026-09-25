@@ -1,0 +1,44 @@
+[
+  {
+    "id": "sih-tab-714ed980d483",
+    "category": "SIHSUS",
+    "title": "TAB_SIH.zip",
+    "publisher": "Ministério da Saúde / DATASUS",
+    "authority": "official",
+    "url": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIHSUS/200801_/Auxiliar/TAB_SIH.zip",
+    "sha256": "714ed980d483c038dc8245be5c40c39062ebfa55a7f6288ab4a87587ef199874",
+    "bytes": 6005360,
+    "edition": "2026-08-17",
+    "published_on": null,
+    "retrieved_on": "2026-09-14",
+    "last_checked_on": "2026-09-14"
+  },
+  {
+    "id": "sim-dom-fb396a277981",
+    "category": "SIM",
+    "title": "Dicionário DOM (+ investigação materna)",
+    "publisher": "Ministério da Saúde / DATASUS",
+    "authority": "official",
+    "url": "https://svs.aids.gov.br/daent/cgiae/coesv/sistemas-informacao/sim/documentacao/dicionario-de-dados-SIM-tabela-DOM.pdf",
+    "sha256": "fb396a277981686f440e7a17ff2612a4c9f58fdb9ac70a10056334d9be757364",
+    "bytes": 524288,
+    "edition": null,
+    "published_on": null,
+    "retrieved_on": "2026-09-14",
+    "last_checked_on": "2026-09-14"
+  },
+  {
+    "id": "sim-anterior-13cabba0b9a1",
+    "category": "SIM",
+    "title": "Estrutura SIM anterior — Mortalidade 2006",
+    "publisher": "Ministério da Saúde / DATASUS",
+    "authority": "official",
+    "url": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID10/DOCS/Estrutura_SIM_Anterior.pdf",
+    "sha256": "13cabba0b9a19d32b836f57762b9bc571e573c4a87737440c8052b737072d890",
+    "bytes": 55572,
+    "edition": "2006",
+    "published_on": null,
+    "retrieved_on": "2026-09-14",
+    "last_checked_on": "2026-09-14"
+  }
+]

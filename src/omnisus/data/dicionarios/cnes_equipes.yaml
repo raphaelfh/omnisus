@@ -1,0 +1,616 @@
+name: cnes_equipes
+title: CNES — Equipes (EP)
+profile: tabular-data-resource
+encoding: latin-1
+x-version: 1.1.0
+x-source-format: dbc
+x-partitions:
+- _source_ano
+x-evidence:
+  physical_schema: cnes_ep_rr_2024_01_mini.dbc, 108 fields; observed 2026-09-22
+  semantic_status: Physical inventory. Category maps only where a TabWin CNV binds the
+    field and decodes every non-blank value of the fixture (vinculos.json); no inferred
+    mappings.
+  dictionary_url: ftp://ftp.datasus.gov.br/dissemin/publicos/CNES/200508_/Doc/IT_CNES_1706.pdf
+  source_url: ftp://ftp.datasus.gov.br/dissemin/publicos/CNES/200508_/Dados/EP/EPRR2401.dbc
+schema:
+  fields:
+  - name: cnes
+    type: string
+  - name: codufmun
+    type: string
+  - name: cod_cep
+    type: string
+  - name: cpf_cnpj
+    type: string
+  - name: pf_pj
+    type: string
+  - name: niv_dep
+    type: string
+    x-decode:
+      '1': Individual
+      '3': Mantido
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 06b79bb2766644cc147b887eabea3057c02a6c51d20d3d3391cb42571c53cf13
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: cnes-tab-50988af5d88b
+          pages: []
+          locator: 'Equipes.def: XMantida/Individual, NIV_DEP, 1, CNV\NIVELDEP.CNV; CNV/NIVELDEP.CNV'
+        note: Mapa do CNV.
+  - name: cnpj_man
+    type: string
+  - name: cod_ir
+    type: string
+  - name: regsaude
+    type: string
+  - name: micr_reg
+    type: string
+  - name: distrsan
+    type: string
+  - name: distradm
+    type: string
+  - name: vinc_sus
+    type: string
+  - name: tpgestao
+    type: string
+    x-decode:
+      ' -Z': NÃO INFORMADO
+      D: DUPLA
+      E: ESTADUAL
+      M: MUNICIPAL
+      S: SEM GESTÃO
+      Z: SEM GESTÃO
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 4e19874712cc932b3dcb5c72ef3152e133de422bc5c73fa8ed6ede2a1a049b9f
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: cnes-tab-50988af5d88b
+          pages: []
+          locator: 'Equipes.def: XTipo de Gestão, TPGESTAO, 1, CNV\TPGESTAO.CNV; CNV/TPGESTAO.CNV'
+        note: Mapa do CNV.
+  - name: esfera_a
+    type: string
+  - name: retencao
+    type: string
+  - name: atividad
+    type: string
+    x-decode:
+      '  -99': Atividade Ensino não informada
+      '01': Unidade Universitária
+      '02': Unidade Escola Superior Isolada
+      '03': Unidade Auxiliar de Ensino
+      '04': Unidade SEM atividade de Ensino
+      '05': Hospital de Ensino
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 452f208feb79f719f41403bc4ca413a72002a1adccc147f1c0d23d129ceeff38
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: cnes-tab-50988af5d88b
+          pages: []
+          locator: 'Equipes.def: XAtividade Ensino/Pesquisa., ATIVIDAD, 1, CNV\Ativ_Ens.CNV; CNV/Ativ_Ens.CNV'
+        note: Mapa do CNV.
+  - name: natureza
+    type: string
+  - name: clientel
+    type: string
+  - name: tp_unid
+    type: string
+    x-decode:
+      '01': POSTO DE SAUDE
+      '02': CENTRO DE SAUDE/UNIDADE BASICA
+      '04': POLICLINICA
+      '05': HOSPITAL GERAL
+      '07': HOSPITAL ESPECIALIZADO
+      '09': PRONTO SOCORRO DE HOSPITAL GERAL (ANTIGO)
+      '12': PRONTO SOCORRO TRAUMATO-ORTOPEDICO (ANTIGO)
+      '15': UNIDADE MISTA
+      '20': PRONTO SOCORRO GERAL
+      '21': PRONTO SOCORRO ESPECIALIZADO
+      '22': CONSULTORIO ISOLADO
+      '32': UNIDADE MOVEL FLUVIAL
+      '36': CLINICA/CENTRO DE ESPECIALIDADE
+      '39': UNIDADE DE APOIO DIAGNOSE E TERAPIA (SADT ISOLADO)
+      '40': UNIDADE MOVEL TERRESTRE
+      '42': UNIDADE MOVEL DE NIVEL PRE-HOSPITALAR NA AREA DE URGENCIA
+      '43': FARMACIA
+      '45': UNIDADE DE SAUDE DA FAMILIA
+      '50': UNIDADE DE VIGILANCIA EM SAUDE
+      '60': COOPERATIVA OU EMPRESA DE CESSAO DE TRABALHADORES NA SAUDE
+      '61': CENTRO DE PARTO NORMAL - ISOLADO
+      '62': HOSPITAL/DIA - ISOLADO
+      '63': UNIDADE AUTORIZADORA
+      '64': CENTRAL DE REGULACAO DE SERVICOS DE SAUDE
+      '65': UNIDADE DE VIGILANCIA EPIDEMIOLOGIA (ANTIGO)
+      '66': UNIDADE DE VIGILANCIA SANITARIA (ANTIGO)
+      '67': LABORATORIO CENTRAL DE SAUDE PUBLICA LACEN
+      '68': CENTRAL DE GESTAO EM SAUDE
+      '69': CENTRO DE ATENCAO HEMOTERAPIA E OU HEMATOLOGICA
+      '70': CENTRO DE ATENCAO PSICOSSOCIAL
+      '71': CENTRO DE APOIO A SAUDE DA FAMILIA
+      '72': UNIDADE DE ATENCAO A SAUDE INDIGENA
+      '73': PRONTO ATENDIMENTO
+      '74': POLO ACADEMIA DA SAUDE
+      '75': TELESSAUDE
+      '76': CENTRAL DE REGULACAO MEDICA DAS URGENCIAS
+      '77': SERVICO DE ATENCAO DOMICILIAR ISOLADO(HOME CARE)
+      '78': UNIDADE DE ATENCAO EM REGIME RESIDENCIAL
+      '79': OFICINA ORTOPEDICA
+      '80': LABORATORIO DE SAUDE PUBLICA
+      '81': CENTRAL DE REGULACAO DO ACESSO
+      '82': CENTRAL DE NOTIFICACAO,CAPTACAO E DISTRIB DE ORGAOS ESTADUAL
+      '83': POLO DE PREVENCAO DE DOENCAS E AGRAVOS E PROMOCAO DA SAUDE
+      '84': CENTRAL DE ABASTECIMENTO
+      '85': CENTRO DE IMUNIZACAO
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 69bb9effc85c90811cf4e7ebd21a31189a28aac2b860a92e8488aacf425b8925
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: cnes-tab-50988af5d88b
+          pages: []
+          locator: 'Equipes.def: XTipo de Estabelecimento, TP_UNID, 1, CNV\TP_ESTAB.CNV; CNV/TP_ESTAB.CNV'
+        note: Mapa do CNV.
+  - name: turno_at
+    type: string
+    x-decode:
+      '  -99': Turno não informado
+      '01': ATENDIMENTO TURNOS INTERMITENTES
+      '02': ATENDIMENTO CONTÍNUO 24 HORAS/DIA (Pl Sab Dom Fer)
+      '03': ATENDIMENTO TURNOS MANHÃ/TARDE/NOITE
+      '04': ATENDIMENTO SOMENTE PELA MANHÃ
+      '05': ATENDIMENTO SOMENTE À TARDE
+      '06': ATENDIMENTO TURNOS MANHÃ/TARDE
+      '07': ATENDIMENTO SOMENTE À NOITE
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 9f63ab7b7e25166ccc2991a16b4235862478859cbbb1226fe0063ce110716eee
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: cnes-tab-50988af5d88b
+          pages: []
+          locator: 'Equipes.def: XTurno Atendimento, TURNO_AT, 1, CNV\TurnosAt.cnv; CNV/TurnosAt.CNV'
+        note: Mapa do CNV.
+  - name: niv_hier
+    type: string
+  - name: terceiro
+    type: string
+  - name: tp_prest
+    type: string
+  - name: gesprg1e
+    type: string
+  - name: gesprg1m
+    type: string
+  - name: gesprg2e
+    type: string
+  - name: gesprg2m
+    type: string
+  - name: gesprg4e
+    type: string
+  - name: gesprg4m
+    type: string
+  - name: nivate_a
+    type: string
+  - name: gesprg3e
+    type: string
+  - name: gesprg3m
+    type: string
+  - name: gesprg5e
+    type: string
+  - name: gesprg5m
+    type: string
+  - name: gesprg6e
+    type: string
+  - name: gesprg6m
+    type: string
+  - name: nivate_h
+    type: string
+  - name: ap01cv01
+    type: string
+  - name: ap01cv02
+    type: string
+  - name: ap01cv05
+    type: string
+  - name: ap01cv06
+    type: string
+  - name: ap01cv03
+    type: string
+  - name: ap01cv04
+    type: string
+  - name: ap01cv07
+    type: string
+  - name: ap02cv01
+    type: string
+  - name: ap02cv02
+    type: string
+  - name: ap02cv05
+    type: string
+  - name: ap02cv06
+    type: string
+  - name: ap02cv03
+    type: string
+  - name: ap02cv04
+    type: string
+  - name: ap02cv07
+    type: string
+  - name: ap03cv01
+    type: string
+  - name: ap03cv02
+    type: string
+  - name: ap03cv05
+    type: string
+  - name: ap03cv06
+    type: string
+  - name: ap03cv03
+    type: string
+  - name: ap03cv04
+    type: string
+  - name: ap03cv07
+    type: string
+  - name: ap04cv01
+    type: string
+  - name: ap04cv02
+    type: string
+  - name: ap04cv05
+    type: string
+  - name: ap04cv06
+    type: string
+  - name: ap04cv03
+    type: string
+  - name: ap04cv04
+    type: string
+  - name: ap04cv07
+    type: string
+  - name: ap05cv01
+    type: string
+  - name: ap05cv02
+    type: string
+  - name: ap05cv05
+    type: string
+  - name: ap05cv06
+    type: string
+  - name: ap05cv03
+    type: string
+  - name: ap05cv04
+    type: string
+  - name: ap05cv07
+    type: string
+  - name: ap06cv01
+    type: string
+  - name: ap06cv02
+    type: string
+  - name: ap06cv05
+    type: string
+  - name: ap06cv06
+    type: string
+  - name: ap06cv03
+    type: string
+  - name: ap06cv04
+    type: string
+  - name: ap06cv07
+    type: string
+  - name: ap07cv01
+    type: string
+  - name: ap07cv02
+    type: string
+  - name: ap07cv05
+    type: string
+  - name: ap07cv06
+    type: string
+  - name: ap07cv03
+    type: string
+  - name: ap07cv04
+    type: string
+  - name: ap07cv07
+    type: string
+  - name: atend_pr
+    type: string
+  - name: idequipe
+    type: string
+  - name: tipo_eqp
+    type: string
+    x-decode:
+      '01': 01-ESF
+      '02': 02-ESFSB_M1
+      '03': 03-ESFSB_M2
+      '04': 04-EACS
+      '05': 05-EPEN
+      '06': 06-NASF1
+      '07': 07-NASF2
+      '08': 08-EMSI
+      '09': 09-EMSIAL
+      '10': 10-EACSSB_M1
+      '11': 11-EACSSB_M2
+      '12': 12-ESFR
+      '13': 13-ESFRSB_MI
+      '14': 14-ESFF
+      '15': 15-ESFFSB
+      '16': 16-EAB1
+      '17': 17-EAB2
+      '18': 18-EAB3
+      '19': 19-EAB1SB
+      '20': 20-EAB2SB
+      '21': 21-EAB3SB
+      '22': 22-EMAD
+      '23': 23-EMAP
+      '24': 24-ESF1
+      '25': 25-ESF1SB_M1
+      '26': 26-ESF1SB_M2
+      '27': 27-ESF2
+      '28': 28-ESF2SB_M1
+      '29': 29-ESF2SB_M2
+      '30': 30-ESF3
+      '31': 31-ESF3SB_M1
+      '32': 32-ESF3SB_M2
+      '33': 33-ESF4
+      '34': 34-ESF4SB_M1
+      '35': 35-ESF4SB_M2
+      '36': 36-ESFTRANS
+      '37': 37-ESFTRANSSB_M1
+      '38': 38-ESFTRANSSB_M2
+      '39': 39-ESFRSB_MII
+      '40': 40-eCR
+      '41': 41-eCR
+      '42': 42-eCR
+      '43': 43-ESB
+      '44': 44-ESB
+      '45': 45-NASF3
+      '46': 46-EMAD
+      '47': 47-ECD
+      '48': 48-EESE
+      '49': 49-EAP
+      '50': 50-EABP1
+      '51': 51-EABP1SM
+      '52': 52-EABP2
+      '53': 53-EABP2SM
+      '54': 54-EABP3
+      '58': 58-eMAESM1
+      '59': 59-eMAESM2
+      '60': 60-eMAESM3
+      '70': 70-ESF
+      '71': 71-ESB
+      '72': 72-ENASFAP
+      '73': 73-ECR
+      '74': 74-EAPP
+      '75': 75-EMAESM
+      '76': 76-EAP
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 09fba77554d2e7ca1acd638134f19a76c6cd7315fea137eac4a365faa2798c7e
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: cnes-tab-50988af5d88b
+          pages: []
+          locator: 'Equipes.def: CTipo da Equipe, TIPO_EQP, 1, CNV\TIPOEQPc.CNV; CNV/tipoeqpC.cnv'
+        note: Mapa do CNV.
+  - name: nome_eqp
+    type: string
+  - name: id_area
+    type: string
+  - name: nomearea
+    type: string
+  - name: id_segm
+    type: string
+  - name: descsegm
+    type: string
+  - name: tiposegm
+    type: string
+    x-decode:
+      ? ''
+      : TIPO DO SEGMENTO INVÁLIDO
+      '0': TIPO DO SEGMENTO INVÁLIDO
+      '1': SEGMENTO DO TIPO URBANO
+      '2': SEGMENTO DO TIPO RURAL
+      '3': TIPO DO SEGMENTO INVÁLIDO
+      '4': TIPO DO SEGMENTO INVÁLIDO
+      '5': TIPO DO SEGMENTO INVÁLIDO
+      '6': TIPO DO SEGMENTO INVÁLIDO
+      '7': TIPO DO SEGMENTO INVÁLIDO
+      '8': TIPO DO SEGMENTO INVÁLIDO
+      '9': TIPO DO SEGMENTO INVÁLIDO
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: a5345462e6a23ea864d4283d808e969637ee8432999f00a227191bddad0ee482
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: cnes-tab-50988af5d88b
+          pages: []
+          locator: 'Equipes.def: XTipo do Segmento, TIPOSEGM, 1, CNV\TIPOSEGM.CNV; CNV/tiposegm.cnv'
+        note: Mapa do CNV.
+  - name: dt_ativa
+    type: string
+  - name: dt_desat
+    type: string
+  - name: quilombo
+    type: string
+  - name: assentad
+    type: string
+  - name: popgeral
+    type: string
+  - name: escola
+    type: string
+  - name: indigena
+    type: string
+  - name: pronasci
+    type: string
+  - name: motdesat
+    type: string
+    x-decode:
+      ? ''
+      : MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '00': EQUIPE AINDA ATIVA
+      '01': REORGANIZAÇÃO DA ESTRATEGIA SAÚDE DA FAMÍLIA
+      '02': REORGANIZAÇÃO DA ATENÇÃO BÁSICA
+      '03': DIFICULDADE CONTRATAÇÃO DE PROFISSIONAL MÉDICO
+      '04': DIFICULDADE CONTRATAÇÃO PROFISSIONAL ENFERMEIRO
+      '05': DIFICULDADE CONTRATAÇÃO PROFIS.CIRURGIÃO DENTISTA
+      '06': DIFICULDADE CONTRATAÇÃO PROFIS.DE NÍVEL MÉDIO
+      '07': PROBLEMA COM ESTRUTURA FÍSICA
+      '08': SUPERVISÃO/AUDITORIA
+      '09': FALTA EQUIPE MÍNIMA
+      '10': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '11': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '12': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '13': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '14': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '15': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '16': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '17': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '18': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '19': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '20': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '21': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '22': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '23': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '24': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '25': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '26': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '27': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '28': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '29': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '30': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '31': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '32': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '33': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '34': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '35': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '36': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '37': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '38': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '39': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '40': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '41': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '42': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '43': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '44': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '45': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '46': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '47': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '48': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '49': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '50': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '51': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '52': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '53': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '54': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '55': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '56': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '57': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '58': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '59': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '60': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '61': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '62': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '63': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '64': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '65': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '66': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '67': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '68': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '69': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '70': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '71': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '72': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '73': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '74': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '75': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '76': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '77': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '78': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '79': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '80': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '81': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '82': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '83': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '84': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '85': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '86': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '87': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '88': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '89': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '90': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '91': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '92': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '93': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '94': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '95': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '96': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '97': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '98': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+      '99': MOTIVO DE DESATIVAÇÃO INVÁLIDO
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: c11a08207d6d2e56cd0161c1279bc6fe51c2bfb5aa60a0501dab12cb2152a630
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: cnes-tab-50988af5d88b
+          pages: []
+          locator: 'Equipes.def: XMotivo Desativação, MOTDESAT, 1, CNV\MOTDESAT.CNV; CNV/motdesat.cnv'
+        note: Mapa do CNV.
+  - name: tp_desat
+    type: string
+    x-decode:
+      ? ''
+      : TIPO DE DESATIVAÇÃO INVÁLIDO
+      '0': EQUIPE AINDA ATIVA
+      '1': TEMPORARIA
+      '2': DEFINITIVA
+      '3': TIPO DE DESATIVAÇÃO INVÁLIDO
+      '4': TIPO DE DESATIVAÇÃO INVÁLIDO
+      '5': TIPO DE DESATIVAÇÃO INVÁLIDO
+      '6': TIPO DE DESATIVAÇÃO INVÁLIDO
+      '7': TIPO DE DESATIVAÇÃO INVÁLIDO
+      '8': TIPO DE DESATIVAÇÃO INVÁLIDO
+      '9': TIPO DE DESATIVAÇÃO INVÁLIDO
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 950c4b3310098a533e37fd6445d09c66d92af2c94266d2edb6e337ec8b202daf
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: cnes-tab-50988af5d88b
+          pages: []
+          locator: 'Equipes.def: XTipo de Desativação, TP_DESAT, 1, CNV\TP_DESAT.CNV; CNV/TP_DESAT.CNV'
+        note: Mapa do CNV.
+  - name: competen
+    type: string
+  - name: nat_jur
+    type: string

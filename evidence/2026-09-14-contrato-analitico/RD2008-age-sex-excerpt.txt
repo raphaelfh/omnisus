@@ -1,0 +1,12 @@
+XSexo              ,SEXO          ,1     ,CNV\SEXO.CNV
+XFaixa etária (5)  ,COD_IDADE     ,1     ,CNV\IDADEBAS.CNV
+XFaixa etária (9)  ,COD_IDADE     ,1     ,CNV\IDADEPUB.CNV
+XFaixa etária (18) ,COD_IDADE     ,1     ,CNV\IDADE18.CNV
+XIdade detalhada   ,COD_IDADE     ,1     ,CNV\IDADEDET.CNV
+XNacionalidade                    ,  NACIONAL , 1 ,CNV\NACION3D.CNV
+LAtividade  econômica             ,  CNAER    , 1 ,CNV\CNAE.CNV
+SAtividade  econômica             ,  CNAER    , 1 ,CNV\CNAE.CNV
+XLeito\Especialidade              ,ESPEC      , 1 ,CNV\LEITOS.CNV
+LComplexidade do Procedimento ,COMPLEX,1            ,CNV\COMPLEX2.CNV
+CComplexidade do Procedimento ,COMPLEX,1            ,CNV\COMPLEX2.CNV
+SComplexidade do Procedimento ,COMPLEX,1            ,CNV\COMPLEX2.CNV

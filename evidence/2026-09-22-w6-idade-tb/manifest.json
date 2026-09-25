@@ -1,0 +1,10 @@
+[
+  {
+    "dataset": "sinan_tuberculose",
+    "path": "data/lake/w6-sinan/TUBEBR20.dbc",
+    "url": "ftp://ftp.datasus.gov.br/dissemin/publicos/SINAN/DADOS/PRELIM/TUBEBR20.dbc",
+    "sha256": "9ecf487348b6196c7af143376e10ad70bdb9ef5ecc6ed9026cfa52f39b0b0edc",
+    "scope": {"uf": null, "ano": 2020, "mes": null},
+    "release": "prelim"
+  }
+]

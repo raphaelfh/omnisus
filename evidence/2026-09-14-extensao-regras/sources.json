@@ -1,0 +1,30 @@
+[
+  {
+    "id": "sinasc-tab-ff0124f6aecf",
+    "category": "SINASC",
+    "title": "NASC_NOV_TAB.zip",
+    "publisher": "Ministério da Saúde",
+    "authority": "official",
+    "url": "ftp://ftp.datasus.gov.br/dissemin/publicos/SINASC/NOV/TAB/NASC_NOV_TAB.zip",
+    "sha256": "ff0124f6aecf82c2f198cf4c7fd1e40fa40cc2a608f15331708d5751a88c0f05",
+    "bytes": 2494788,
+    "edition": null,
+    "published_on": null,
+    "retrieved_on": "2026-09-14",
+    "last_checked_on": "2026-09-14"
+  },
+  {
+    "id": "sinasc-manual-b88f538902ee",
+    "category": "SINASC",
+    "title": "Manual de instruções para o preenchimento da Declaração de Nascido Vivo",
+    "publisher": "Ministério da Saúde",
+    "authority": "official",
+    "url": "https://svs.aids.gov.br/download/manuais/Manual_Instr_Preench_DN_2011_jan.pdf",
+    "sha256": "b88f538902eeae60ec703d305e96174d625c5763c6da9294dbdae2e7541727ae",
+    "bytes": 2061057,
+    "edition": "2011",
+    "published_on": null,
+    "retrieved_on": "2026-09-14",
+    "last_checked_on": "2026-09-14"
+  }
+]

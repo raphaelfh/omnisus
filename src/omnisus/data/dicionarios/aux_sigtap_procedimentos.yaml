@@ -1,0 +1,52 @@
+name: aux_sigtap_procedimentos
+title: SIGTAP — procedimentos da Tabela Unificada por competência
+profile: tabular-data-resource
+encoding: utf-8
+description: >-
+  tb_procedimento.txt de TabelaUnificada_YYYYMM*.zip, lido pelo tb_procedimento_layout.txt
+  do próprio zip. Uma publicação nacional por competência (_source_ano, _source_mes).
+  Valores NUMBER ficam inteiros como publicados: o layout não declara casas decimais.
+schema:
+  fields:
+    - name: co_procedimento
+      type: string
+      description: "CO_PROCEDIMENTO, 10 dígitos"
+    - name: no_procedimento
+      type: string
+      description: "NO_PROCEDIMENTO"
+    - name: tp_complexidade
+      type: string
+    - name: tp_sexo
+      type: string
+    - name: qt_maxima_execucao
+      type: integer
+    - name: qt_dias_permanencia
+      type: integer
+    - name: qt_pontos
+      type: integer
+    - name: vl_idade_minima
+      type: integer
+    - name: vl_idade_maxima
+      type: integer
+    - name: vl_sh
+      type: integer
+      description: "Inteiro como publicado (10 posições em 2008-01, 12 em 2026-09)"
+    - name: vl_sa
+      type: integer
+      description: "Inteiro como publicado"
+    - name: vl_sp
+      type: integer
+      description: "Inteiro como publicado"
+    - name: co_financiamento
+      type: string
+    - name: co_rubrica
+      type: string
+    - name: qt_tempo_permanencia
+      type: integer
+      description: "Ausente nos layouts antigos (2008-01)"
+    - name: dt_competencia
+      type: string
+      description: "AAAAMM; igual à competência do arquivo em toda linha"
+x-version: "1.0.0"
+x-source: DATASUS
+x-source-url: "ftp://ftp2.datasus.gov.br/public/sistemas/tup/downloads/"

@@ -1,0 +1,13 @@
+;Escolarnet.cnv
+11 2 l
+      1  Ign/Branco                                           ,9 ,09,99
+      2  Analfabeto                                         0 ,00
+      3  1ª a 4ª série incompleta do EF                     1 ,01
+      4  4ª série completa do EF                            2 ,02
+      5  5ª a 8ª série incompleta do EF                     3 ,03
+      6  Ensino fundamental completo                        4 ,04
+      7  Ensino médio incompleto                            5 ,05
+      8  Ensino médio completo                              6 ,06
+      9  Educação superior incompleta                       7 ,07
+     10  Educação superior completa                         8 ,08
+     11  Não se aplica                                      10

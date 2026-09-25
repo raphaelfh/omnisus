@@ -1,0 +1,136 @@
+{
+  "checked_at_utc": "2026-09-10T15:30:52.072326+00:00",
+  "manifest": {
+    "dataset": "sim_do",
+    "started_at_utc": "2026-09-10T15:26:40.019552+00:00",
+    "completed_at_utc": "2026-09-10T15:26:40.878242+00:00",
+    "library_version": "0.1.0",
+    "run_relative": "data/lake/marimo-real/bc2d6701cdc24f28ba1be5b2e4f4cb72",
+    "source_directory": "/dissemin/publicos/SIM/CID10/DORES",
+    "source_files": [
+      {
+        "name": "DORR2022.dbc",
+        "bytes_in_listing": 275221,
+        "modified_in_listing": "2023-12-21 16:19:00",
+        "url": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID10/DORES/DORR2022.dbc"
+      },
+      {
+        "name": "DORR2023.dbc",
+        "bytes_in_listing": 288798,
+        "modified_in_listing": "2024-12-19 11:56:00",
+        "url": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID10/DORES/DORR2023.dbc"
+      }
+    ],
+    "scopes": [
+      {
+        "uf": "RR",
+        "ano": 2022,
+        "mes": null
+      },
+      {
+        "uf": "RR",
+        "ano": 2023,
+        "mes": null
+      }
+    ],
+    "report": {
+      "outcomes": [
+        {
+          "scope": {
+            "uf": "RR",
+            "ano": 2022,
+            "mes": null
+          },
+          "status": "ok",
+          "result": {
+            "rows": 3246,
+            "bytes_written": 178390,
+            "duration_seconds": 0.021715124996262603,
+            "snapshot_id": 1
+          },
+          "reason": null
+        },
+        {
+          "scope": {
+            "uf": "RR",
+            "ano": 2023,
+            "mes": null
+          },
+          "status": "ok",
+          "result": {
+            "rows": 3311,
+            "bytes_written": 187643,
+            "duration_seconds": 0.020664291994762607,
+            "snapshot_id": 1
+          },
+          "reason": null
+        }
+      ]
+    },
+    "counts": [
+      {
+        "ano": 2022,
+        "uf": "RR",
+        "registros": 3246
+      },
+      {
+        "ano": 2023,
+        "uf": "RR",
+        "registros": 3311
+      }
+    ],
+    "snapshots": [
+      {
+        "snapshot_id": 0,
+        "snapshot_time": "2026-09-10 12:26:40.035797-03",
+        "changes": "{schemas_created=[main]}"
+      },
+      {
+        "snapshot_id": 1,
+        "snapshot_time": "2026-09-10 12:26:40.508574-03",
+        "changes": "{tables_created=[main.sim_do], tables_altered=[1], tables_inserted_into=[1]}"
+      }
+    ]
+  },
+  "quality": [
+    {
+      "ano_arquivo": 2022,
+      "registros": 3246,
+      "data_ausente": 0,
+      "data_invalida": 0,
+      "ano_divergente": 0,
+      "causa_ausente": 0,
+      "municipio_ausente": 0,
+      "sexo_ausente_ou_outro": 0,
+      "sexo_ignorado": 0
+    },
+    {
+      "ano_arquivo": 2023,
+      "registros": 3311,
+      "data_ausente": 0,
+      "data_invalida": 0,
+      "ano_divergente": 0,
+      "causa_ausente": 0,
+      "municipio_ausente": 0,
+      "sexo_ausente_ou_outro": 0,
+      "sexo_ignorado": 2
+    }
+  ],
+  "transaction": {
+    "committed": true,
+    "snapshot_id": 1,
+    "linhas_derivadas": 5,
+    "rollback_sem_duplicacao": true
+  },
+  "summary_sha256": "77a41f58dcfc612fdc5fe2c9ba86c333d38709ff3a3ab1ad3476d5e39788043d",
+  "checks": {
+    "real_import": "passed: 2 ok, 0 failed, 0 skipped",
+    "default_open_without_reimport": "passed",
+    "row_counts_reconciled": 6557,
+    "filter_2022_non_fetal": 3246,
+    "empty_fetal_selection": "passed",
+    "parquet_export_roundtrip": "passed",
+    "changed_snapshot_rejected": "passed",
+    "derived_commit_and_rollback": "passed"
+  }
+}

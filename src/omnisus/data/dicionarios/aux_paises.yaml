@@ -1,0 +1,17 @@
+name: aux_paises
+title: Países (DATASUS TABPAIS)
+profile: tabular-data-resource
+encoding: utf-8
+schema:
+  fields:
+    - name: codigo
+      type: string
+      constraints: { required: true, pattern: "^\\d{3}$" }
+      description: "TABPAIS.CODIGO; 3 códigos têm dois nomes (044, 073, 081)"
+    - name: descricao
+      type: string
+      constraints: { required: true }
+      description: "TABPAIS.DESCRICAO, em maiúsculas sem acento"
+x-version: "1.0.0"
+x-source: DATASUS
+x-source-url: "ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID10/TABELAS/TABPAIS.DBF"

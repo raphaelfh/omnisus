@@ -1,0 +1,301 @@
+name: sia_bpa_individualizado
+title: SIASUS — BPA Individualizado (BI)
+profile: tabular-data-resource
+# latin-1 e OBRIGATORIO: o CNS cifrado usa bytes 0x7B-0x84 e 0x81 e
+# indefinido em cp1252 (UnicodeDecodeError). Medido em BIAC2401/BIRR2401.
+encoding: latin-1
+x-version: "0.2.0"
+schema:
+  fields:
+    # ========================================================================
+    # Estabelecimento e gestão
+    # ========================================================================
+    - name: coduni
+      type: string
+      label: CNES do estabelecimento executante
+    - name: gestao
+      type: string
+      label: UF + município de gestão
+    - name: condic
+      type: string
+      label: Tipo de gestão
+    - name: ufmun
+      type: string
+      label: UF + município do estabelecimento
+    - name: tpups
+      type: string
+      label: Tipo de unidade (tabela TPUPS)
+    - name: tippre
+      type: string
+      label: Tipo de prestador
+    - name: mn_ind
+      type: string
+      label: Estabelecimento mantido / individual
+      x-decode:
+        "M": "Mantido"
+        "I": "Individual"
+    - name: cnpjcpf
+      type: string
+      label: CNPJ/CPF do executante
+    - name: cnpjmnt
+      type: string
+      label: CNPJ da mantenedora
+    - name: cnpj_cc
+      type: string
+      label: CNPJ do órgão convenente
+    # ========================================================================
+    # Competência e produção
+    # ========================================================================
+    - name: dt_process
+      type: yearmonth
+      label: Competência de processamento (AAAAMM)
+    - name: dt_atend
+      type: yearmonth
+      label: Competência do atendimento (AAAAMM)
+    - name: proc_id
+      type: string
+      label: Procedimento SIGTAP (10 dígitos)
+    - name: tpfin
+      type: string
+      label: Tipo de financiamento
+      x-decode:
+        "01": "01 Atenção Básica (PAB)"
+        "02": "02 Assistência Farmacêutica"
+        "04": "04 Fundo de Ações Estratégicas e Compensações FAEC"
+        "05": "05 Incentivo - MAC"
+        "06": "06 Média e Alta Complexidade (MAC)"
+        "07": "07 Vigilância em Saúde"
+        "08": "08 Gestão em Saúde"
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: b502a7a998f58f54bb87882d47423fe45e2abb8414a5183bba213b61687fce51
+          status: verified_in_source
+          checked_at: '2026-09-23'
+          method: cnv-read
+          reviewer: maintainer review
+          evidence:
+          - source_id: sia-tab-e5812b51d802
+            pages: []
+            locator: 'Producao_Ambulatorial.DEF: XTipo de Financiamento, PA_TPFIN, 1, CNV/FINANC.CNV;
+              CNV/FINANC.CNV'
+          - source_id: siasus-70fe69dbd4cf
+            pages:
+            - 3
+            - 17
+            locator: 'PA_TPFIN CHAR (2) e TPFIN CHAR (2) (layout BIUFAAMM.DBF): "Tipo de Financiamento
+              da produção"'
+          note: O TAB_SIA não tem DEF do BPA-I. O mapa é o de PA_TPFIN (sia_producao_ambulatorial),
+            que o Informe Técnico descreve com as mesmas palavras que TPFIN do BPA-I. O mapa anterior
+            dizia '07' Incentivos.
+    - name: subfin
+      type: string
+      label: Subtipo de financiamento
+    - name: complex
+      type: string
+      label: Complexidade
+      x-decode:
+        "0": "Não se aplica"
+        "1": "Atenção Básica"
+        "2": "Média complexidade"
+        "3": "Alta complexidade"
+    - name: autoriz
+      type: string
+      label: Número da autorização
+    - name: cnsprof
+      type: string
+      label: CNS do profissional (criptografado)
+      x-crypto: datasus-cns
+    - name: cboprof
+      type: string
+      label: CBO do profissional
+    - name: cidpri
+      type: string
+      label: CID-10 principal (sem ponto)
+    - name: catend
+      type: string
+      label: Caráter do atendimento
+      x-decode:
+        "01": "Eletivo"
+        "02": "Urgência"
+        "03": "Acidente no local de trabalho"
+        "04": "Acidente no trajeto"
+        "05": "Outros acidentes de trânsito"
+        "06": "Outras lesões por agentes químicos/físicos"
+    # ========================================================================
+    # Paciente — chave de linkage
+    # ========================================================================
+    - name: cns_pac
+      type: string
+      label: CNS do paciente (criptografado; chave de linkage intra-SIA)
+      x-crypto: datasus-cns
+    - name: dtnasc
+      type: date
+      label: Data de nascimento
+      x-format: yyyyMMdd
+    - name: tpidadepac
+      type: string
+      label: Unidade da idade
+      x-decode:
+        "2": "Dias"
+        "3": "Meses"
+        "4": "Anos"
+      x-metadata:
+        issues:
+        - id: tpidadepac-sem-tabela
+          status: open
+          description: '''0'', ''5'' e ''9'' ficam sem rótulo: o TAB_SIA não tem DEF do BPA-I, e
+            IDADEDET.CNV (ligado a TPIDADEPAC em RAAS_Psicossocial.def e Atencao_Domiciliar.def)
+            rotula só os 3 caracteres TPIDADEPAC seguido de IDADEPAC, nunca o código de 1 caractere.
+            Essa leitura decodifica idadepac (derivação coded_age): ''000'' e ''999'' são "Idade
+            inválida", ''5'' mais 00 a 30 são 100 a 130 anos. ''2'', ''3'' e ''4'' foram medidos
+            (BIAC2401: 4 concorda com DTNASC em 99,2%), não lidos numa fonte. BI RR 2022: ''5'' com
+            IDADEPAC 00-29 e nascimento 1892-1922, ''9'' sempre com 99, ''0'' com 00 em BIRR2205 e
+            BIRR2211 (nascimentos 1192 e 1892).'
+    - name: idadepac
+      type: string
+      label: Idade do paciente (na unidade de tpidadepac)
+      x-metadata:
+        physical_name: IDADEPAC
+        unit: encoded
+        derivation:
+          kind: coded_age
+          inputs:
+          - idadepac
+          - tpidadepac
+          rule_version: 1.0.0
+          output:
+          - idade_anos_completos
+          - idade_quantidade
+          - idade_unidade
+        applicability:
+          status: confirmed
+          data_period: null
+          valid_from: null
+          valid_until: null
+          conditions:
+          - Only the exact source identities in dataset.analytics.validated_sources.
+          reason: IDADEDET.CNV read with the Informe Técnico layout; BIRR2201 and BIRR2401
+            audited, every row equal in SQL and Python.
+          evidence:
+          - source_id: sia-tab-e5812b51d802
+            pages: []
+            locator: 'RAAS_Psicossocial.def and Atencao_Domiciliar.def: XIdade detalhada, TPIDADEPAC, 1, CNV/IDADEDET.CNV; CNV/IDADEDET.CNV compares 3 characters'
+          - source_id: siasus-70fe69dbd4cf
+            pages: [15, 16, 17]
+            locator: 'TPIDADEPAC CHAR (1) then IDADEPAC CHAR (2), with the same description in the SAD (p. 15), PS (p. 16) and BI (p. 17) layouts'
+    - name: sexopac
+      type: string
+      label: Sexo do paciente
+      x-decode:
+        "M": "Masculino"
+        "F": "Feminino"
+    - name: racacor
+      type: string
+      label: Raça/cor
+      x-decode:
+        "01": "Branca"
+        "02": "Preta"
+        "03": "Parda"
+        "04": "Amarela"
+        "05": "Indígena"
+        "99": "Sem informação"
+    - name: munpac
+      type: string
+      label: Município de residência (UF+IBGE 6 dígitos)
+    # ========================================================================
+    # Quantidades e valores
+    # ========================================================================
+    - name: qt_apres
+      type: integer
+      label: Quantidade apresentada
+    - name: qt_aprov
+      type: integer
+      label: Quantidade aprovada
+    - name: vl_apres
+      type: number
+      label: Valor apresentado
+    - name: vl_aprov
+      type: number
+      label: Valor aprovado
+    # ========================================================================
+    # Indicadores e classificações
+    # ========================================================================
+    - name: ufdif
+      type: string
+      label: Residência em UF diferente do atendimento
+      x-decode:
+        "0": "Mesma UF"
+        "1": "UF diferente"
+    - name: mndif
+      type: string
+      label: Residência em município diferente do atendimento
+      x-decode:
+        "0": "Mesmo município"
+        "1": "Município diferente"
+    - name: etnia
+      type: string
+      label: Etnia indígena (preenchida quando racacor=05)
+    - name: nat_jur
+      type: string
+      label: Natureza jurídica do estabelecimento
+# Identidade do arquivo: dt_process é a competência de processamento (Informe SIASUS
+# 2019-07, p. 17) e vale o mês do arquivo em todos os registros de BIRR2401 (12.099) e
+# do recorte de BIMG2412_1 (200); ufmun começa pelo código IBGE da UF (p. 17).
+x-identity:
+  month_column: dt_process
+  uf_column: ufmun
+
+x-analytics:
+  version: 1.0.0
+  applicability_policy: exact_audited_source_identity
+  validated_sources:
+  - uf: RR
+    ano: 2022
+    mes: 1
+    release: final
+    source_sha256: 03d41d139dd970f25a565471053a5459f7cd77ef7d2633a63f33db2f8725340a
+  - uf: RR
+    ano: 2024
+    mes: 1
+    release: final
+    source_sha256: 80fb48c648f88c72de4e2577bfad46b8dde45dcbc029ba38c91707133f3337b2
+  age:
+    field: idadepac
+    kind: sih
+    unit_field: tpidadepac
+    units:
+      '2':
+        unit: day
+        minimum_value: 0
+        maximum_value: 29
+      '3':
+        unit: month
+        minimum_value: 1
+        maximum_value: 11
+      '4':
+        unit: year
+        minimum_value: 1
+        maximum_value: 99
+      '5':
+        unit: year
+        offset: 100
+        minimum_value: 0
+        maximum_value: 30
+    maximum_value: 99
+    invalid_composites:
+    - '000'
+    - '999'
+    evidence:
+    - source_id: sia-tab-e5812b51d802
+      pages: []
+      locator: 'RAAS_Psicossocial.def and Atencao_Domiciliar.def: XIdade detalhada, TPIDADEPAC, 1, CNV/IDADEDET.CNV; CNV/IDADEDET.CNV compares 3 characters'
+    - source_id: siasus-70fe69dbd4cf
+      pages: [15, 16, 17]
+      locator: 'TPIDADEPAC CHAR (1) then IDADEPAC CHAR (2), with the same description in the SAD (p. 15), PS (p. 16) and BI (p. 17) layouts'
+    notes:
+    - Kind sih is the encoding, not the system - a unit code in its own field and a two-digit quantity, read as the 3 characters IDADEDET.CNV compares.
+    - 000 and 999 are "Idade inválida" in IDADEDET.CNV. 230 ("1 mês") and 312 ("11 meses") are second codes of a category; this exact-quantity rule leaves them unsupported.
+    - TAB_SIA has no BPA-I DEF. The Informe Técnico describes TPIDADEPAC and IDADEPAC of BI with the same names, widths and text as PS and SAD, whose DEFs bind IDADEDET.CNV.
+    - The DBF headers of BIRR2201 and BIRR2401 put IDADEPAC right after TPIDADEPAC (offsets 161 and 162).
+    - Audit on 2026-09-23 - with units read this way, 99% of BIRR2201 and BIRR2401 rows agree with DTNASC and the DT_ATEND month.

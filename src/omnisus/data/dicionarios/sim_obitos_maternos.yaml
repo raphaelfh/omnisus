@@ -1,0 +1,1754 @@
+name: sim_obitos_maternos
+title: SIM — Óbitos maternos (DOMAT), nacional
+profile: tabular-data-resource
+encoding: latin-1
+x-version: 1.1.0
+x-source-format: dbc
+x-partitions:
+- _source_ano
+x-evidence:
+  physical_schema: sim_domat_br_2023_mini.dbc, 87 fields; observed 2026-09-22
+  semantic_status: >-
+    Os campos são os de sim_obitos (scripts/metadados/gerar_subconjuntos_sim.py):
+    os registros do arquivo são registros do DO, e nenhum campo traz um valor não vazio
+    diferente do DO (evidence/2026-09-23-sim-subconjuntos/).
+  dictionary_url: ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID10/DOCS/Estrutura_do_SIM_2025.pdf
+  source_url: ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID10/DOFET/DOMAT23.dbc
+schema:
+  fields:
+  - name: origem
+    type: string
+    label: Origem
+    x-decode:
+      '1': Oracle
+      '2': Banco estadual via FTP
+      '3': Banco SEADE
+      '9': Ignorado
+  - name: tipobito
+    type: integer
+    label: Tipo do óbito
+    x-decode:
+      '1': Fetal
+      '2': Não Fetal
+      '9': Ignorado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 0a34ad70ca563c98dfbbbd5784ba66e4958a2deae30440a18c75e01d873867dc
+        status: conflicting
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XTipo Obito, TIPOBITO, 1, TIPOBITO.CNV; OBITOS_CID10_TAB/tabdo/TIPOBITO.CNV'
+        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+      issues:
+      - id: cnv-difere-do-mapa-anterior
+        status: open
+        description: 'Mapa anterior sem fonte substituído pelo CNV: ''2'' era ''Não fetal'', CNV ''Não Fetal'''
+  - name: dtobito
+    type: date
+    label: Data do óbito
+    x-format: ddMMyyyy
+    constraints:
+      required: true
+    x-metadata:
+      physical_name: DTOBITO
+      physical_type:
+        type: string
+        length: 8
+      applicability:
+        status: confirmed
+        data_period: null
+        valid_from: null
+        valid_until: null
+        conditions:
+        - Only the exact source identities in dataset.analytics.validated_sources.
+        reason: Documented rule compared with snapshot5 and the complete-file audit of 2026-09-14; no applicability
+          to other source hashes is inferred.
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 1
+          locator: 'Linha DTOBITO, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+      claims:
+      - target: /field/format
+        value_sha256: a13ca65b57465876bc69a130063253d83bccd0866f370e742ede623e4f79dd74
+        status: verified_in_source
+        checked_at: '2026-09-14'
+        method: Official PDF field/page inspection and comparison with audited snapshot.
+        reviewer: OpenAI Codex
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 1
+          locator: 'Linha DTOBITO, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+        note: Applicability restricted to exact audited source identities.
+      - target: /field/physical_type
+        value_sha256: d250552cb2cfdaafce9d365c236eb53a1f7a34dfeee9dd571daa0ab10900e5c1
+        status: verified_in_source
+        checked_at: '2026-09-14'
+        method: Official PDF field/page inspection and comparison with audited snapshot.
+        reviewer: OpenAI Codex
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 1
+          locator: 'Linha DTOBITO, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+        note: Applicability restricted to exact audited source identities.
+  - name: horaobito
+    type: string
+    label: Hora do óbito
+  - name: natural
+    type: string
+    label: Naturalidade
+    description: Município/UF de naturalidade. Se estrangeiro, código do país.
+  - name: codmunnatu
+    type: string
+    label: Município de naturalidade
+    x-normalization-hint: lpad_6
+    foreignKeys:
+    - fields: codmunnatu
+      reference:
+        resource: aux_municipios
+        fields: codigo_6
+  - name: dtnasc
+    type: date
+    label: Data de nascimento
+    x-format: ddMMyyyy
+    x-metadata:
+      physical_name: DTNASC
+      physical_type:
+        type: string
+        length: 8
+      applicability:
+        status: confirmed
+        data_period: null
+        valid_from: null
+        valid_until: null
+        conditions:
+        - Only the exact source identities in dataset.analytics.validated_sources.
+        reason: Documented rule compared with snapshot5 and the complete-file audit of 2026-09-14; no applicability
+          to other source hashes is inferred.
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 1
+          locator: 'Linha DTNASC, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+      claims:
+      - target: /field/format
+        value_sha256: a13ca65b57465876bc69a130063253d83bccd0866f370e742ede623e4f79dd74
+        status: verified_in_source
+        checked_at: '2026-09-14'
+        method: Official PDF field/page inspection and comparison with audited snapshot.
+        reviewer: OpenAI Codex
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 1
+          locator: 'Linha DTNASC, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+        note: Applicability restricted to exact audited source identities.
+      - target: /field/physical_type
+        value_sha256: d250552cb2cfdaafce9d365c236eb53a1f7a34dfeee9dd571daa0ab10900e5c1
+        status: verified_in_source
+        checked_at: '2026-09-14'
+        method: Official PDF field/page inspection and comparison with audited snapshot.
+        reviewer: OpenAI Codex
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 1
+          locator: 'Linha DTNASC, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+        note: Applicability restricted to exact audited source identities.
+  - name: idade
+    type: string
+    label: Idade
+    x-metadata:
+      physical_name: IDADE
+      unit: encoded
+      derivation:
+        kind: coded_age
+        inputs:
+        - idade
+        rule_version: 1.1.0
+        output:
+        - idade_anos_completos
+        - idade_quantidade
+        - idade_unidade
+      applicability:
+        status: confirmed
+        data_period: null
+        valid_from: null
+        valid_until: null
+        conditions:
+        - Only the exact source identities in dataset.analytics.validated_sources.
+        reason: Documented rule compared with snapshot5 and the complete-file audit of 2026-09-14; no applicability
+          to other source hashes is inferred.
+        evidence:
+        - source_id: sim-anterior-13cabba0b9a1
+          pages:
+          - 1
+          locator: 'Linha 07 IDADE: unidade/quantidade e exemplos000,400,505'
+  - name: sexo
+    type: string
+    label: Sexo
+    x-decode:
+      '0': Ignorado
+      '1': Masculino
+      '2': Feminino
+      '9': Ignorado
+      M: Masculino
+      F: Feminino
+      I: Ignorado
+    x-metadata:
+      physical_name: SEXO
+      physical_type:
+        type: string
+        length: 1
+      missing_codes:
+        '1': not_missing
+        '2': not_missing
+        '0': ignored
+        '9': ignored
+        M: not_missing
+        F: not_missing
+        I: ignored
+      applicability:
+        status: confirmed
+        data_period: null
+        valid_from: null
+        valid_until: null
+        conditions:
+        - Only the exact source identities in dataset.analytics.validated_sources.
+        reason: Documented rule compared with snapshot5 and the complete-file audit of 2026-09-14; no applicability
+          to other source hashes is inferred.
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 2
+          locator: Linha10 SEXO
+      claims:
+      - target: /field/physical_type
+        value_sha256: 848e3f778dde84f2e0e943a8a871c439e45d31d3688547d85fcdb5b3987d2266
+        status: verified_in_source
+        checked_at: '2026-09-14'
+        method: Official SIM PDF / SIH TabWin source comparison; see audit evidence.
+        reviewer: OpenAI Codex
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 2
+          locator: Linha10 SEXO
+        note: Applies only to audited source identities.
+      - target: /field/codes
+        value_sha256: a927ea1d414ebeea12565ce4fd97ddc5ae16b12c281f297984557e4ac8118b06
+        status: verified_in_source
+        checked_at: '2026-09-14'
+        method: Official SIM PDF / SIH TabWin source comparison; see audit evidence.
+        reviewer: OpenAI Codex
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 2
+          locator: Linha10 SEXO
+        note: Applies only to audited source identities.
+  - name: racacor
+    type: integer
+    label: Raça/cor
+    x-decode:
+      ? ''
+      : N Inf
+      '1': Bra
+      '2': Preta
+      '3': Amar
+      '4': Parda
+      '5': Indig
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 4f336e53cc39a17d5a490f13346b755a4224b219c2d6a3108c3f85da20edff30
+        status: conflicting
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XRaca Cor, RACACOR, 1, RACACOR.CNV; OBITOS_CID10_TAB/tabdo/RACACOR.CNV'
+        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+      issues:
+      - id: cnv-difere-do-mapa-anterior
+        status: open
+        description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''Branca'', CNV ''Bra''; ''3''
+          era ''Amarela'', CNV ''Amar''; ''5'' era ''Indígena'', CNV ''Indig'''
+  - name: estciv
+    type: integer
+    label: Situação conjugal
+    x-decode:
+      ? ''
+      : N Inf
+      '0': Ignorado
+      '1': Solteiro
+      '2': Casado
+      '3': Viúvo
+      '4': Separado jud
+      '5': U.Estável
+      '9': Ignorado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 977f42fcdf08afe550ad2cb50cedc5847acd6c7e5fe72279c2409a09c1e310e1
+        status: conflicting
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XEstado Civil, ESTCIV, 1, ESTCIV.CNV; OBITOS_CID10_TAB/tabdo/ESTCIV.CNV'
+        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+      issues:
+      - id: cnv-difere-do-mapa-anterior
+        status: open
+        description: 'Mapa anterior sem fonte substituído pelo CNV: ''4'' era ''Separado/Divorciado'', CNV
+          ''Separado jud''; ''5'' era ''União estável'', CNV ''U.Estável'''
+  - name: esc
+    type: string
+    label: Escolaridade (antigo)
+    x-decode:
+      ? ''
+      : N Inf
+      '1': Nenhuma
+      '2': 01-03
+      '3': 04-07
+      '4': 08-11
+      '5': 12 e+
+      '9': Ign
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: acba34ba09e47d5d844c3c7d85380abb208dfa74204bdc30d7e9f2176f8f6ed1
+        status: conflicting
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XEscol anos concl, ESC, 1, INSTRUC.CNV; OBITOS_CID10_TAB/tabdo/INSTRUC.CNV'
+        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+      issues:
+      - id: cnv-difere-do-mapa-anterior
+        status: open
+        description: 'Mapa anterior sem fonte substituído pelo CNV: ''2'' era ''1 a 3 anos'', CNV ''01-03'';
+          ''3'' era ''4 a 7 anos'', CNV ''04-07''; ''4'' era ''8 a 11 anos'', CNV ''08-11''; ''5'' era ''12+
+          anos'', CNV ''12 e+''; ''9'' era ''Ignorado'', CNV ''Ign'''
+  - name: esc2010
+    type: string
+    label: Escolaridade (2010)
+    x-decode:
+      '0': Sem escolaridade
+      '1': Fundamental I (1-5 ano)
+      '2': Fundamental II (6-9 ano)
+      '3': Médio
+      '4': Superior incompleto
+      '5': Superior completo
+      '9': Ignorado
+  - name: seriescfal
+    type: string
+    label: Escolaridade (série)
+  - name: ocup
+    type: string
+    label: Ocupação habitual
+    description: 'Código CBO 2002 a partir de 2006 (seis dígitos; cinco para códigos iniciados em 0). Até
+      2005 o campo tem cinco caracteres: os três dígitos de TABOCUP seguidos de 00, sem tabela oficial de
+      um rótulo por código.'
+    foreignKeys:
+    - fields: ocup
+      reference:
+        resource: aux_ocupacoes
+        fields: codigo
+      x-join-rule: '{r}.esquema = ''cbo2002'' AND {d}.ano >= 2006'
+  - name: codmunres
+    type: string
+    label: Município de residência
+    x-normalization-hint: lpad_6
+    foreignKeys:
+    - fields: codmunres
+      reference:
+        resource: aux_municipios
+        fields: codigo_6
+  - name: lococor
+    type: string
+    label: Local de ocorrência
+    x-decode:
+      '1': Hospital
+      '2': Outro Estab de Saúde
+      '3': Domicílio
+      '4': Via Pública
+      '5': Outros
+      '6': Aldeia Indigena
+      '9': Ignorado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 387a0a528d9538faf842e42b27f75f71a5d247fee547e1e35788e6117ca9fa25
+        status: conflicting
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XLocal Ocorrencia, LOCOCOR, 1, LOCOCOR.CNV; OBITOS_CID10_TAB/tabdo/LOCOCOR.CNV'
+        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+      issues:
+      - id: cnv-difere-do-mapa-anterior
+        status: open
+        description: 'Mapa anterior sem fonte substituído pelo CNV: ''2'' era ''Outro estab. saúde'', CNV
+          ''Outro Estab de Saúde''; ''4'' era ''Via pública'', CNV ''Via Pública''; ''6'' era ''Aldeia indígena'',
+          CNV ''Aldeia Indigena'''
+  - name: codestab
+    type: string
+    label: Estabelecimento (CNES)
+    description: 'Código CNES do estabelecimento (7 dígitos). O nome resolve via
+
+      ``aux_cnes``, que combina ``cnes_estabelecimentos`` (FTP) com ``cnes_master``
+
+      (API). Se ``cnes_master`` ainda não foi populado
+
+      (``import_cnes_master()``), o nome fica nulo no lookup.
+
+      '
+    foreignKeys:
+    - fields: codestab
+      reference:
+        resource: aux_cnes
+        fields: cnes
+  - name: estabdescr
+    type: string
+    label: Estabelecimento (descrição)
+  - name: codmunocor
+    type: string
+    label: Município de ocorrência
+    x-normalization-hint: lpad_6
+    foreignKeys:
+    - fields: codmunocor
+      reference:
+        resource: aux_municipios
+        fields: codigo_6
+  - name: idademae
+    type: integer
+    label: Idade da mãe
+  - name: escmae
+    type: string
+    label: Escolaridade da mãe (antigo)
+    x-decode:
+      ? ''
+      : N Inf
+      '1': Nenhuma
+      '2': 01-03
+      '3': 04-07
+      '4': 08-11
+      '5': 12 e+
+      '9': Ign
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: acba34ba09e47d5d844c3c7d85380abb208dfa74204bdc30d7e9f2176f8f6ed1
+        status: conflicting
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XEscolMãe anos concl, ESCMAE, 1, INSTRUC.CNV; OBITOS_CID10_TAB/tabdo/INSTRUC.CNV'
+        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+      issues:
+      - id: cnv-difere-do-mapa-anterior
+        status: open
+        description: 'Mapa anterior sem fonte substituído pelo CNV: ''2'' era ''1 a 3 anos'', CNV ''01-03'';
+          ''3'' era ''4 a 7 anos'', CNV ''04-07''; ''4'' era ''8 a 11 anos'', CNV ''08-11''; ''5'' era ''12+
+          anos'', CNV ''12 e+''; ''9'' era ''Ignorado'', CNV ''Ign'''
+  - name: escmae2010
+    type: string
+    label: Escolaridade da mãe (2010)
+    x-decode:
+      '0': Sem escolaridade
+      '1': Fundamental I (1-5 ano)
+      '2': Fundamental II (6-9 ano)
+      '3': Médio
+      '4': Superior incompleto
+      '5': Superior completo
+      '9': Ignorado
+  - name: seriescmae
+    type: string
+    label: Escolaridade da mãe (série)
+  - name: ocupmae
+    type: string
+    label: Ocupação da mãe
+  - name: qtdfilvivo
+    type: integer
+    label: Filhos nascidos vivos
+  - name: qtdfilmort
+    type: integer
+    label: Filhos mortos
+  - name: gravidez
+    type: string
+    label: Tipo de gravidez
+    x-decode:
+      ? ''
+      : N inf
+      '1': Única
+      '2': Dupla
+      '3': Tripla e+
+      '9': Ignorado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: c70e873b64e2a6b025381a1483c3f1266d0df97662a771790428407ce5a78419
+        status: conflicting
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XGravidez, GRAVIDEZ, 1, GRAVIDEZ.CNV; OBITOS_CID10_TAB/tabdo/GRAVIDEZ.CNV'
+        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+      issues:
+      - id: cnv-difere-do-mapa-anterior
+        status: open
+        description: 'Mapa anterior sem fonte substituído pelo CNV: ''3'' era ''Tripla ou mais'', CNV ''Tripla
+          e+''; ''9'' era ''Ignorada'', CNV ''Ignorado'''
+  - name: semagestac
+    type: integer
+    label: Semanas de gestação
+  - name: gestacao
+    type: string
+    label: Gestação (faixas)
+    x-decode:
+      ? ''
+      : N inf
+      '1': Menos 22
+      '2': 22 a 27
+      '3': 28 a 31
+      '4': 32 a 36
+      '5': 37 a 41
+      '6': 42 e +
+      '9': Ignorado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 85cefa976e0b1748ed782d80be7a883f28bf50c61b620953f033e8331e0668be
+        status: conflicting
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XSemanas Gestação, GESTACAO, 1, SEMANAS.CNV; OBITOS_CID10_TAB/tabdo/SEMANAS.CNV'
+        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+      issues:
+      - id: cnv-difere-do-mapa-anterior
+        status: open
+        description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''< 22 semanas'', CNV ''Menos
+          22''; ''2'' era ''22 a 27 semanas'', CNV ''22 a 27''; ''3'' era ''28 a 31 semanas'', CNV ''28
+          a 31''; ''4'' era ''32 a 36 semanas'', CNV ''32 a 36''; ''5'' era ''37 a 41 semanas'', CNV ''37
+          a 41''; ''6'' era ''42+ semanas'', CNV ''42 e +'''
+  - name: parto
+    type: string
+    label: Tipo de parto
+    x-decode:
+      ? ''
+      : Não informado
+      '1': Vaginal
+      '2': Cesário
+      '9': Ignorado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 93a3463f457b45046a105fedb410e0e43fecb989384dfaf5468c64c7a2fb2052
+        status: conflicting
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XTipo Parto, PARTO, 1, PARTO.CNV; OBITOS_CID10_TAB/tabdo/PARTO.CNV'
+        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+      issues:
+      - id: cnv-difere-do-mapa-anterior
+        status: open
+        description: 'Mapa anterior sem fonte substituído pelo CNV: ''2'' era ''Cesáreo'', CNV ''Cesário'''
+  - name: obitoparto
+    type: string
+    label: Morte em relação ao parto
+    x-decode:
+      ? ''
+      : N Inf
+      '1': Antes
+      '2': Durante
+      '3': Depois
+      '9': Ign
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 1e5854c1fe045835acd54fa3ad7fa81f128d0810f945d95cff7f3c435c2493fc
+        status: conflicting
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XObito Parto, OBITOPARTO, 1, OPARTO.CNV; OBITOS_CID10_TAB/tabdo/oparto.cnv'
+        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+      issues:
+      - id: cnv-difere-do-mapa-anterior
+        status: open
+        description: 'Mapa anterior sem fonte substituído pelo CNV: ''9'' era ''Ignorado'', CNV ''Ign'''
+  - name: peso
+    type: integer
+    label: Peso ao nascer
+    description: Peso ao nascer em gramas (óbito fetal/menor 1 ano).
+  - name: tpmorteoco
+    type: string
+    label: Morte durante gestação/puerpério
+    x-decode:
+      ? ''
+      : N Inf
+      '1': Na gravidez
+      '2': No parto
+      '3': No Aborto
+      '4': Ate 42d apos parto
+      '5': 43d-01a apos parto
+      '8': Nao ocorreu nestes periodos
+      '9': Ign
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 38065c611b416fe00381e8f7e15e497f1ca05dc080306fb695d8c188f7cbc04c
+        status: conflicting
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: X*Ob Mulher id Fert, TPMORTEOCO, 1, OMUFER.CNV; OBITOS_CID10_TAB/tabdo/OMUFER.CNV'
+        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+      issues:
+      - id: cnv-difere-do-mapa-anterior
+        status: open
+        description: 'Mapa anterior sem fonte substituído pelo CNV: ''3'' era ''No abortamento'', CNV ''No
+          Aborto''; ''4'' era ''Até 42 dias pós-parto'', CNV ''Ate 42d apos parto''; ''5'' era ''43 dias
+          a 1 ano pós-parto'', CNV ''43d-01a apos parto''; ''8'' era ''Não nestes períodos'', CNV ''Nao
+          ocorreu nestes periodos''; ''9'' era ''Ignorado'', CNV ''Ign'''
+  - name: obitograv
+    type: string
+    label: Óbito na gravidez
+    x-decode:
+      ? ''
+      : N Inf
+      '1': Sim
+      '2': Nao
+      '9': Ign
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 56a50cd75494bf29771f0759d10bf0591a28ee42f7d2e1d138be9a20a5b2dd95
+        status: conflicting
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XObito na Gravidez, OBITOGRAV, 1, OBITOGRA.CNV; OBITOS_CID10_TAB/tabdo/obitogra.cnv'
+        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+      issues:
+      - id: cnv-difere-do-mapa-anterior
+        status: open
+        description: 'Mapa anterior sem fonte substituído pelo CNV: ''2'' era ''Não'', CNV ''Nao''; ''9''
+          era ''Ignorado'', CNV ''Ign'''
+  - name: obitopuerp
+    type: string
+    label: Óbito no puerpério
+    x-decode:
+      ? ''
+      : N Inf
+      '1': 00-42
+      '2': 43-1a
+      '3': Nao
+      '9': Ign
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 7d8621bb2568c5fecba247f52de2b6238e20e0a355e9e4f8ad7f3bb050979c5f
+        status: conflicting
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XObito no Puerp, OBITOPUERP, 1, OBITOPUE.CNV; OBITOS_CID10_TAB/tabdo/obitoPUE.cnv'
+        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+      issues:
+      - id: cnv-difere-do-mapa-anterior
+        status: open
+        description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''Sim, até 42 dias'', CNV
+          ''00-42''; ''2'' era ''Sim, 43 dias a 1 ano'', CNV ''43-1a''; ''3'' era ''Não'', CNV ''Nao'';
+          ''9'' era ''Ignorado'', CNV ''Ign'''
+  - name: assistmed
+    type: string
+    label: Assistência médica
+    x-decode:
+      '1': Sim
+      '2': Não
+      '9': Ignorado
+  - name: exame
+    type: string
+    label: Exame
+    x-decode:
+      ? ''
+      : N Inf
+      '1': Sim
+      '2': Não
+      '9': Ign
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 3422606b95b81313902f1103a41cfa99757b2781f730bca8f24722d56acc3807
+        status: conflicting
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XExame complem, EXAME, 1, EXAME.CNV; OBITOS_CID10_TAB/tabdo/EXAME.CNV'
+        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+      issues:
+      - id: cnv-difere-do-mapa-anterior
+        status: open
+        description: 'Mapa anterior sem fonte substituído pelo CNV: ''9'' era ''Ignorado'', CNV ''Ign'''
+  - name: cirurgia
+    type: string
+    label: Cirurgia
+    x-decode:
+      ? ''
+      : N Inf
+      '1': Sim
+      '2': Não
+      '9': Ign
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 3422606b95b81313902f1103a41cfa99757b2781f730bca8f24722d56acc3807
+        status: conflicting
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XCirurgia, CIRURGIA, 1, CIRURGIA.CNV; OBITOS_CID10_TAB/tabdo/CIRURGIA.CNV'
+        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+      issues:
+      - id: cnv-difere-do-mapa-anterior
+        status: open
+        description: 'Mapa anterior sem fonte substituído pelo CNV: ''9'' era ''Ignorado'', CNV ''Ign'''
+  - name: necropsia
+    type: string
+    label: Necropsia
+    x-decode:
+      ? ''
+      : N Inf
+      '1': Sim
+      '2': Não
+      '9': Ign
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 3422606b95b81313902f1103a41cfa99757b2781f730bca8f24722d56acc3807
+        status: conflicting
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XNecropsia, NECROPSIA, 1, NECROPS.CNV; OBITOS_CID10_TAB/tabdo/NECROPS.CNV'
+        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+      issues:
+      - id: cnv-difere-do-mapa-anterior
+        status: open
+        description: 'Mapa anterior sem fonte substituído pelo CNV: ''9'' era ''Ignorado'', CNV ''Ign'''
+  - name: linhaa
+    type: string
+    label: Causa — Linha A
+    description: 'Sequência de códigos CID-10, cada um precedido de * (ex.: *J189*A419); não é um código
+      único, por isso não declara referência a aux_cid10.'
+  - name: linhab
+    type: string
+    label: Causa — Linha B
+    description: 'Sequência de códigos CID-10, cada um precedido de * (ex.: *J189*A419); não é um código
+      único, por isso não declara referência a aux_cid10.'
+  - name: linhac
+    type: string
+    label: Causa — Linha C
+    description: 'Sequência de códigos CID-10, cada um precedido de * (ex.: *J189*A419); não é um código
+      único, por isso não declara referência a aux_cid10.'
+  - name: linhad
+    type: string
+    label: Causa — Linha D
+    description: 'Sequência de códigos CID-10, cada um precedido de * (ex.: *J189*A419); não é um código
+      único, por isso não declara referência a aux_cid10.'
+  - name: linhaii
+    type: string
+    label: Causas — Parte II
+  - name: causabas
+    type: string
+    label: Causa básica
+    constraints:
+      required: true
+      pattern: ^[A-Z]\d{2}\.?\d?$
+    foreignKeys:
+    - fields: causabas
+      reference:
+        resource: aux_cid10
+        fields: codigo
+  - name: cb_pre
+    type: string
+    label: Causa básica pré-seleção
+    foreignKeys:
+    - fields: cb_pre
+      reference:
+        resource: aux_cid10
+        fields: codigo
+  - name: comunsvoim
+    type: string
+    label: Município SVO/IML
+    x-normalization-hint: lpad_6
+    foreignKeys:
+    - fields: comunsvoim
+      reference:
+        resource: aux_municipios
+        fields: codigo_6
+  - name: dtatestado
+    type: date
+    label: Data do atestado
+    x-format: ddMMyyyy
+    x-metadata:
+      physical_name: DTATESTADO
+      physical_type:
+        type: string
+        length: 8
+      applicability:
+        status: confirmed
+        data_period: null
+        valid_from: null
+        valid_until: null
+        conditions:
+        - Only the exact source identities in dataset.analytics.validated_sources.
+        reason: Documented rule compared with snapshot5 and the complete-file audit of 2026-09-14; no applicability
+          to other source hashes is inferred.
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 5
+          locator: 'Linha DTATESTADO, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+      claims:
+      - target: /field/format
+        value_sha256: a13ca65b57465876bc69a130063253d83bccd0866f370e742ede623e4f79dd74
+        status: verified_in_source
+        checked_at: '2026-09-14'
+        method: Official PDF field/page inspection and comparison with audited snapshot.
+        reviewer: OpenAI Codex
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 5
+          locator: 'Linha DTATESTADO, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+        note: Applicability restricted to exact audited source identities.
+      - target: /field/physical_type
+        value_sha256: d250552cb2cfdaafce9d365c236eb53a1f7a34dfeee9dd571daa0ab10900e5c1
+        status: verified_in_source
+        checked_at: '2026-09-14'
+        method: Official PDF field/page inspection and comparison with audited snapshot.
+        reviewer: OpenAI Codex
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 5
+          locator: 'Linha DTATESTADO, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+        note: Applicability restricted to exact audited source identities.
+  - name: circobito
+    type: string
+    label: Circunstância do óbito
+    x-decode:
+      ? ''
+      : N Inf
+      '1': Acidente
+      '2': Suicídio
+      '3': Homicidio
+      '4': Outros
+      '9': Ign
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: f0d16deb6fe19edbf304d8d358418a6e89e15ccbe2d13f869b191da3526550ef
+        status: conflicting
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XTipo de Violencia, CIRCOBITO, 1, TIPOVIOL.CNV; OBITOS_CID10_TAB/tabdo/TIPOVIOL.CNV'
+        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+      issues:
+      - id: cnv-difere-do-mapa-anterior
+        status: open
+        description: 'Mapa anterior sem fonte substituído pelo CNV: ''3'' era ''Homicídio'', CNV ''Homicidio'';
+          ''9'' era ''Ignorado'', CNV ''Ign'''
+  - name: acidtrab
+    type: string
+    label: Acidente de trabalho
+    x-decode:
+      ? ''
+      : Em branco
+      '1': Sim
+      '2': Não
+      '9': Ign
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: e519a4a8b725197b1766c00e56c17c47e5eb9a875c4bf07e4ca6d7bbf1585afd
+        status: conflicting
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XAcid Trabalho, ACIDTRAB, 1, ACIDTRAB.CNV; OBITOS_CID10_TAB/tabdo/ACIDTRAB.CNV'
+        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+      issues:
+      - id: cnv-difere-do-mapa-anterior
+        status: open
+        description: 'Mapa anterior sem fonte substituído pelo CNV: ''9'' era ''Ignorado'', CNV ''Ign'''
+  - name: fonte
+    type: string
+    label: Fonte da informação
+    x-decode:
+      ? ''
+      : N Inf
+      '1': Boletim Ocorrência
+      '2': Hospital
+      '3': Família
+      '4': Outra
+      '9': Ign
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: a7d1fe8be8e19bc7bc032de4bd2da67366d3d57ab6793cdab5b825614e55a57c
+        status: conflicting
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XFonte Informac, FONTE, 1, FONTINFO.CNV; OBITOS_CID10_TAB/tabdo/FONTINFO.CNV'
+        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+      issues:
+      - id: cnv-difere-do-mapa-anterior
+        status: open
+        description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''Ocorrência policial'', CNV
+          ''Boletim Ocorrência''; ''9'' era ''Ignorado'', CNV ''Ign'''
+  - name: numerolote
+    type: string
+    label: Número do lote
+  - name: tppos
+    type: string
+    label: Óbito investigado
+    x-decode:
+      ? ''
+      : N Informado
+      N: Nao Investigado
+      S: Investigado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: f352632d7d1acf143d91f8c0952e362267a947a6856fc485d1f4d43818d50b2d
+        status: conflicting
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XObito investigado, TPPOS, 1, INVESTIG.CNV; OBITOS_CID10_TAB/tabdo/INVESTIG.CNV'
+        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+      issues:
+      - id: cnv-difere-do-mapa-anterior
+        status: open
+        description: 'Mapa anterior sem fonte substituído pelo CNV: ''S'' era ''Sim'', CNV ''Investigado'';
+          ''N'' era ''Não'', CNV ''Nao Investigado''; ''1'' era ''Sim'', CNV não lista; ''2'' era ''Não'',
+          CNV não lista'
+  - name: dtinvestig
+    type: date
+    label: Data da investigação
+    x-format: ddMMyyyy
+    x-metadata:
+      physical_name: DTINVESTIG
+      physical_type:
+        type: string
+        length: 8
+      applicability:
+        status: confirmed
+        data_period: null
+        valid_from: null
+        valid_until: null
+        conditions:
+        - Only the exact source identities in dataset.analytics.validated_sources.
+        reason: Documented rule compared with snapshot5 and the complete-file audit of 2026-09-14; no applicability
+          to other source hashes is inferred.
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 6
+          locator: 'Linha DTINVESTIG, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+      claims:
+      - target: /field/format
+        value_sha256: a13ca65b57465876bc69a130063253d83bccd0866f370e742ede623e4f79dd74
+        status: verified_in_source
+        checked_at: '2026-09-14'
+        method: Official PDF field/page inspection and comparison with audited snapshot.
+        reviewer: OpenAI Codex
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 6
+          locator: 'Linha DTINVESTIG, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+        note: Applicability restricted to exact audited source identities.
+      - target: /field/physical_type
+        value_sha256: d250552cb2cfdaafce9d365c236eb53a1f7a34dfeee9dd571daa0ab10900e5c1
+        status: verified_in_source
+        checked_at: '2026-09-14'
+        method: Official PDF field/page inspection and comparison with audited snapshot.
+        reviewer: OpenAI Codex
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 6
+          locator: 'Linha DTINVESTIG, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+        note: Applicability restricted to exact audited source identities.
+  - name: causabas_o
+    type: string
+    label: Causa básica original
+    foreignKeys:
+    - fields: causabas_o
+      reference:
+        resource: aux_cid10
+        fields: codigo
+  - name: dtcadastro
+    type: date
+    label: Data do cadastro
+    x-format: ddMMyyyy
+    x-metadata:
+      physical_name: DTCADASTRO
+      physical_type:
+        type: string
+        length: 8
+      applicability:
+        status: confirmed
+        data_period: null
+        valid_from: null
+        valid_until: null
+        conditions:
+        - Only the exact source identities in dataset.analytics.validated_sources.
+        reason: Documented rule compared with snapshot5 and the complete-file audit of 2026-09-14; no applicability
+          to other source hashes is inferred.
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 6
+          locator: 'Linha DTCADASTRO, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+      claims:
+      - target: /field/format
+        value_sha256: a13ca65b57465876bc69a130063253d83bccd0866f370e742ede623e4f79dd74
+        status: verified_in_source
+        checked_at: '2026-09-14'
+        method: Official PDF field/page inspection and comparison with audited snapshot.
+        reviewer: OpenAI Codex
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 6
+          locator: 'Linha DTCADASTRO, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+        note: Applicability restricted to exact audited source identities.
+      - target: /field/physical_type
+        value_sha256: d250552cb2cfdaafce9d365c236eb53a1f7a34dfeee9dd571daa0ab10900e5c1
+        status: verified_in_source
+        checked_at: '2026-09-14'
+        method: Official PDF field/page inspection and comparison with audited snapshot.
+        reviewer: OpenAI Codex
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 6
+          locator: 'Linha DTCADASTRO, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+        note: Applicability restricted to exact audited source identities.
+  - name: atestante
+    type: string
+    label: Médico atestante
+    x-decode:
+      ? ''
+      : N Inf
+      '1': Sim
+      '2': Substituto
+      '3': IML
+      '4': SVO
+      '5': Outro
+      '9': Ign
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 84428dba1e8943e5c653d365dad765579149b2146711067f716692a438f77d51
+        status: conflicting
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XMedico Atest, ATESTANTE, 1, ATESTANT.CNV; OBITOS_CID10_TAB/tabdo/ATESTANT.CNV'
+        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+      issues:
+      - id: cnv-difere-do-mapa-anterior
+        status: open
+        description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''Assistente'', CNV ''Sim'''
+  - name: stcodifica
+    type: string
+    label: Status codificação
+    x-decode:
+      ? ''
+      : N Inf
+      N: Sem SCB ou "não codificadora"
+      S: Com SCB ou "codificadora"
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: d4ad5b77f67a58e430a04744d41964acde289f98d6e2ce09c7a5ad1ba44e8c7c
+        status: conflicting
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XTp instal SCB, STCODIFICA, 1, CODIFICA1.CNV; OBITOS_CID10_TAB/tabdo/CODIFICA1.cnv'
+        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+      issues:
+      - id: cnv-difere-do-mapa-anterior
+        status: open
+        description: 'Mapa anterior sem fonte substituído pelo CNV: ''S'' era ''Codificadora'', CNV ''Com
+          SCB ou "codificadora"''; ''N'' era ''Não'', CNV ''Sem SCB ou "não codificadora"'''
+  - name: codificado
+    type: string
+    label: Codificado
+    x-decode:
+      S: Codificado
+      N: Não codificado
+  - name: versaosist
+    type: string
+    label: Versão do sistema
+  - name: versaoscb
+    type: string
+    label: Versão SCB
+  - name: fonteinv
+    type: string
+    label: Fonte de investigação
+    x-decode:
+      ? ''
+      : N Inf
+      '1': Comitê de Morte Materna e/ou Infantil
+      '2': Visita domiciliar / Entrevista familia
+      '3': Estab Saude / Prontuario
+      '4': Relacion com outros bancos de dados
+      '5': S V O
+      '6': I M L
+      '7': Outra  fonte
+      '8': Multiplas fontes
+      '9': Ignorado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: f50994393e73134e1e846df6e5ac60dc13af9c0a195439739b1a35002a36a904
+        status: conflicting
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XFonte Investig, FONTEINV, 1, FONTEINV.CNV; OBITOS_CID10_TAB/tabdo/FONTEINV.CNV'
+        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+      issues:
+      - id: cnv-difere-do-mapa-anterior
+        status: open
+        description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''Comitê Morte Materna/Infantil'',
+          CNV ''Comitê de Morte Materna e/ou Infantil''; ''2'' era ''Visita domiciliar'', CNV ''Visita domiciliar
+          / Entrevista familia''; ''3'' era ''Estab. Saúde/Prontuário'', CNV ''Estab Saude / Prontuario'';
+          ''4'' era ''Outros bancos de dados'', CNV ''Relacion com outros bancos de dados''; ''5'' era ''SVO'',
+          CNV ''S V O''; ''6'' era ''IML'', CNV ''I M L''; ''7'' era ''Outra'', CNV ''Outra  fonte''; ''8''
+          era ''Múltiplas fontes'', CNV ''Multiplas fontes'''
+  - name: dtrecebim
+    type: date
+    label: Data recebimento
+    x-format: ddMMyyyy
+    x-metadata:
+      physical_name: DTRECEBIM
+      physical_type:
+        type: string
+        length: 8
+      applicability:
+        status: confirmed
+        data_period: null
+        valid_from: null
+        valid_until: null
+        conditions:
+        - Only the exact source identities in dataset.analytics.validated_sources.
+        reason: Documented rule compared with snapshot5 and the complete-file audit of 2026-09-14; no applicability
+          to other source hashes is inferred.
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 6
+          locator: 'Linha DTRECEBIM, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+      claims:
+      - target: /field/format
+        value_sha256: a13ca65b57465876bc69a130063253d83bccd0866f370e742ede623e4f79dd74
+        status: verified_in_source
+        checked_at: '2026-09-14'
+        method: Official PDF field/page inspection and comparison with audited snapshot.
+        reviewer: OpenAI Codex
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 6
+          locator: 'Linha DTRECEBIM, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+        note: Applicability restricted to exact audited source identities.
+      - target: /field/physical_type
+        value_sha256: d250552cb2cfdaafce9d365c236eb53a1f7a34dfeee9dd571daa0ab10900e5c1
+        status: verified_in_source
+        checked_at: '2026-09-14'
+        method: Official PDF field/page inspection and comparison with audited snapshot.
+        reviewer: OpenAI Codex
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 6
+          locator: 'Linha DTRECEBIM, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+        note: Applicability restricted to exact audited source identities.
+  - name: atestado
+    type: string
+    label: Atestado (texto)
+  - name: dtrecoriga
+    type: date
+    label: Data recebimento original
+    x-format: ddMMyyyy
+    x-metadata:
+      physical_name: DTRECORIGA
+      physical_type:
+        type: string
+        length: null
+      applicability:
+        status: confirmed
+        data_period: null
+        valid_from: null
+        valid_until: null
+        conditions:
+        - Only the exact source identities in dataset.analytics.validated_sources.
+        reason: Documented rule compared with snapshot5 and the complete-file audit of 2026-09-14; no applicability
+          to other source hashes is inferred.
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 6
+          locator: 'Linha DTRECORIGA, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+      claims:
+      - target: /field/format
+        value_sha256: a13ca65b57465876bc69a130063253d83bccd0866f370e742ede623e4f79dd74
+        status: verified_in_source
+        checked_at: '2026-09-14'
+        method: Official PDF field/page inspection and comparison with audited snapshot.
+        reviewer: OpenAI Codex
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 6
+          locator: 'Linha DTRECORIGA, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+        note: Applicability restricted to exact audited source identities.
+      - target: /field/physical_type
+        value_sha256: b2938d7c5bcf65ed1e26c1ccb6394c088c14e7ecda0979b2d7b148aaa9de52e2
+        status: verified_in_source
+        checked_at: '2026-09-14'
+        method: Official PDF field/page inspection and comparison with audited snapshot.
+        reviewer: OpenAI Codex
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 6
+          locator: 'Linha DTRECORIGA, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+        note: Applicability restricted to exact audited source identities.
+  - name: causamat
+    type: string
+    label: Causa materna
+    foreignKeys:
+    - fields: causamat
+      reference:
+        resource: aux_cid10
+        fields: codigo
+  - name: escmaeagr1
+    type: string
+    label: Escolaridade da mãe agregada
+    x-decode:
+      ? ''
+      : N Inf
+      '00': Sem Escolaridade
+      '01': Fundamental I Incompleto
+      '02': Fundamental I Completo
+      '03': Fundamental II Incompleto
+      '04': Fundamental II Completo
+      '05': Ensino Medio Incompleto
+      '06': Ensino Medio Completo
+      '07': Superior Incompleto
+      '08': Superior Completo
+      '09': Ignorado
+      '10': Fundamental I Incompleto ou Inespecif
+      '11': Fundamental II Incompleto ou Inespecif
+      '12': Ensino Medio Incompleto ou Inespecif
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: cb374381c2a0998d2a13d45c5ec91812ce49542794b6bfdf9ab1ba238dbf8a84
+        status: conflicting
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: X*EscMãe1CICLO/SERIE, ESCMAEAGR1, 1, ESCAGR1.CNV; OBITOS_CID10_TAB/tabdo/ESCAGR1.CNV'
+        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+      issues:
+      - id: cnv-difere-do-mapa-anterior
+        status: open
+        description: 'Mapa anterior sem fonte substituído pelo CNV: ''00'' era ''Sem escolaridade'', CNV
+          ''Sem Escolaridade''; ''01'' era ''Fundamental I incompleto'', CNV ''Fundamental I Incompleto'';
+          ''02'' era ''Fundamental I completo'', CNV ''Fundamental I Completo''; ''03'' era ''Fundamental
+          II incompleto'', CNV ''Fundamental II Incompleto''; ''04'' era ''Fundamental II completo'', CNV
+          ''Fundamental II Completo''; ''05'' era ''Médio incompleto'', CNV ''Ensino Medio Incompleto'';
+          ''06'' era ''Médio completo'', CNV ''Ensino Medio Completo''; ''07'' era ''Superior incompleto'',
+          CNV ''Superior Incompleto''; ''08'' era ''Superior completo'', CNV ''Superior Completo''; ''10''
+          era ''Fundamental completo (inespecífico)'', CNV ''Fundamental I Incompleto ou Inespecif''; ''11''
+          era ''Médio (inespecífico)'', CNV ''Fundamental II Incompleto ou Inespecif''; ''12'' era ''Superior
+          (inespecífico)'', CNV ''Ensino Medio Incompleto ou Inespecif'''
+  - name: escfalagr1
+    type: string
+    label: Escolaridade agregada
+    x-decode:
+      ? ''
+      : N Inf
+      '00': Sem Escolaridade
+      '01': Fundamental I Incompleto
+      '02': Fundamental I Completo
+      '03': Fundamental II Incompleto
+      '04': Fundamental II Completo
+      '05': Ensino Medio Incompleto
+      '06': Ensino Medio Completo
+      '07': Superior Incompleto
+      '08': Superior Completo
+      '09': Ignorado
+      '10': Fundamental I Incompleto ou Inespecif
+      '11': Fundamental II Incompleto ou Inespecif
+      '12': Ensino Medio Incompleto ou Inespecif
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: cb374381c2a0998d2a13d45c5ec91812ce49542794b6bfdf9ab1ba238dbf8a84
+        status: conflicting
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: X*EscFal1CICLO/SERIE, ESCFALAGR1, 1, ESCAGR1.CNV; OBITOS_CID10_TAB/tabdo/ESCAGR1.CNV'
+        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+      issues:
+      - id: cnv-difere-do-mapa-anterior
+        status: open
+        description: 'Mapa anterior sem fonte substituído pelo CNV: ''00'' era ''Sem escolaridade'', CNV
+          ''Sem Escolaridade''; ''01'' era ''Fundamental I incompleto'', CNV ''Fundamental I Incompleto'';
+          ''02'' era ''Fundamental I completo'', CNV ''Fundamental I Completo''; ''03'' era ''Fundamental
+          II incompleto'', CNV ''Fundamental II Incompleto''; ''04'' era ''Fundamental II completo'', CNV
+          ''Fundamental II Completo''; ''05'' era ''Médio incompleto'', CNV ''Ensino Medio Incompleto'';
+          ''06'' era ''Médio completo'', CNV ''Ensino Medio Completo''; ''07'' era ''Superior incompleto'',
+          CNV ''Superior Incompleto''; ''08'' era ''Superior completo'', CNV ''Superior Completo''; ''10''
+          era ''Fundamental completo (inespecífico)'', CNV ''Fundamental I Incompleto ou Inespecif''; ''11''
+          era ''Médio (inespecífico)'', CNV ''Fundamental II Incompleto ou Inespecif''; ''12'' era ''Superior
+          (inespecífico)'', CNV ''Ensino Medio Incompleto ou Inespecif'''
+  - name: stdoepidem
+    type: string
+    label: Status DO epidemiológica
+    x-decode:
+      '0': Não
+      '1': Sim
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 46544b8609bf9423688dea275b19781ac716ede9102e3fe953299269e93fd2d2
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: X*DO epidemiologica, STDOEPIDEM, 1, DONOVA.CNV; OBITOS_CID10_TAB/tabdo/DONOVA.CNV'
+        note: Mapa do CNV.
+  - name: stdonova
+    type: string
+    label: Status DO nova
+    x-decode:
+      '0': Não
+      '1': Sim
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 46544b8609bf9423688dea275b19781ac716ede9102e3fe953299269e93fd2d2
+        status: conflicting
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: X*DO novo modelo, STDONOVA, 1, DONOVA.CNV; OBITOS_CID10_TAB/tabdo/DONOVA.CNV'
+        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+      issues:
+      - id: cnv-difere-do-mapa-anterior
+        status: open
+        description: 'Mapa anterior sem fonte substituído pelo CNV: ''0'' era ''Formulário antigo'', CNV
+          ''Não''; ''1'' era ''Formulário novo (pós-2011)'', CNV ''Sim'''
+  - name: difdata
+    type: integer
+    label: Diferença de datas
+  - name: nudiasobco
+    type: integer
+    label: Dias óbito-codificação
+  - name: nudiasobin
+    type: integer
+    label: Dias óbito-investigação
+  - name: dtcadinv
+    type: date
+    label: Data cadastro investigação
+    x-format: ddMMyyyy
+    x-metadata:
+      physical_name: DTCADINV
+      physical_type:
+        type: string
+        length: 8
+      applicability:
+        status: confirmed
+        data_period: null
+        valid_from: null
+        valid_until: null
+        conditions:
+        - Only the exact source identities in dataset.analytics.validated_sources.
+        reason: Documented rule compared with snapshot5 and the complete-file audit of 2026-09-14; no applicability
+          to other source hashes is inferred.
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 7
+          locator: 'Linha DTCADINV, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+      claims:
+      - target: /field/format
+        value_sha256: a13ca65b57465876bc69a130063253d83bccd0866f370e742ede623e4f79dd74
+        status: verified_in_source
+        checked_at: '2026-09-14'
+        method: Official PDF field/page inspection and comparison with audited snapshot.
+        reviewer: OpenAI Codex
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 7
+          locator: 'Linha DTCADINV, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+        note: Applicability restricted to exact audited source identities.
+      - target: /field/physical_type
+        value_sha256: d250552cb2cfdaafce9d365c236eb53a1f7a34dfeee9dd571daa0ab10900e5c1
+        status: verified_in_source
+        checked_at: '2026-09-14'
+        method: Official PDF field/page inspection and comparison with audited snapshot.
+        reviewer: OpenAI Codex
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 7
+          locator: 'Linha DTCADINV, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+        note: Applicability restricted to exact audited source identities.
+  - name: tpobitocor
+    type: string
+    label: Momento da ocorrência do óbito materno
+    x-decode:
+      ? ''
+      : Não investigado
+      '1': Durante a gestação
+      '2': Durante o abortamento
+      '3': Após o abortamento
+      '4': No parto ou até 1 hora após o parto
+      '5': No puerpério - até 42 dias após o parto
+      '6': Entre 43 dias e até 1 ano após o parto
+      '7': A investigação não identificou o momento do óbito
+      '8': Mais de um ano após o parto
+      '9': O óbito não ocorreu nas circunstancias anteriores
+    x-metadata:
+      claims:
+      - target: /field/label
+        value_sha256: 21840c7f87e08e5c9714da04120f1ba0620d9f7861fdf5164d6ffcd4e3a113fe
+        status: verified_in_source
+        checked_at: '2026-09-23'
+        method: page-read
+        reviewer: maintainer review
+        evidence:
+        - source_id: sim-b014389eca62
+          pages:
+          - 8
+          locator: 'TPOBITOCOR, Caracter 1: Momento da ocorrência do óbito materno'
+        note: A Estrutura de 2025 não descreve o campo; a de 2020 sim.
+      - target: /field/codes
+        value_sha256: 5c7067733ed7701a3f10c4b92a98ca9aa52160af06233479fc39e8d74ded211b
+        status: verified_in_source
+        checked_at: '2026-09-23'
+        method: page-read
+        reviewer: maintainer review
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 7
+          locator: 'TPOBITOCOR, Caracter 1: 1-Durante a gestação ... 9- O óbito não ocorreu nas circunstancias
+            anteriores, Branco - Não investigado'
+        note: Branco é o código vazio, como a ingestão grava um campo C em branco.
+  - name: dtconinv
+    type: date
+    label: Data conclusão investigação
+    x-format: ddMMyyyy
+    x-metadata:
+      physical_name: DTCONINV
+      physical_type:
+        type: string
+        length: 8
+      applicability:
+        status: confirmed
+        data_period: null
+        valid_from: null
+        valid_until: null
+        conditions:
+        - Only the exact source identities in dataset.analytics.validated_sources.
+        reason: Documented rule compared with snapshot5 and the complete-file audit of 2026-09-14; no applicability
+          to other source hashes is inferred.
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 7
+          locator: 'Linha DTCONINV, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+      claims:
+      - target: /field/format
+        value_sha256: a13ca65b57465876bc69a130063253d83bccd0866f370e742ede623e4f79dd74
+        status: verified_in_source
+        checked_at: '2026-09-14'
+        method: Official PDF field/page inspection and comparison with audited snapshot.
+        reviewer: OpenAI Codex
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 7
+          locator: 'Linha DTCONINV, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+        note: Applicability restricted to exact audited source identities.
+      - target: /field/physical_type
+        value_sha256: d250552cb2cfdaafce9d365c236eb53a1f7a34dfeee9dd571daa0ab10900e5c1
+        status: verified_in_source
+        checked_at: '2026-09-14'
+        method: Official PDF field/page inspection and comparison with audited snapshot.
+        reviewer: OpenAI Codex
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 7
+          locator: 'Linha DTCONINV, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+        note: Applicability restricted to exact audited source identities.
+  - name: fontes
+    type: string
+    label: Fontes (combinado)
+  - name: tpresginfo
+    type: string
+    label: Tipo de resgate
+    x-decode:
+      '1': Não acrescentou nem corrigiu informação
+      '2': Sim, permitiu o resgate de novas informações
+      '3': Sim, permitiu a correção de alguma das causas informadas originalmente
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: ac2fbbdcb27e73e06b1a9b76c4bc4a76f6f29d6940b157833f29874b00db33da
+        status: verified_in_source
+        checked_at: '2026-09-23'
+        method: page-read
+        reviewer: maintainer review
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 8
+          locator: 'TPRESGINFO, Caracter 2: 01 - Não acrescentou nem corrigiu informação; 02 - Sim, permitiu
+            o resgate de novas informações; 03 - Sim, permitiu a correção de alguma das causas informadas
+            originalmente.'
+        note: A Estrutura escreve 01 a 03, mas os arquivos gravam um dígito alinhado à esquerda ('1 ', lido
+          como '1') em DORR2016, 2019, 2022, 2023 e 2024 de RR; as chaves são as publicadas.
+  - name: tpnivelinv
+    type: string
+    label: Nível investigador
+    x-decode:
+      E: Estadual
+      R: Regional
+      M: Municipal
+  - name: nudiasinf
+    type: integer
+    label: Dias até informação
+  - name: dtcadinf
+    type: date
+    label: Data cadastro informação
+    x-format: ddMMyyyy
+    x-metadata:
+      physical_name: DTCADINF
+      physical_type:
+        type: string
+        length: 8
+      applicability:
+        status: confirmed
+        data_period: null
+        valid_from: null
+        valid_until: null
+        conditions:
+        - Only the exact source identities in dataset.analytics.validated_sources.
+        reason: Documented rule compared with snapshot5 and the complete-file audit of 2026-09-14; no applicability
+          to other source hashes is inferred.
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 8
+          locator: 'Linha DTCADINF, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+      claims:
+      - target: /field/format
+        value_sha256: a13ca65b57465876bc69a130063253d83bccd0866f370e742ede623e4f79dd74
+        status: verified_in_source
+        checked_at: '2026-09-14'
+        method: Official PDF field/page inspection and comparison with audited snapshot.
+        reviewer: OpenAI Codex
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 8
+          locator: 'Linha DTCADINF, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+        note: Applicability restricted to exact audited source identities.
+      - target: /field/physical_type
+        value_sha256: d250552cb2cfdaafce9d365c236eb53a1f7a34dfeee9dd571daa0ab10900e5c1
+        status: verified_in_source
+        checked_at: '2026-09-14'
+        method: Official PDF field/page inspection and comparison with audited snapshot.
+        reviewer: OpenAI Codex
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 8
+          locator: 'Linha DTCADINF, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+        note: Applicability restricted to exact audited source identities.
+  - name: morteparto
+    type: string
+    label: Morte/parto (pós-investigação)
+    x-decode:
+      '1': Antes
+      '2': Durante
+      '3': Após
+      '9': Ignorado
+  - name: dtconcaso
+    type: date
+    label: Data conclusão do caso
+    x-format: ddMMyyyy
+    x-metadata:
+      physical_name: DTCONCASO
+      physical_type:
+        type: string
+        length: 8
+      applicability:
+        status: confirmed
+        data_period: null
+        valid_from: null
+        valid_until: null
+        conditions:
+        - Only the exact source identities in dataset.analytics.validated_sources.
+        reason: Documented rule compared with snapshot5 and the complete-file audit of 2026-09-14; no applicability
+          to other source hashes is inferred.
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 8
+          locator: 'Linha DTCONCASO, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+      claims:
+      - target: /field/format
+        value_sha256: a13ca65b57465876bc69a130063253d83bccd0866f370e742ede623e4f79dd74
+        status: verified_in_source
+        checked_at: '2026-09-14'
+        method: Official PDF field/page inspection and comparison with audited snapshot.
+        reviewer: OpenAI Codex
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 8
+          locator: 'Linha DTCONCASO, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+        note: Applicability restricted to exact audited source identities.
+      - target: /field/physical_type
+        value_sha256: d250552cb2cfdaafce9d365c236eb53a1f7a34dfeee9dd571daa0ab10900e5c1
+        status: verified_in_source
+        checked_at: '2026-09-14'
+        method: Official PDF field/page inspection and comparison with audited snapshot.
+        reviewer: OpenAI Codex
+        evidence:
+        - source_id: sim-b4195ac8e0f8
+          pages:
+          - 8
+          locator: 'Linha DTCONCASO, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa'
+        note: Applicability restricted to exact audited source identities.
+  - name: fontesinf
+    type: string
+    label: Fontes de informação
+  - name: altcausa
+    type: string
+    label: Alteração de causa
+    x-decode:
+      '1': Sim
+      '2': Não
+  - name: contador
+    type: integer
+    label: Contador

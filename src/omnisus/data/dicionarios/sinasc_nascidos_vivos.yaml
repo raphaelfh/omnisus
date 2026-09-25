@@ -1,0 +1,1111 @@
+name: sinasc_nascidos_vivos
+title: SINASC — Declarações de Nascidos Vivos
+profile: tabular-data-resource
+# latin-1 define os 256 bytes; cp1252 deixa 0x81, 0x8D, 0x8F, 0x90 e 0x9D sem
+# caractere e derrubava a importação inteira (RDSP2308 AUD_JUST 0x90,
+# STSP2212 ALVARA 0x8F). value.encode("latin-1") devolve os bytes do arquivo.
+encoding: latin-1
+schema:
+  fields:
+    # ========================================================================
+    # Identificação e Local de Nascimento
+    # ========================================================================
+    - name: numerodn
+      type: string
+      label: Número da DN
+      description: "Número da DN (sintetizado downstream — pode estar ausente)"
+    - name: origem
+      type: string
+      label: Origem do registro
+      x-decode:
+        '1': Oracle (fed)
+        '2': FTP (est)
+        '3': SEADE (SP)
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 0973f400fb85e55b5def3fd52ba8aae7134ecdec6a92c4b8bd1f42ced9ba0def
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sinasc-tab-de43d0c99630
+            pages: []
+            locator: 'NASCIDO.def: XORIGEM, ORIGEM, 1, ORIGEM.CNV; Arquivos Auxiliares para Tabulação a partir
+              de 1996/ORIGEM.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''Oracle'', CNV ''Oracle (fed)'';
+            ''2'' era ''SINASC Web'', CNV ''FTP (est)''; ''3'' era ''SINASC Local'', CNV ''SEADE (SP)''; ''9''
+            era ''Ignorado'', CNV não lista'
+    - name: codestab
+      type: string
+      label: Estabelecimento (CNES)
+      description: |
+        Código CNES do estabelecimento (7 dígitos). O nome resolve via
+        ``aux_cnes`` quando ``import_cnes_master()`` foi rodado.
+      foreignKeys:
+        - { fields: codestab, reference: { resource: aux_cnes, fields: cnes } }
+    - name: codmunnasc
+      type: string
+      label: Município de nascimento
+      x-normalization-hint: lpad_6
+      foreignKeys:
+        - { fields: codmunnasc, reference: { resource: aux_municipios, fields: codigo_6 } }
+    - name: locnasc
+      type: string
+      label: Local de nascimento
+      x-decode:
+        ? ''
+        : Não informado
+        '0': Ignorado
+        '1': Hospital
+        '2': Outro Estab de Saúde
+        '3': Domicílio
+        '4': Outros
+        '5': Ignorado
+        '6': Ignorado
+        '7': Ignorado
+        '8': Ignorado
+        '9': Ignorado
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 1f80da7ba19d0f9baea1f3134493642467c49f8b6bd30fda1869880776ac1dfa
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sinasc-tab-de43d0c99630
+            pages: []
+            locator: 'NASCIDO.def: TLocal Ocorrencia, LOCNASC, 1, LOCOCOR.CNV; Arquivos Auxiliares para Tabulação
+              a partir de 1996/LOCOCOR.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''2'' era ''Outro estabelecimento de
+            saúde'', CNV ''Outro Estab de Saúde''; ''5'' era ''Aldeia indígena'', CNV ''Ignorado'''
+    - name: contador
+      type: integer
+      label: Contador
+
+    # ========================================================================
+    # Dados da Mãe
+    # ========================================================================
+    - name: idademae
+      type: integer
+      label: Idade da mãe
+      description: Idade da mãe em anos completos no momento do parto.
+      x-metadata:
+        physical_name: IDADEMAE
+        physical_type:
+          type: string
+          length: 2
+        unit: year
+        derivation:
+          kind: completed_years
+          inputs:
+          - idademae
+          rule_version: 1.0.0
+          output:
+          - idade_anos_completos
+          - idade_quantidade
+          - idade_unidade
+        applicability:
+          status: confirmed
+          data_period: null
+          valid_from: null
+          valid_until: null
+          conditions:
+          - Only the exact source identities in dataset.analytics.validated_sources.
+          reason: Complete DNRR2023.dbc audit; source identity does not imply universal
+            applicability.
+          evidence:
+          - source_id: sinasc-24e0d4388ea1
+            pages:
+            - 1
+            locator: Linha IDADEMAE, C(02), idade da mãe em anos
+          - source_id: sinasc-manual-b88f538902ee
+            pages:
+            - 16
+            locator: Campo 19, anos completos da mãe no momento do parto
+        claims:
+        - target: /field/physical_name
+          value_sha256: 97e70b859ea9b4f108d0f8e2f5aeb35a1837079f9461314532b57036b52370c4
+          status: verified_in_source
+          checked_at: '2026-09-14'
+          method: Official PDF page inspection and complete DBC audit.
+          reviewer: OpenAI Codex
+          evidence:
+          - source_id: sinasc-24e0d4388ea1
+            pages:
+            - 1
+            locator: Linha IDADEMAE, C(02), idade da mãe em anos
+          note: Applicability restricted to exact audited source identities.
+        - target: /field/physical_type
+          value_sha256: 1e339250f87cdc53f01ad195e6971f2440ead42c4352f6f4a6c0c6cab33c2a0c
+          status: verified_in_source
+          checked_at: '2026-09-14'
+          method: Official PDF page inspection and complete DBC audit.
+          reviewer: OpenAI Codex
+          evidence:
+          - source_id: sinasc-24e0d4388ea1
+            pages:
+            - 1
+            locator: Linha IDADEMAE, C(02), idade da mãe em anos
+          note: Applicability restricted to exact audited source identities.
+        - target: /field/unit
+          value_sha256: 2992f9abc1d6e757b4b15fafa0b37e9d753f9d0d34e72b9b643e4fae8cf4a098
+          status: verified_in_source
+          checked_at: '2026-09-14'
+          method: Official PDF page inspection and complete DBC audit.
+          reviewer: OpenAI Codex
+          evidence:
+          - source_id: sinasc-manual-b88f538902ee
+            pages:
+            - 16
+            locator: Campo 19, anos completos da mãe no momento do parto
+          note: Applicability restricted to exact audited source identities.
+        - target: /field/description
+          value_sha256: 513214e0a1e8fa472473777550aa2886b2df4822397bc734919c56f3b80524ba
+          status: verified_in_source
+          checked_at: '2026-09-14'
+          method: Official PDF page inspection and complete DBC audit.
+          reviewer: OpenAI Codex
+          evidence:
+          - source_id: sinasc-manual-b88f538902ee
+            pages:
+            - 16
+            locator: Campo 19, anos completos da mãe no momento do parto
+          note: Applicability restricted to exact audited source identities.
+    - name: dtnascmae
+      type: date
+      label: Data de nascimento da mãe
+      x-format: ddMMyyyy
+    - name: estcivmae
+      type: string
+      label: Estado civil da mãe
+      x-decode:
+        ? ''
+        : Em branco
+        '1': Solteiro
+        '2': Casado
+        '3': Viúvo
+        '4': Separado jud
+        '5': Uniao estavel
+        '9': Ignorado
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 863a611620700ae2039f8b7f0d90e96ba00b6fffdf4f82759666dc6e57e05a1f
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sinasc-tab-de43d0c99630
+            pages: []
+            locator: 'NASCIDO.def: XEstado Civil, ESTCIVMAE, 1, ESTCIV.CNV; Arquivos Auxiliares para Tabulação
+              a partir de 1996/ESTCIV.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''Solteira'', CNV ''Solteiro'';
+            ''2'' era ''Casada'', CNV ''Casado''; ''3'' era ''Viúva'', CNV ''Viúvo''; ''4'' era ''Separada/Divorciada'',
+            CNV ''Separado jud''; ''5'' era ''União estável'', CNV ''Uniao estavel'''
+    - name: escmae
+      type: string
+      label: Escolaridade da mãe (faixas)
+      x-decode:
+        ? ''
+        : N Inf
+        '0': Ign
+        '1': Nenhuma
+        '2': 01-03
+        '3': 04-07
+        '4': 08-11
+        '5': 12 e+
+        '6': Ign
+        '7': Ign
+        '8': Ign
+        '9': Ign
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 51ad326dc266ca77450e28894bcc897bee1cca1888d3d1a5cb725c996e4e0bbc
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sinasc-tab-de43d0c99630
+            pages: []
+            locator: 'NASCIDO.def: XEsc Mae Anos, ESCMAE, 1, INSTRUC.CNV; Arquivos Auxiliares para Tabulação
+              a partir de 1996/INSTRUC.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''2'' era ''1 a 3 anos'', CNV ''01-03'';
+            ''3'' era ''4 a 7 anos'', CNV ''04-07''; ''4'' era ''8 a 11 anos'', CNV ''08-11''; ''5'' era ''12
+            anos ou mais'', CNV ''12 e+''; ''9'' era ''Ignorado'', CNV ''Ign'''
+    - name: escmae2010
+      type: string
+      label: Escolaridade da mãe (2010)
+      x-decode:
+        ? ''
+        : N Inf
+        '0': Sem Escolaridade
+        '1': Fundamental I  (1 a 4 Serie)
+        '2': Fundamental II (5 a 8 Serie)
+        '3': Medio (Antigo 2 Grau)
+        '4': Superior Incompleto
+        '5': Superior Completo
+        '9': Ign
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 7052fb578640de2f4bc168674940ed138e637d1f419c0cf7114bbdad057c1dcc
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sinasc-tab-de43d0c99630
+            pages: []
+            locator: 'NASCIDO.def: XEsc Mae Serie Concl, ESCMAE2010, 1, ESC2010.CNV; Arquivos Auxiliares para
+              Tabulação a partir de 1996/ESC2010.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''0'' era ''Sem escolaridade'', CNV
+            ''Sem Escolaridade''; ''1'' era ''Fundamental I (1-5 ano)'', CNV ''Fundamental I  (1 a 4 Serie)'';
+            ''2'' era ''Fundamental II (6-9 ano)'', CNV ''Fundamental II (5 a 8 Serie)''; ''3'' era ''Médio'',
+            CNV ''Medio (Antigo 2 Grau)''; ''4'' era ''Superior incompleto'', CNV ''Superior Incompleto'';
+            ''5'' era ''Superior completo'', CNV ''Superior Completo''; ''9'' era ''Ignorado'', CNV ''Ign'''
+    - name: escmaeagr1
+      type: string
+      label: Escolaridade da mãe agregada
+      x-decode:
+        ? ''
+        : N Inf
+        '0': Sem Escolaridade
+        '00': Sem Escolaridade
+        '01': Fundamental I Incompleto
+        '02': Fundamental I Completo
+        '03': Fundamental II Incompleto
+        '04': Fundamental II Completo
+        '05': Ensino Medio Incompleto
+        '06': Ensino Medio Completo
+        '07': Superior Incompleto
+        '08': Superior Completo
+        '09': Ignorado
+        '1': Fundamental I Incompleto
+        '10': Fundamental I Incompleto ou Inespecif
+        '11': Fundamental II Incompleto ou Inespecif
+        '12': Ensino Medio Incompleto ou Inespecif
+        '2': Fundamental I Completo
+        '3': Fundamental II Incompleto
+        '4': Fundamental II Completo
+        '5': Ensino Medio Incompleto
+        '6': Ensino Medio Completo
+        '7': Superior Incompleto
+        '8': Superior Completo
+        '9': Ignorado
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: c7f928086ad5eaada7e52946d464545b8da4b0f8909cb3299f03ef9ae8fcbcd4
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sinasc-tab-de43d0c99630
+            pages: []
+            locator: 'NASCIDO.def: XEsc Mae Agregegado, ESCMAEAGR1, 1, ESCAGR1.CNV; Arquivos Auxiliares para
+              Tabulação a partir de 1996/ESCAGR1.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''00'' era ''Sem escolaridade'', CNV
+            ''Sem Escolaridade''; ''01'' era ''Fundamental I incompleto'', CNV ''Fundamental I Incompleto'';
+            ''02'' era ''Fundamental I completo'', CNV ''Fundamental I Completo''; ''03'' era ''Fundamental
+            II incompleto'', CNV ''Fundamental II Incompleto''; ''04'' era ''Fundamental II completo'', CNV
+            ''Fundamental II Completo''; ''05'' era ''Médio incompleto'', CNV ''Ensino Medio Incompleto'';
+            ''06'' era ''Médio completo'', CNV ''Ensino Medio Completo''; ''07'' era ''Superior incompleto'',
+            CNV ''Superior Incompleto''; ''08'' era ''Superior completo'', CNV ''Superior Completo''; ''10''
+            era ''Fundamental completo (inespecífico)'', CNV ''Fundamental I Incompleto ou Inespecif''; ''11''
+            era ''Médio (inespecífico)'', CNV ''Fundamental II Incompleto ou Inespecif''; ''12'' era ''Superior
+            (inespecífico)'', CNV ''Ensino Medio Incompleto ou Inespecif'''
+    - name: seriescmae
+      type: string
+      label: Série escolar da mãe
+    - name: codocupmae
+      type: string
+      label: Ocupação da mãe (CBO)
+    - name: racacormae
+      type: string
+      label: Raça/cor da mãe
+      x-decode:
+        ? ''
+        : N Inf
+        '1': Branca
+        '2': Preta
+        '3': Amarela
+        '4': Parda
+        '5': Indígena
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 70f1460a3cb1a3ba63a16b6c71c014b4bdecaf4dd4cbdc59f48cfa169cf4986f
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sinasc-tab-de43d0c99630
+            pages: []
+            locator: 'NASCIDO.def: XRaca Cor da Mae, RACACORMAE, 1, RACA.CNV; Arquivos Auxiliares para Tabulação
+              a partir de 1996/RACA.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''9'' era ''Ignorado'', CNV não lista'
+    - name: codmunres
+      type: string
+      label: Município de residência
+      x-normalization-hint: lpad_6
+      foreignKeys:
+        - { fields: codmunres, reference: { resource: aux_municipios, fields: codigo_6 } }
+    - name: naturalmae
+      type: string
+      label: Naturalidade da mãe
+    - name: codmunnatu
+      type: string
+      label: Município de naturalidade da mãe
+      x-normalization-hint: lpad_6
+      foreignKeys:
+        - { fields: codmunnatu, reference: { resource: aux_municipios, fields: codigo_6 } }
+    - name: codufnatu
+      type: string
+      label: UF de naturalidade da mãe
+    - name: codpaisres
+      type: string
+      label: País de residência
+
+    # ========================================================================
+    # Histórico Obstétrico
+    # ========================================================================
+    - name: qtdgestant
+      type: integer
+      label: Gestações anteriores
+    - name: qtdpartnor
+      type: integer
+      label: Partos vaginais anteriores
+    - name: qtdpartces
+      type: integer
+      label: Partos cesáreos anteriores
+    - name: qtdfilvivo
+      type: integer
+      label: Filhos nascidos vivos
+    - name: qtdfilmort
+      type: integer
+      label: Filhos mortos
+
+    # ========================================================================
+    # Gestação e Pré-natal
+    # ========================================================================
+    - name: gestacao
+      type: string
+      label: Gestação (faixas semanas)
+      x-decode:
+        ? ''
+        : N Inf
+        '0': Ignorado
+        '1': Menos 22
+        '2': 22 a 27
+        '3': 28 a 31
+        '4': 32 a 36
+        '5': 37 a 41
+        '6': 42 e +
+        '7': Ignorado
+        '8': Ignorado
+        '9': Ignorado
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: d68181264b7ba7595ab9bdf6a554542fa9f58501475c824b771ee05e6049781b
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sinasc-tab-de43d0c99630
+            pages: []
+            locator: 'NASCIDO.def: XDuracao Gestação, GESTACAO, 1, SEMANAS.CNV; Arquivos Auxiliares para Tabulação
+              a partir de 1996/SEMANAS.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''< 22 semanas'', CNV ''Menos
+            22''; ''2'' era ''22 a 27 semanas'', CNV ''22 a 27''; ''3'' era ''28 a 31 semanas'', CNV ''28
+            a 31''; ''4'' era ''32 a 36 semanas'', CNV ''32 a 36''; ''5'' era ''37 a 41 semanas'', CNV ''37
+            a 41''; ''6'' era ''42+ semanas'', CNV ''42 e +'''
+    - name: semagestac
+      type: integer
+      label: Semanas de gestação
+    - name: tpmetestim
+      type: string
+      label: Método estimativa IG
+      x-decode:
+        ? ''
+        : N Inf
+        '1': Exame Fisico
+        '2': Outro Metodo
+        '8': DUM
+        '9': Ign
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 2ccb941f99e1cb7cdc841793f05f41a4abdfb52b88ae3f053b5c98451c2c8e9a
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sinasc-tab-de43d0c99630
+            pages: []
+            locator: 'NASCIDO.def: XMetodo Estimar, TPMETESTIM, 1, TPMETODO.CNV; Arquivos Auxiliares para
+              Tabulação a partir de 1996/TPMETODO.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''Exame físico'', CNV ''Exame
+            Fisico''; ''2'' era ''Outro método'', CNV ''Outro Metodo''; ''9'' era ''Ignorado'', CNV ''Ign'''
+    - name: dtultmenst
+      type: date
+      label: Data última menstruação
+      x-format: ddMMyyyy
+    - name: mesprenat
+      type: integer
+      label: Mês início pré-natal
+    - name: consultas
+      type: string
+      label: Consultas pré-natal (faixas)
+      x-decode:
+        ? ''
+        : Não informado
+        '0': Ignorado
+        '1': Nenhuma
+        '2': 1-3 vezes
+        '3': 4-6 vezes
+        '4': 7 e +
+        '5': Ignorado
+        '6': Ignorado
+        '7': Ignorado
+        '8': Ignorado
+        '9': Ignorado
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: a6f514918a6e13724869f347a0ac98c7cefa7bf0e1c5cb5f4fb919162b43d3e4
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sinasc-tab-de43d0c99630
+            pages: []
+            locator: 'NASCIDO.def: XConsultas, CONSULTAS, 1, CONSULT.CNV; Arquivos Auxiliares para Tabulação
+              a partir de 1996/CONSULT.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''2'' era ''1 a 3 consultas'', CNV ''1-3
+            vezes''; ''3'' era ''4 a 6 consultas'', CNV ''4-6 vezes''; ''4'' era ''7 ou mais consultas'',
+            CNV ''7 e +'''
+    - name: consprenat
+      type: integer
+      label: Consultas pré-natal (exato)
+    - name: kotelchuck
+      type: string
+      label: Índice de Kotelchuck
+      x-decode:
+        '1': Não fez pré-natal (Campo33=0)
+        '2': Inadequado (Campo34>3 ou Campo34<=3 e Campo33<3)
+        '3': Intermediário (Campo34<=3 e Campo33 entre 3 e 5)
+        '4': Adequado (Campo34<=3 e Campo33=6)
+        '5': Mais que adequado (Campo34<=3 e Campo33>=7)
+        '9': Não Classificados (campos 33 ou 34, Nulo ou Ign)
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: c4985b8293ef7cda3f5bf206c46afeddfee1d5efdb54fd8959447f0e07b1ca49
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sinasc-tab-de43d0c99630
+            pages: []
+            locator: 'NASCIDO.def: XAdeq acesso PréNatal, KOTELCHUCK, 1, KOTELCHUCK.CNV; Arquivos Auxiliares
+              para Tabulação a partir de 1996/KOTELCHUCK.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''Inadequado'', CNV ''Não
+            fez pré-natal (Campo33=0)''; ''2'' era ''Intermediário'', CNV ''Inadequado (Campo34>3 ou Campo34<=3
+            e Campo33<3)''; ''3'' era ''Adequado'', CNV ''Intermediário (Campo34<=3 e Campo33 entre 3 e 5)'';
+            ''4'' era ''Mais que adequado'', CNV ''Adequado (Campo34<=3 e Campo33=6)''; ''9'' era ''Ignorado'',
+            CNV ''Não Classificados (campos 33 ou 34, Nulo ou Ign)'''
+
+    # ========================================================================
+    # Parto
+    # ========================================================================
+    - name: gravidez
+      type: string
+      label: Tipo de gravidez
+      x-decode:
+        ? ''
+        : N inf
+        '0': Ignorado
+        '1': Única
+        '2': Dupla
+        '3': Tripla e+
+        '4': Ignorado
+        '5': Ignorado
+        '6': Ignorado
+        '7': Ignorado
+        '8': Ignorado
+        '9': Ignorado
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: b817cf9fb462f311033a6a8c395c050a5fadf5a955c206189e1ebcb3b4eb942e
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sinasc-tab-de43d0c99630
+            pages: []
+            locator: 'NASCIDO.def: XTipo de Gravidez, GRAVIDEZ, 1, GRAVIDEZ.CNV; Arquivos Auxiliares para
+              Tabulação a partir de 1996/GRAVIDEZ.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''3'' era ''Tripla ou mais'', CNV ''Tripla
+            e+''; ''9'' era ''Ignorada'', CNV ''Ignorado'''
+    - name: parto
+      type: string
+      label: Tipo de parto
+      x-decode:
+        ? ''
+        : N Inf
+        '0': Ign
+        '1': Vaginal
+        '2': Cesário
+        '3': Ign
+        '4': Ign
+        '5': Ign
+        '6': Ign
+        '7': Ign
+        '8': Ign
+        '9': Ign
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: d49eae9e60d210839640ed81382f58e1829ed477c7ea4650737865e26bbadaf2
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sinasc-tab-de43d0c99630
+            pages: []
+            locator: 'NASCIDO.def: XTipo de Parto, PARTO, 1, PARTO.CNV; Arquivos Auxiliares para Tabulação
+              a partir de 1996/PARTO.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''2'' era ''Cesáreo'', CNV ''Cesário'';
+            ''9'' era ''Ignorado'', CNV ''Ign'''
+    - name: stcesparto
+      type: string
+      label: Cesárea antes do trabalho de parto
+      x-decode:
+        ? ''
+        : N Inf
+        '1': Cesarea antes TP iniciar
+        '2': Cesarea apos  TP iniciar
+        '3': Nao se aplica
+        '9': Ign
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 81f245f9ba111b8bed51ad609732e4687192614a1094cdc8a8ca00a40f1145d6
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sinasc-tab-de43d0c99630
+            pages: []
+            locator: 'NASCIDO.def: XCesarea Ocorr TParto, STCESPARTO, 1, STPARTO.CNV; Arquivos Auxiliares
+              para Tabulação a partir de 1996/STPARTO.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''Sim'', CNV ''Cesarea antes
+            TP iniciar''; ''2'' era ''Não'', CNV ''Cesarea apos  TP iniciar''; ''3'' era ''Não se aplica'',
+            CNV ''Nao se aplica''; ''9'' era ''Ignorado'', CNV ''Ign'''
+    - name: sttrabpart
+      type: string
+      label: Trabalho de parto induzido
+      x-decode:
+        ? ''
+        : N Inf
+        '1': Sim
+        '2': Não
+        '9': Ign
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 3422606b95b81313902f1103a41cfa99757b2781f730bca8f24722d56acc3807
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sinasc-tab-de43d0c99630
+            pages: []
+            locator: 'NASCIDO.def: XTrab Parto Induzido, STTRABPART, 1, ANOMAL.CNV; Arquivos Auxiliares para
+              Tabulação a partir de 1996/ANOMAL.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''3'' era ''Não se aplica'', CNV não
+            lista; ''9'' era ''Ignorado'', CNV ''Ign'''
+    - name: tpapresent
+      type: string
+      label: Apresentação fetal
+      x-decode:
+        ? ''
+        : N Inf
+        '1': Cefalica
+        '2': Pelvica ou Podalica
+        '3': Transversa
+        '9': Ign
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 37b4ef8f0ce62bbd840c38ba8cf090612fd673083d01757cf293e801f7cdcc62
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sinasc-tab-de43d0c99630
+            pages: []
+            locator: 'NASCIDO.def: XParto Apresentacao, TPAPRESENT, 1, PARAPRE.CNV; Arquivos Auxiliares para
+              Tabulação a partir de 1996/PARAPRE.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''Cefálico'', CNV ''Cefalica'';
+            ''2'' era ''Pélvica ou podálica'', CNV ''Pelvica ou Podalica''; ''9'' era ''Ignorado'', CNV ''Ign'''
+    - name: tpnascassi
+      type: string
+      label: Assistência ao nascimento
+      x-decode:
+        ? ''
+        : N Inf
+        '1': Medico
+        '2': Enferm/Obstetriz
+        '3': Parteira
+        '4': Outros
+        '9': Ign
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 86e7f5b97d952c57311e06aa72d3ea865ad5bb39de6447ad4e6df0768746ade3
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sinasc-tab-de43d0c99630
+            pages: []
+            locator: 'NASCIDO.def: XNasc Assistido, TPNASCASSI, 1, TPASSIST.CNV; Arquivos Auxiliares para
+              Tabulação a partir de 1996/TPASSIST.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''Médico'', CNV ''Medico'';
+            ''2'' era ''Enfermeira/obstetriz'', CNV ''Enferm/Obstetriz''; ''9'' era ''Ignorado'', CNV ''Ign'''
+    - name: tprobson
+      type: string
+      label: Classificação de Robson
+      x-decode:
+        '01': 01 Nulípara, gest un, cefál >37sem, tp espontaneo
+        '02': 02 Nulípara, gest un, cefál >37sem c/ind CS préTP
+        '03': 03 Multípara,(s/ces prev)gest un cef >37sem espon
+        '04': 04 Multíp,(s/ces prev)gest un cef >37s ind/CSpréTP
+        '05': 05 C/CS ant gestação única, cefálica, > 37 semanas
+        '06': 06 Todos partos pélvicos em nulíparas
+        '07': 07 Todos partos pélv em multíparas (incl CS prévia
+        '08': 08 Todas gest múltiplas (incluindo CS prévia
+        '09': 09 Todas apres anormais (incluindo CS prévia
+        '10': 10 Todas gest unic cefal <36sem (incl CS prévia
+        '11': 11 Nasc n clas por aus resp aos itens necessarios
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 805eca82d3f58c31cc3107dff039329627f2619b8da91085cb5d6494a39017fc
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sinasc-tab-de43d0c99630
+            pages: []
+            locator: 'NASCIDO.def: XClassif. Robson, TPROBSON, 1, ROBSON.CNV; Arquivos Auxiliares para Tabulação
+              a partir de 1996/ROBSON.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''01'' era ''Grupo 1 — Nulípara, única
+            cefálica, ≥ 37 sem, TP espontâneo'', CNV ''01 Nulípara, gest un, cefál >37sem, tp espontaneo'';
+            ''02'' era ''Grupo 2 — Nulípara, única cefálica, ≥ 37 sem, TP induzido ou cesárea eletiva'', CNV
+            ''02 Nulípara, gest un, cefál >37sem c/ind CS préTP''; ''03'' era ''Grupo 3 — Multípara s/ cesárea
+            anterior, única cefálica, ≥ 37 sem, TP espontâneo'', CNV ''03 Multípara,(s/ces prev)gest un cef
+            >37sem espon''; ''04'' era ''Grupo 4 — Multípara s/ cesárea anterior, única cefálica, ≥ 37 sem,
+            TP induzido/eletiva'', CNV ''04 Multíp,(s/ces prev)gest un cef >37s ind/CSpréTP''; ''05'' era
+            ''Grupo 5 — Multípara c/ cesárea anterior, única cefálica, ≥ 37 sem'', CNV ''05 C/CS ant gestação
+            única, cefálica, > 37 semanas''; ''06'' era ''Grupo 6 — Nulípara, única pélvica'', CNV ''06 Todos
+            partos pélvicos em nulíparas''; ''07'' era ''Grupo 7 — Multípara, única pélvica (incl. c/ cesárea
+            anterior)'', CNV ''07 Todos partos pélv em multíparas (incl CS prévia''; ''08'' era ''Grupo 8
+            — Gestação múltipla (incl. c/ cesárea anterior)'', CNV ''08 Todas gest múltiplas (incluindo CS
+            prévia''; ''09'' era ''Grupo 9 — Única transversa/oblíqua (incl. c/ cesárea anterior)'', CNV ''09
+            Todas apres anormais (incluindo CS prévia''; ''10'' era ''Grupo 10 — Única cefálica, < 37 sem
+            (incl. c/ cesárea anterior)'', CNV ''10 Todas gest unic cefal <36sem (incl CS prévia'''
+    - name: paridade
+      type: string
+      label: Paridade
+      x-decode: { "0": "Nulípara", "1": "Multípara" }
+
+    # ========================================================================
+    # Recém-Nascido
+    # ========================================================================
+    - name: dtnasc
+      type: date
+      label: Data de nascimento
+      x-format: ddMMyyyy
+      constraints: { required: true }
+    - name: horanasc
+      type: string
+      label: Hora de nascimento
+    - name: sexo
+      type: integer
+      label: Sexo
+      x-decode:
+        '0': I
+        '1': M
+        '2': F
+        F: F
+        I: I
+        M: M
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 3fb5a2ff2558c1ab146ecf75a446acaad0015c4c51f9c9f544ee38aec7010bdf
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sinasc-tab-de43d0c99630
+            pages: []
+            locator: 'NASCIDO.def: XSexo, SEXO, 1, SEXO.CNV; Arquivos Auxiliares para Tabulação a partir de
+              1996/SEXO.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''0'' era ''Ignorado'', CNV ''I''; ''1''
+            era ''Masculino'', CNV ''M''; ''2'' era ''Feminino'', CNV ''F''; ''9'' era ''Ignorado'', CNV não
+            lista; ''M'' era ''Masculino'', CNV ''M''; ''F'' era ''Feminino'', CNV ''F''; ''I'' era ''Ignorado'',
+            CNV ''I'''
+    - name: racacor
+      type: string
+      label: Raça/cor do recém-nascido
+      x-decode:
+        ? ''
+        : N Inf
+        '1': Branca
+        '2': Preta
+        '3': Amarela
+        '4': Parda
+        '5': Indígena
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 70f1460a3cb1a3ba63a16b6c71c014b4bdecaf4dd4cbdc59f48cfa169cf4986f
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sinasc-tab-de43d0c99630
+            pages: []
+            locator: 'NASCIDO.def: XRaca Cor Nascido, RACACOR, 1, RACA.CNV; Arquivos Auxiliares para Tabulação
+              a partir de 1996/RACA.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''9'' era ''Ignorado'', CNV não lista'
+    - name: peso
+      type: integer
+      label: Peso ao nascer (g)
+    - name: apgar1
+      type: integer
+      label: Apgar 1º minuto
+      constraints: { minimum: 0, maximum: 10 }
+    - name: apgar5
+      type: integer
+      label: Apgar 5º minuto
+      constraints: { minimum: 0, maximum: 10 }
+    - name: idanomal
+      type: string
+      label: Anomalia congênita
+      x-decode:
+        ? ''
+        : N Inf
+        '1': Sim
+        '2': Nao
+        '3': Ign
+        '4': Ign
+        '5': Ign
+        '6': Ign
+        '7': Ign
+        '8': Ign
+        '9': Ign
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 1f730622e0a9fa8e103dfe540ba4c23fd0b31f3543c85e1dd84f91e631b67fc9
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sinasc-tab-de43d0c99630
+            pages: []
+            locator: 'NASCIDO.def: XAnomalia detectada, IDANOMAL, 1, IDANOMAL.CNV; Arquivos Auxiliares para
+              Tabulação a partir de 1996/idanomal.cnv'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''2'' era ''Não'', CNV ''Nao''; ''9''
+            era ''Ignorado'', CNV ''Ign'''
+    - name: codanomal
+      type: string
+      label: Código da anomalia (CID-10)
+      description: >-
+        Um ou mais códigos CID-10 concatenados sem separador (ex.: Q248Q659Q789); não é
+        um código único, por isso não declara referência a aux_cid10.
+    - name: idadepai
+      type: integer
+      label: Idade do pai
+
+    # ========================================================================
+    # Responsável pelo Preenchimento
+    # ========================================================================
+    - name: tpfuncresp
+      type: string
+      label: Função do responsável
+      x-decode:
+        ? ''
+        : N Inf
+        '0': N Inf
+        '1': Medico
+        '2': Enfermeiro
+        '3': Parteira
+        '4': Func Cartorio
+        '5': Outros
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: df3ec0ba20a76893457a43b6b01e643f18c377da4890865566d7a94d3130035d
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sinasc-tab-de43d0c99630
+            pages: []
+            locator: 'NASCIDO.def: XDN preenchida por, TPFUNCRESP, 1, TPFUNC.CNV; Arquivos Auxiliares para
+              Tabulação a partir de 1996/TPFUNC.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''Médico'', CNV ''Medico'';
+            ''4'' era ''Funcionário do cartório'', CNV ''Func Cartorio'''
+    - name: tpdocresp
+      type: string
+      label: Tipo de documento do responsável
+      x-decode:
+        "1": "CNES"
+        "2": "CRM"
+        "3": "COREN"
+        "4": "RG"
+        "5": "CPF"
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: b4dcc2acde0c7979a9a5a8d0c19983068c25d34e311cf9907f3c2bfcd9eff614
+          status: verified_in_source
+          checked_at: '2026-09-23'
+          method: page-read
+          reviewer: maintainer review
+          evidence:
+          - source_id: sinasc-9ac143d5eae6
+            pages:
+            - 5
+            locator: 'TPDOCRESP, Caracter 1: 1 - CNES, 2 - CRM, 3 - COREN, 4 - RG, 5 - CPF'
+          note: Mapa igual ao da página.
+        issues:
+        - id: tpdocresp-0-sem-fonte
+          status: open
+          description: '''0'' fica sem rótulo: a Estrutura do SINASC (1996_/Doc, p. 5) lista só 1 a 5.
+            RR 2022: ''0'' em 20 declarações.'
+    - name: dtdeclarac
+      type: date
+      label: Data da declaração
+      x-format: ddMMyyyy
+
+    # ========================================================================
+    # Administrativo / Sistema
+    # ========================================================================
+    - name: numerolote
+      type: string
+      label: Número do lote
+    - name: dtcadastro
+      type: date
+      label: Data de cadastro
+      x-format: ddMMyyyy
+    - name: dtrecebim
+      type: date
+      label: Data de recebimento
+      x-format: ddMMyyyy
+    - name: dtrecoriga
+      type: date
+      label: Data recebimento original
+      x-format: ddMMyyyy
+    - name: versaosist
+      type: string
+      label: Versão do sistema
+    - name: stdnepidem
+      type: string
+      label: Status DN epidemiológica
+      x-decode: { "0": "Não", "1": "Sim" }
+    - name: stdnnova
+      type: string
+      label: Status DN nova
+      x-decode:
+        "0": "Formulário antigo"
+        "1": "Formulário novo (pós-2011)"
+    - name: difdata
+      type: integer
+      label: Diferença de datas (dias)
+
+    # ========================================================================
+    # Partições + proveniência (adicionados pelo ETL)
+    # ========================================================================
+    - name: ano
+      type: integer
+      label: Ano
+      constraints: { required: true }
+    - name: uf
+      type: string
+      label: UF
+      constraints: { required: true, pattern: "^[A-Z]{2}$" }
+    - name: _fonte_arquivo
+      type: string
+      label: Arquivo fonte
+    - name: _data_extracao
+      type: string
+      label: Data de extração
+    - name: _hash_arquivo
+      type: string
+      label: Hash do arquivo
+    - name: _sistema
+      type: string
+      label: Sistema
+    - name: _grupo
+      type: string
+      label: Grupo
+x-source-format: dbc
+x-source-family: datasus_ftp
+x-source-prefix: DN
+x-partitions: [ano, uf]
+x-version: "2.4.0"
+
+x-analytics:
+  version: 1.0.0
+  applicability_policy: exact_audited_source_identity
+  validated_sources:
+  - ano: 2023
+    uf: RR
+    release: final
+    source_sha256: 3b9c5cb07b3981e735bea9bc9c7967906af13047b202cc85550b92c885e82a3c
+  age:
+    field: idademae
+    subject: mother
+    kind: years
+    units:
+      year:
+        unit: year
+        minimum_value: 1
+        maximum_value: 65
+    ignored_values: ['0', '00', '99']
+    evidence:
+    - source_id: sinasc-24e0d4388ea1
+      pages: [1]
+      locator: IDADEMAE, C(02), idade da mãe em anos
+    - source_id: sinasc-manual-b88f538902ee
+      pages: [16]
+      locator: Campo 19, anos completos da mãe no momento do parto
+    - source_id: sinasc-tab-ff0124f6aecf
+      pages: []
+      locator: NASCIDO.def; IDADEMAE.CNV and IDADET.CNV
+    notes:
+    - The subject is the mother; SEXO refers to the newborn and is not a maternal sex rule.
+    - 00 and 99 belong to the ignored tabulation group in both CNVs; this is not a claim about collection sentinels.
+    - 01-65 is the common supported range. 66-70 conflicts between CNVs; other quantities remain unsupported.
+    - The audit covers the complete final DNRR2023.dbc collected from SINASC/1996_/Dados/DNRES.
+  dates: []

@@ -1,0 +1,1173 @@
+name: sinan_tuberculose
+title: SINAN — Tuberculose, notificações nacionais
+profile: tabular-data-resource
+encoding: latin-1
+x-version: 1.0.0
+x-source-format: dbc
+x-partitions:
+- _source_ano
+x-evidence:
+  physical_schema: TUBEBR20.dbc, 94 fields (layout of 2019-2025); observed 2026-09-22.
+    TUBEBR01-18 add EXTRAPUL_O, AGRAVOUTDE and OUTRAS_DES, kept as staged.
+  semantic_status: Page-sourced maps only; every x-decode code cites an official page
+    or TAB_SINANNET CNV. nu_idade_n is audited (x-analytics.age).
+  dictionary_url: https://portalsinan.saude.gov.br/images/documentos/Agravos/Tuberculose/DICI_DADOS_NET_Tuberculose_23_07_2020.pdf
+  source_url: ftp://ftp.datasus.gov.br/dissemin/publicos/SINAN/DADOS/PRELIM/TUBEBR20.dbc
+schema:
+  fields:
+  - name: tp_not
+    type: string
+    x-decode:
+      '1': Negativa
+      '2': Individual
+      '3': Surto
+      '4': Agregado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: dcf8c99c8d2fbadd5d45f06c1382ef31a9652bfffd995898322cf68b8230ce2c
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 1
+          locator: '1. Tipo de Notificação (TP_NOT): 1 – Negativa, 2 – Individual, 3 – Surto, 4 – Agregado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: id_agravo
+    type: string
+  - name: dt_notific
+    type: date
+  - name: nu_ano
+    type: string
+  - name: sg_uf_not
+    type: string
+  - name: id_municip
+    type: string
+  - name: id_regiona
+    type: string
+  - name: dt_diag
+    type: date
+  - name: ano_nasc
+    type: string
+  - name: nu_idade_n
+    type: integer
+    label: Idade
+    x-metadata:
+      physical_name: NU_IDADE_N
+      unit: encoded
+      derivation:
+        kind: coded_age
+        inputs:
+        - nu_idade_n
+        rule_version: 1.0.0
+        output:
+        - idade_anos_completos
+        - idade_quantidade
+        - idade_unidade
+      applicability:
+        status: confirmed
+        data_period: null
+        valid_from: null
+        valid_until: null
+        conditions:
+        - Only the exact source identities in dataset.analytics.validated_sources.
+        reason: Documented rule compared with the complete-file audits of 2026-09-21 (evidence/2026-09-21-w3-idade-sinan/)
+          and 2026-09-22 (evidence/2026-09-22-w6-idade-tb/); no applicability to other source hashes
+          is inferred.
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 3
+          - 4
+          locator: '10. Idade (NU_IDADE_N): 1º dígito 1 Hora, 2 Dia, 3 Mês, 4 Ano; ex. 3009 = nove meses,
+            4018 = dezoito anos'
+  - name: cs_sexo
+    type: string
+    x-decode:
+      M: Masculino
+      F: Feminino
+      I: Ignorado
+    x-metadata:
+      missing_codes:
+        I: ignored
+      claims:
+      - target: /field/codes
+        value_sha256: 03f1b56525c2bd3ad4b5365e1dd3e7a67a53c0d24389f0038e4031d642e4596b
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 4
+          locator: '11. Sexo (CS_SEXO): M- Masculino, F- Feminino, I- Ignorado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: cs_gestant
+    type: string
+    x-decode:
+      '1': 1º Trimestre
+      '2': 2º Trimestre
+      '3': 3º Trimestre
+      '4': Idade gestacional ignorada
+      '5': Não
+      '6': Não se aplica
+      '9': Ignorado
+    x-metadata:
+      missing_codes:
+        '6': not_applicable
+        '9': ignored
+      claims:
+      - target: /field/codes
+        value_sha256: 56e8fb62503aa12594230ef14613fbffe8b421b388913657b0375496d99f2b76
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 4
+          locator: '12. Gestante (CS_GESTANT): 1 a 6 e 9. Ignorado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: cs_raca
+    type: string
+    x-decode:
+      '1': branca
+      '2': preta
+      '3': amarela
+      '4': parda
+      '5': indígena
+      '9': Ignorado
+    x-metadata:
+      missing_codes:
+        '9': ignored
+      claims:
+      - target: /field/codes
+        value_sha256: 1cf71f1e71941e48b0c970bef202cffa953417dbbdf85e410186cbf1f09a5e26
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 5
+          locator: '13. Raça/Cor (CS_RACA): 1- branca, 2- preta, 3- amarela, 4- parda, 5- indígena, 9 Ignorado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: cs_escol_n
+    type: string
+    x-decode:
+      '0': Analfabeto
+      '00': Analfabeto
+      '1': 1ª a 4ª série incompleta do EF
+      '01': 1ª a 4ª série incompleta do EF
+      '2': 4ª série completa do EF (antigo 1° grau)
+      '02': 4ª série completa do EF (antigo 1° grau)
+      '3': 5ª à 8ª série incompleta do EF (antigo ginásio ou 1° grau)
+      '03': 5ª à 8ª série incompleta do EF (antigo ginásio ou 1° grau)
+      '4': Ensino fundamental completo (antigo ginásio ou 1° grau)
+      '04': Ensino fundamental completo (antigo ginásio ou 1° grau)
+      '5': Ensino médio incompleto (antigo colegial ou 2° grau)
+      '05': Ensino médio incompleto (antigo colegial ou 2° grau)
+      '6': Ensino médio completo (antigo colegial ou 2° grau)
+      '06': Ensino médio completo (antigo colegial ou 2° grau)
+      '7': Educação superior incompleta
+      '07': Educação superior incompleta
+      '8': Educação superior completa
+      '08': Educação superior completa
+      '9': Ignorado
+      '09': Ignorado
+      '10': Não se aplica
+    x-metadata:
+      missing_codes:
+        '9': ignored
+        '09': ignored
+        '10': not_applicable
+      claims:
+      - target: /field/codes
+        value_sha256: 6eb1368615a3cf03d6f2928e0a47dcc30d0ea885788a18620fcc6056e7c156a6
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 5
+          locator: '14. Escolaridade (CS_ESCOL_N): 1. a 8., 9. Ignorado, 10. Não se aplica; a primeira categoria
+            está impressa como "43 Analfabeto"'
+        - source_id: sinan-tab-cad66ee38781
+          pages: []
+          locator: 'TAB_SINANNET/Escolarnet.cnv: 0 e 00 Analfabeto; 01 a 09 na mesma linha de 1 a 9'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: sg_uf
+    type: string
+  - name: id_mn_resi
+    type: string
+  - name: id_rg_resi
+    type: string
+  - name: id_pais
+    type: string
+  - name: nduplic_n
+    type: string
+    x-decode:
+      ? ''
+      : Não identificado
+      '0': Não identificado
+      '1': Não é duplicidade (não listar)
+      '2': Duplicidade (não contar)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 6e5d75325fc5e6773be557e9440b7cf256d6ac76b5cfaecf219814b46eb7c6a1
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 8
+          locator: 'Não Listar/Não Contar (NDUPLIC_N): 0 ou branco – Não identificado, 1 – Não é duplicidade
+            (não listar), 2 – Duplicidade (não contar)'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: in_vincula
+    type: string
+    x-decode:
+      ? ''
+      : Não Vinculado
+      '0': Não Vinculado
+      '1': Vinculado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 4aaf27662321a59f4b457e5357935b5be6cf54b930d743fdf0ebf3220b10a1cc
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 9
+          locator: 'Vinculação (IN_VINCULA): 0 ou branco – Não Vinculado, 1 – Vinculado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: dt_digita
+    type: date
+  - name: dt_transus
+    type: date
+  - name: dt_transdm
+    type: date
+  - name: dt_transsm
+    type: date
+  - name: dt_transrm
+    type: date
+  - name: dt_transrs
+    type: date
+  - name: dt_transse
+    type: date
+  - name: cs_flxret
+    type: string
+    x-decode:
+      '0': Não
+      '1': habilitado para envio
+      '2': enviado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 2675e40a7bf7d485ebe11588ae9bc5736fb8a9e09d2eee513adaff68283f2585
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 15
+          locator: 'Fluxo de retorno (CS_FLXRET): 0 - Não, 1 - habilitado para envio., 2 - enviado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: flxrecebi
+    type: string
+  - name: migrado_w
+    type: string
+    x-decode:
+      '1': migrado do Sinan Windows
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 6c6609ba7be3b500fc5ca2f14011d216c1848d521c796937860276ccffb134a7
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 15
+          locator: 'Identifica migração (MIGRADO_W): 1- migrado do Sinan Windows'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: id_ocupa_n
+    type: string
+  - name: tratamento
+    type: string
+    x-decode:
+      '1': Caso Novo
+      '2': Recidiva
+      '3': Reingresso após Abandono
+      '4': Não Sabe
+      '5': Transferência
+      '6': Pós-óbito
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: c26a569ed801a6464c27072685df0b9d47e761d2ae9eced44547ff9d55d3fdb1
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 1
+          locator: '32. Tipo de Entrada (DBF TRATAMENTO): 1. Caso Novo a 6. Pós-óbito'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: institucio
+    type: string
+  - name: raiox_tora
+    type: string
+    x-decode:
+      '1': Suspeito
+      '2': Normal
+      '3': Outra patologia
+      '4': Não realizado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: f28927162792a03109e0ff097acf1e029a58d186ea52059b81d3ca60f4275d09
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 6
+          locator: '39. Radiografia do tórax (RAIOX_TORA): 1. Suspeito, 2. Normal, 3. Outra patologia, 4.
+            Não realizado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: teste_tube
+    type: string
+  - name: forma
+    type: string
+    x-decode:
+      '1': Pulmonar
+      '2': Extrapulmonar
+      '3': Pulmonar + Extrapulmonar
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 1882400a8812e52f69fc79893c4c9f4424da6bc1f68d27d4c3ee0c3743f2a5dc
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 3
+          locator: '35. Forma (FORMA): 1. Pulmonar, 2. Extrapulmonar, 3. Pulmonar + Extrapulmonar'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: extrapu1_n
+    type: string
+    x-decode:
+      '1': Pleural
+      '2': Gang. Perif.
+      '3': Geniturinária
+      '4': Óssea
+      '5': Ocular
+      '6': Miliar
+      '7': Meningoencefálico
+      '8': Cutânea
+      '9': Laringea
+      '10': Outra
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: a8090f8eb4849175b765440d72b280fc4fb2419a839c778c734cda6d6628fe92
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 4
+          locator: '36. Se extrapulmonar (dicionário: EXTRAPU_N; DBF: EXTRAPU1_N): 1. Pleural a 10. Outra'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: extrapu2_n
+    type: string
+  - name: agravaids
+    type: string
+    x-decode:
+      '1': Sim
+      '2': Não
+      '9': Ignorado
+    x-metadata:
+      missing_codes:
+        '9': ignored
+      claims:
+      - target: /field/codes
+        value_sha256: b755ad46809d5437fbf97eece5d1a9274f9dc92b6461c4e280ae4ce2ff94fbe9
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 5
+          locator: '37. Doenças e agravos associados, Aids (AGRAVAIDS): 1. Sim, 2. Não, 9. Ignorado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: agravalcoo
+    type: string
+    x-decode:
+      '1': Sim
+      '2': Não
+      '9': Ignorado
+    x-metadata:
+      missing_codes:
+        '9': ignored
+      claims:
+      - target: /field/codes
+        value_sha256: b755ad46809d5437fbf97eece5d1a9274f9dc92b6461c4e280ae4ce2ff94fbe9
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 5
+          locator: '37. Doenças e agravos associados, Alcoolismo (AGRAVALCOO): 1. Sim, 2. Não, 9. Ignorado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: agravdiabe
+    type: string
+    x-decode:
+      '1': Sim
+      '2': Não
+      '9': Ignorado
+    x-metadata:
+      missing_codes:
+        '9': ignored
+      claims:
+      - target: /field/codes
+        value_sha256: b755ad46809d5437fbf97eece5d1a9274f9dc92b6461c4e280ae4ce2ff94fbe9
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 5
+          locator: '37. Doenças e agravos associados, Diabetes (AGRAVDIABE): 1. Sim, 2. Não, 9. Ignorado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: agravdoenc
+    type: string
+    x-decode:
+      '1': Sim
+      '2': Não
+      '9': Ignorado
+    x-metadata:
+      missing_codes:
+        '9': ignored
+      claims:
+      - target: /field/codes
+        value_sha256: b755ad46809d5437fbf97eece5d1a9274f9dc92b6461c4e280ae4ce2ff94fbe9
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 5
+          locator: '37. Doenças e agravos associados, Doença Mental (AGRAVDOENC): 1. Sim, 2. Não, 9. Ignorado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: agravoutra
+    type: string
+    x-decode:
+      '1': Sim
+      '2': Não
+      '9': Ignorado
+    x-metadata:
+      missing_codes:
+        '9': ignored
+      claims:
+      - target: /field/codes
+        value_sha256: b755ad46809d5437fbf97eece5d1a9274f9dc92b6461c4e280ae4ce2ff94fbe9
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 5
+          locator: '37. Doenças e agravos associados, Outras (AGRAVOUTRA): 1. Sim, 2. Não, 9. Ignorado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: bacilosc_e
+    type: string
+    x-decode:
+      '1': Positiva
+      '2': Negativa
+      '3': Não realizada
+      '4': Não se aplica
+    x-metadata:
+      missing_codes:
+        '4': not_applicable
+      claims:
+      - target: /field/codes
+        value_sha256: e8b95a083272f014ed539093e6e67de9843213d1a993c1ee14269b1692606ebc
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 6
+          locator: '38. Baciloscopia de escarro (diagnóstico) (BACILOSC_E): 1. Positiva, 2. Negativa, 3.
+            Não realizada, 4. Não se aplica'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: bacilos_e2
+    type: string
+  - name: bacilosc_o
+    type: string
+  - name: cultura_es
+    type: string
+    x-decode:
+      '1': Positiva
+      '2': Negativa
+      '3': Em andamento
+      '4': Não realizada
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: f429d9428d3bb073ea41cd7f1d93147f84cb9cb574ab111d1e034a717b157ce7
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 8
+          locator: '43. Cultura (CULTURA_ES): 1. Positiva, 2. Negativa, 3. Em andamento, 4. Não realizada'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: cultura_ou
+    type: string
+  - name: hiv
+    type: string
+    x-decode:
+      '1': Positivo
+      '2': Negativo
+      '3': Em andamento
+      '4': Não realizado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: ca7316f004a37ca455d49a90cc35bb45a0499b14e2421cc5e25ddb9a5f9c838e
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 6
+          locator: '40. HIV (HIV): 1. Positivo, 2. Negativo, 3. Em andamento, 4. Não realizado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: histopatol
+    type: string
+    x-decode:
+      '1': Baar Positivo
+      '2': Sugestivo de TB
+      '3': Não sugestivo de TB
+      '4': Em andamento
+      '5': Não realizado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 11b0da3a07ee008dbb07c0725616835625b2ac3366ce41f3f00a2c8eb55b12bd
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 7
+          locator: '42. Histopatologia (HISTOPATOL): 1. Baar Positivo a 5. Não realizado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: dt_inic_tr
+    type: date
+  - name: rifampicin
+    type: string
+  - name: isoniazida
+    type: string
+  - name: etambutol
+    type: string
+  - name: estreptomi
+    type: string
+  - name: pirazinami
+    type: string
+  - name: etionamida
+    type: string
+  - name: outras
+    type: string
+  - name: trat_super
+    type: string
+  - name: nu_contato
+    type: integer
+  - name: doenca_tra
+    type: string
+    description: 'Doença relacionada ao trabalho: no TUBEBR20 o campo traz 0 a 6 (7 registros com 6), mas
+      nenhuma página do dicionário de tuberculose de 2020 o lista, por isso fica sem decodificação.'
+  - name: sg_uf_at
+    type: string
+  - name: id_munic_a
+    type: string
+  - name: dt_noti_at
+    type: date
+  - name: sg_uf_2
+    type: string
+  - name: id_munic_2
+    type: string
+  - name: bacilosc_1
+    type: string
+    x-decode:
+      '1': Positiva
+      '2': Negativa
+      '3': Não realizada
+      '4': Não se aplica
+    x-metadata:
+      missing_codes:
+        '4': not_applicable
+      claims:
+      - target: /field/codes
+        value_sha256: e8b95a083272f014ed539093e6e67de9843213d1a993c1ee14269b1692606ebc
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 16
+          locator: '58. Baciloscopia no 1º mês (BACILOSC_1): 1- Positiva, 2- Negativa, 3- Não realizada,
+            4- Não se aplica'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: bacilosc_2
+    type: string
+    x-decode:
+      '1': Positiva
+      '2': Negativa
+      '3': Não realizada
+      '4': Não se aplica
+    x-metadata:
+      missing_codes:
+        '4': not_applicable
+      claims:
+      - target: /field/codes
+        value_sha256: e8b95a083272f014ed539093e6e67de9843213d1a993c1ee14269b1692606ebc
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 16
+          locator: '58. Baciloscopia no 2º mês (BACILOSC_2): 1- Positiva, 2- Negativa, 3- Não realizada,
+            4- Não se aplica'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: bacilosc_3
+    type: string
+    x-decode:
+      '1': Positiva
+      '2': Negativa
+      '3': Não realizada
+      '4': Não se aplica
+    x-metadata:
+      missing_codes:
+        '4': not_applicable
+      claims:
+      - target: /field/codes
+        value_sha256: e8b95a083272f014ed539093e6e67de9843213d1a993c1ee14269b1692606ebc
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 17
+          locator: '58. Baciloscopia no 3º mês (BACILOSC_3): 1- Positiva, 2- Negativa, 3- Não realizada,
+            4- Não se aplica'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: bacilosc_4
+    type: string
+    x-decode:
+      '1': Positiva
+      '2': Negativa
+      '3': Não realizada
+      '4': Não se aplica
+    x-metadata:
+      missing_codes:
+        '4': not_applicable
+      claims:
+      - target: /field/codes
+        value_sha256: e8b95a083272f014ed539093e6e67de9843213d1a993c1ee14269b1692606ebc
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 17
+          locator: '58. Baciloscopia no 4º mês (BACILOSC_4): 1- Positiva, 2- Negativa, 3- Não realizada,
+            4- Não se aplica'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: bacilosc_5
+    type: string
+    x-decode:
+      '1': Positiva
+      '2': Negativa
+      '3': Não realizada
+      '4': Não se aplica
+    x-metadata:
+      missing_codes:
+        '4': not_applicable
+      claims:
+      - target: /field/codes
+        value_sha256: e8b95a083272f014ed539093e6e67de9843213d1a993c1ee14269b1692606ebc
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 17
+          locator: '58. Baciloscopia no 5º mês (BACILOSC_5): 1- Positiva, 2- Negativa, 3- Não realizada,
+            4- Não se aplica'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: bacilosc_6
+    type: string
+    x-decode:
+      '1': Positiva
+      '2': Negativa
+      '3': Não realizada
+      '4': Não se aplica
+    x-metadata:
+      missing_codes:
+        '4': not_applicable
+      claims:
+      - target: /field/codes
+        value_sha256: e8b95a083272f014ed539093e6e67de9843213d1a993c1ee14269b1692606ebc
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 17
+          locator: '58. Baciloscopia no 6º mês (BACILOSC_6): 1- Positiva, 2- Negativa, 3- Não realizada,
+            4- Não se aplica'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: tratsup_at
+    type: string
+    x-decode:
+      '1': Sim
+      '2': Não
+      '9': Ignorado
+    x-metadata:
+      missing_codes:
+        '9': ignored
+      claims:
+      - target: /field/codes
+        value_sha256: b755ad46809d5437fbf97eece5d1a9274f9dc92b6461c4e280ae4ce2ff94fbe9
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 19
+          locator: '60. Tratamento Diretamente Observado (TDO) realizado (TRATSUP_AT): 1- Sim, 2- Não, 9-
+            Ignorado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: dt_mudanca
+    type: date
+  - name: nu_comu_ex
+    type: integer
+  - name: situa_9_m
+    type: string
+  - name: situa_12_m
+    type: string
+  - name: situa_ence
+    type: string
+    x-decode:
+      '1': Cura
+      '2': Abandono
+      '3': Óbito por TB
+      '4': Óbito por outras causas
+      '5': Transferência
+      '6': Mudança de Diagnóstico
+      '7': TB-DR
+      '8': Mudança de Esquema
+      '9': Falência
+      '10': Abandono Primário
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 396ed5108cf9bb2b34982c497c674d46e8030a31381beffccb21a316e21c2c05
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 19
+          - 20
+          locator: '62. Situação de encerramento (SITUA_ENCE): 1. Cura a 10. Abandono Primário (o dicionário
+            diz Varchar2(1); o DBF é C 2)'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: dt_encerra
+    type: date
+  - name: tpuninot
+    type: string
+  - name: pop_liber
+    type: string
+    x-decode:
+      '1': Sim
+      '2': Não
+      '9': Ignorado
+    x-metadata:
+      missing_codes:
+        '9': ignored
+      claims:
+      - target: /field/codes
+        value_sha256: b755ad46809d5437fbf97eece5d1a9274f9dc92b6461c4e280ae4ce2ff94fbe9
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 2
+          locator: '33. Populações Especiais, População privada de liberdade (POP_LIBER): 1. Sim, 2. Não,
+            9. Ignorado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: pop_rua
+    type: string
+    x-decode:
+      '1': Sim
+      '2': Não
+      '9': Ignorado
+    x-metadata:
+      missing_codes:
+        '9': ignored
+      claims:
+      - target: /field/codes
+        value_sha256: b755ad46809d5437fbf97eece5d1a9274f9dc92b6461c4e280ae4ce2ff94fbe9
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 3
+          locator: '33. Populações Especiais, População em situação de rua (POP_RUA): 1. Sim, 2. Não, 9.
+            Ignorado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: pop_saude
+    type: string
+    x-decode:
+      '1': Sim
+      '2': Não
+      '9': Ignorado
+    x-metadata:
+      missing_codes:
+        '9': ignored
+      claims:
+      - target: /field/codes
+        value_sha256: b755ad46809d5437fbf97eece5d1a9274f9dc92b6461c4e280ae4ce2ff94fbe9
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 3
+          locator: '33. Populações Especiais, Profissional de saúde (POP_SAUDE): 1. Sim, 2. Não, 9. Ignorado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: pop_imig
+    type: string
+    x-decode:
+      '1': Sim
+      '2': Não
+      '9': Ignorado
+    x-metadata:
+      missing_codes:
+        '9': ignored
+      claims:
+      - target: /field/codes
+        value_sha256: b755ad46809d5437fbf97eece5d1a9274f9dc92b6461c4e280ae4ce2ff94fbe9
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 3
+          locator: '33. Populações Especiais, Imigrante (POP_IMIG): 1. Sim, 2. Não, 9. Ignorado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: benef_gov
+    type: string
+    x-decode:
+      '1': Sim
+      '2': Não
+      '9': Ignorado
+    x-metadata:
+      missing_codes:
+        '9': ignored
+      claims:
+      - target: /field/codes
+        value_sha256: b755ad46809d5437fbf97eece5d1a9274f9dc92b6461c4e280ae4ce2ff94fbe9
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 3
+          locator: '34. Beneficiário de programa de transferência de renda do governo (BENEF_GOV): 1- Sim,
+            2- Não, 9- Ignorado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: agravdroga
+    type: string
+    x-decode:
+      '1': Sim
+      '2': Não
+      '9': Ignorado
+    x-metadata:
+      missing_codes:
+        '9': ignored
+      claims:
+      - target: /field/codes
+        value_sha256: b755ad46809d5437fbf97eece5d1a9274f9dc92b6461c4e280ae4ce2ff94fbe9
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 5
+          locator: '37. Doenças e agravos associados, Uso de drogas ilícitas (dicionário: AGRAVDROGAS; DBF:
+            AGRAVDROGA): 1. Sim, 2. Não, 9. Ignorado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: agravtabac
+    type: string
+    x-decode:
+      '1': Sim
+      '2': Não
+      '9': Ignorado
+    x-metadata:
+      missing_codes:
+        '9': ignored
+      claims:
+      - target: /field/codes
+        value_sha256: b755ad46809d5437fbf97eece5d1a9274f9dc92b6461c4e280ae4ce2ff94fbe9
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 5
+          locator: '37. Doenças e agravos associados, Tabagismo (dicionário: AGRAVTABACO; DBF: AGRAVTABAC):
+            1. Sim, 2. Não, 9. Ignorado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: test_molec
+    type: string
+    x-decode:
+      '1': Detectável sensível à Rifampicina
+      '2': Detectável resistente à Rifampicina
+      '3': Não detectável
+      '4': Inconclusivo
+      '5': Não realizado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: d7f32a5cbf5f0badded06eb034d2206af963329d929dbc568bbf5b90d90eff2a
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 8
+          locator: '44. Teste Molecular Rápido TB (dicionário: TESTE_MOLEC; DBF: TEST_MOLEC): 1 a 5'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: test_sensi
+    type: string
+    x-decode:
+      '1': Resistente somente à Isoniazida
+      '2': Resistente somente à Rifampicina
+      '3': Resistente à Isoniazida e Rifampicina
+      '4': Resistente a outras drogas de 1ª linha
+      '5': Sensível
+      '6': Em andamento
+      '7': Não realizado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 469f7f772a9f53a1841edceb0bbce16f961237b4909d088a43d01fa8a08778ed
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 8
+          - 9
+          locator: '45. Teste de Sensibilidade (dicionário: TEST_SENSIBILID; DBF: TEST_SENSI): 1 a 7'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: ant_retro
+    type: string
+    x-decode:
+      '1': Sim
+      '2': Não
+      '9': Ignorado
+    x-metadata:
+      missing_codes:
+        '9': ignored
+      claims:
+      - target: /field/codes
+        value_sha256: b755ad46809d5437fbf97eece5d1a9274f9dc92b6461c4e280ae4ce2ff94fbe9
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 7
+          locator: '41. Terapia Antirretroviral durante o tratamento para a TB (dicionário: ANTIRRETROVIRAL;
+            DBF: ANT_RETRO): 1. Sim, 2. Não, 9. Ignorado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: bac_apos_6
+    type: string
+    x-decode:
+      '1': Positiva
+      '2': Negativa
+      '3': Não realizada
+      '4': Não se aplica
+    x-metadata:
+      missing_codes:
+        '4': not_applicable
+      claims:
+      - target: /field/codes
+        value_sha256: e8b95a083272f014ed539093e6e67de9843213d1a993c1ee14269b1692606ebc
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 18
+          locator: '58. Baciloscopia após 6º mês (dicionário: BACILOSC_APOS_6; DBF: BAC_APOS_6): 1- Positiva,
+            2- Negativa, 3- Não realizada, 4- Não se aplica'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: transf
+    type: string
+    x-decode:
+      '1': Mesmo município
+      '2': Município diferente (mesma UF)
+      '3': UF diferente
+      '4': País diferente
+      '9': Ignorado
+    x-metadata:
+      missing_codes:
+        '9': ignored
+      claims:
+      - target: /field/codes
+        value_sha256: 417b849588a2b03720317ea70e3596247c59554f5d3700b11a0f0a8608b3dd3e
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-0e0aac57f975
+          pages:
+          - 20
+          - 21
+          locator: '63. Se transferência (TRANSF): 1. Mesmo município, 2. Município diferente (mesma UF),
+            3. UF diferente, 4. País diferente, 9. Ignorado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: uf_transf
+    type: string
+  - name: mun_transf
+    type: string
+x-identity:
+  year_column: nu_ano
+  code_column: id_agravo
+  code: A169
+x-analytics:
+  version: 1.0.0
+  applicability_policy: exact_audited_source_identity
+  validated_sources:
+  - uf: null
+    ano: 2020
+    release: prelim
+    source_sha256: 9ecf487348b6196c7af143376e10ad70bdb9ef5ecc6ed9026cfa52f39b0b0edc
+  age:
+    field: nu_idade_n
+    kind: sinan
+    units:
+      '1':
+        unit: hour
+      '2':
+        unit: day
+      '3':
+        unit: month
+      '4':
+        unit: year
+    evidence:
+    - source_id: sinan-b3e0561c7a2d
+      pages: [3, 4]
+      locator: '10. Idade (NU_IDADE_N): 1º dígito 1 Hora, 2 Dia, 3 Mês, 4 Ano; ex. 3009 = nove meses, 4018 = dezoito anos'
+    notes:
+    - Three quantity digits; 4088 is 88 years. A SIM-width slice would read 8.
+    - The audit covers the complete PRELIM TUBEBR20.dbc; observed units 1, 2, 3 and 4; 36 blank.
+    - No ignored sentinel is declared; other unit codes are unsupported.

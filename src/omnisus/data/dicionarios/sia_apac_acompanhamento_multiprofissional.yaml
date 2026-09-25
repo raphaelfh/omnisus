@@ -1,0 +1,168 @@
+name: sia_apac_acompanhamento_multiprofissional
+title: SIASUS — APAC de Acompanhamento Multiprofissional (AMP)
+profile: tabular-data-resource
+encoding: latin-1
+x-version: 1.0.0
+x-source-format: dbc
+x-partitions:
+- _source_ano
+x-evidence:
+  physical_schema: sia_amp_df_2024_01_mini.dbc, 65 fields; observed 2026-09-23
+  semantic_status: Physical inventory; individual semantic fields not audited. No
+    inferred category mappings.
+  dictionary_url: ftp://ftp.datasus.gov.br/dissemin/publicos/SIASUS/200801_/Doc/Informe_Tecnico_SIASUS_2019_07.pdf
+  source_url: ftp://ftp.datasus.gov.br/dissemin/publicos/SIASUS/200801_/Dados/AMPDF2401.dbc
+schema:
+  fields:
+  - name: ap_mvm
+    type: string
+  - name: ap_condic
+    type: string
+  - name: ap_gestao
+    type: string
+  - name: ap_coduni
+    type: string
+  - name: ap_autoriz
+    type: string
+  - name: ap_cmp
+    type: string
+  - name: ap_pripal
+    type: string
+  - name: ap_vl_ap
+    type: number
+  - name: ap_ufmun
+    type: string
+  - name: ap_tpups
+    type: string
+  - name: ap_tippre
+    type: string
+  - name: ap_mn_ind
+    type: string
+  - name: ap_cnpjcpf
+    type: string
+  - name: ap_cnpjmnt
+    type: string
+  - name: ap_cnspcn
+    type: string
+  - name: ap_coidade
+    type: string
+    x-metadata:
+      issues:
+      - id: amp-sem-def
+        status: open
+        description: 'Sem mapa: o TAB_SIA (e5812b51d802) não tem DEF do AMP, e o Informe Técnico SIASUS
+          2019-07 não tem leiaute do AMP. Só as máscaras de APAC_Dados_Comuns.DEF (A?*.DBC) e APAC_Medicamentos.DEF
+          (AM*.DBC) cobrem AMP*.DBC, o que não diz que o arquivo segue esses leiautes. AMPDF2401: AP_COIDADE
+          ''4'' em 25 linhas.'
+  - name: ap_nuidade
+    type: string
+  - name: ap_sexo
+    type: string
+    x-metadata:
+      issues:
+      - id: amp-sem-def
+        status: open
+        description: 'Sem mapa: o TAB_SIA (e5812b51d802) não tem DEF do AMP, e o Informe Técnico SIASUS
+          2019-07 não tem leiaute do AMP. Só as máscaras de APAC_Dados_Comuns.DEF (A?*.DBC) e APAC_Medicamentos.DEF
+          (AM*.DBC) cobrem AMP*.DBC, o que não diz que o arquivo segue esses leiautes. AMPDF2401: AP_SEXO
+          ''F'' em 14 linhas e ''M'' em 11.'
+  - name: ap_racacor
+    type: string
+  - name: ap_munpcn
+    type: string
+  - name: ap_ufnacio
+    type: string
+  - name: ap_ceppcn
+    type: string
+  - name: ap_ufdif
+    type: string
+  - name: ap_mndif
+    type: string
+  - name: ap_dtinic
+    type: string
+  - name: ap_dtfim
+    type: string
+  - name: ap_tpaten
+    type: string
+  - name: ap_tpapac
+    type: string
+  - name: ap_motsai
+    type: string
+  - name: ap_obito
+    type: string
+  - name: ap_encerr
+    type: string
+  - name: ap_perman
+    type: string
+  - name: ap_alta
+    type: string
+  - name: ap_transf
+    type: string
+  - name: ap_dtocor
+    type: string
+  - name: ap_codemi
+    type: string
+  - name: ap_catend
+    type: string
+  - name: ap_apacant
+    type: string
+  - name: ap_unisol
+    type: string
+  - name: ap_dtsolic
+    type: string
+  - name: ap_dtaut
+    type: string
+  - name: ap_cidcas
+    type: string
+  - name: ap_cidpri
+    type: string
+  - name: ap_cidsec
+    type: string
+  - name: ap_etnia
+    type: string
+  - name: amp_caract
+    type: string
+  - name: amp_dtini
+    type: string
+  - name: amp_dtcli
+    type: string
+  - name: amp_acevas
+    type: string
+  - name: amp_maisne
+    type: string
+  - name: amp_sitini
+    type: string
+  - name: amp_sittra
+    type: string
+  - name: amp_seapto
+    type: string
+  - name: amp_hb
+    type: string
+  - name: amp_fosfor
+    type: string
+  - name: amp_ktvsem
+    type: string
+  - name: amp_tru
+    type: string
+  - name: amp_albumi
+    type: string
+  - name: amp_pth
+    type: string
+  - name: amp_hiv
+    type: string
+  - name: amp_hcv
+    type: string
+  - name: amp_hbsag
+    type: string
+  - name: amp_interc
+    type: string
+  - name: amp_seperi
+    type: string
+  - name: ap_natjur
+    type: string
+# Identidade do arquivo: ap_mvm vale o mês do arquivo e ap_ufmun começa pelo código IBGE
+# da UF em todos os registros da fixture (tests/fixtures/FIXTURES.md); mesma regra das
+# outras APAC.
+x-identity:
+  month_column: ap_mvm
+  uf_column: ap_ufmun

@@ -1,0 +1,76 @@
+name: sinasc_1994_1995
+title: SINASC — Nascidos vivos por residência (DNR), 1994 e 1995
+profile: tabular-data-resource
+encoding: latin-1
+x-version: 1.0.0
+x-source-format: dbc
+x-partitions:
+- _source_ano
+x-evidence:
+  physical_schema: sinasc_rr_1995_mini.dbc, 30 fields; observed 2026-09-22
+  semantic_status: Physical inventory; individual semantic fields not audited. No
+    inferred category mappings.
+  dictionary_url: ftp://ftp.datasus.gov.br/dissemin/publicos/SINASC/1994_1995/Doc/NASC98.HLP
+  source_url: ftp://ftp.datasus.gov.br/dissemin/publicos/SINASC/1994_1995/Dados/DNRES/DNRRR1995.dbc
+schema:
+  fields:
+  - name: contador
+    type: string
+  - name: cartorio
+    type: string
+  - name: data_cart
+    type: string
+  - name: local_ocor
+    type: string
+  - name: muni_ocor
+    type: string
+  - name: crs_ocor
+    type: string
+  - name: estab_ocor
+    type: string
+  - name: data_nasc
+    type: string
+  - name: sexo
+    type: string
+  - name: peso
+    type: string
+  - name: raccor
+    type: string
+  - name: etnia
+    type: string
+  - name: apgar1
+    type: string
+  - name: apgar5
+    type: string
+  - name: gestacao
+    type: string
+  - name: tipo_grav
+    type: string
+  - name: tipo_parto
+    type: string
+  - name: pre_natal
+    type: string
+  - name: idade_mae
+    type: string
+  - name: instr_mae
+    type: string
+  - name: area
+    type: string
+  - name: bairro_mae
+    type: string
+  - name: muni_mae
+    type: string
+  - name: crs_mae
+    type: string
+  - name: fil_vivos
+    type: string
+  - name: fil_mortos
+    type: string
+  - name: fil_abort
+    type: string
+  - name: num_export
+    type: string
+  - name: critica
+    type: string
+  - name: ufinform
+    type: string

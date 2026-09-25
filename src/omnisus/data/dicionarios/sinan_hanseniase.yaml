@@ -1,0 +1,495 @@
+name: sinan_hanseniase
+title: SINAN — Hanseníase, notificações nacionais
+profile: tabular-data-resource
+encoding: latin-1
+x-version: 1.2.0
+x-source-format: dbc
+x-partitions:
+- _source_ano
+x-evidence:
+  physical_schema: HANSBR26.dbc, 63 fields; observed 2026-09-12
+  semantic_status: Page-sourced maps only; every x-decode code cites an official page
+    or TAB_SINANNET CNV. nu_idade_n is audited (x-analytics.age).
+  dictionary_url: https://portalsinan.saude.gov.br/images/documentos/Agravos/Hanseniase/DIC_DADOS_Hanseniase_v5.pdf
+  source_url: ftp://ftp.datasus.gov.br/dissemin/publicos/SINAN/DADOS/PRELIM/HANSBR26.dbc
+schema:
+  fields:
+  - name: tp_not
+    type: string
+    x-decode:
+      '1': Negativa
+      '2': Individual
+      '3': Surto
+      '4': Agregado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: dcf8c99c8d2fbadd5d45f06c1382ef31a9652bfffd995898322cf68b8230ce2c
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 1
+          locator: '1. Tipo de Notificação (TP_NOT): 1 – Negativa, 2 – Individual, 3 – Surto, 4 – Agregado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: id_agravo
+    type: string
+  - name: dt_notific
+    type: date
+  - name: nu_ano
+    type: string
+  - name: sg_uf_not
+    type: string
+  - name: id_municip
+    type: string
+  - name: id_regiona
+    type: string
+  - name: id_unidade
+    type: string
+  - name: dt_diag
+    type: date
+  - name: sem_diag
+    type: string
+  - name: ano_nasc
+    type: string
+  - name: nu_idade_n
+    type: integer
+    label: Idade
+    x-metadata:
+      physical_name: NU_IDADE_N
+      unit: encoded
+      derivation:
+        kind: coded_age
+        inputs:
+        - nu_idade_n
+        rule_version: 1.0.0
+        output:
+        - idade_anos_completos
+        - idade_quantidade
+        - idade_unidade
+      applicability:
+        status: confirmed
+        data_period: null
+        valid_from: null
+        valid_until: null
+        conditions:
+        - Only the exact source identities in dataset.analytics.validated_sources.
+        reason: Documented rule compared with the complete-file audits of 2026-09-21 (evidence/2026-09-21-w3-idade-sinan/)
+          and 2026-09-22 (evidence/2026-09-22-w6-idade-tb/); no applicability to other source hashes
+          is inferred.
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 3
+          - 4
+          locator: '10. Idade (NU_IDADE_N): 1º dígito 1 Hora, 2 Dia, 3 Mês, 4 Ano; ex. 3009 = nove meses,
+            4018 = dezoito anos'
+  - name: cs_sexo
+    type: string
+    x-decode:
+      M: Masculino
+      F: Feminino
+      I: Ignorado
+    x-metadata:
+      missing_codes:
+        I: ignored
+      claims:
+      - target: /field/codes
+        value_sha256: 03f1b56525c2bd3ad4b5365e1dd3e7a67a53c0d24389f0038e4031d642e4596b
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 4
+          locator: '11. Sexo (CS_SEXO): M- Masculino, F- Feminino, I- Ignorado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: cs_gestant
+    type: string
+    x-decode:
+      '1': 1º Trimestre
+      '2': 2º Trimestre
+      '3': 3º Trimestre
+      '4': Idade gestacional ignorada
+      '5': Não
+      '6': Não se aplica
+      '9': Ignorado
+    x-metadata:
+      missing_codes:
+        '6': not_applicable
+        '9': ignored
+      claims:
+      - target: /field/codes
+        value_sha256: 56e8fb62503aa12594230ef14613fbffe8b421b388913657b0375496d99f2b76
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 4
+          locator: '12. Gestante (CS_GESTANT): 1 a 6 e 9. Ignorado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: cs_raca
+    type: string
+    x-decode:
+      '1': branca
+      '2': preta
+      '3': amarela
+      '4': parda
+      '5': indígena
+      '9': Ignorado
+    x-metadata:
+      missing_codes:
+        '9': ignored
+      claims:
+      - target: /field/codes
+        value_sha256: 1cf71f1e71941e48b0c970bef202cffa953417dbbdf85e410186cbf1f09a5e26
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 5
+          locator: '13. Raça/Cor (CS_RACA): 1- branca, 2- preta, 3- amarela, 4- parda, 5- indígena, 9 Ignorado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: cs_escol_n
+    type: string
+    x-decode:
+      '0': Analfabeto
+      '00': Analfabeto
+      '1': 1ª a 4ª série incompleta do EF
+      '01': 1ª a 4ª série incompleta do EF
+      '2': 4ª série completa do EF (antigo 1° grau)
+      '02': 4ª série completa do EF (antigo 1° grau)
+      '3': 5ª à 8ª série incompleta do EF (antigo ginásio ou 1° grau)
+      '03': 5ª à 8ª série incompleta do EF (antigo ginásio ou 1° grau)
+      '4': Ensino fundamental completo (antigo ginásio ou 1° grau)
+      '04': Ensino fundamental completo (antigo ginásio ou 1° grau)
+      '5': Ensino médio incompleto (antigo colegial ou 2° grau)
+      '05': Ensino médio incompleto (antigo colegial ou 2° grau)
+      '6': Ensino médio completo (antigo colegial ou 2° grau)
+      '06': Ensino médio completo (antigo colegial ou 2° grau)
+      '7': Educação superior incompleta
+      '07': Educação superior incompleta
+      '8': Educação superior completa
+      '08': Educação superior completa
+      '9': Ignorado
+      '09': Ignorado
+      '10': Não se aplica
+    x-metadata:
+      missing_codes:
+        '9': ignored
+        '09': ignored
+        '10': not_applicable
+      claims:
+      - target: /field/codes
+        value_sha256: 6eb1368615a3cf03d6f2928e0a47dcc30d0ea885788a18620fcc6056e7c156a6
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 5
+          locator: '14. Escolaridade (CS_ESCOL_N): 1. a 8., 9. Ignorado, 10. Não se aplica; a primeira categoria
+            está impressa como "43 Analfabeto"'
+        - source_id: sinan-tab-cad66ee38781
+          pages: []
+          locator: 'TAB_SINANNET/Escolarnet.cnv: 0 e 00 Analfabeto; 01 a 09 na mesma linha de 1 a 9'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: sg_uf
+    type: string
+  - name: id_mn_resi
+    type: string
+  - name: id_rg_resi
+    type: string
+  - name: id_pais
+    type: string
+  - name: nduplic_n
+    type: string
+    x-decode:
+      ? ''
+      : Não identificado
+      '0': Não identificado
+      '1': Não é duplicidade (não listar)
+      '2': Duplicidade (não contar)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 6e5d75325fc5e6773be557e9440b7cf256d6ac76b5cfaecf219814b46eb7c6a1
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 8
+          locator: 'Não Listar/Não Contar (NDUPLIC_N): 0 ou branco – Não identificado, 1 – Não é duplicidade
+            (não listar), 2 – Duplicidade (não contar)'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: dt_digita
+    type: date
+  - name: dt_transus
+    type: date
+  - name: dt_transdm
+    type: date
+  - name: dt_transsm
+    type: date
+  - name: dt_transrm
+    type: date
+  - name: dt_transrs
+    type: date
+  - name: dt_transse
+    type: date
+  - name: nu_lote_v
+    type: string
+  - name: nu_lote_h
+    type: string
+  - name: cs_flxret
+    type: string
+    x-decode:
+      '0': Não
+      '1': habilitado para envio
+      '2': enviado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 2675e40a7bf7d485ebe11588ae9bc5736fb8a9e09d2eee513adaff68283f2585
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 15
+          locator: 'Fluxo de retorno (CS_FLXRET): 0 - Não, 1 - habilitado para envio., 2 - enviado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: flxrecebi
+    type: string
+  - name: migrado_w
+    type: string
+    x-decode:
+      '1': migrado do Sinan Windows
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 6c6609ba7be3b500fc5ca2f14011d216c1848d521c796937860276ccffb134a7
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 15
+          locator: 'Identifica migração (MIGRADO_W): 1- migrado do Sinan Windows'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: id_ocupa_n
+    type: string
+  - name: nu_lesoes
+    type: integer
+  - name: formaclini
+    type: string
+  - name: avalia_n
+    type: string
+    x-decode:
+      ? ''
+      : Em Branco
+      '0': GRAU ZERO
+      '1': GRAU I
+      '2': GRAU II
+      '3': Não AVALIADO
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 383a18b116cd97db9cfdc889bda8397c13c03448b092f9448221897735a2d632
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sinan-tab-cad66ee38781
+          pages: []
+          locator: 'HansNET.def: TAval Incap Notif, AVALIA_N, 1, AVALIAN.CNV; TAB_SINANNET/AvaliaN.cnv'
+        note: Mapa do CNV.
+  - name: classopera
+    type: string
+  - name: modoentr
+    type: string
+  - name: mododetect
+    type: string
+  - name: baciloscop
+    type: string
+  - name: dtinictrat
+    type: date
+  - name: esq_ini_n
+    type: string
+  - name: contreg
+    type: integer
+  - name: nervosafet
+    type: integer
+  - name: ufatual
+    type: string
+  - name: id_muni_at
+    type: string
+  - name: dt_noti_at
+    type: date
+  - name: id_unid_at
+    type: string
+  - name: ufresat
+    type: string
+  - name: muniresat
+    type: string
+  - name: dtultcomp
+    type: date
+  - name: classatual
+    type: string
+  - name: aval_atu_n
+    type: string
+    x-decode:
+      ? ''
+      : Em Branco
+      '0': GRAU ZERO
+      '1': GRAU I
+      '2': GRAU II
+      '3': Não AVALIADO
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 383a18b116cd97db9cfdc889bda8397c13c03448b092f9448221897735a2d632
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sinan-tab-cad66ee38781
+          pages: []
+          locator: 'HansNET.def: TAval Incap Cura, AVAL_ATU_N, 1, AVALIAN.CNV; TAB_SINANNET/AvaliaN.cnv'
+        note: Mapa do CNV.
+  - name: esq_atu_n
+    type: string
+  - name: dose_receb
+    type: integer
+  - name: epis_racio
+    type: string
+    x-decode:
+      ? ''
+      : não preenchido
+      '1': Reação tipo 1
+      '2': Reação tipo 2
+      '3': Reação tipo 1 e 2
+      '4': Sem Reação
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 98d349b6fad8460ffd3bb15005cb67d5addad31c841bf1428ea703e38568196f
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sinan-tab-cad66ee38781
+          pages: []
+          locator: 'HansNET.def: Xepisódio reacional, EPIS_RACIO, 1, reacional.cnv; TAB_SINANNET/reacional.cnv'
+        note: Mapa do CNV.
+  - name: dtmudesq
+    type: date
+  - name: contexam
+    type: integer
+  - name: dtalta_n
+    type: date
+  - name: tpalta_n
+    type: string
+    x-decode:
+      ? ''
+      : Não preenchido
+      '0': Não preenchido
+      '1': Cura
+      '2': Transf. para o mesmo município
+      '3': Transf. para outro município
+      '4': Transf. para o outro estado
+      '5': Transf. para outro Pais
+      '6': Óbito
+      '7': Abandono
+      '8': Erro diagnóstico
+      '9': Trans. não especificada
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 5058428a3b37da57a211e742f7d46f7342cbf37372cefb6510b076f372b72678
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sinan-tab-cad66ee38781
+          pages: []
+          locator: 'HansNET.def: XTipo de Saída, TPALTA_N, 1, SAIDAHANS.CNV; TAB_SINANNET/SAIDAhans.cnv'
+        note: Mapa do CNV.
+  - name: in_vincula
+    type: string
+    x-decode:
+      ? ''
+      : Não Vinculado
+      '0': Não Vinculado
+      '1': Vinculado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 4aaf27662321a59f4b457e5357935b5be6cf54b930d743fdf0ebf3220b10a1cc
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 9
+          locator: 'Vinculação (IN_VINCULA): 0 ou branco – Não Vinculado, 1 – Vinculado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: nu_lote_ia
+    type: string
+x-identity:
+  year_column: nu_ano
+  code_column: id_agravo
+  code: A309
+x-analytics:
+  version: 1.0.0
+  applicability_policy: exact_audited_source_identity
+  validated_sources:
+  - uf: null
+    ano: 2026
+    release: prelim
+    source_sha256: 2a1d5b69008bf320c8aabff01a99cc0f12ed1884bf006a002997bc50de795a62
+  age:
+    field: nu_idade_n
+    kind: sinan
+    units:
+      '1':
+        unit: hour
+      '2':
+        unit: day
+      '3':
+        unit: month
+      '4':
+        unit: year
+    evidence:
+    - source_id: sinan-b3e0561c7a2d
+      pages: [3, 4]
+      locator: '10. Idade (NU_IDADE_N): 1º dígito 1 Hora, 2 Dia, 3 Mês, 4 Ano; ex. 3009 = nove meses, 4018 = dezoito anos'
+    notes:
+    - Three quantity digits; 4088 is 88 years. A SIM-width slice would read 8.
+    - The audit covers the complete PRELIM HANSBR26.dbc; observed unit 4 only.
+    - No ignored sentinel is declared; other unit codes are unsupported.

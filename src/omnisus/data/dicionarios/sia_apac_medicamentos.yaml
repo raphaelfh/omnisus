@@ -1,0 +1,460 @@
+name: sia_apac_medicamentos
+title: SIASUS — APAC de Medicamentos (AM)
+profile: tabular-data-resource
+# Gerado do header DBF REAL (AMRR2401.dbf), nao do informe tecnico.
+# latin-1 obrigatorio: cifra do CNS usa 0x7B-0x84 (0x81 quebra cp1252).
+encoding: latin-1
+x-version: "0.1.0"
+schema:
+  fields:
+    - name: ap_mvm
+      type: yearmonth
+      label: Competência de processamento (AAAAMM)
+    - name: ap_condic
+      type: string
+      label: Ap condic
+    - name: ap_gestao
+      type: string
+      label: Ap gestao
+    - name: ap_coduni
+      type: string
+      label: CNES do estabelecimento
+    - name: ap_autoriz
+      type: string
+      label: Número da APAC
+    - name: ap_cmp
+      type: yearmonth
+      label: Competência do atendimento (AAAAMM)
+    - name: ap_pripal
+      type: string
+      label: Procedimento principal SIGTAP
+    - name: ap_vl_ap
+      type: number
+      label: Valor aprovado da APAC
+    - name: ap_ufmun
+      type: string
+      label: Ap ufmun
+    - name: ap_tpups
+      type: string
+      label: Ap tpups
+    - name: ap_tippre
+      type: string
+      label: Ap tippre
+    - name: ap_mn_ind
+      type: string
+      label: Ap mn ind
+    - name: ap_cnpjcpf
+      type: string
+      label: Ap cnpjcpf
+    - name: ap_cnpjmnt
+      type: string
+      label: Ap cnpjmnt
+    - name: ap_cnspcn
+      type: string
+      label: CNS do paciente (criptografado; chave de linkage intra-SIA)
+      x-crypto: datasus-cns
+    - name: ap_coidade
+      type: string
+      label: Ap coidade
+      x-decode:
+        '2': Dias
+        '3': Meses
+        '4': Anos
+      x-metadata:
+        issues:
+        - id: ap_coidade-sem-tabela
+          status: open
+          description: '''5'' fica sem rótulo, e ''2'', ''3'' e ''4'' foram medidos, não lidos: nenhuma tabela
+            rotula o código de 1 caractere. IDADEDET.CNV e IDADE18.CNV (TAB_SIA), ligados a AP_COIDADE em
+            todos os DEF de APAC, leem 3 caracteres, AP_COIDADE seguido de AP_NUIDADE: ''000'' é ''Idade inválida''
+            e 500 a 530 são 100 a 130 anos. O Informe Técnico SIASUS 2019-07 descreve AP_COIDADE (CHAR 1,
+            ''Código da Idade'') sem códigos (pp. 6-14). AMRR2401: ''5'' em 1 linha.'
+    - name: ap_nuidade
+      type: string
+      label: Idade (na unidade de ap_coidade)
+    - name: ap_sexo
+      type: string
+      label: Ap sexo
+      x-decode:
+        ? ''
+        : Não exigido
+        '0': Não exigido
+        F: Feminino
+        M: Masculino
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 7fee0ffdb9777cfb61481409bb715059d63990a439b59979623692f27044f97f
+          status: verified_in_source
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sia-tab-e5812b51d802
+            pages: []
+            locator: 'APAC_Medicamentos.DEF: XSexo do Paciente, AP_SEXO, 1, CNV/SEXO.CNV; CNV/SEXO.CNV'
+          note: Mapa do CNV.
+    - name: ap_racacor
+      type: string
+      label: Ap racacor
+      x-decode:
+        ? ''
+        : SEM INFORMAÇÃO
+        ' D': RAÇA/COR  (OUTROS INDEVIDOS)
+        '00': RAÇA/COR NÃO EXIGIDO
+        '01': BRANCA
+        '02': PRETA
+        '03': PARDA
+        '04': AMARELA
+        '05': INDIGENA
+        '06': RAÇA/COR=06 (INDEVIDO)
+        '09': RAÇA/COR=09 (INDEVIDO)
+        1C: RAÇA/COR  (OUTROS INDEVIDOS)
+        1G: RAÇA/COR  (OUTROS INDEVIDOS)
+        1M: RAÇA/COR  (OUTROS INDEVIDOS)
+        '87': RAÇA/COR  (OUTROS INDEVIDOS)
+        '99': SEM INFORMAÇÃO
+        DE: RAÇA/COR  (OUTROS INDEVIDOS)
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 11f9e1a29e3a04fb0a890a686809c331693322d2b5badf0fc35f78a4b193f082
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sia-tab-e5812b51d802
+            pages: []
+            locator: 'APAC_Medicamentos.DEF: XRaça/Cor Paciente, AP_RACACOR, 1, CNV/RACA_COR.CNV; CNV/RACA_COR.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''01'' era ''Branca'', CNV ''BRANCA'';
+            ''02'' era ''Preta'', CNV ''PRETA''; ''03'' era ''Parda'', CNV ''PARDA''; ''04'' era ''Amarela'',
+            CNV ''AMARELA''; ''05'' era ''Indígena'', CNV ''INDIGENA''; ''99'' era ''Sem informação'', CNV
+            ''SEM INFORMAÇÃO'''
+    - name: ap_munpcn
+      type: string
+      label: Município de residência (UF+IBGE)
+    - name: ap_ufnacio
+      type: string
+      label: Ap ufnacio
+    - name: ap_ceppcn
+      type: string
+      label: CEP do paciente
+    - name: ap_ufdif
+      type: string
+      label: Ap ufdif
+      x-decode:
+        ? ''
+        : Não identificado
+        '0': Não houve invasão
+        '1': Sim (houve invasão)
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: e50f214e8c49075d2672a183e5995237d51ee9f06cdf659957ead39c951de0a2
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sia-tab-e5812b51d802
+            pages: []
+            locator: 'APAC_Medicamentos.DEF: TInvasão Estadual, AP_UFDIF, 1, CNV/INVASAO.CNV; CNV/Invasao.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''0'' era ''Mesma UF'', CNV ''Não houve
+            invasão''; ''1'' era ''UF diferente'', CNV ''Sim (houve invasão)'''
+    - name: ap_mndif
+      type: string
+      label: Ap mndif
+      x-decode:
+        ? ''
+        : Não identificado
+        '0': Não houve invasão
+        '1': Sim (houve invasão)
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: e50f214e8c49075d2672a183e5995237d51ee9f06cdf659957ead39c951de0a2
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sia-tab-e5812b51d802
+            pages: []
+            locator: 'APAC_Medicamentos.DEF: TInvasão Municipal, AP_MNDIF, 1, CNV/INVASAO.CNV; CNV/Invasao.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''0'' era ''Mesmo município'', CNV ''Não
+            houve invasão''; ''1'' era ''Município diferente'', CNV ''Sim (houve invasão)'''
+    - name: ap_dtinic
+      type: date
+      label: Início da validade da APAC
+      x-format: yyyyMMdd
+    - name: ap_dtfim
+      type: date
+      label: Fim da validade da APAC
+      x-format: yyyyMMdd
+    - name: ap_tpaten
+      type: string
+      label: Ap tpaten
+    - name: ap_tpapac
+      type: string
+      label: Ap tpapac
+      x-decode:
+        '1': Inicial
+        '2': Continuidade
+        '3': Única
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 3e77daea55811733897715a900abbd46206b82c9b91ee962ce2620d3fac105c7
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sia-tab-e5812b51d802
+            pages: []
+            locator: 'APAC_Medicamentos.DEF: XTipo de APAC, AP_TPAPAC, 1, CNV/TP_APAC.CNV; CNV/TP_APAC.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''4'' era ''Fora de rede (encerramento)'',
+            CNV não lista'
+    - name: ap_motsai
+      type: string
+      label: Ap motsai
+    - name: ap_obito
+      type: string
+      label: Óbito no período
+      x-decode:
+        '0': Nao houve ÓBITO
+        '1': Sim (motivo de saída-ÓBITO)
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: f5896878b93ad73959088576ab8ceaa69528b4d54f750cd3759ec97717f18e7e
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sia-tab-e5812b51d802
+            pages: []
+            locator: 'APAC_Medicamentos.DEF: XMotivo Saída-Óbito, AP_OBITO, 1, CNV/OBITO.CNV; CNV/OBITO.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''0'' era ''Não'', CNV ''Nao houve ÓBITO'';
+            ''1'' era ''Sim'', CNV ''Sim (motivo de saída-ÓBITO)'''
+    - name: ap_encerr
+      type: string
+      label: Ap encerr
+      x-decode:
+        '0': Nao houve ENCERRAMENTO
+        '1': Sim (motivo de saída-ENCERRAMENTO)
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: e635d1da58b87ea0ec3801d432e2b2ff8c11f90d86601aca7e2edd9e41c0d6c9
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sia-tab-e5812b51d802
+            pages: []
+            locator: 'APAC_Medicamentos.DEF: XMotivo Saída-Encerramento, AP_ENCERR, 1, CNV/ENCERRAM.CNV; CNV/ENCERRAM.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''0'' era ''Não'', CNV ''Nao houve ENCERRAMENTO'';
+            ''1'' era ''Sim'', CNV ''Sim (motivo de saída-ENCERRAMENTO)'''
+    - name: ap_perman
+      type: string
+      label: Ap perman
+      x-decode:
+        '0': Nao houve a PERMANÊNCIA do paciente na unidade
+        '1': Sim (motivo de saída-PERMANÊNCIA)
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: fa823e6bcb07e76b0a6d4d83367443c3e034857df377dc01fe721632f97911ee
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sia-tab-e5812b51d802
+            pages: []
+            locator: 'APAC_Medicamentos.DEF: XMotivo Saída-Permanência, AP_PERMAN, 1, CNV/PERMANEN.CNV; CNV/PERMANEN.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''0'' era ''Não'', CNV ''Nao houve a
+            PERMANÊNCIA do paciente na unidade''; ''1'' era ''Sim'', CNV ''Sim (motivo de saída-PERMANÊNCIA)'''
+    - name: ap_alta
+      type: string
+      label: Ap alta
+      x-decode:
+        '0': Nao foi dado ALTA ao paciente
+        '1': Sim (motivo de saída-ALTA)
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: cc9bf92868dea681ca88cae93255f8d624435f2ce36d34a9a13c45dfa4a6fb79
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sia-tab-e5812b51d802
+            pages: []
+            locator: 'APAC_Medicamentos.DEF: XMotivo Saída-Alta, AP_ALTA, 1, CNV/ALTA.CNV; CNV/ALTA.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''0'' era ''Não'', CNV ''Nao foi dado
+            ALTA ao paciente''; ''1'' era ''Sim'', CNV ''Sim (motivo de saída-ALTA)'''
+    - name: ap_transf
+      type: string
+      label: Ap transf
+      x-decode:
+        '0': Nao houve TRANSFERÊNCIA do paciente
+        '1': Sim (motivo de saída-TRANSFERÊNCIA)
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 798a13f55c387349e223abc2e3856a3924595eb6d7cc80a312297326d79d9fc1
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sia-tab-e5812b51d802
+            pages: []
+            locator: 'APAC_Medicamentos.DEF: XMotivo Saída-Transferência, AP_TRANSF, 1, CNV/TRANSFER.CNV;
+              CNV/TRANSFER.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''0'' era ''Não'', CNV ''Nao houve TRANSFERÊNCIA
+            do paciente''; ''1'' era ''Sim'', CNV ''Sim (motivo de saída-TRANSFERÊNCIA)'''
+    - name: ap_dtocor
+      type: date
+      label: Data da ocorrência de saída
+      x-format: yyyyMMdd
+    - name: ap_codemi
+      type: string
+      label: Ap codemi
+    - name: ap_catend
+      type: string
+      label: Ap catend
+    - name: ap_apacant
+      type: string
+      label: Número da APAC anterior (encadeamento)
+    - name: ap_unisol
+      type: string
+      label: Ap unisol
+    - name: ap_dtsolic
+      type: date
+      label: Data da solicitação
+      x-format: yyyyMMdd
+    - name: ap_dtaut
+      type: date
+      label: Data da autorização
+      x-format: yyyyMMdd
+    - name: ap_cidcas
+      type: string
+      label: CID-10 causas associadas
+    - name: ap_cidpri
+      type: string
+      label: CID-10 principal (sem ponto; justificativa de autorização)
+    - name: ap_cidsec
+      type: string
+      label: CID-10 secundário
+    - name: ap_etnia
+      type: string
+      label: Ap etnia
+    - name: am_peso
+      type: string
+      label: Peso (kg)
+    - name: am_altura
+      type: string
+      label: Altura (cm)
+    - name: am_transpl
+      type: string
+      label: Paciente transplantado
+      x-decode:
+        N: Nao - (O paciente não é transplantado)
+        S: Sim - (O paciente é transplantado)
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: f0b209ee7b13ec6ffe1bce472fd54e4c97de4cef43852ca788adadd8ac989df4
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sia-tab-e5812b51d802
+            pages: []
+            locator: 'APAC_Medicamentos.DEF: XTransplantado, AM_TRANSPL, 1, CNV/TRANSPL.CNV; CNV/TRANSPL.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''S'' era ''Sim'', CNV ''Sim - (O paciente
+            é transplantado)''; ''N'' era ''Não'', CNV ''Nao - (O paciente não é transplantado)'''
+    - name: am_qtdtran
+      type: string
+      label: Quantidade de transplantes
+    - name: am_gestant
+      type: string
+      label: Gestante
+      x-decode:
+        N: Nao - (O paciente é gestante)
+        S: Sim - (O paciente é gestante)
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 474c297985a8a534de4789bf8e17b596e877fb22414892619b3874cbce15e2c3
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sia-tab-e5812b51d802
+            pages: []
+            locator: 'APAC_Medicamentos.DEF: XPaciente Gestante, AM_GESTANT, 1, CNV/GESTANTE.CNV; CNV/GESTANTE.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''S'' era ''Sim'', CNV ''Sim - (O paciente
+            é gestante)''; ''N'' era ''Não'', CNV ''Nao - (O paciente é gestante)'''
+    - name: ap_natjur
+      type: string
+      label: Ap natjur
+# Identidade do arquivo: ap_mvm (competência de processamento) vale o mês do arquivo em
+# todos os registros dos arquivos inteiros de 2024-01 (tests/fixtures/FIXTURES.md); ap_cmp
+# não serve (AQRR2401 grava 202310). ap_ufmun começa pelo código IBGE da UF.
+x-identity:
+  month_column: ap_mvm
+  uf_column: ap_ufmun

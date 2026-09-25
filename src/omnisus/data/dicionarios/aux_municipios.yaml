@@ -1,0 +1,57 @@
+name: aux_municipios
+title: Municípios brasileiros, incluindo extintos e transferidos (DATASUS CADMUN)
+profile: tabular-data-resource
+encoding: utf-8
+schema:
+  fields:
+    - name: codigo_ibge
+      type: string
+      constraints: { required: true, pattern: "^\\d{7}$" }
+      description: "Código IBGE com dígito verificador; CADMUN.MUNCODDV"
+    - name: codigo_6
+      type: string
+      constraints: { required: true, pattern: "^\\d{6}$" }
+      description: "Código de 6 dígitos, sem verificador, como SIM, SINASC e SIH gravam; CADMUN.MUNCOD"
+    - name: nome
+      type: string
+      constraints: { required: true }
+      description: "CADMUN.MUNNOME"
+    - name: uf_codigo
+      type: string
+      constraints: { required: true }
+      description: "CADMUN.UFCOD (00 na linha de ignorado ou exterior)"
+    - name: situacao
+      type: string
+      constraints: { enum: [ATIVO, EXTIN, IGNOR, TRANS] }
+      description: "CADMUN.SITUACAO como publicado"
+    - name: ano_instalacao
+      type: integer
+      description: "CADMUN.ANOINST"
+    - name: ano_extincao
+      type: integer
+      description: "CADMUN.ANOEXT"
+    - name: sucessor
+      type: string
+      description: "Código IBGE (7 dígitos) do município sucessor; CADMUN.SUCESSOR"
+    - name: latitude
+      type: number
+      description: "CADMUN.LATITUDE; nulo onde o CADMUN grava 0 e 0 (91 linhas: IGNOR, TRANS e 4 ATIVO)"
+    - name: longitude
+      type: number
+      description: "CADMUN.LONGITUDE; nulo nas mesmas linhas da latitude"
+    - name: altitude
+      type: integer
+      description: "CADMUN.ALTITUDE, como publicado"
+    - name: area
+      type: number
+      description: "CADMUN.AREA, como publicado"
+    - name: regiao_saude
+      type: string
+      description: "CADMUN.RSAUDCOD"
+    - name: macrorregiao_saude
+      type: string
+      description: "CADMUN.MSAUDCOD"
+  primaryKey: [codigo_ibge]
+x-version: "2.0.0"
+x-source: DATASUS
+x-source-url: "ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID10/TABELAS/CADMUN.DBF"

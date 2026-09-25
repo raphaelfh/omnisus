@@ -1,0 +1,2316 @@
+{
+  "audited_at": "2026-09-14T21:58:54.116670+00:00",
+  "target": "ducklake:./data/omnisus-v2.ducklake",
+  "snapshot_id": 5,
+  "library_version": "0.2.0",
+  "library_revision": "ea6c33fa7c970478c52cdf3422fd1637c7dbd732",
+  "working_tree_dirty": true,
+  "audit_script_sha256": "f3fe485e4378567e179f83ee30bf3966cf339d9feb4d48196f9f24e8acd56d23",
+  "interpretation": "reference_hypothesis_not_universal_documentary_authority",
+  "datasets": {
+    "sim_obitos": {
+      "dictionary_sha256": "84879b4c1afed3870908bc5fdb49004c6784285a86bd44f19186025ccc864404",
+      "schema": [
+        {
+          "column_name": "origem",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tipobito",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtobito",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "horaobito",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "natural",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "codmunnatu",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtnasc",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "idade",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "sexo",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "racacor",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "estciv",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "esc",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "esc2010",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "seriescfal",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "ocup",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "codmunres",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "lococor",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "codestab",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "estabdescr",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "codmunocor",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "idademae",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "escmae",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "escmae2010",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "seriescmae",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "ocupmae",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "qtdfilvivo",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "qtdfilmort",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "gravidez",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "semagestac",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "gestacao",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "parto",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "obitoparto",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "peso",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpmorteoco",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "obitograv",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "obitopuerp",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "assistmed",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "exame",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cirurgia",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "necropsia",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "linhaa",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "linhab",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "linhac",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "linhad",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "linhaii",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "causabas",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cb_pre",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "comunsvoim",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtatestado",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "circobito",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "acidtrab",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "fonte",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "numerolote",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tppos",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtinvestig",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "causabas_o",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtcadastro",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "atestante",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "stcodifica",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "codificado",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "versaosist",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "versaoscb",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "fonteinv",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtrecebim",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "atestado",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtrecoriga",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "causamat",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "escmaeagr1",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "escfalagr1",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "stdoepidem",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "stdonova",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "difdata",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "nudiasobco",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "nudiasobin",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtcadinv",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpobitocor",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtconinv",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "fontes",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpresginfo",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpnivelinv",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "nudiasinf",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtcadinf",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "morteparto",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtconcaso",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "fontesinf",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "altcausa",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "contador",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "ano",
+          "column_type": "USMALLINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uf",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "_source_release",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        }
+      ],
+      "declared_absent": [
+        "cb_alt",
+        "covid_clas",
+        "mat_clas",
+        "numerodo",
+        "opor_do",
+        "tp_altera",
+        "ufinform"
+      ],
+      "observed_undeclared": [],
+      "scopes": [
+        {
+          "uf": "RR",
+          "ano": 2022,
+          "_source_release": "final",
+          "n": 3246
+        },
+        {
+          "uf": "RR",
+          "ano": 2023,
+          "_source_release": "final",
+          "n": 3311
+        },
+        {
+          "uf": "RR",
+          "ano": 2024,
+          "_source_release": "final",
+          "n": 3055
+        },
+        {
+          "uf": "SP",
+          "ano": 2024,
+          "_source_release": "final",
+          "n": 351616
+        }
+      ],
+      "total": [
+        {
+          "n": 361228
+        }
+      ],
+      "units": [
+        {
+          "unit": "0",
+          "raw_min": "001",
+          "raw_max": "059",
+          "n": 451
+        },
+        {
+          "unit": "1",
+          "raw_min": "100",
+          "raw_max": "123",
+          "n": 861
+        },
+        {
+          "unit": "2",
+          "raw_min": "200",
+          "raw_max": "229",
+          "n": 2729
+        },
+        {
+          "unit": "3",
+          "raw_min": "301",
+          "raw_max": "311",
+          "n": 2060
+        },
+        {
+          "unit": "4",
+          "raw_min": "401",
+          "raw_max": "499",
+          "n": 352553
+        },
+        {
+          "unit": "5",
+          "raw_min": "500",
+          "raw_max": "518",
+          "n": 2223
+        },
+        {
+          "unit": "9",
+          "raw_min": "999",
+          "raw_max": "999",
+          "n": 351
+        }
+      ],
+      "sex": [
+        {
+          "sexo": "0",
+          "n": 74
+        },
+        {
+          "sexo": "1",
+          "n": 192100
+        },
+        {
+          "sexo": "2",
+          "n": 169054
+        }
+      ],
+      "reference_bands": [
+        {
+          "band": "0-4",
+          "n": 7359
+        },
+        {
+          "band": "5-14",
+          "n": 1528
+        },
+        {
+          "band": "15-24",
+          "n": 5807
+        },
+        {
+          "band": "25-34",
+          "n": 10088
+        },
+        {
+          "band": "35-44",
+          "n": 17730
+        },
+        {
+          "band": "45-54",
+          "n": 28934
+        },
+        {
+          "band": "55-64",
+          "n": 51691
+        },
+        {
+          "band": "65-74",
+          "n": 78172
+        },
+        {
+          "band": "75+",
+          "n": 159568
+        },
+        {
+          "band": "Desconhecida",
+          "n": 351
+        }
+      ],
+      "dates": {
+        "dtnasc": [
+          {
+            "total": 361228,
+            "missing": 562,
+            "invalid": 0,
+            "valid": 360666
+          }
+        ],
+        "dtobito": [
+          {
+            "total": 361228,
+            "missing": 0,
+            "invalid": 0,
+            "valid": 361228
+          }
+        ]
+      },
+      "sentinels": [
+        {
+          "code_000": 0,
+          "code_400": 0,
+          "code_9xx": 351,
+          "suffix_99": 1537
+        }
+      ],
+      "documentary_domain_exceptions": [
+        {
+          "idade": "100",
+          "n": 9
+        },
+        {
+          "idade": "200",
+          "n": 82
+        }
+      ],
+      "suffix99": [
+        {
+          "idade": "499",
+          "n": 1186
+        },
+        {
+          "idade": "999",
+          "n": 351
+        }
+      ]
+    },
+    "sih_aih_reduzida": {
+      "dictionary_sha256": "0c2dc8f11d676cd939582d5e85a8c4dfbade26b10dcfb0c202259b044638a1d3",
+      "schema": [
+        {
+          "column_name": "uf_zi",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "ano_cmpt",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "mes_cmpt",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "espec",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cgc_hosp",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "n_aih",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "ident",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cep",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "munic_res",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "nasc",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "sexo",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uti_mes_in",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uti_mes_an",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uti_mes_al",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uti_mes_to",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "marca_uti",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uti_int_in",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uti_int_an",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uti_int_al",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uti_int_to",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diar_acom",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "qt_diarias",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "proc_solic",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "proc_rea",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sh",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sp",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sadt",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_rn",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_acomp",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_ortp",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sangue",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sadtsr",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_transp",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_obsang",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_ped1ac",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_tot",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_uti",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "us_tot",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dt_inter",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dt_saida",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diag_princ",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diag_secun",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cobranca",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "natureza",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "nat_jur",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "gestao",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "rubrica",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "ind_vdrl",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "munic_mov",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cod_idade",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "idade",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dias_perm",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "morte",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "nacional",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "num_proc",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "car_int",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tot_pt_sp",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cpf_aut",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "homonimo",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "num_filhos",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "instru",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cid_notif",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "contracep1",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "contracep2",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "gestrisco",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "insc_pn",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "seq_aih5",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cbor",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cnaer",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "vincprev",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "gestor_cod",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "gestor_tp",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "gestor_cpf",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "gestor_dt",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cnes",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cnpj_mant",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "infehosp",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cid_asso",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cid_morte",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "complex",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "financ",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "faec_tp",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "regct",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "raca_cor",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "etnia",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "sequencia",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "remessa",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "aud_just",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "sis_just",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sh_fed",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sp_fed",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sh_ges",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sp_ges",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_uci",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "marca_uci",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec1",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec2",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec3",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec4",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec5",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec6",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec7",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec8",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec9",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec1",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec2",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec3",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec4",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec5",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec6",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec7",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec8",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec9",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "ano",
+          "column_type": "USMALLINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uf",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "mes",
+          "column_type": "UTINYINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "_source_release",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        }
+      ],
+      "declared_absent": [],
+      "observed_undeclared": [],
+      "scopes": [
+        {
+          "uf": "SP",
+          "ano": 2024,
+          "mes": 1,
+          "_source_release": "final",
+          "n": 222849
+        },
+        {
+          "uf": "SP",
+          "ano": 2024,
+          "mes": 2,
+          "_source_release": "final",
+          "n": 221117
+        },
+        {
+          "uf": "SP",
+          "ano": 2024,
+          "mes": 3,
+          "_source_release": "final",
+          "n": 241806
+        },
+        {
+          "uf": "SP",
+          "ano": 2024,
+          "mes": 4,
+          "_source_release": "final",
+          "n": 244842
+        },
+        {
+          "uf": "SP",
+          "ano": 2024,
+          "mes": 5,
+          "_source_release": "final",
+          "n": 246414
+        },
+        {
+          "uf": "SP",
+          "ano": 2025,
+          "mes": 1,
+          "_source_release": "final",
+          "n": 238144
+        },
+        {
+          "uf": "SP",
+          "ano": 2025,
+          "mes": 2,
+          "_source_release": "final",
+          "n": 231291
+        }
+      ],
+      "total": [
+        {
+          "n": 1646463
+        }
+      ],
+      "units": [
+        {
+          "unit": "2",
+          "raw_min": 0,
+          "raw_max": 30,
+          "n": 45706
+        },
+        {
+          "unit": "3",
+          "raw_min": 1,
+          "raw_max": 11,
+          "n": 29080
+        },
+        {
+          "unit": "4",
+          "raw_min": 1,
+          "raw_max": 99,
+          "n": 1570955
+        },
+        {
+          "unit": "5",
+          "raw_min": 0,
+          "raw_max": 27,
+          "n": 722
+        }
+      ],
+      "sex": [
+        {
+          "sexo": "1",
+          "n": 732495
+        },
+        {
+          "sexo": "3",
+          "n": 913968
+        }
+      ],
+      "reference_bands": [
+        {
+          "band": "0-4",
+          "n": 121427
+        },
+        {
+          "band": "5-14",
+          "n": 78113
+        },
+        {
+          "band": "15-24",
+          "n": 169855
+        },
+        {
+          "band": "25-34",
+          "n": 236400
+        },
+        {
+          "band": "35-44",
+          "n": 204829
+        },
+        {
+          "band": "45-54",
+          "n": 190941
+        },
+        {
+          "band": "55-64",
+          "n": 226190
+        },
+        {
+          "band": "65-74",
+          "n": 225910
+        },
+        {
+          "band": "75+",
+          "n": 192798
+        }
+      ],
+      "dates": {
+        "nasc": [
+          {
+            "total": 1646463,
+            "missing": 0,
+            "invalid": 0,
+            "valid": 1646463
+          }
+        ],
+        "dt_inter": [
+          {
+            "total": 1646463,
+            "missing": 0,
+            "invalid": 0,
+            "valid": 1646463
+          }
+        ],
+        "dt_saida": [
+          {
+            "total": 1646463,
+            "missing": 0,
+            "invalid": 0,
+            "valid": 1646463
+          }
+        ],
+        "gestor_dt": [
+          {
+            "total": 1646463,
+            "missing": 1646463,
+            "invalid": 0,
+            "valid": 0
+          }
+        ]
+      },
+      "sentinel999_by_unit": [
+        {
+          "cod_idade": "2",
+          "total": 45706,
+          "value_999": 0
+        },
+        {
+          "cod_idade": "3",
+          "total": 29080,
+          "value_999": 0
+        },
+        {
+          "cod_idade": "4",
+          "total": 1570955,
+          "value_999": 0
+        },
+        {
+          "cod_idade": "5",
+          "total": 722,
+          "value_999": 0
+        }
+      ],
+      "birth_admission_consistency": [
+        {
+          "cod_idade": "2",
+          "total": 45706,
+          "invalid_dates": 0,
+          "birth_after_admission": 0,
+          "matches_completed_years": 45706,
+          "matches_completed_years_at_discharge": 45706,
+          "min_years_minus_raw": -30,
+          "max_years_minus_raw": 0
+        },
+        {
+          "cod_idade": "3",
+          "total": 29080,
+          "invalid_dates": 0,
+          "birth_after_admission": 0,
+          "matches_completed_years": 29080,
+          "matches_completed_years_at_discharge": 28814,
+          "min_years_minus_raw": -11,
+          "max_years_minus_raw": -1
+        },
+        {
+          "cod_idade": "4",
+          "total": 1570955,
+          "invalid_dates": 0,
+          "birth_after_admission": 0,
+          "matches_completed_years": 1553845,
+          "matches_completed_years_at_discharge": 1550075,
+          "min_years_minus_raw": -18,
+          "max_years_minus_raw": 0
+        },
+        {
+          "cod_idade": "5",
+          "total": 722,
+          "invalid_dates": 0,
+          "birth_after_admission": 0,
+          "matches_completed_years": 703,
+          "matches_completed_years_at_discharge": 710,
+          "min_years_minus_raw": 94,
+          "max_years_minus_raw": 100
+        }
+      ]
+    }
+  },
+  "snapshots_before": [
+    {
+      "snapshot_id": 0,
+      "snapshot_time": "2026-09-14 00:50:53.284115-03",
+      "changes": "{schemas_created=[main]}"
+    },
+    {
+      "snapshot_id": 1,
+      "snapshot_time": "2026-09-14 00:50:53.307756-03",
+      "changes": "{tables_created=[main.aux_uf], tables_inserted_into=[1]}"
+    },
+    {
+      "snapshot_id": 2,
+      "snapshot_time": "2026-09-14 00:50:53.319067-03",
+      "changes": "{tables_created=[main.aux_municipios], tables_inserted_into=[2]}"
+    },
+    {
+      "snapshot_id": 3,
+      "snapshot_time": "2026-09-14 00:50:53.340389-03",
+      "changes": "{tables_created=[main.aux_cid10], tables_inserted_into=[3]}"
+    },
+    {
+      "snapshot_id": 4,
+      "snapshot_time": "2026-09-14 00:51:23.041092-03",
+      "changes": "{tables_created=[main.sih_aih_reduzida, main._omnisus_publications], tables_altered=[4], tables_inserted_into=[4], inlined_insert=[6]}"
+    },
+    {
+      "snapshot_id": 5,
+      "snapshot_time": "2026-09-14 00:53:58.07184-03",
+      "changes": "{tables_created=[main.sim_obitos], tables_altered=[7], tables_inserted_into=[7], inlined_insert=[6]}"
+    }
+  ],
+  "publications": [
+    {
+      "publication_id": "e74f789f-6d1f-4f09-b5b0-b7d769b68415",
+      "dataset": "sih_aih_reduzida",
+      "scope_json": "{\"ano\":2024,\"mes\":1,\"uf\":\"SP\"}",
+      "source_sha256": "9d0d841b8d0c6fa4600a06a2da9f861e0ac0e8681a4f772378a8f25f929e4847",
+      "parser_version": "dbc-staging-v1:4109c10d0cd71b3d5067484ba9297700bfaa125c5de4b8f2ffa30c556bef1dca",
+      "run_id": "migrate-20260914T035053Z-06373b19",
+      "batch_id": "78ede037-815d-4f25-8ff0-451e928d9cf4",
+      "published_at": "2026-09-14T03:51:23.348278+00:00",
+      "rows": 222849,
+      "active": true,
+      "managed": true,
+      "source_uri": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIHSUS/200801_/Dados/RDSP2401.dbc"
+    },
+    {
+      "publication_id": "1574ce57-b1d3-4876-9077-89e5374f444a",
+      "dataset": "sih_aih_reduzida",
+      "scope_json": "{\"ano\":2024,\"mes\":2,\"uf\":\"SP\"}",
+      "source_sha256": "5ba1da3b7d7025ee7cc4b69b0f69808ffb25040916ffffac732e637c5d845d8a",
+      "parser_version": "dbc-staging-v1:4109c10d0cd71b3d5067484ba9297700bfaa125c5de4b8f2ffa30c556bef1dca",
+      "run_id": "migrate-20260914T035053Z-06373b19",
+      "batch_id": "78ede037-815d-4f25-8ff0-451e928d9cf4",
+      "published_at": "2026-09-14T03:51:47.920956+00:00",
+      "rows": 221117,
+      "active": true,
+      "managed": true,
+      "source_uri": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIHSUS/200801_/Dados/RDSP2402.dbc"
+    },
+    {
+      "publication_id": "8a0f2317-2f99-4704-9481-76b70c638c83",
+      "dataset": "sih_aih_reduzida",
+      "scope_json": "{\"ano\":2024,\"mes\":3,\"uf\":\"SP\"}",
+      "source_sha256": "0ed4fbc0c04d5aa2f8a1fea2037c50e3470c43afea07d358a5d510bc52e61523",
+      "parser_version": "dbc-staging-v1:4109c10d0cd71b3d5067484ba9297700bfaa125c5de4b8f2ffa30c556bef1dca",
+      "run_id": "migrate-20260914T035053Z-06373b19",
+      "batch_id": "78ede037-815d-4f25-8ff0-451e928d9cf4",
+      "published_at": "2026-09-14T03:52:14.271067+00:00",
+      "rows": 241806,
+      "active": true,
+      "managed": true,
+      "source_uri": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIHSUS/200801_/Dados/RDSP2403.dbc"
+    },
+    {
+      "publication_id": "7037c030-6617-4cd2-9e07-3753bc31669f",
+      "dataset": "sih_aih_reduzida",
+      "scope_json": "{\"ano\":2024,\"mes\":4,\"uf\":\"SP\"}",
+      "source_sha256": "6ce518e7c7701143859ce0ee3a105613677d2568fb2b8925a976546d5d7dd920",
+      "parser_version": "dbc-staging-v1:4109c10d0cd71b3d5067484ba9297700bfaa125c5de4b8f2ffa30c556bef1dca",
+      "run_id": "migrate-20260914T035053Z-06373b19",
+      "batch_id": "78ede037-815d-4f25-8ff0-451e928d9cf4",
+      "published_at": "2026-09-14T03:52:40.603434+00:00",
+      "rows": 244842,
+      "active": true,
+      "managed": true,
+      "source_uri": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIHSUS/200801_/Dados/RDSP2404.dbc"
+    },
+    {
+      "publication_id": "47e3a7eb-f67d-459c-8e4b-03dca632e700",
+      "dataset": "sih_aih_reduzida",
+      "scope_json": "{\"ano\":2024,\"mes\":5,\"uf\":\"SP\"}",
+      "source_sha256": "f2d924b6dd7bd7f36dface3a90136837546b4f6354cdd38c0ed3d4d33f50fe15",
+      "parser_version": "dbc-staging-v1:4109c10d0cd71b3d5067484ba9297700bfaa125c5de4b8f2ffa30c556bef1dca",
+      "run_id": "migrate-20260914T035053Z-06373b19",
+      "batch_id": "78ede037-815d-4f25-8ff0-451e928d9cf4",
+      "published_at": "2026-09-14T03:53:07.232121+00:00",
+      "rows": 246414,
+      "active": true,
+      "managed": true,
+      "source_uri": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIHSUS/200801_/Dados/RDSP2405.dbc"
+    },
+    {
+      "publication_id": "8057ad44-77ca-4996-8926-9e6278179d9d",
+      "dataset": "sih_aih_reduzida",
+      "scope_json": "{\"ano\":2025,\"mes\":1,\"uf\":\"SP\"}",
+      "source_sha256": "33f811186a6a4dfa377cea2b75e739a7b1316c516d8895473af4c3685a095553",
+      "parser_version": "dbc-staging-v1:4109c10d0cd71b3d5067484ba9297700bfaa125c5de4b8f2ffa30c556bef1dca",
+      "run_id": "migrate-20260914T035053Z-06373b19",
+      "batch_id": "78ede037-815d-4f25-8ff0-451e928d9cf4",
+      "published_at": "2026-09-14T03:53:32.882536+00:00",
+      "rows": 238144,
+      "active": true,
+      "managed": true,
+      "source_uri": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIHSUS/200801_/Dados/RDSP2501.dbc"
+    },
+    {
+      "publication_id": "4867650e-fc02-42d8-84f6-518ba8a1ac31",
+      "dataset": "sih_aih_reduzida",
+      "scope_json": "{\"ano\":2025,\"mes\":2,\"uf\":\"SP\"}",
+      "source_sha256": "7d196729e3b5ba3c1fe3d184f3b5f3b73813abe9a0bd28bbd5c669b1437413b7",
+      "parser_version": "dbc-staging-v1:4109c10d0cd71b3d5067484ba9297700bfaa125c5de4b8f2ffa30c556bef1dca",
+      "run_id": "migrate-20260914T035053Z-06373b19",
+      "batch_id": "78ede037-815d-4f25-8ff0-451e928d9cf4",
+      "published_at": "2026-09-14T03:53:57.204494+00:00",
+      "rows": 231291,
+      "active": true,
+      "managed": true,
+      "source_uri": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIHSUS/200801_/Dados/RDSP2502.dbc"
+    },
+    {
+      "publication_id": "3d6d3bef-69c9-4a70-bd14-e5307fc03e2b",
+      "dataset": "sim_obitos",
+      "scope_json": "{\"ano\":2022,\"uf\":\"RR\"}",
+      "source_sha256": "6643344fe1ab587d648e5e0ea8cf7e3ef9e5b5b7021a12dcbbc54f5724d2ec65",
+      "parser_version": "dbc-staging-v1:20cea5d33cb8e08857a5ccfb2cd2babb36aa827b09781c7396e04f63cd54ac50",
+      "run_id": "migrate-20260914T035053Z-06373b19",
+      "batch_id": "4f2e0f60-2900-46ab-8ed7-9e76830d95de",
+      "published_at": "2026-09-14T03:53:58.420258+00:00",
+      "rows": 3246,
+      "active": true,
+      "managed": true,
+      "source_uri": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID10/DORES/DORR2022.dbc"
+    },
+    {
+      "publication_id": "c420647f-79f5-41ca-8a3b-1afd09b3600e",
+      "dataset": "sim_obitos",
+      "scope_json": "{\"ano\":2023,\"uf\":\"RR\"}",
+      "source_sha256": "15b5203507161b7c35f9c69a52c955bdac133629549099b85a88e03a9a45baf0",
+      "parser_version": "dbc-staging-v1:20cea5d33cb8e08857a5ccfb2cd2babb36aa827b09781c7396e04f63cd54ac50",
+      "run_id": "migrate-20260914T035053Z-06373b19",
+      "batch_id": "4f2e0f60-2900-46ab-8ed7-9e76830d95de",
+      "published_at": "2026-09-14T03:53:58.102076+00:00",
+      "rows": 3311,
+      "active": true,
+      "managed": true,
+      "source_uri": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID10/DORES/DORR2023.dbc"
+    },
+    {
+      "publication_id": "efdef7ea-d009-4b3c-807f-642643378e9a",
+      "dataset": "sim_obitos",
+      "scope_json": "{\"ano\":2024,\"uf\":\"RR\"}",
+      "source_sha256": "86d66d736b83e5653d86d55eb47ab6db6b3e8238de3d362f9237768ed5c8a79a",
+      "parser_version": "dbc-staging-v1:20cea5d33cb8e08857a5ccfb2cd2babb36aa827b09781c7396e04f63cd54ac50",
+      "run_id": "migrate-20260914T035053Z-06373b19",
+      "batch_id": "4f2e0f60-2900-46ab-8ed7-9e76830d95de",
+      "published_at": "2026-09-14T03:53:58.819860+00:00",
+      "rows": 3055,
+      "active": true,
+      "managed": true,
+      "source_uri": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID10/DORES/DORR2024.dbc"
+    },
+    {
+      "publication_id": "e68d231e-46f3-4c2e-aab3-7f2cd36d6c91",
+      "dataset": "sim_obitos",
+      "scope_json": "{\"ano\":2024,\"uf\":\"SP\"}",
+      "source_sha256": "fac57a15fe3d7efa3b0f2d797043a9335ef3d9dd6e824623031d71471533daf8",
+      "parser_version": "dbc-staging-v1:20cea5d33cb8e08857a5ccfb2cd2babb36aa827b09781c7396e04f63cd54ac50",
+      "run_id": "migrate-20260914T035053Z-06373b19",
+      "batch_id": "4f2e0f60-2900-46ab-8ed7-9e76830d95de",
+      "published_at": "2026-09-14T03:54:34.067536+00:00",
+      "rows": 351616,
+      "active": true,
+      "managed": true,
+      "source_uri": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID10/DORES/DOSP2024.dbc"
+    }
+  ],
+  "snapshots_after": [
+    {
+      "snapshot_id": 0,
+      "snapshot_time": "2026-09-14 00:50:53.284115-03",
+      "changes": "{schemas_created=[main]}"
+    },
+    {
+      "snapshot_id": 1,
+      "snapshot_time": "2026-09-14 00:50:53.307756-03",
+      "changes": "{tables_created=[main.aux_uf], tables_inserted_into=[1]}"
+    },
+    {
+      "snapshot_id": 2,
+      "snapshot_time": "2026-09-14 00:50:53.319067-03",
+      "changes": "{tables_created=[main.aux_municipios], tables_inserted_into=[2]}"
+    },
+    {
+      "snapshot_id": 3,
+      "snapshot_time": "2026-09-14 00:50:53.340389-03",
+      "changes": "{tables_created=[main.aux_cid10], tables_inserted_into=[3]}"
+    },
+    {
+      "snapshot_id": 4,
+      "snapshot_time": "2026-09-14 00:51:23.041092-03",
+      "changes": "{tables_created=[main.sih_aih_reduzida, main._omnisus_publications], tables_altered=[4], tables_inserted_into=[4], inlined_insert=[6]}"
+    },
+    {
+      "snapshot_id": 5,
+      "snapshot_time": "2026-09-14 00:53:58.07184-03",
+      "changes": "{tables_created=[main.sim_obitos], tables_altered=[7], tables_inserted_into=[7], inlined_insert=[6]}"
+    }
+  ],
+  "snapshot_history_unchanged": true
+}

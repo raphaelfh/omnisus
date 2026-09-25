@@ -1,0 +1,216 @@
+name: native package
+
+on:
+  # Branch pushes and pull requests only when the native package or the code it
+  # plugs into changes; tags, dispatch and release.yml always build.
+  push:
+    branches: [main]
+    tags: ["dbf-v*"]
+    paths: &native_paths
+      - "native/**"
+      - "src/omnisus/sources/datasus_ftp/**"
+      - "src/omnisus/lake/publication.py"
+      - "scripts/smoke_native_wheel.py"
+      - "tests/fixtures/dbf/**"
+      - "tests/fixtures/blast/**"
+      - "tests/integration/test_rust_dbf_pipeline.py"
+      - "pyproject.toml"
+      - "uv.lock"
+      - ".github/workflows/native.yml"
+  pull_request:
+    paths: *native_paths
+  workflow_dispatch:
+  # release.yml calls it so a v* tag run carries the native wheels to attach.
+  workflow_call:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: native-dbf-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: "1"
+
+jobs:
+  rust:
+    name: Rust fmt, clippy and tests
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: native/omnisus-dbf
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          architecture: x64
+      - uses: dtolnay/rust-toolchain@1.98.1
+        with:
+          components: rustfmt, clippy
+      - run: cargo fmt --all --check
+      # The default python feature links test executables to Python. The
+      # extension-module feature is enabled only by Maturin when building wheels.
+      - run: cargo clippy --locked --all-targets -- -D warnings
+      - run: cargo test --locked
+      - run: cargo test --locked --no-default-features
+
+  wheels:
+    name: wheel (${{ matrix.platform.target }})
+    runs-on: ${{ matrix.platform.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - runner: ubuntu-24.04
+            architecture: x64
+            target: x86_64-unknown-linux-gnu
+          - runner: macos-15
+            architecture: arm64
+            target: aarch64-apple-darwin
+          - runner: macos-15-intel
+            architecture: x64
+            target: x86_64-apple-darwin
+          - runner: windows-2022
+            architecture: x64
+            target: x86_64-pc-windows-msvc
+    defaults:
+      run:
+        shell: bash
+    env:
+      OMNISUS_NATIVE_SOURCE_ROOT: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        id: python
+        with:
+          python-version: "3.12"
+          architecture: ${{ matrix.platform.architecture }}
+      - uses: astral-sh/setup-uv@v7
+      - uses: dtolnay/rust-toolchain@1.98.1
+        with:
+          targets: ${{ matrix.platform.target }}
+      - name: Build the locked native wheel
+        uses: PyO3/maturin-action@v1
+        with:
+          maturin-version: v1.12.6
+          rust-toolchain: "1.98.1"
+          target: ${{ matrix.platform.target }}
+          manylinux: "2_28"
+          args: >-
+            --manifest-path native/omnisus-dbf/Cargo.toml
+            --release --locked --out dist/native
+            --interpreter ${{ runner.os == 'Linux' && 'python3.12' || 'python' }}
+      - name: Native wheel only, binary dependencies only, on every supported Python
+        # One abi3 wheel serves 3.12 and later. No cache, so a source build cannot mask a gap.
+        run: |
+          smoke="$RUNNER_TEMP/native-smoke"
+          mkdir -p "$smoke"
+          cp scripts/smoke_native_wheel.py "$smoke/"
+          cp -R tests/fixtures/dbf tests/fixtures/blast "$smoke/"
+          touch "$smoke/pytest.ini"
+          for python in 3.12 3.13 3.14; do
+            gate="$RUNNER_TEMP/native-gate-$python"
+            uv venv --python "$python" "$gate"
+            uv pip install --python "$gate" --no-cache --only-binary=:all: \
+              dist/native/*.whl 'pyarrow==25.0.1' 'pytest==9.1.1'
+            (cd "$smoke" && uv run --no-project --no-sync --python "$gate" \
+              python -I -m pytest -q -c pytest.ini smoke_native_wheel.py)
+          done
+      - name: Build the main Python wheel
+        # Outside dist/: on Linux maturin-action builds in a root container, so
+        # dist/ is root-owned and the runner user cannot create dist/main.
+        run: |
+          uv build --wheel --out-dir main-dist
+          python -c "from pathlib import Path; wheels = list(Path('main-dist').glob('*.whl')); assert len(wheels) == 1 and wheels[0].name.endswith('-py3-none-any.whl'), wheels"
+      - name: Install the full stack from wheels
+        env:
+          STACK_GATE: ${{ runner.temp }}/native-stack-gate
+        run: |
+          uv venv --python '${{ steps.python.outputs.python-path }}' "$STACK_GATE"
+          main_wheels=(main-dist/*.whl)
+          uv pip install --python "$STACK_GATE" --no-cache --only-binary=:all: \
+            "${main_wheels[0]}[dev]" dist/native/*.whl
+      - name: Require native parity and transactional tests against installed wheels
+        # Disable the checkout's pythonpath=src so the installed main wheel is
+        # exercised too. --no-sync prevents uv removing the optional local wheel.
+        env:
+          STACK_GATE: ${{ runner.temp }}/native-stack-gate
+        run: |
+          uv run --no-project --no-sync --python "$STACK_GATE" python -m pytest \
+            -o pythonpath= --require-rust-dbf -m 'not e2e and not perf' \
+            tests/unit/sources/datasus_ftp tests/integration/test_rust_dbf_pipeline.py \
+            tests/unit/lake/test_publication.py native/omnisus-dbf/tests/test_bindings.py -q
+      - uses: actions/upload-artifact@v7
+        with:
+          name: native-wheel-${{ matrix.platform.target }}
+          path: dist/native/*.whl
+          if-no-files-found: error
+
+  sdist:
+    name: sdist to installed wheel
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        shell: bash
+    env:
+      OMNISUS_NATIVE_SOURCE_ROOT: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          architecture: x64
+      - uses: astral-sh/setup-uv@v7
+      - uses: dtolnay/rust-toolchain@1.98.1
+      - name: Build the sdist with the pinned backend
+        run: uv build native/omnisus-dbf --sdist --out-dir dist/sdist
+      - name: Check source distribution contents
+        run: |
+          python - <<'PY'
+          import tarfile
+          from pathlib import Path, PurePosixPath
+
+          archives = list(Path("dist/sdist").glob("*.tar.gz"))
+          assert len(archives) == 1, archives
+          with tarfile.open(archives[0]) as archive:
+              names = {str(PurePosixPath(member.name).relative_to(PurePosixPath(member.name).parts[0])) for member in archive.getmembers() if member.isfile()}
+          required = {
+              "Cargo.toml", "Cargo.lock", "rust-toolchain.toml", "pyproject.toml",
+              "README.md", "LICENSE", "src/lib.rs",
+              "python/omnisus_dbf/__init__.py",
+              "python/omnisus_dbf/_native.pyi", "python/omnisus_dbf/py.typed",
+          }
+          assert required <= names, required - names
+          for name in names:
+              assert not {"target", ".venv", "dist"}.intersection(PurePosixPath(name).parts), name
+              assert not name.endswith(".whl"), name
+          PY
+      - name: Build a wheel from the archive in build isolation
+        # uv unpacks the archive in an isolated build directory. --locked makes
+        # the build fail if Cargo.lock is absent or needs changes.
+        # -p 3.12: the gate below installs into 3.12; uv's default interpreter
+        # would otherwise build a cp313 wheel that cannot be installed there.
+        run: uv build -p 3.12 dist/sdist/*.tar.gz --wheel --out-dir dist/from-sdist -C build-args=--locked
+      - name: Install and exercise the wheel from the sdist
+        env:
+          NATIVE_GATE: ${{ runner.temp }}/native-sdist-gate
+          NATIVE_SMOKE: ${{ runner.temp }}/native-sdist-smoke
+        run: |
+          uv venv --python 3.12 "$NATIVE_GATE"
+          uv pip install --python "$NATIVE_GATE" --no-cache --only-binary=:all: \
+            dist/from-sdist/*.whl 'pyarrow==25.0.1' 'pytest==9.1.1'
+          mkdir -p "$NATIVE_SMOKE"
+          cp scripts/smoke_native_wheel.py "$NATIVE_SMOKE/"
+          cp -R tests/fixtures/dbf tests/fixtures/blast "$NATIVE_SMOKE/"
+          touch "$NATIVE_SMOKE/pytest.ini"
+          cd "$NATIVE_SMOKE"
+          uv run --no-project --no-sync --python "$NATIVE_GATE" \
+            python -I -m pytest -q -c pytest.ini smoke_native_wheel.py
+      - uses: actions/upload-artifact@v7
+        with:
+          name: native-sdist
+          path: dist/sdist/*.tar.gz
+          if-no-files-found: error

@@ -1,0 +1,42 @@
+{
+  "source": "https://github.com/rfsaldanha/microdatasus/blob/7109ec2c42cf674ba453e0d7a20d2f464890b543/R/datasus_download_helpers.R",
+  "note": "Directory constants read by hand; refresh by hand. Paths without host, no trailing slash.",
+  "rows": {
+    "sim_obitos": [
+      "/dissemin/publicos/SIM/CID10/DORES",
+      "/dissemin/publicos/SIM/PRELIM/DORES"
+    ],
+    "sinasc_nascidos_vivos": [
+      "/dissemin/publicos/SINASC/1996_/Dados/DNRES",
+      "/dissemin/publicos/SINASC/PRELIM/DNRES"
+    ],
+    "sih_aih_reduzida": [
+      "/dissemin/publicos/SIHSUS/200801_/Dados"
+    ],
+    "sia_apac_medicamentos": [
+      "/dissemin/publicos/SIASUS/200801_/Dados"
+    ],
+    "sia_apac_quimioterapia": [
+      "/dissemin/publicos/SIASUS/200801_/Dados"
+    ],
+    "sia_apac_tratamento_dialitico": [
+      "/dissemin/publicos/SIASUS/200801_/Dados"
+    ],
+    "sia_apac_laudos_diversos": [
+      "/dissemin/publicos/SIASUS/200801_/Dados"
+    ],
+    "sia_apac_cirurgia_bariatrica": [
+      "/dissemin/publicos/SIASUS/200801_/Dados"
+    ],
+    "sia_psicossocial": [
+      "/dissemin/publicos/SIASUS/200801_/Dados"
+    ],
+    "cnes_estabelecimentos": [
+      "/dissemin/publicos/CNES/200508_/Dados/ST"
+    ],
+    "sinan_chagas": [
+      "/dissemin/publicos/SINAN/DADOS/FINAIS",
+      "/dissemin/publicos/SINAN/DADOS/PRELIM"
+    ]
+  }
+}

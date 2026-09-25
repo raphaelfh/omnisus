@@ -1,0 +1,18 @@
+[
+  {
+    "dataset": "sinan_chagas",
+    "path": "data/lake/w3-auditoria/CHAGBR23.dbc",
+    "url": "ftp://ftp.datasus.gov.br/dissemin/publicos/SINAN/DADOS/PRELIM/CHAGBR23.dbc",
+    "sha256": "a0ab9f568b52c565819466eba2cf312e40549cec707f28e5001de1532f79a10f",
+    "scope": {"uf": null, "ano": 2023, "mes": null},
+    "release": "prelim"
+  },
+  {
+    "dataset": "sinan_hanseniase",
+    "path": "data/lake/w3-auditoria/HANSBR26.dbc",
+    "url": "ftp://ftp.datasus.gov.br/dissemin/publicos/SINAN/DADOS/PRELIM/HANSBR26.dbc",
+    "sha256": "2a1d5b69008bf320c8aabff01a99cc0f12ed1884bf006a002997bc50de795a62",
+    "scope": {"uf": null, "ano": 2026, "mes": null},
+    "release": "prelim"
+  }
+]
