@@ -1,0 +1,22 @@
+name: aux_uf
+title: Unidades da Federação (DATASUS TABUF)
+profile: tabular-data-resource
+encoding: utf-8
+schema:
+  fields:
+    - name: codigo_ibge
+      type: string
+      constraints: { required: true, pattern: "^\\d{2}$" }
+      description: "Código IBGE de 2 dígitos (ex.: 35 para SP); TABUF.CODIGO"
+    - name: sigla
+      type: string
+      constraints: { required: true, pattern: "^[A-Z]{2}$" }
+      description: "Sigla UF (SP, RJ, ...); TABUF.SIGLA_UF"
+    - name: nome
+      type: string
+      constraints: { required: true }
+      description: "Nome como o DATASUS grava, em maiúsculas sem acento (RONDONIA); TABUF.DESCRICAO"
+  primaryKey: [codigo_ibge]
+x-version: "2.0.0"
+x-source: DATASUS
+x-source-url: "ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID10/TABELAS/TABUF.DBF"

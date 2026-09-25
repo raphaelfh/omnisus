@@ -1,0 +1,234 @@
+name: cnes_habilitacoes
+title: CNES — Habilitações (HB)
+profile: tabular-data-resource
+encoding: latin-1
+x-version: 1.1.0
+x-source-format: dbc
+x-partitions:
+- _source_ano
+x-evidence:
+  physical_schema: cnes_hb_rr_2024_01_mini.dbc, 32 fields; observed 2026-09-22
+  semantic_status: Physical inventory. Category maps only where a TabWin CNV binds the
+    field and decodes every non-blank value of the fixture (vinculos.json); no inferred
+    mappings.
+  dictionary_url: ftp://ftp.datasus.gov.br/dissemin/publicos/CNES/200508_/Doc/IT_CNES_1706.pdf
+  source_url: ftp://ftp.datasus.gov.br/dissemin/publicos/CNES/200508_/Dados/HB/HBRR2401.dbc
+schema:
+  fields:
+  - name: cnes
+    type: string
+  - name: codufmun
+    type: string
+  - name: regsaude
+    type: string
+  - name: micr_reg
+    type: string
+  - name: distrsan
+    type: string
+  - name: distradm
+    type: string
+  - name: tpgestao
+    type: string
+    x-decode:
+      ' -Z': NÃO INFORMADO
+      D: DUPLA
+      E: ESTADUAL
+      M: MUNICIPAL
+      S: SEM GESTÃO
+      Z: SEM GESTÃO
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 4e19874712cc932b3dcb5c72ef3152e133de422bc5c73fa8ed6ede2a1a049b9f
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: cnes-tab-50988af5d88b
+          pages: []
+          locator: 'Habilitacao.def: XTipo de Gestão, TPGESTAO, 1, CNV\TPGESTAO.CNV; CNV/TPGESTAO.CNV'
+        note: Mapa do CNV.
+  - name: pf_pj
+    type: string
+  - name: cpf_cnpj
+    type: string
+  - name: niv_dep
+    type: string
+    x-decode:
+      '1': Individual
+      '3': Mantido
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 06b79bb2766644cc147b887eabea3057c02a6c51d20d3d3391cb42571c53cf13
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: cnes-tab-50988af5d88b
+          pages: []
+          locator: 'Habilitacao.def: XMantida/Individual, NIV_DEP, 1, CNV\NIVELDEP.CNV; CNV/NIVELDEP.CNV'
+        note: Mapa do CNV.
+  - name: cnpj_man
+    type: string
+  - name: esfera_a
+    type: string
+  - name: retencao
+    type: string
+  - name: atividad
+    type: string
+    x-decode:
+      '  -99': Atividade Ensino não informada
+      '01': Unidade Universitária
+      '02': Unidade Escola Superior Isolada
+      '03': Unidade Auxiliar de Ensino
+      '04': Unidade SEM atividade de Ensino
+      '05': Hospital de Ensino
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 452f208feb79f719f41403bc4ca413a72002a1adccc147f1c0d23d129ceeff38
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: cnes-tab-50988af5d88b
+          pages: []
+          locator: 'Habilitacao.def: XAtividade Ensino/Pesquisa, ATIVIDAD, 1, CNV\Ativ_Ens.CNV; CNV/Ativ_Ens.CNV'
+        note: Mapa do CNV.
+  - name: natureza
+    type: string
+  - name: clientel
+    type: string
+  - name: tp_unid
+    type: string
+    x-decode:
+      '01': POSTO DE SAUDE
+      '02': CENTRO DE SAUDE/UNIDADE BASICA
+      '04': POLICLINICA
+      '05': HOSPITAL GERAL
+      '07': HOSPITAL ESPECIALIZADO
+      '09': PRONTO SOCORRO DE HOSPITAL GERAL (ANTIGO)
+      '12': PRONTO SOCORRO TRAUMATO-ORTOPEDICO (ANTIGO)
+      '15': UNIDADE MISTA
+      '20': PRONTO SOCORRO GERAL
+      '21': PRONTO SOCORRO ESPECIALIZADO
+      '22': CONSULTORIO ISOLADO
+      '32': UNIDADE MOVEL FLUVIAL
+      '36': CLINICA/CENTRO DE ESPECIALIDADE
+      '39': UNIDADE DE APOIO DIAGNOSE E TERAPIA (SADT ISOLADO)
+      '40': UNIDADE MOVEL TERRESTRE
+      '42': UNIDADE MOVEL DE NIVEL PRE-HOSPITALAR NA AREA DE URGENCIA
+      '43': FARMACIA
+      '45': UNIDADE DE SAUDE DA FAMILIA
+      '50': UNIDADE DE VIGILANCIA EM SAUDE
+      '60': COOPERATIVA OU EMPRESA DE CESSAO DE TRABALHADORES NA SAUDE
+      '61': CENTRO DE PARTO NORMAL - ISOLADO
+      '62': HOSPITAL/DIA - ISOLADO
+      '63': UNIDADE AUTORIZADORA
+      '64': CENTRAL DE REGULACAO DE SERVICOS DE SAUDE
+      '65': UNIDADE DE VIGILANCIA EPIDEMIOLOGIA (ANTIGO)
+      '66': UNIDADE DE VIGILANCIA SANITARIA (ANTIGO)
+      '67': LABORATORIO CENTRAL DE SAUDE PUBLICA LACEN
+      '68': CENTRAL DE GESTAO EM SAUDE
+      '69': CENTRO DE ATENCAO HEMOTERAPIA E OU HEMATOLOGICA
+      '70': CENTRO DE ATENCAO PSICOSSOCIAL
+      '71': CENTRO DE APOIO A SAUDE DA FAMILIA
+      '72': UNIDADE DE ATENCAO A SAUDE INDIGENA
+      '73': PRONTO ATENDIMENTO
+      '74': POLO ACADEMIA DA SAUDE
+      '75': TELESSAUDE
+      '76': CENTRAL DE REGULACAO MEDICA DAS URGENCIAS
+      '77': SERVICO DE ATENCAO DOMICILIAR ISOLADO(HOME CARE)
+      '78': UNIDADE DE ATENCAO EM REGIME RESIDENCIAL
+      '79': OFICINA ORTOPEDICA
+      '80': LABORATORIO DE SAUDE PUBLICA
+      '81': CENTRAL DE REGULACAO DO ACESSO
+      '82': CENTRAL DE NOTIFICACAO,CAPTACAO E DISTRIB DE ORGAOS ESTADUAL
+      '83': POLO DE PREVENCAO DE DOENCAS E AGRAVOS E PROMOCAO DA SAUDE
+      '84': CENTRAL DE ABASTECIMENTO
+      '85': CENTRO DE IMUNIZACAO
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 69bb9effc85c90811cf4e7ebd21a31189a28aac2b860a92e8488aacf425b8925
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: cnes-tab-50988af5d88b
+          pages: []
+          locator: 'Habilitacao.def: XTipo de Estabelecimento, TP_UNID, 1, CNV\TP_ESTAB.CNV; CNV/TP_ESTAB.CNV'
+        note: Mapa do CNV.
+  - name: turno_at
+    type: string
+    x-decode:
+      '  -99': Turno não informado
+      '01': ATENDIMENTO TURNOS INTERMITENTES
+      '02': ATENDIMENTO CONTÍNUO 24 HORAS/DIA (Pl Sab Dom Fer)
+      '03': ATENDIMENTO TURNOS MANHÃ/TARDE/NOITE
+      '04': ATENDIMENTO SOMENTE PELA MANHÃ
+      '05': ATENDIMENTO SOMENTE À TARDE
+      '06': ATENDIMENTO TURNOS MANHÃ/TARDE
+      '07': ATENDIMENTO SOMENTE À NOITE
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 9f63ab7b7e25166ccc2991a16b4235862478859cbbb1226fe0063ce110716eee
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: cnes-tab-50988af5d88b
+          pages: []
+          locator: 'Habilitacao.def: XTurno Atendimento, TURNO_AT, 1, CNV\TurnosAt.cnv; CNV/TurnosAt.CNV'
+        note: Mapa do CNV.
+  - name: niv_hier
+    type: string
+  - name: terceiro
+    type: string
+  - name: cod_cep
+    type: string
+  - name: vinc_sus
+    type: string
+    x-decode:
+      '0': Estabelecimento SEM vínculo SUS
+      '1': Estabelecimento COM vínculo SUS
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 8a2ae79f475d7a43237fb2fbbd595510ee4eb4a93b0bee6399e0fff73e963e86
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: cnes-tab-50988af5d88b
+          pages: []
+          locator: 'Habilitacao.def: XVínculos com SUS, VINC_SUS, 1, CNV\VINC_SUS.CNV; CNV/Vinc_SUS.cnv'
+        note: Mapa do CNV.
+  - name: tp_prest
+    type: string
+  - name: sgruphab
+    type: string
+  - name: cmpt_ini
+    type: string
+  - name: cmpt_fim
+    type: string
+  - name: dtportar
+    type: string
+  - name: portaria
+    type: string
+  - name: maportar
+    type: string
+  - name: nuleitos
+    type: integer
+  - name: competen
+    type: string
+  - name: nat_jur
+    type: string

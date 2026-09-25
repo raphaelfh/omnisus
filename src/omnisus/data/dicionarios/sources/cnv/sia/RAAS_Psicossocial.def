@@ -1,0 +1,337 @@
+;Registro de Ações Ambulatoriais em Saúde - Atenção Psicossocial
+ADADOS\PS*.dbc
+GPA_QTDAPR
+IQuantidade Apresentada   , PA_QTDPRO
+IQuantidade Atendimento   , QTDATE
+IQuantidade Paciente      , QTDPCN
+IDias Permanência  , PERMANEN
+LMês de Processamento,DT_PROCESS,1, CNV/ANOMES2008.CNV
+CMês de Processamento,DT_PROCESS,1, CNV/ANOMES2008.CNV
+SMês de Processamento,DT_PROCESS,1, CNV/ANOMES2008.CNV
+TSemestre de Processamento,DT_PROCESS,1, CNV/SEME2008.CNV
+SSemestre de Processamento,DT_PROCESS,1, CNV/SEME2008.CNV
+TAno de Processamento,DT_PROCESS,1, CNV/ANO_2008.CNV
+SAno de Processamento,DT_PROCESS,1, CNV/ANO_2008.CNV
+LMês de Atendimento ,DT_ATEND  ,1, CNV/ANOMES2008.CNV
+CMês de Atendimento ,DT_ATEND  ,1, CNV/ANOMES2008.CNV
+SMês de Atendimento ,DT_ATEND  ,1, CNV/ANOMES2008.CNV
+TSemestre de Atendimento,DT_ATEND  ,1, CNV/Seme2008.CNV
+SSemestre de Atendimento,DT_ATEND  ,1, CNV/Seme2008.CNV
+TAno de Atendimento,DT_ATEND  ,1, CNV/ANO_2008.CNV
+SAno de Atendimento,DT_ATEND  ,1, CNV/ANO_2008.CNV
+LAção Realizada    ,PA_PROC_ID,IP_DSCR, DBF/TB_SIGTAW.DBF
+CAção Realizada    ,PA_PROC_ID,IP_DSCR, DBF/TB_SIGTAW.DBF
+SAção Realizada    ,PA_PROC_ID,IP_DSCR, DBF/TB_SIGTAW.DBF
+LOrigem Paciente   ,ORIGEM_PAC,1, CNV/ORIG_PSI.CNV
+COrigem Paciente   ,ORIGEM_PAC,1, CNV/ORIG_PSI.CNV
+SOrigem Paciente   ,ORIGEM_PAC,1, CNV/ORIG_PSI.CNV
+LDestino Paciente  ,DESTINOPAC,1, CNV/DEST_PSI.CNV
+CDestino Paciente  ,DESTINOPAC,1, CNV/DEST_PSI.CNV
+SDestino Paciente  ,DESTINOPAC,1, CNV/DEST_PSI.CNV
+LCID Principal     ,CIDPRI    , CD_DESCR, DBF/S_CID.DBF
+CCID Principal     ,CIDPRI    , CD_DESCR, DBF/S_CID.DBF
+SCID Principal     ,CIDPRI    , CD_DESCR, DBF/S_CID.DBF
+LCID Associado     ,CIDASSOC  , CD_DESCR, DBF/S_CID.DBF
+CCID Associado     ,CIDASSOC  , CD_DESCR, DBF/S_CID.DBF
+SCID Associado     ,CIDASSOC  , CD_DESCR, DBF/S_CID.DBF
+LMotivo Saida/Permanência,MOT_COB  ,1, CNV/MOTSAIPE.CNV
+CMotivo Saida/Permanência,MOT_COB  ,1, CNV/MOTSAIPE.CNV
+SMotivo Saida/Permanência,MOT_COB  ,1, CNV/MOTSAIPE.CNV
+LCarater de Atendimento,CATEND    ,1, CNV/CARAT_AT.CNV
+CCarater de Atendimento,CATEND    ,1, CNV/CARAT_AT.CNV
+SCarater de Atendimento,CATEND    ,1, CNV/CARAT_AT.CNV
+LServiço/Classificação ,PA_SRV    ,DS_REGRA,DBF/S_CLASSEN.DBF
+CServiço/Classificação ,PA_SRV    ,DS_REGRA,DBF/S_CLASSEN.DBF
+SServiço/Classificação ,PA_SRV    ,DS_REGRA,DBF/S_CLASSEN.DBF
+XLocal de Realização ,LOC_REALIZ,1,CNV/LOC_REALIZ.CNV
+XSituação Rua (S/N),SIT_RUA   ,1,CNV/SIT_RUA.CNV
+XTipo Droga        ,TP_DROGA  ,1,CNV/TP_DROGA.CNV
+;DADOS DO PACIENTE
+XIdade detalhada   ,TPIDADEPAC,1, CNV/IDADEDET.CNV
+XFaixa Etária (18) ,TPIDADEPAC,1, CNV/IDADE18.CNV
+LNacionalidade Paciente ,NACION_PAC,1, CNV/UFNACIO.CNV
+CNacionalidade Paciente ,NACION_PAC,1, CNV/UFNACIO.CNV
+SNacionalidade Paciente ,NACION_PAC,1, CNV/UFNACIO.CNV
+LSexo do Paciente  ,SEXOPAC   ,1, CNV/SEXO.CNV
+CSexo do Paciente  ,SEXOPAC   ,1, CNV/SEXO.CNV
+SSexo do Paciente  ,SEXOPAC   ,1, CNV/SEXO.CNV
+LRaça/Cor Paciente ,RACACOR   ,1, CNV/RACA_COR.CNV
+CRaça/Cor Paciente ,RACACOR   ,1, CNV/RACA_COR.CNV
+SRaça/Cor Paciente ,RACACOR   ,1, CNV/RACA_COR.CNV
+LEtnia do Paciente ,ETNIA     ,1, CNV/ETNIA.CNV
+CEtnia do Paciente ,ETNIA     ,1, CNV/ETNIA.CNV
+SEtnia do Paciente ,ETNIA     ,1, CNV/ETNIA.CNV
+;Alteração da base territorial - 20/05/2015
+LMunicípio Paciente,MUNPAC    ,1, CNV/MUNICBR.CNV
+;SMunicípio Paciente,MUNPAC    ,1, CNV/MUNICBR.CNV
+;LUF de Resid Pacient,MUNPAC   ,1, CNV/UF.CNV
+;sUF de Resid Pacient,MUNPAC   ,1, CNV/UF.CNV
+;CUF de Resid Pacient,MUNPAC   ,1, CNV/UF_COL.CNV
+;   Definições para residência - 20/05/2015
+XMunicípio Residência - BR,  MUNPAC ,  1,  CNV/BR_MUNICIP.CNV
+XMunicípio Residência - AC,  MUNPAC ,  1,  CNV/AC_MUNICIP.CNV
+XMunicípio Residência - AL,  MUNPAC ,  1,  CNV/AL_MUNICIP.CNV
+XMunicípio Residência - AM,  MUNPAC ,  1,  CNV/AM_MUNICIP.CNV
+XMunicípio Residência - AP,  MUNPAC ,  1,  CNV/AP_MUNICIP.CNV
+XMunicípio Residência - BA,  MUNPAC ,  1,  CNV/BA_MUNICIP.CNV
+XMunicípio Residência - CE,  MUNPAC ,  1,  CNV/CE_MUNICIP.CNV
+XMunicípio Residência - DF,  MUNPAC ,  1,  CNV/DF_MUNICIP.CNV
+XMunicípio Residência - ES,  MUNPAC ,  1,  CNV/ES_MUNICIP.CNV
+XMunicípio Residência - GO,  MUNPAC ,  1,  CNV/GO_MUNICIP.CNV
+XMunicípio Residência - MA,  MUNPAC ,  1,  CNV/MA_MUNICIP.CNV
+XMunicípio Residência - MG,  MUNPAC ,  1,  CNV/MG_MUNICIP.CNV
+XMunicípio Residência - MS,  MUNPAC ,  1,  CNV/MS_MUNICIP.CNV
+XMunicípio Residência - MT,  MUNPAC ,  1,  CNV/MT_MUNICIP.CNV
+XMunicípio Residência - PA,  MUNPAC ,  1,  CNV/PA_MUNICIP.CNV
+XMunicípio Residência - PB,  MUNPAC ,  1,  CNV/PB_MUNICIP.CNV
+XMunicípio Residência - PE,  MUNPAC ,  1,  CNV/PE_MUNICIP.CNV
+XMunicípio Residência - PI,  MUNPAC ,  1,  CNV/PI_MUNICIP.CNV
+XMunicípio Residência - PR,  MUNPAC ,  1,  CNV/PR_MUNICIP.CNV
+XMunicípio Residência - RJ,  MUNPAC ,  1,  CNV/RJ_MUNICIP.CNV
+XMunicípio Residência - RN,  MUNPAC ,  1,  CNV/RN_MUNICIP.CNV
+XMunicípio Residência - RO,  MUNPAC ,  1,  CNV/RO_MUNICIP.CNV
+XMunicípio Residência - RR,  MUNPAC ,  1,  CNV/RR_MUNICIP.CNV
+XMunicípio Residência - RS,  MUNPAC ,  1,  CNV/RS_MUNICIP.CNV
+XMunicípio Residência - SC,  MUNPAC ,  1,  CNV/SC_MUNICIP.CNV
+XMunicípio Residência - SE,  MUNPAC ,  1,  CNV/SE_MUNICIP.CNV
+XMunicípio Residência - SP,  MUNPAC ,  1,  CNV/SP_MUNICIP.CNV
+XMunicípio Residência - TO,  MUNPAC ,  1,  CNV/TO_MUNICIP.CNV
+LCapital Residência,     MUNPAC ,  1,  CNV/BR_CAPITAL.CNV
+CCapital Residência,     MUNPAC ,  1,  CNV/BR_CAPITAL.CNV
+SCapital Residência,     MUNPAC ,  1,  CNV/BR_CAPITAL.CNV
+LRegião Saúde Residência,   MUNPAC ,  1,  CNV/BR_REGSAUD.CNV
+LMacro Região Saúde Resid.,MUNPAC ,  1,  CNV/BR_MACSAUD.CNV
+LDivisão Administrativa Resid.,    MUNPAC ,  1,  CNV/BR_DIVADM.CNV
+LMicrp IBGE Residência,   MUNPAC ,  1,  CNV/BR_MICIBGE.CNV
+LRegião Metropolitana Resid.,    MUNPAC ,  1,  CNV/BR_REGMETR.CNV
+LTerritório Cidadania Resid.,  MUNPAC ,  1,  CNV/BR_TERRCID.CNV
+LMacro PNDR Residência,   MUNPAC ,  1,  CNV/BR_PNDR.CNV
+CRegião Saúde Residência,   MUNPAC ,  1,  CNV/BR_REGSAUD.CNV
+CMacro Região Saúde Resid.,MUNPAC ,  1,  CNV/BR_MACSAUD.CNV
+CDivisão Administrativa Resid.,    MUNPAC ,  1,  CNV/BR_DIVADM.CNV
+CMicro IBGE Residência,   MUNPAC ,  1,  CNV/BR_MICIBGE.CNV
+CRegião Metropolitana Resid.,    MUNPAC ,  1,  CNV/BR_REGMETR.CNV
+CTerritório Cidadania Resid.,  MUNPAC ,  1,  CNV/BR_TERRCID.CNV
+CMacro PNDR Residência.,   MUNPAC ,  1,  CNV/BR_PNDR.CNV
+SRegião Saúde Residência,   MUNPAC ,  1,  CNV/BR_REGSAUD.CNV
+SMacro Região Saúde Resid.,MUNPAC ,  1,  CNV/BR_MACSAUD.CNV
+SDivisão Administrativa Resid.,    MUNPAC ,  1,  CNV/BR_DIVADM.CNV
+SMicro IBGE Residência,   MUNPAC ,  1,  CNV/BR_MICIBGE.CNV
+SRegião Metropolitana Resid.,    MUNPAC ,  1,  CNV/BR_REGMETR.CNV
+STerritório Cidadania Resid.,  MUNPAC ,  1,  CNV/BR_TERRCID.CNV
+SMacro PNDR Residência,   MUNPAC ,  1,  CNV/BR_PNDR.CNV
+SMun Amazônia Legal Res,MUNPAC ,  1,  CNV/BR_AMAZLEGAL.CNV
+SMun Extrema Pobreza Resid., MUNPAC ,  1,  CNV/BR_EXTRPOBREZ.CNV
+SMun Faixa Fronteira Resid. ,MUNPAC ,  1,  CNV/BR_FRONTFAIXA.CNV
+SMun Zona Fronteira Resid,MUNPAC ,  1,  CNV/BR_FRONTZONA.CNV
+SMun Semi Árido Resid.,MUNPAC ,  1,  CNV/BR_SEMIARIDO.CNV
+;-------------------------------------------
+;Alteração da base territorial - 20/05/2015
+;-------------------------------------------
+;LGestor da Produção,GESTAO    ,1, CNV/MUNGPBR.CNV
+;SGestor da Produção,GESTAO    ,1, CNV/MUNGPBR.CNV
+;LUF do Gestor      ,GESTAO    ,1, CNV/UF.CNV
+;sUF do Gestor      ,GESTAO    ,1, CNV/UF.CNV
+;CUF do Gestor      ,GESTAO    ,1, CNV/UF_COL.CNV
+;-------------------------------------------
+;Final da Alteração da base territorial - 20/05/2015
+;-------------------------------------------
+LGestor da Produção,GESTAO    ,1, CNV/BR_MUNICGESTOR.CNV
+SGestor da Produção,GESTAO    ,1, CNV/BR_MUNICGESTOR.CNV
+LTipo de Gestão    ,CONDIC    ,1, CNV/TP_GESTAO.CNV
+CTipo de Gestão    ,CONDIC    ,1, CNV/TP_GEST_C.CNV
+STipo de Gestão    ,CONDIC    ,1, CNV/TP_GESTAO.CNV
+;-------------------------------------------
+;Alteração da base territorial - 20/05/2015
+;-------------------------------------------
+;LMunicípio Estab   ,UFMUN     ,1, CNV/MUNICBR.CNV
+;SMunicípio Estab   ,UFMUN     ,1, CNV/MUNICBR.CNV
+;LUF do Estabelecim ,UFMUN     ,1, CNV/UF.CNV
+;sUF do Estabelecim ,UFMUN     ,1, CNV/UF.CNV
+;CUF do Estabelecim ,UFMUN     ,1, CNV/UF_COL.CNV
+;-------------------------------------------
+;Final da Alteração da base territorial - 20/05/2015
+;-------------------------------------------
+;       Definições  para município de Atendimento - 20/05/2015
+LUF Atendimento,    UFMUN , 1,  CNV/BR_UF.CNV
+LUF Atendimento Sigla,    UFMUN , 1,  CNV/BR_UFSIGLA.CNV
+CUF Atendimento,    UFMUN , 1,  CNV/BR_UFSIGLA.CNV
+SUF Atendimento,    UFMUN , 1,  CNV/BR_UF.CNV
+LRegião Atendimento, UFMUN , 1,  CNV/BR_REGIAO.CNV
+CRegião Atendimento, UFMUN , 1,  CNV/BR_REGIAO.CNV
+SRegião Atendimento, UFMUN , 1,  CNV/BR_REGIAO.CNV
+LRegião/UF Atendimento,   UFMUN , 1,  CNV/BR_REGIAOUF.CNV
+XMunicípio Atendimento - BR,  UFMUN , 1,  CNV/BR_MUNICIP.CNV
+XMunicípio Atendimento - AC,  UFMUN , 1, CNV/AC_MUNICIP.CNV
+XMunicípio Atendimento - AL,  UFMUN , 1,  CNV/AL_MUNICIP.CNV
+XMunicípio Atendimento - AM,  UFMUN , 1,  CNV/AM_MUNICIP.CNV
+XMunicípio Atendimento - AP,  UFMUN , 1,  CNV/AP_MUNICIP.CNV
+XMunicípio Atendimento - BA,  UFMUN , 1,  CNV/BA_MUNICIP.CNV
+XMunicípio Atendimento - CE,  UFMUN , 1,  CNV/CE_MUNICIP.CNV
+XMunicípio Atendimento - DF,  UFMUN , 1,  CNV/DF_MUNICIP.CNV
+XMunicípio Atendimento - ES,  UFMUN , 1,  CNV/ES_MUNICIP.CNV
+XMunicípio Atendimento - GO,  UFMUN , 1,  CNV/GO_MUNICIP.CNV
+XMunicípio Atendimento - MA,  UFMUN , 1,  CNV/MA_MUNICIP.CNV
+XMunicípio Atendimento - MG,  UFMUN , 1,  CNV/MG_MUNICIP.CNV
+XMunicípio Atendimento - MS,  UFMUN , 1,  CNV/MS_MUNICIP.CNV
+XMunicípio Atendimento - MT,  UFMUN , 1,  CNV/MT_MUNICIP.CNV
+XMunicípio Atendimento - PA,  UFMUN , 1,  CNV/PA_MUNICIP.CNV
+XMunicípio Atendimento - PB,  UFMUN , 1,  CNV/PB_MUNICIP.CNV
+XMunicípio Atendimento - PE,  UFMUN , 1,  CNV/PE_MUNICIP.CNV
+XMunicípio Atendimento - PI,  UFMUN , 1,  PI_MUNICIP.CNV
+XMunicípio Atendimento - PR,  UFMUN , 1,  CNV/PR_MUNICIP.CNV
+XMunicípio Atendimento - RJ,  UFMUN , 1,  CNV/RJ_MUNICIP.CNV
+XMunicípio Atendimento - RN,  UFMUN , 1,  CNV/RN_MUNICIP.CNV
+XMunicípio Atendimento - RO,  UFMUN , 1,  CNV/RO_MUNICIP.CNV
+XMunicípio Atendimento - RR,  UFMUN , 1,  CNV/RR_MUNICIP.CNV
+XMunicípio Atendimento - RS,  UFMUN , 1,  CNV/RS_MUNICIP.CNV
+XMunicípio Atendimento - SC,  UFMUN , 1,  CNV/SC_MUNICIP.CNV
+XMunicípio Atendimento - SE,  UFMUN , 1,  CNV/SE_MUNICIP.CNV
+XMunicípio Atendimento - SP,  UFMUN , 1,  CNV/SP_MUNICIP.CNV
+XMunicípio Atendimento - TO,  UFMUN , 1,  CNV/TO_MUNICIP.CNV
+LCapital Atendimento,     UFMUN , 1,  CNV/BR_CAPITAL.CNV
+CCapital Atendimento,     UFMUN , 1,  CNV/BR_CAPITAL.CNV
+SCapital Atendimento,     UFMUN , 1,  CNV/BR_CAPITAL.CNV
+LRegião Saúde Atendimento,   UFMUN , 1,  CNV/BR_REGSAUD.CNV
+LMacro Região Saúde Atend.,UFMUN , 1,  CNV/BR_MACSAUD.CNV
+LDivisão Administrativa Atend.,    UFMUN , 1,  CNV/BR_DIVADM.CNV
+LMicro IBGE Atendimento,   UFMUN , 1,  CNV/BR_MICIBGE.CNV
+LRegião Metropolitana Atend.,    UFMUN , 1,  CNV/BR_REGMETR.CNV
+LTerritório Cidadania Atend.,  UFMUN , 1,  CNV/BR_TERRCID.CNV
+LMacro PNDR Atendimento,   UFMUN , 1,  CNV/BR_PNDR.CNV
+CRegião Saúde Atendimento,   UFMUN , 1,  CNV/BR_regsaud.CNV
+CMacroReg.Saúde Atend.,UFMUN , 1,  CNV/BR_MACSAUD.CNV
+CDivisão Administrativa Atend.,    UFMUN , 1,  CNV/BR_DIVADM.CNV
+CMicro IBGE Atendimento,   UFMUN , 1,  CNV/BR_MICIBGE.CNV
+CRegião Metropolitana Atend.,    UFMUN , 1,  CNV/BR_REGMETR.CNV
+CTerritório.Cidadania Atend.,  UFMUN , 1,  CNV/BR_TERRCID.CNV
+CMacro PNDR Atendimento,   UFMUN , 1,  CNV/BR_PNDR.CNV
+SRegião Saúde Atendimento,   UFMUN , 1,  CNV/BR_REGSAUD.CNV
+SMacro Região Saúde Atend.,UFMUN , 1,  CNV/BR_MACSAUD.CNV
+SDivisão Administrativa Atend.,    UFMUN , 1,  CNV/BR_DIVADM.CNV
+SMicro IBGE Atendimento,   UFMUN , 1,  CNV/BR_MICIBGE.CNV
+SRegião Metropolitana Atend.,    UFMUN , 1,  CNV/BR_REGMETR.CNV
+STerritório Cidadania.Atend.,  UFMUN , 1,  CNV/BR_TERRCID.CNV
+SMacro PNDR Atendimento,   UFMUN , 1,  CNV/BR_PNDR.CNV
+SMun Amazônia Legal Atend.,UFMUN , 1,  CNV/BR_AMAZLEGAL.CNV
+SMun Extrema Pobreza Atend., UFMUN , 1,  CNV/BR_EXTRPOBREZ.CNV
+SMun Faixa Fronteira Atend.,UFMUN , 1,  CNV/BR_FRONTFAIXA.CNV
+SMun Zona Fronteira Atend.,UFMUN , 1,  CNV/BR_FRONTZONA.CNV
+SMun Semi Árido Atend.,UFMUN , 1,  CNV/BR_SEMIARIDO.CNV
+LCNES Executante - AC, CNES_EXEC , FANTASIA, DBF/CADGERAC.DBF
+SCNES Executante - AC, CNES_EXEC , FANTASIA, DBF/CADGERAC.DBF
+LCNES Executante - AL, CNES_EXEC , FANTASIA, DBF/CADGERAL.DBF
+SCNES Executante - AL, CNES_EXEC , FANTASIA, DBF/CADGERAL.DBF
+LCNES Executante - AM, CNES_EXEC , FANTASIA, DBF/CADGERAM.DBF
+SCNES Executante - AM, CNES_EXEC , FANTASIA, DBF/CADGERAM.DBF
+LCNES Executante - AP, CNES_EXEC , FANTASIA, DBF/CADGERAP.DBF
+SCNES Executante - AP, CNES_EXEC , FANTASIA, DBF/CADGERAP.DBF
+LCNES Executante - BA, CNES_EXEC , FANTASIA, DBF/CADGERBA.DBF
+SCNES Executante - BA, CNES_EXEC , FANTASIA, DBF/CADGERBA.DBF
+LCNES Executante - CE, CNES_EXEC , FANTASIA, DBF/CADGERCE.DBF
+SCNES Executante - CE, CNES_EXEC , FANTASIA, DBF/CADGERCE.DBF
+LCNES Executante - DF, CNES_EXEC , FANTASIA, DBF/CADGERDF.DBF
+SCNES Executante - DF, CNES_EXEC , FANTASIA, DBF/CADGERDF.DBF
+LCNES Executante - ES, CNES_EXEC , FANTASIA, DBF/CADGERES.DBF
+SCNES Executante - ES, CNES_EXEC , FANTASIA, DBF/CADGERES.DBF
+LCNES Executante - GO, CNES_EXEC , FANTASIA, DBF/CADGERGO.DBF
+SCNES Executante - GO, CNES_EXEC , FANTASIA, DBF/CADGERGO.DBF
+LCNES Executante - MA, CNES_EXEC , FANTASIA, DBF/CADGERMA.DBF
+SCNES Executante - MA, CNES_EXEC , FANTASIA, DBF/CADGERMA.DBF
+LCNES Executante - MG, CNES_EXEC , FANTASIA, DBF/CADGERMG.DBF
+SCNES Executante - MG, CNES_EXEC , FANTASIA, DBF/CADGERMG.DBF
+LCNES Executante - MS, CNES_EXEC , FANTASIA, DBF/CADGERMS.DBF
+SCNES Executante - MS, CNES_EXEC , FANTASIA, DBF/CADGERMS.DBF
+LCNES Executante - MT, CNES_EXEC , FANTASIA, DBF/CADGERMT.DBF
+SCNES Executante - MT, CNES_EXEC , FANTASIA, DBF/CADGERMT.DBF
+LCNES Executante - PA, CNES_EXEC , FANTASIA, DBF/CADGERPA.DBF
+SCNES Executante - PA, CNES_EXEC , FANTASIA, DBF/CADGERPA.DBF
+LCNES Executante - PB, CNES_EXEC , FANTASIA, DBF/CADGERPB.DBF
+SCNES Executante - PB, CNES_EXEC , FANTASIA, DBF/CADGERPB.DBF
+LCNES Executante - PE, CNES_EXEC , FANTASIA, DBF/CADGERPE.DBF
+SCNES Executante - PE, CNES_EXEC , FANTASIA, DBF/CADGERPE.DBF
+LCNES Executante - PI, CNES_EXEC , FANTASIA, DBF/CADGERPI.DBF
+SCNES Executante - PI, CNES_EXEC , FANTASIA, DBF/CADGERPI.DBF
+LCNES Executante - PR, CNES_EXEC , FANTASIA, DBF/CADGERPR.DBF
+SCNES Executante - PR, CNES_EXEC , FANTASIA, DBF/CADGERPR.DBF
+LCNES Executante - RJ, CNES_EXEC , FANTASIA, DBF/CADGERRJ.DBF
+SCNES Executante - RJ, CNES_EXEC , FANTASIA, DBF/CADGERRJ.DBF
+LCNES Executante - RN, CNES_EXEC , FANTASIA, DBF/CADGERRN.DBF
+SCNES Executante - RN, CNES_EXEC , FANTASIA, DBF/CADGERRN.DBF
+LCNES Executante - RO, CNES_EXEC , FANTASIA, DBF/CADGERRO.DBF
+SCNES Executante - RO, CNES_EXEC , FANTASIA, DBF/CADGERRO.DBF
+LCNES Executante - RR, CNES_EXEC , FANTASIA, DBF/CADGERRR.DBF
+SCNES Executante - RR, CNES_EXEC , FANTASIA, DBF/CADGERRR.DBF
+LCNES Executante - RS, CNES_EXEC , FANTASIA, DBF/CADGERRS.DBF
+SCNES Executante - RS, CNES_EXEC , FANTASIA, DBF/CADGERRS.DBF
+LCNES Executante - SC, CNES_EXEC , FANTASIA, DBF/CADGERSC.DBF
+SCNES Executante - SC, CNES_EXEC , FANTASIA, DBF/CADGERSC.DBF
+LCNES Executante - SE, CNES_EXEC , FANTASIA, DBF/CADGERSE.DBF
+SCNES Executante - SE, CNES_EXEC , FANTASIA, DBF/CADGERSE.DBF
+LCNES Executante - SP, CNES_EXEC , FANTASIA, DBF/CADGERSP.DBF
+SCNES Executante - SP, CNES_EXEC , FANTASIA, DBF/CADGERSP.DBF
+LCNES Executante - TO, CNES_EXEC , FANTASIA, DBF/CADGERTO.DBF
+SCNES Executante - TO, CNES_EXEC , FANTASIA, DBF/CADGERTO.DBF
+LNatureza Jurídica , NAT_JUR , 1 , CNV/NATJUR.CNV
+CNatureza Jurídica , NAT_JUR , 1 , CNV/NATJURC.CNV
+SNatureza Jurídica , NAT_JUR , 1 , CNV/NATJURC.CNV
+LEsfera Jurídica   , NAT_JUR , 1 , CNV/ESFERAJUR.CNV
+CEsfera Jurídica   , NAT_JUR , 1 , CNV/ESFERAJURC.CNV
+SEsfera Jurídica   , NAT_JUR , 1 , CNV/ESFERAJURC.CNV
+LCobertura ESF     ,COB_ESF   ,1, CNV/COBERTURA.CNV
+CCobertura ESF     ,COB_ESF   ,1, CNV/COBERTURA.CNV
+SCobertura ESF     ,COB_ESF   ,1, CNV/COBERTURA.CNV
+LCNES ESF - AC       , CNES_ESF, FANTASIA, DBF/CADGERAC.DBF
+SCNES ESF - AC       , CNES_ESF, FANTASIA, DBF/CADGERAC.DBF
+LCNES ESF - AL       , CNES_ESF, FANTASIA, DBF/CADGERAL.DBF
+SCNES ESF - AL       , CNES_ESF, FANTASIA, DBF/CADGERAL.DBF
+LCNES ESF - AM       , CNES_ESF, FANTASIA, DBF/CADGERAM.DBF
+SCNES ESF - AM       , CNES_ESF, FANTASIA, DBF/CADGERAM.DBF
+LCNES ESF - AP       , CNES_ESF, FANTASIA, DBF/CADGERAP.DBF
+SCNES ESF - AP       , CNES_ESF, FANTASIA, DBF/CADGERAP.DBF
+LCNES ESF - BA       , CNES_ESF, FANTASIA, DBF/CADGERBA.DBF
+SCNES ESF - BA       , CNES_ESF, FANTASIA, DBF/CADGERBA.DBF
+LCNES ESF - CE       , CNES_ESF, FANTASIA, DBF/CADGERCE.DBF
+SCNES ESF - CE       , CNES_ESF, FANTASIA, DBF/CADGERCE.DBF
+LCNES ESF - DF       , CNES_ESF, FANTASIA, DBF/CADGERDF.DBF
+SCNES ESF - DF       , CNES_ESF, FANTASIA, DBF/CADGERDF.DBF
+LCNES ESF - ES       , CNES_ESF, FANTASIA, DBF/CADGERES.DBF
+SCNES ESF - ES       , CNES_ESF, FANTASIA, DBF/CADGERES.DBF
+LCNES ESF - GO       , CNES_ESF, FANTASIA, DBF/CADGERGO.DBF
+SCNES ESF - GO       , CNES_ESF, FANTASIA, DBF/CADGERGO.DBF
+LCNES ESF - MA       , CNES_ESF, FANTASIA, DBF/CADGERMA.DBF
+SCNES ESF - MA       , CNES_ESF, FANTASIA, DBF/CADGERMA.DBF
+LCNES ESF - MG       , CNES_ESF, FANTASIA, DBF/CADGERMG.DBF
+SCNES ESF - MG       , CNES_ESF, FANTASIA, DBF/CADGERMG.DBF
+LCNES ESF - MS       , CNES_ESF, FANTASIA, DBF/CADGERMS.DBF
+SCNES ESF - MS       , CNES_ESF, FANTASIA, DBF/CADGERMS.DBF
+LCNES ESF - MT       , CNES_ESF, FANTASIA, DBF/CADGERMT.DBF
+SCNES ESF - MT       , CNES_ESF, FANTASIA, DBF/CADGERMT.DBF
+LCNES ESF - PA       , CNES_ESF, FANTASIA, DBF/CADGERPA.DBF
+SCNES ESF - PA       , CNES_ESF, FANTASIA, DBF/CADGERPA.DBF
+LCNES ESF - PB       , CNES_ESF, FANTASIA, DBF/CADGERPB.DBF
+SCNES ESF - PB       , CNES_ESF, FANTASIA, DBF/CADGERPB.DBF
+LCNES ESF - PE       , CNES_ESF, FANTASIA, DBF/CADGERPE.DBF
+SCNES ESF - PE       , CNES_ESF, FANTASIA, DBF/CADGERPE.DBF
+LCNES ESF - PI       , CNES_ESF, FANTASIA, DBF/CADGERPI.DBF
+SCNES ESF - PI       , CNES_ESF, FANTASIA, DBF/CADGERPI.DBF
+LCNES ESF - PR       , CNES_ESF, FANTASIA, DBF/CADGERPR.DBF
+SCNES ESF - PR       , CNES_ESF, FANTASIA, DBF/CADGERPR.DBF
+LCNES ESF - RJ       , CNES_ESF, FANTASIA, DBF/CADGERRJ.DBF
+SCNES ESF - RJ       , CNES_ESF, FANTASIA, DBF/CADGERRJ.DBF
+LCNES ESF - RN       , CNES_ESF, FANTASIA, DBF/CADGERRN.DBF
+SCNES ESF - RN       , CNES_ESF, FANTASIA, DBF/CADGERRN.DBF
+LCNES ESF - RO       , CNES_ESF, FANTASIA, DBF/CADGERRO.DBF
+SCNES ESF - RO       , CNES_ESF, FANTASIA, DBF/CADGERRO.DBF
+LCNES ESF - RR       , CNES_ESF, FANTASIA, DBF/CADGERRR.DBF
+SCNES ESF - RR       , CNES_ESF, FANTASIA, DBF/CADGERRR.DBF
+LCNES ESF - RS       , CNES_ESF, FANTASIA, DBF/CADGERRS.DBF
+SCNES ESF - RS       , CNES_ESF, FANTASIA, DBF/CADGERRS.DBF
+LCNES ESF - SC       , CNES_ESF, FANTASIA, DBF/CADGERSC.DBF
+SCNES ESF - SC       , CNES_ESF, FANTASIA, DBF/CADGERSC.DBF
+LCNES ESF - SE       , CNES_ESF, FANTASIA, DBF/CADGERSE.DBF
+SCNES ESF - SE       , CNES_ESF, FANTASIA, DBF/CADGERSE.DBF
+LCNES ESF - SP       , CNES_ESF, FANTASIA, DBF/CADGERSP.DBF
+SCNES ESF - SP       , CNES_ESF, FANTASIA, DBF/CADGERSP.DBF
+LCNES ESF - TO       , CNES_ESF, FANTASIA, DBF/CADGERTO.DBF
+SCNES ESF - TO       , CNES_ESF, FANTASIA, DBF/CADGERTO.DBF

@@ -1,0 +1,12 @@
+; Idade da mae
+CFx Etaria Mae(8),       IDADEMAE,   1, FXIDADZ.CNV
+CFx.Etaria Mae(5),       IDADEMAE,   1, IDADE5.CNV
+SFx.Etaria Mae(5),       IDADEMAE,   1, IDADE5.CNV
+CFx.Padrão Mãe,          IDADEMAE,   1, IDADEMAE.CNV
+SFx.Padrão Mae,          IDADEMAE,   1, IDADEMAE.CNV
+LFx.Et Detalhada,        IDADEMAE,   1, IDADET.CNV
+CFx Etaria 11,           IDADEMAE,   1, FXTABNET.CNV
+SFx.Et Detalhada,        IDADEMAE,   1, IDADET.CNV
+CFx.Mae adolescen,       IDADEMAE,   1, IDADOL.CNV
+SFx.Mae adolescen,       IDADEMAE,   1, IDADOL.CNV
+XIdade do Pai,           IDADEPAI,   1, IDADEPAI.CNV

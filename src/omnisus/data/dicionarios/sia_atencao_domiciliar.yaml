@@ -1,0 +1,407 @@
+name: sia_atencao_domiciliar
+title: SIASUS — RAAS Atenção Domiciliar (SAD)
+profile: tabular-data-resource
+encoding: latin-1
+x-version: 1.1.0
+x-source-format: dbc
+x-partitions:
+- _source_ano
+x-evidence:
+  physical_schema: sia_sad_ma_2018_10_mini.dbc, 45 fields; observed 2026-09-23
+  semantic_status: Physical inventory. Category maps only where a TabWin CNV binds the
+    field and decodes every non-blank value of the fixture (vinculos.json); no inferred
+    mappings.
+  dictionary_url: ftp://ftp.datasus.gov.br/dissemin/publicos/SIASUS/200801_/Doc/Informe_Tecnico_SIASUS_2019_07.pdf
+  source_url: ftp://ftp.datasus.gov.br/dissemin/publicos/SIASUS/200801_/Dados/SADMA1810.dbc
+schema:
+  fields:
+  - name: cnes_exec
+    type: string
+  - name: gestao
+    type: string
+  - name: condic
+    type: string
+    x-decode:
+      EC: EC Estado Convencional
+      EP: EP Estado Pleno
+      MN: MN Municipio Pleno NOAS
+      MP: MP Municipio Pleno NOB
+      PA: PA Municipio Pleno da Atenção Básica NOAS
+      PB: PB Municipio Pleno da Atenção Básica NOB 96
+      PG: PG Pacto de Gestão
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 72f3ca35c0ecc8e4db4af7064ff53b13ef82152293010c35bdc942fb930b930c
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Atencao_Domiciliar.def: LTipo de Gestão, CONDIC, 1, CNV/TP_GESTAO.CNV; CNV/TP_GESTAO.CNV'
+        note: Mapa do CNV.
+  - name: ufmun
+    type: string
+  - name: tpups
+    type: string
+  - name: mn_ind
+    type: string
+    x-decode:
+      I: Individual
+      M: Mantida
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: ed2c4ff4dd32b1a26949333be7166d041d821686abb6546494a31a3621f83697
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Atencao_Domiciliar.def: LMantida/Individual, MN_IND, 1, CNV/MANT_IND.CNV; CNV/MANT_IND.CNV'
+        note: Mapa do CNV.
+  - name: cnpjcpf
+    type: string
+  - name: cnpjmnt
+    type: string
+  - name: dt_process
+    type: string
+  - name: dt_atend
+    type: string
+  - name: cns_pac
+    type: string
+  - name: dtnasc
+    type: string
+  - name: tpidadepac
+    type: string
+  - name: idadepac
+    type: string
+    x-metadata:
+      physical_name: IDADEPAC
+      unit: encoded
+      derivation:
+        kind: coded_age
+        inputs:
+        - idadepac
+        - tpidadepac
+        rule_version: 1.0.0
+        output:
+        - idade_anos_completos
+        - idade_quantidade
+        - idade_unidade
+      applicability:
+        status: confirmed
+        data_period: null
+        valid_from: null
+        valid_until: null
+        conditions:
+        - Only the exact source identities in dataset.analytics.validated_sources.
+        reason: Atencao_Domiciliar.def binds TPIDADEPAC to IDADEDET.CNV; SADMA1810 audited,
+          every row equal in SQL and Python.
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Atencao_Domiciliar.def: XIdade detalhada, TPIDADEPAC, 1, CNV/IDADEDET.CNV;
+            CNV/IDADEDET.CNV compares 3 characters'
+        - source_id: siasus-70fe69dbd4cf
+          pages: [15]
+          locator: 'SAD layout: TPIDADEPAC CHAR (1) then IDADEPAC CHAR (2)'
+  - name: nacion_pac
+    type: string
+  - name: sexopac
+    type: string
+    x-decode:
+      ? ''
+      : Não exigido
+      '0': Não exigido
+      F: Feminino
+      M: Masculino
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 7fee0ffdb9777cfb61481409bb715059d63990a439b59979623692f27044f97f
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Atencao_Domiciliar.def: LSexo do Paciente, SEXOPAC, 1, CNV/SEXO.CNV; CNV/SEXO.CNV'
+        note: Mapa do CNV.
+  - name: racacor
+    type: string
+    x-decode:
+      ? ''
+      : SEM INFORMAÇÃO
+      ' D': RAÇA/COR  (OUTROS INDEVIDOS)
+      '00': RAÇA/COR NÃO EXIGIDO
+      '01': BRANCA
+      '02': PRETA
+      '03': PARDA
+      '04': AMARELA
+      '05': INDIGENA
+      '06': RAÇA/COR=06 (INDEVIDO)
+      '09': RAÇA/COR=09 (INDEVIDO)
+      1C: RAÇA/COR  (OUTROS INDEVIDOS)
+      1G: RAÇA/COR  (OUTROS INDEVIDOS)
+      1M: RAÇA/COR  (OUTROS INDEVIDOS)
+      '87': RAÇA/COR  (OUTROS INDEVIDOS)
+      '99': SEM INFORMAÇÃO
+      DE: RAÇA/COR  (OUTROS INDEVIDOS)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 11f9e1a29e3a04fb0a890a686809c331693322d2b5badf0fc35f78a4b193f082
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Atencao_Domiciliar.def: LRaça/Cor Paciente, RACACOR, 1, CNV/RACA_COR.CNV; CNV/RACA_COR.CNV'
+        note: Mapa do CNV.
+  - name: etnia
+    type: string
+  - name: munpac
+    type: string
+  - name: mot_cob
+    type: string
+    x-decode:
+      '00': PRODUÇÃO SEM MOTIVO DE SAÍDA (BPA-C / BPA-I)
+      '11': ALTA CURADO
+      '12': ALTA MELHORADO
+      '13': ALTA DA PUÉRPERA E PERMANÊNCIA DO RECÉM NASCIDO
+      '14': ALTA A PEDIDO
+      '15': ALTA COM PREVISÃO DE RETORNO P/ ACOMPAN. DO PACIENT
+      '16': ALTA POR EVASÃO
+      '17': ALTA DA PUÉRPERA E RECÉM NASCIDO
+      '18': ALTA POR OUTROS MOTIVOS
+      '21': PERMANÊNCIA POR CARACTERÍSTICAS PRÓPRIAS DA DOENÇA
+      '22': PERMANÊNCIA POR INTERCORRÊNCIA
+      '23': PERMANÊNCIA POR IMPOSSIBILIDADE SÓCIO-FAMILIAR
+      '24': PERMAN. POR PROCESSO-DOAÇÃO DE ÓRGÃOS-DOADOR VIVO
+      '25': PERMAN. POR PROCESSO-DOAÇÃO DE ÓRGÃOS-DOADOR MORTO
+      '26': PERMANÊNCIA POR MUDANÇA DE PROCEDIMENTO
+      '27': PERMANÊNCIA POR REOPERAÇÃO
+      '28': PERMANÊNCIA POR OUTROS MOTIVOS
+      '31': TRANSFERIDO PARA OUTRO ESTABELECIMENTO
+      '41': ÓBITO COM DECLARAÇÃO DE ÓBITO FORNEC. MÉDICO ASSIST
+      '42': ÓBITO COM DECLARAÇÃO DE ÓBITO FORNECIDA PELO I.M.L
+      '43': ÓBITO COM DECLARAÇÃO DE ÓBITO FORNECIDA PELO S.V.O
+      '51': ENCERRAMENTO ADMINSTRATIVO
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: c32352b40748bdd2b73db7c50eb49d646a98fd5b0185f4c0bbb871ed8a07be42
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Atencao_Domiciliar.def: LMotivo Saída/Permanência, MOT_COB, 1, CNV/MOTSAIPE.CNV; CNV/MOTSAIPE.CNV'
+        note: Mapa do CNV.
+  - name: dt_motcob
+    type: string
+  - name: catend
+    type: string
+    x-decode:
+      ? ''
+      : CARATER DE ATENDIMENTO NÃO INFORMADO
+      0-: CARATER DE ATENDIMENTO INVALIDO
+      '00': CARATER DE ATENDIMENTO NÃO INFORMADO
+      '01': ELETIVO
+      '02': URGÊNCIA
+      '03': ACIDENTE NO LOCAL TRABALHO OU A SERViÇO DA EMPRESA
+      '04': ACIDENTE NO TRAJETO PARA O TRABALHO
+      '05': OUTROS TIPOS DE ACIDENTE DE TRÂNSITO
+      '06': OUTROS TIPOS LESÕES/ENVENENAMENTOS(AGENT.FIS./QUIM.
+      '07': CARATER DE ATENDIMENTO INVALIDO
+      0E: CARATER DE ATENDIMENTO INVALIDO
+      0U: CARATER DE ATENDIMENTO INVALIDO
+      '10': CARATER DE ATENDIMENTO INVALIDO
+      '12': CARATER DE ATENDIMENTO INVALIDO
+      '20': CARATER DE ATENDIMENTO INVALIDO
+      '53': CARATER DE ATENDIMENTO INVALIDO
+      '54': CARATER DE ATENDIMENTO INVALIDO
+      '57': CARATER DE ATENDIMENTO INVALIDO
+      '99': INFORMAÇÃO INEXISTENTE  (BPA-C)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: d25d681486c1cc8a64ead3cc4cf8284925e623abd08d89a0ef734c88ed18eea1
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Atencao_Domiciliar.def: LCarater de Atendimento, CATEND, 1, CNV/CARAT_AT.CNV; CNV/CARAT_AT.CNV'
+        note: Mapa do CNV.
+  - name: cidpri
+    type: string
+  - name: cidassoc
+    type: string
+  - name: origem_pac
+    type: string
+    x-decode:
+      ? ''
+      : Não informado
+      '01': 01-Serviço de Urgência
+      '02': 02-Atenção Básica
+      '03': 03-Internação Hospitalar
+      '04': 04-Centro Oncológico
+      '05': 05-Outros
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 196d7f7ec3bf2d69139aa6b0c559ba1df8c3f8875f11bd23439353e0c0f1de5c
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Atencao_Domiciliar.def: LOrigem Paciente, ORIGEM_PAC, 1, CNV/ORIGEM.CNV; CNV/origem.cnv'
+        note: Mapa do CNV.
+  - name: dt_inicio
+    type: string
+  - name: dt_fim
+    type: string
+  - name: cob_esf
+    type: string
+    x-decode:
+      N: Não
+      S: Sim
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: eddb50b1af6e1f632a58d2c7540613d248114024eec49a9d80fd54c7a086ca3a
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Atencao_Domiciliar.def: LCobertura ESF, COB_ESF, 1, CNV/COBERTURA.CNV; CNV/COBERTURA.CNV'
+        note: Mapa do CNV.
+  - name: cnes_esf
+    type: string
+  - name: destinopac
+    type: string
+    x-decode:
+      ? ''
+      : Não informado
+      '00': 00-Permanência
+      '01': 01-Alta Clínica
+      '02': 02-Encaminhamento AD1
+      '03': 03-Alta Administrativa
+      '04': 04-admissão na Urgência
+      '05': 05-Internação Hospitalar
+      '06': 06-Óbito
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: e59763e4eeca8437d8bf0e564d9bb3a3b90d4bdd351bff1b7bc74d2e9560dd4c
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Atencao_Domiciliar.def: LDestino Paciente, DESTINOPAC, 1, CNV/DESTINO.CNV; CNV/destino.cnv'
+        note: Mapa do CNV.
+  - name: pa_proc_id
+    type: string
+  - name: pa_qtdpro
+    type: string
+  - name: pa_qtdapr
+    type: string
+  - name: pa_srv
+    type: string
+  - name: pa_class_s
+    type: string
+  - name: pa_equipe
+    type: string
+  - name: pa_tp_eqp
+    type: string
+  - name: pa_cid
+    type: string
+  - name: inicio
+    type: string
+  - name: fim
+    type: string
+  - name: permanen
+    type: string
+  - name: qtdate
+    type: string
+  - name: qtdpcn
+    type: string
+  - name: co_ine
+    type: string
+  - name: nat_jur
+    type: string
+# Identidade do arquivo: dt_process vale 201810 e ufmun começa por 21 (MA) nos 33
+# registros de SADMA1810; mesma regra do BPA-I e da PS.
+x-identity:
+  month_column: dt_process
+  uf_column: ufmun
+
+x-analytics:
+  version: 1.0.0
+  applicability_policy: exact_audited_source_identity
+  validated_sources:
+  - uf: MA
+    ano: 2018
+    mes: 10
+    release: final
+    source_sha256: 09470713cd7e913e690d5c98df63d12282c26c48db241ddc629d293911182f89
+  age:
+    field: idadepac
+    kind: sih
+    unit_field: tpidadepac
+    units:
+      '2':
+        unit: day
+        minimum_value: 0
+        maximum_value: 29
+      '3':
+        unit: month
+        minimum_value: 1
+        maximum_value: 11
+      '4':
+        unit: year
+        minimum_value: 1
+        maximum_value: 99
+      '5':
+        unit: year
+        offset: 100
+        minimum_value: 0
+        maximum_value: 30
+    maximum_value: 99
+    invalid_composites:
+    - '000'
+    - '999'
+    evidence:
+    - source_id: sia-tab-e5812b51d802
+      pages: []
+      locator: 'Atencao_Domiciliar.def: XIdade detalhada, TPIDADEPAC, 1, CNV/IDADEDET.CNV; CNV/IDADEDET.CNV compares 3 characters'
+    - source_id: siasus-70fe69dbd4cf
+      pages: [15]
+      locator: 'SAD layout: TPIDADEPAC CHAR (1) then IDADEPAC CHAR (2)'
+    notes:
+    - Kind sih is the encoding, not the system - a unit code in its own field and a two-digit quantity, read as the 3 characters IDADEDET.CNV compares.
+    - 000 and 999 are "Idade inválida" in IDADEDET.CNV. 230 ("1 mês") and 312 ("11 meses") are second codes of a category; this exact-quantity rule leaves them unsupported.
+    - The DBF header of SADMA1810 puts IDADEPAC right after TPIDADEPAC (offsets 88 and 89).
+    - Audit on 2026-09-23 - all 33 rows of SADMA1810 (unit 4) equal the completed years from DTNASC to DT_INICIO.

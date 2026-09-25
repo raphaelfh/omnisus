@@ -1,0 +1,38 @@
+__pycache__/
+__marimo__/
+*.py[cod]
+*.so
+.venv/
+.uv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+htmlcov/
+.coverage
+coverage.xml
+dist/
+build/
+native/**/target/
+native/**/fuzz/artifacts/
+native/**/fuzz/corpus/
+*.whl
+*.egg-info/
+.DS_Store
+.idea/
+.vscode/
+
+# DuckLake / DuckDB local artifacts
+*.ducklake
+*.ducklake-catalog.sqlite
+*.duckdb
+/data/
+
+# Fixtures cached
+tests/.cache/
+
+# Docs build
+site/
+
+# Tool scratch directories
+.hypothesis/
+.playwright-mcp/

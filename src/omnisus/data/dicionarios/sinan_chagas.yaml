@@ -1,0 +1,549 @@
+name: sinan_chagas
+title: SINAN — Doença de Chagas aguda, notificações preliminares nacionais
+profile: tabular-data-resource
+encoding: latin-1
+x-version: 1.2.0
+x-source-format: dbc
+x-partitions:
+- _source_ano
+x-identity:
+  year_column: nu_ano
+  code_column: id_agravo
+  code: B571
+x-evidence:
+  physical_schema: CHAGBR23.dbc, 108 fields; observed 2026-09-10
+  semantic_status: Page-sourced maps only; every x-decode code cites an official page
+    or TAB_SINANNET CNV. nu_idade_n is audited (x-analytics.age).
+  dictionary_url: https://portalsinan.saude.gov.br/images/documentos/Agravos/Chagas/DIC_DADOS_Chagas_v5.pdf
+  source_url: ftp://ftp.datasus.gov.br/dissemin/publicos/SINAN/DADOS/PRELIM/CHAGBR23.dbc
+schema:
+  fields:
+  - name: tp_not
+    type: string
+    x-decode:
+      '1': Negativa
+      '2': Individual
+      '3': Surto
+      '4': Agregado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: dcf8c99c8d2fbadd5d45f06c1382ef31a9652bfffd995898322cf68b8230ce2c
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 1
+          locator: '1. Tipo de Notificação (TP_NOT): 1 – Negativa, 2 – Individual, 3 – Surto, 4 – Agregado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: id_agravo
+    type: string
+  - name: dt_notific
+    type: date
+  - name: sem_not
+    type: string
+  - name: nu_ano
+    type: string
+  - name: sg_uf_not
+    type: string
+  - name: id_municip
+    type: string
+  - name: id_regiona
+    type: string
+  - name: id_unidade
+    type: string
+  - name: dt_sin_pri
+    type: date
+  - name: sem_pri
+    type: string
+  - name: ano_nasc
+    type: string
+  - name: nu_idade_n
+    type: integer
+    label: Idade
+    x-metadata:
+      physical_name: NU_IDADE_N
+      unit: encoded
+      derivation:
+        kind: coded_age
+        inputs:
+        - nu_idade_n
+        rule_version: 1.0.0
+        output:
+        - idade_anos_completos
+        - idade_quantidade
+        - idade_unidade
+      applicability:
+        status: confirmed
+        data_period: null
+        valid_from: null
+        valid_until: null
+        conditions:
+        - Only the exact source identities in dataset.analytics.validated_sources.
+        reason: Documented rule compared with the complete-file audits of 2026-09-21 (evidence/2026-09-21-w3-idade-sinan/)
+          and 2026-09-22 (evidence/2026-09-22-w6-idade-tb/); no applicability to other source hashes
+          is inferred.
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 3
+          - 4
+          locator: '10. Idade (NU_IDADE_N): 1º dígito 1 Hora, 2 Dia, 3 Mês, 4 Ano; ex. 3009 = nove meses,
+            4018 = dezoito anos'
+  - name: cs_sexo
+    type: string
+    x-decode:
+      M: Masculino
+      F: Feminino
+      I: Ignorado
+    x-metadata:
+      missing_codes:
+        I: ignored
+      claims:
+      - target: /field/codes
+        value_sha256: 03f1b56525c2bd3ad4b5365e1dd3e7a67a53c0d24389f0038e4031d642e4596b
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 4
+          locator: '11. Sexo (CS_SEXO): M- Masculino, F- Feminino, I- Ignorado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: cs_gestant
+    type: string
+    x-decode:
+      '1': 1º Trimestre
+      '2': 2º Trimestre
+      '3': 3º Trimestre
+      '4': Idade gestacional ignorada
+      '5': Não
+      '6': Não se aplica
+      '9': Ignorado
+    x-metadata:
+      missing_codes:
+        '6': not_applicable
+        '9': ignored
+      claims:
+      - target: /field/codes
+        value_sha256: 56e8fb62503aa12594230ef14613fbffe8b421b388913657b0375496d99f2b76
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 4
+          locator: '12. Gestante (CS_GESTANT): 1 a 6 e 9. Ignorado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: cs_raca
+    type: string
+    x-decode:
+      '1': branca
+      '2': preta
+      '3': amarela
+      '4': parda
+      '5': indígena
+      '9': Ignorado
+    x-metadata:
+      missing_codes:
+        '9': ignored
+      claims:
+      - target: /field/codes
+        value_sha256: 1cf71f1e71941e48b0c970bef202cffa953417dbbdf85e410186cbf1f09a5e26
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 5
+          locator: '13. Raça/Cor (CS_RACA): 1- branca, 2- preta, 3- amarela, 4- parda, 5- indígena, 9 Ignorado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: cs_escol_n
+    type: string
+    x-decode:
+      '0': Analfabeto
+      '00': Analfabeto
+      '1': 1ª a 4ª série incompleta do EF
+      '01': 1ª a 4ª série incompleta do EF
+      '2': 4ª série completa do EF (antigo 1° grau)
+      '02': 4ª série completa do EF (antigo 1° grau)
+      '3': 5ª à 8ª série incompleta do EF (antigo ginásio ou 1° grau)
+      '03': 5ª à 8ª série incompleta do EF (antigo ginásio ou 1° grau)
+      '4': Ensino fundamental completo (antigo ginásio ou 1° grau)
+      '04': Ensino fundamental completo (antigo ginásio ou 1° grau)
+      '5': Ensino médio incompleto (antigo colegial ou 2° grau)
+      '05': Ensino médio incompleto (antigo colegial ou 2° grau)
+      '6': Ensino médio completo (antigo colegial ou 2° grau)
+      '06': Ensino médio completo (antigo colegial ou 2° grau)
+      '7': Educação superior incompleta
+      '07': Educação superior incompleta
+      '8': Educação superior completa
+      '08': Educação superior completa
+      '9': Ignorado
+      '09': Ignorado
+      '10': Não se aplica
+    x-metadata:
+      missing_codes:
+        '9': ignored
+        '09': ignored
+        '10': not_applicable
+      claims:
+      - target: /field/codes
+        value_sha256: 6eb1368615a3cf03d6f2928e0a47dcc30d0ea885788a18620fcc6056e7c156a6
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 5
+          locator: '14. Escolaridade (CS_ESCOL_N): 1. a 8., 9. Ignorado, 10. Não se aplica; a primeira categoria
+            está impressa como "43 Analfabeto"'
+        - source_id: sinan-tab-cad66ee38781
+          pages: []
+          locator: 'TAB_SINANNET/Escolarnet.cnv: 0 e 00 Analfabeto; 01 a 09 na mesma linha de 1 a 9'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: sg_uf
+    type: string
+  - name: id_mn_resi
+    type: string
+  - name: id_rg_resi
+    type: string
+  - name: id_pais
+    type: string
+  - name: nduplic_n
+    type: string
+    x-decode:
+      ? ''
+      : Não identificado
+      '0': Não identificado
+      '1': Não é duplicidade (não listar)
+      '2': Duplicidade (não contar)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 6e5d75325fc5e6773be557e9440b7cf256d6ac76b5cfaecf219814b46eb7c6a1
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 8
+          locator: 'Não Listar/Não Contar (NDUPLIC_N): 0 ou branco – Não identificado, 1 – Não é duplicidade
+            (não listar), 2 – Duplicidade (não contar)'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: dt_invest
+    type: date
+  - name: id_ocupa_n
+    type: string
+  - name: ant_uf_1
+    type: string
+  - name: mun_1
+    type: string
+  - name: ant_uf_2
+    type: string
+  - name: mun_2
+    type: string
+  - name: ant_uf_3
+    type: string
+  - name: mun_3
+    type: string
+  - name: presenca
+    type: string
+  - name: parasito
+    type: date
+  - name: historia
+    type: string
+  - name: controle
+    type: string
+  - name: manipula
+    type: string
+  - name: maechaga
+    type: string
+  - name: oral
+    type: string
+  - name: assintoma
+    type: string
+  - name: edema
+    type: string
+  - name: meningoe
+    type: string
+  - name: poliadeno
+    type: string
+  - name: febre
+    type: string
+  - name: hepatome
+    type: string
+  - name: sinais_icc
+    type: string
+  - name: arritmias
+    type: string
+  - name: astenia
+    type: string
+  - name: esplenom
+    type: string
+  - name: chagoma
+    type: string
+  - name: outro_sin
+    type: string
+  - name: outro_esp
+    type: string
+  - name: dt_col_dir
+    type: date
+  - name: exame
+    type: string
+  - name: micro_hema
+    type: string
+  - name: outro
+    type: string
+  - name: dt_col_ind
+    type: date
+  - name: xenodiag
+    type: string
+  - name: hemocult
+    type: string
+  - name: dt_col_s1
+    type: date
+  - name: dt_col_s2
+    type: date
+  - name: eli_igm_s1
+    type: string
+  - name: eli_igg_s1
+    type: string
+  - name: eli_igm_s2
+    type: string
+  - name: eli_igg_s2
+    type: string
+  - name: hem_igm_s1
+    type: string
+  - name: hem_igg_s1
+    type: string
+  - name: hem_igm_s2
+    type: string
+  - name: hem_igg_s2
+    type: string
+  - name: imu_igm_s1
+    type: string
+  - name: tit_igm_s1
+    type: string
+  - name: imu_igm_s2
+    type: string
+  - name: tit_igm_s2
+    type: string
+  - name: imu_igg_s1
+    type: string
+  - name: tit_igg_s1
+    type: string
+  - name: imu_igg_s2
+    type: string
+  - name: tit_igg_s2
+    type: string
+  - name: resul_his
+    type: date
+  - name: res_hist
+    type: string
+  - name: especifico
+    type: string
+  - name: sintomatic
+    type: string
+  - name: droga
+    type: string
+  - name: tempo
+    type: integer
+  - name: con_triat
+    type: string
+  - name: biosseg
+    type: string
+  - name: fiscaliza
+    type: string
+  - name: med_outro
+    type: string
+  - name: outro_des
+    type: string
+  - name: classi_fin
+    type: string
+    x-decode:
+      '1': confirmado
+      '2': descartado
+      '8': Inconclusivo
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 24ec0af08102021f915030c7978b3cf67c944551baf7b5ca5bef6f5142b24f04
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-16c598f86fbf
+          pages:
+          - 10
+          locator: '57. Classificação Final (CLASSI_FIN): 1-confirmado, 2-descartado'
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 18
+          locator: 'Anexo I, Doença de Chagas: 8. Inconclusivo (anexo marcado "Falta concluir revisão",
+            p. 17)'
+        note: Cada código citado por uma página ou um CNV oficial. O código 8 vem do Anexo I, marcado
+          "Falta concluir revisão" (p. 17).
+  - name: criterio
+    type: string
+    x-decode:
+      '1': laboratório
+      '2': clínico-epidemiológico
+      '3': clínico
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 4a7dd63d912be996249b9a0c6a5247cc6baaefa762727962fbb83e68d77ae0d2
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-16c598f86fbf
+          pages:
+          - 10
+          locator: '58. Critério de Confirmação/Descarte (CRITERIO): 1-laboratório, 2-clínico-epidemiológico,
+            3-clínico'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: evolucao
+    type: string
+    x-decode:
+      '1': vivo
+      '2': óbito por chagas
+      '3': óbito por outras causas
+      '9': ignorado
+    x-metadata:
+      missing_codes:
+        '9': ignored
+      claims:
+      - target: /field/codes
+        value_sha256: dc1d930c73be02e65549a8f68411c11ee2dc3e80c7cf74357e0eacaae4164afd
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-16c598f86fbf
+          pages:
+          - 10
+          locator: '59. Evolução do caso (EVOLUCAO): 1 – vivo, 2- óbito por chagas, 3- óbito por outras
+            causas, 9- ignorado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: dt_obito
+    type: date
+  - name: con_provav
+    type: string
+  - name: con_outra
+    type: string
+  - name: con_local
+    type: string
+  - name: tpautocto
+    type: string
+    x-decode:
+      '1': Sim
+      '2': Não
+      '3': Indeterminado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: d9debcb33142e3c052485d69c2c3a8464e3613b96b2753d046e3b699ba65aaf5
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 9
+          locator: '34-O caso é Autóctone de residência? (TPAUTOCTO): 1 – Sim, 2 – Não, 3 – Indeterminado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: coufinf
+    type: string
+  - name: copaisinf
+    type: string
+  - name: comuninf
+    type: string
+  - name: doenca_tra
+    type: string
+    x-decode:
+      '1': Sim
+      '2': Não
+      '9': Ignorado
+    x-metadata:
+      missing_codes:
+        '9': ignored
+      claims:
+      - target: /field/codes
+        value_sha256: b755ad46809d5437fbf97eece5d1a9274f9dc92b6461c4e280ae4ce2ff94fbe9
+        status: verified_in_source
+        checked_at: '2026-09-22'
+        method: page-read
+        reviewer: scripts/metadados/sinan_bloco_comum.yaml
+        evidence:
+        - source_id: sinan-b3e0561c7a2d
+          pages:
+          - 13
+          locator: '40-Doença relacionada ao trabalho (DOENCA_TRA): 1 – Sim, 2 – Não, 9 – Ignorado'
+        note: Cada código citado por uma página ou um CNV oficial.
+  - name: dt_encerra
+    type: date
+  - name: dt_digita
+    type: date
+  - name: dt_transus
+    type: date
+  - name: dt_transdm
+    type: date
+  - name: dt_transsm
+    type: date
+  - name: dt_transrm
+    type: date
+  - name: dt_transrs
+    type: date
+  - name: dt_transse
+    type: date
+  - name: nu_lote_v
+    type: string
+  - name: nu_lote_h
+    type: string
+x-analytics:
+  version: 1.0.0
+  applicability_policy: exact_audited_source_identity
+  validated_sources:
+  - uf: null
+    ano: 2023
+    release: prelim
+    source_sha256: a0ab9f568b52c565819466eba2cf312e40549cec707f28e5001de1532f79a10f
+  age:
+    field: nu_idade_n
+    kind: sinan
+    units:
+      '1':
+        unit: hour
+      '2':
+        unit: day
+      '3':
+        unit: month
+      '4':
+        unit: year
+    evidence:
+    - source_id: sinan-b3e0561c7a2d
+      pages: [3, 4]
+      locator: '10. Idade (NU_IDADE_N): 1º dígito 1 Hora, 2 Dia, 3 Mês, 4 Ano; ex. 3009 = nove meses, 4018 = dezoito anos'
+    notes:
+    - Three quantity digits; 4088 is 88 years. A SIM-width slice would read 8.
+    - The audit covers the complete PRELIM CHAGBR23.dbc; observed units 2, 3 and 4.
+    - No ignored sentinel is declared; other unit codes are unsupported.

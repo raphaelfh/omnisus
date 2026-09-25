@@ -1,0 +1,236 @@
+name: sim_obitos_cid9
+title: SIM — Óbitos por residência, CID-9 (DOR), 1979 a 1995
+profile: tabular-data-resource
+encoding: latin-1
+x-version: 1.1.0
+x-source-format: dbc
+x-partitions:
+- _source_ano
+x-evidence:
+  physical_schema: sim_cid9_rr_1995_mini.dbc, 50 fields; observed 2026-09-22
+  semantic_status: Physical inventory. Category maps only where a TabWin CNV binds the
+    field and decodes every non-blank value of the fixture (vinculos.json); no inferred
+    mappings.
+  dictionary_url: ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID9/DOCS/INTRO.pdf
+  source_url: ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID9/DORES/DORRR95.DBC
+schema:
+  fields:
+  - name: contador
+    type: string
+  - name: cartorio
+    type: string
+  - name: registro
+    type: string
+  - name: datareg
+    type: string
+  - name: tipobito
+    type: string
+    x-decode:
+      '1': Fetal
+      '2': Não Fetal
+      '9': Ignorado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 0a34ad70ca563c98dfbbbd5784ba66e4958a2deae30440a18c75e01d873867dc
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1979_95_CID-09.DEF: TTipo do Obito, TIPOBITO, 1, TIPOBITO.CNV; OBITOS_CID10_TAB/tabdo/TIPOBITO.CNV'
+        note: Mapa do CNV.
+  - name: dataobito
+    type: string
+  - name: estcivil
+    type: string
+    x-decode:
+      ? ''
+      : N Inf
+      '0': Ignorado
+      '1': Solteiro
+      '2': Casado
+      '3': Viúvo
+      '4': Separado jud
+      '5': U.Estável
+      '9': Ignorado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 977f42fcdf08afe550ad2cb50cedc5847acd6c7e5fe72279c2409a09c1e310e1
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1979_95_CID-09.DEF: TEstado Civil, ESTCIVIL, 1, ESTCIV.CNV; OBITOS_CID10_TAB/tabdo/ESTCIV.CNV'
+        note: Mapa do CNV.
+  - name: sexo
+    type: string
+  - name: datanasc
+    type: string
+  - name: idade
+    type: string
+  - name: lococor
+    type: string
+  - name: codigo
+    type: string
+  - name: muniocor
+    type: string
+  - name: munires
+    type: string
+  - name: baires
+    type: string
+  - name: areares
+    type: string
+  - name: ocupacao
+    type: string
+  - name: natural
+    type: string
+  - name: instrucao
+    type: string
+  - name: ocuppai
+    type: string
+  - name: instrpai
+    type: string
+  - name: ocupmae
+    type: string
+  - name: idademae
+    type: string
+  - name: instrmae
+    type: string
+  - name: filhvivos
+    type: string
+  - name: filhmort
+    type: string
+  - name: semangest
+    type: string
+  - name: tipograv
+    type: string
+  - name: tipoparto
+    type: string
+  - name: pesonasc
+    type: string
+  - name: assistmed
+    type: string
+    x-decode:
+      ? ''
+      : N Inf
+      '1': Sim
+      '2': Não
+      '9': Ign
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 3422606b95b81313902f1103a41cfa99757b2781f730bca8f24722d56acc3807
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1979_95_CID-09.DEF: TAssist Medica, ASSISTMED, 1, ASSMEDIC.CNV; OBITOS_CID10_TAB/tabdo/ASSMEDIC.CNV'
+        note: Mapa do CNV.
+  - name: atestante
+    type: string
+  - name: exame
+    type: string
+  - name: cirurgia
+    type: string
+  - name: necropsia
+    type: string
+  - name: obitofe1
+    type: string
+    x-decode:
+      ? ''
+      : Nao Informado
+      '1': Sim
+      '2': Não
+      '9': Ignorado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 962690742dc2273086425a96def7ae685e26701325c55d297c8283092717f3e3
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1979_95_CID-09.DEF: TObito Femin 1, OBITOFE1, 1, OBITOFE1.CNV; OBITOS_CID10_TAB/tabdo/OBITOFE1.CNV'
+        note: Mapa do CNV.
+  - name: obitofe2
+    type: string
+    x-decode:
+      ? ''
+      : Nao Informado
+      '1': Sim
+      '2': Não
+      '9': Ignorado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 962690742dc2273086425a96def7ae685e26701325c55d297c8283092717f3e3
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1979_95_CID-09.DEF: TObito Femin 2, OBITOFE2, 1, OBITOFE2.CNV; OBITOS_CID10_TAB/tabdo/OBITOFE2.CNV'
+        note: Mapa do CNV.
+  - name: causabas
+    type: string
+  - name: tipoviol
+    type: string
+  - name: tipoacid
+    type: string
+    x-decode:
+      ? ''
+      : Em branco
+      '1': Atropelamento
+      '2': Demais acid trânsito
+      '3': Queda
+      '4': Afogamento
+      '5': Outro
+      '9': Ignorado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 29d18d2cbf91cb6869ae47f2af8e03fb8814f26c24d5c45cdf1eb40c7696b0eb
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1979_95_CID-09.DEF: TTipo Acidente, TIPOACID, 1, TIPOACID.CNV; OBITOS_CID10_TAB/tabdo/TIPOACID.CNV'
+        note: Mapa do CNV.
+  - name: fontinfo
+    type: string
+  - name: acidtrab
+    type: string
+  - name: locacid
+    type: string
+  - name: critica
+    type: string
+  - name: numexport
+    type: string
+  - name: crsocor
+    type: string
+  - name: crsres
+    type: string
+  - name: racacor
+    type: string
+  - name: etnia
+    type: string
+  - name: ufinform
+    type: string

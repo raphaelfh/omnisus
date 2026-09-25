@@ -1,0 +1,71 @@
+70 2 L
+      1  BUCO MAXILO FACIAL                                 01
+      2  CARDIOLOGIA                                        02
+      3  CIRURGIA GERAL                                     03
+      4  ENDOCRINOLOGIA                                     04
+      5  GASTROENTEROLOGIA                                  05
+      6  GINECOLOGIA                                        06
+      7  CIRURGICO/DIAGNOSTICO/TERAPEUTICO                  07
+      8  NEFROLOGIAUROLOGIA                                 08
+      9  NEUROCIRURGIA                                      09
+     10  OBSTETRICIA CIRURGICA                              10
+     11  OFTALMOLOGIA                                       11
+     12  ONCOLOGIA                                          12
+     13  ORTOPEDIATRAUMATOLOGIA                             13
+     14  OTORRINOLARINGOLOGIA                               14
+     15  PLASTICA                                           15
+     16  TORAXICA                                           16
+     17  AIDS                                               31
+     18  CARDIOLOGIA                                        32
+     19  CLINICA GERAL                                      33
+     20  CRONICOS                                           34
+     21  DERMATOLOGIA                                       35
+     22  GERIATRIA                                          36
+     23  HANSENOLOGIA                                       37
+     24  HEMATOLOGIA                                        38
+     25  LEITO/DIA                                          39
+     26  NEFROUROLOGIA                                      40
+     27  NEONATOLOGIA                                       41
+     28  NEUROLOGIA                                         42
+     29  OBSTETRICIA CLINICA                                43
+     30  ONCOLOGIA                                          44
+     31  PEDIATRIA CLINICA                                  45
+     32  PNEUMOLOGIA                                        46
+     33  PSIQUIATRIA                                        47
+     34  REABILITACAO                                       48
+     35  PNEUMOLOGIA SANITARIA                              49
+     36  UTI ADULTO                                         61
+     37  UTI INFANTIL                                       62
+     38  UTI NEONATAL                                       63
+     39  UNIDADE INTERMEDIARIA                              64
+     40  UNIDADE INTERMEDIARIA NEONATAL                     65
+     41  UNIDADE ISOLAMENTO                                 66
+     42  TRANSPLANTE                                        67
+     43  PEDIATRIA CIRURGICA                                68
+     44  AIDS                                               69
+     45  FIBROSE CISTICA                                    70
+     46  INTERCORRENCIA POS-TRANSPLANTE                     71
+     47  GERIATRIA                                          72
+     48  SAUDE MENTAL                                       73
+     49  UTI ADULTO - TIPO I                                74
+     50  UTI ADULTO - TIPO II                               75
+     51  UTI ADULTO - TIPO III                              76
+     52  UTI PEDIATRICA - TIPO I                            77
+     53  UTI PEDIATRICA - TIPO II                           78
+     54  UTI PEDIATRICA - TIPO III                          79
+     55  UTI NEONATAL - TIPO I                              80
+     56  UTI NEONATAL - TIPO II                             81
+     57  UTI NEONATAL - TIPO III                            82
+     58  UTI DE QUEIMADOS                                   83
+     59  ACOLHIMENTO NOTURNO                                84
+     60  UTI CORONARIANA TIPO II - UCO TIPO II              85
+     61  UTI CORONARIANA TIPO III - UCO TIPO III            86
+     62  SAUDE MENTAL                                       87
+     63  QUEIMADO ADULTO                                    88
+     64  QUEIMADO PEDIATRICO                                89
+     65  QUEIMADO ADULTO                                    90
+     66  QUEIMADO PEDIATRICO                                91
+     67  UNIDADE DE CUIDADOS INTERMED NEONATAL CONVENCIONAL 92
+     68  UNIDADE DE CUIDADOS INTERMED NEONATAL CANGURU      93
+     69  UNIDADE DE CUIDADOS INTERMEDIARIOS PEDIATRICO      94
+     70  UNIDADE DE CUIDADOS INTERMED  ADULTO               95

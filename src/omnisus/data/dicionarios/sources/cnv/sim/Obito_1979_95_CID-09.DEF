@@ -1,0 +1,217 @@
+; Obitos Brasil - por Residencia
+;Ac:\sivitaisweb\sim\dbf\dor*.db? 
+A\\srvdocnas\SVS\DASIS\CGIAE\Simserie\dor*.db?
+
+
+TTipo do Obito,      TIPOBITO,   1,  TIPOBITO.CNV
+STipo do Obito,      TIPOBITO,   1,  TIPOBITO.CNV
+
+
+;       Definicoes para Ano e Mes do Obito
+XAno 79 a 95,        DATAOBITO,  1,  ANO7995.CNV
+SAno do Obito,       DATAOBITO,  1,  ANO.CNV
+DMes do Obito,       DATAOBITO,  3,  MESES.CNV
+SMes do Obito,       DATAOBITO,  3,  MESES.CNV
+
+
+;       Definicoes para Estado Civil
+TEstado Civil,       ESTCIVIL,   1,  ESTCIV.CNV
+SEstado Civil,       ESTCIVIL,   1,  ESTCIV.CNV
+
+
+;       Definicoes para Sexo
+LSexo,               SEXO,       1,  SEXO.CNV
+SSexo,               SEXO,       1,  SEXO.CNV
+CSexo,               SEXO,       1,  SEXO.CNV
+
+
+;       Definicoes para Idade
+LIdade Detalhada,    IDADE,      1,  IDADE.CNV
+SIdade Detalhada,    IDADE,      1,  IDADE.CNV
+CFaixa Etaria (5),   IDADE,      1,  FXIDAD5.CNV
+CFaixa Etaria (9),   IDADE,      1,  FXIDAD9.CNV
+LFaixa Etaria (13),  IDADE,      1,  FXIDADP.CNV
+CFaixa Etaria (13),  IDADE,      1,  FXIDADP.CNV
+SFx. Etaria (13),    IDADE,      1,  FXIDADP.CNV
+CFx Asma Dpoc,       IDADE,      1,  FXIDAWHO.CNV
+
+;       Definicoes para Local de Ocorrencia
+TLocal Ocorrencia,   LOCOCOR,    1,  LOCOCOR.CNV
+SLocal Ocorrenc.,    LOCOCOR,    1,  LOCOCOR.CNV
+
+
+LUF/Regiao Res,      MUNIRES,    1,  UFREG.CNV
+SUF/Regiao Res,      MUNIRES,    1,  UFREG.CNV
+SUF Res Sigla,       MUNIRES,    1,  UFC.CNV
+LUF Res Sigla,       MUNIRES,    1,  UFC.CNV
+
+
+;       Definicoes para Municipio de Residencia
+DRegiao Resid,       MUNIRES,    1,  REGIAO.CNV
+CRegiao Resid,       MUNIRES,    1,  REGIAOC.CNV
+SRegiao Resid,       MUNIRES,    1,  REGIAO.CNV
+DUF Residencia,      MUNIRES,    1,  UF.CNV
+CUF Residencia,      MUNIRES,    1,  UFC.CNV
+SUF Residencia,      MUNIRES,    1,  UF.CNV
+DCapital Resid,      MUNIRES,    1,  CAPITAIS.CNV
+SCapital Resid,      MUNIRES,    1,  CAPITAIS.CNV
+DMunic Resid -BR,    MUNIRES,    1,  MUNICBR.CNV
+SMunic Resid -BR,    MUNIRES,    1,  MUNICBR.CNV
+
+;       Definicoes para Municipio de Ocorrencia
+DRegiao Ocor,        MUNIOCOR,   1,  REGIAO.CNV
+CRegiao Ocor,        MUNIOCOR,   1,  REGIAOC.CNV
+SRegiao Ocor,        MUNIOCOR,   1,  REGIAO.CNV
+XUF Ocorrencia,      MUNIOCOR,   1,  UF.CNV
+DCapital Ocor,       MUNIOCOR,   1,  CAPITAIS.CNV
+SCapital Ocor,       MUNIOCOR,   1,  CAPITAIS.CNV
+DMunic Ocor -BR,     MUNIOCOR,   1,  MUNICBR.CNV
+SMunic Ocor,         MUNIOCOR,   1,  MUNICBR.CNV
+
+;       Definicoes para Ocupacao
+DOcupacao,           OCUPACAO,   1,  OCUPACAO.CNV
+SOcupacao,           OCUPACAO,   1,  OCUPACAO.CNV
+DSubGr Ocupacao,     OCUPACAO,   1,  SGRPOCUP.CNV
+SSubGr Ocupacao,     OCUPACAO,   1,  SGRPOCUP.CNV
+DGrupo Ocupacao,     OCUPACAO,   1,  GRUPOCUP.CNV
+SGrupo Ocupacao,     OCUPACAO,   1,  GRUPOCUP.CNV
+
+
+;       Definicoes para Naturalidade
+DNaturalidade,       NATURAL,    1,  NATURAL.CNV
+SNaturalidade,       NATURAL,    1,  NATURAL.CNV
+
+
+;       Definicoes para Instrucao
+TInstrucao,          INSTRUCAO,  1,  INSTRUC.CNV
+SInstrucao,          INSTRUCAO,  1,  INSTRUC.CNV
+
+
+;       Definicoes para Ocupacao do Pai
+DOcupacao Pai,       OCUPPAI,    1,  OCUPACAO.CNV
+SOcupacao Pai,       OCUPPAI,    1,  OCUPACAO.CNV
+DSubGrup Ocup Pai,   OCUPPAI,    1,  SGRPOCUP.CNV
+SSubGr Ocup Pai,     OCUPPAI,    1,  SGRPOCUP.CNV
+DGrupo Ocup Pai,     OCUPPAI,    1,  GRUPOCUP.CNV
+SGrupo Ocup Pai,     OCUPPAI,    1,  GRUPOCUP.CNV
+
+
+;       Definicoes para Instrucao do Pai
+TInstrucao Pai,      INSTRPAI,   1,  INSTRUC.CNV
+SInstrucao Pai,      INSTRPAI,   1,  INSTRUC.CNV
+
+
+;       Definicoes para Ocupacao da Mae
+DOcupacao Mae,       OCUPMAE,    1,  OCUPACAO.CNV
+SOcupacao Mae,       OCUPMAE,    1,  OCUPACAO.CNV
+DSubGrup Ocup Mae,   OCUPMAE,    1,  SGRPOCUP.CNV
+SSubGr Ocup Mae,     OCUPMAE,    1,  SGRPOCUP.CNV
+DGrupo Ocup Mae,     OCUPMAE,    1,  GRUPOCUP.CNV
+SGrupo Ocup Mae,     OCUPMAE,    1,  GRUPOCUP.CNV
+
+;       Definicoes para Idade da Mae
+DIdade Mae,          IDADEMAE,   1,  IDADEMAE.CNV
+SIdade Mae,          IDADEMAE,   1,  IDADEMAE.CNV
+
+
+;       Definicoes para Instrucao da Mae
+TInstrucao Mae,      INSTRMAE,   1,  INSTRUC.CNV
+SInstrucao Mae,      INSTRMAE,   1,  INSTRUC.CNV
+
+
+;       Definicoes para Filhos Vivos
+DFilhos Vivos,       FILHVIVOS,  1,  NUMFILH.CNV
+SFilhos Vivos,       FILHVIVOS,  1,  NUMFILH.CNV
+
+
+;       Definicoes para Filhos Mortos
+DFilhos Mortos,      FILHMORT,   1,  NUMFILH.CNV
+SFilhos Mortos,      FILHMORT,   1,  NUMFILH.CNV
+
+
+;       Definicoes para Semanas de Gestacao
+TSemanas Gestacao,   SEMANGEST,  1,  SEMANAS.CNV
+SSem. Gestacao,      SEMANGEST,  1,  SEMANAS.CNV
+
+
+;       Definicoes para Tipo de Gravidez
+TGravidez,           TIPOGRAV,   1,  GRAVIDEZ.CNV
+SGravidez,           TIPOGRAV,   1,  GRAVIDEZ.CNV
+
+
+;       Definicoes para Tipo de Parto
+TTipo Parto,         TIPOPARTO,  1,  PARTO.CNV
+STipo Parto,         TIPOPARTO,  1,  PARTO.CNV
+
+
+
+;       Definicoes para Assistencia Medica
+TAssist Medica,      ASSISTMED,  1,  ASSMEDIC.CNV
+SAssist Medica,      ASSISTMED,  1,  ASSMEDIC.CNV
+
+
+;       Definicoes para Atestante
+TAtestante,          ATESTANTE,  1,  ATESTANT.CNV
+SAtestante,          ATESTANTE,  1,  ATESTANT.CNV
+
+
+;       Definicoes para Exame
+TExame Complement,   EXAME,      1,  EXAME.CNV
+SExame Complem.,     EXAME,      1,  EXAME.CNV
+
+
+;       Definicoes para Cirurgia
+TCirurgia,           CIRURGIA,   1,  CIRURGIA.CNV
+SCirurgia,           CIRURGIA,   1,  CIRURGIA.CNV
+
+
+;       Definicoes para Necropsia
+TNecropsia,          NECROPSIA,  1,  NECROPS.CNV
+SNecropsia,          NECROPSIA,  1,  NECROPS.CNV
+
+
+;       Definicoes para Obito Feminino 1
+TObito Femin 1,      OBITOFE1,   1,  OBITOFE1.CNV
+SObito Femin 1,      OBITOFE1,   1,  OBITOFE1.CNV
+
+
+;       Definicoes para Obito Feminino 2
+TObito Femin 2,      OBITOFE2,   1,  OBITOFE2.CNV
+SObito Femin 2,      OBITOFE2,   1,  OBITOFE2.CNV
+
+
+;       Definicoes para Causa Basica de Obito
+DCausa (Cap CID),    CAUSABAS,   1,  CAUSACAP.CNV
+SCausa (Cap CID),    CAUSABAS,   1,  CAUSACAP.CNV
+DCausa (CID BR),     CAUSABAS,   1,  CAUSABR.CNV
+
+
+;       Definicoes para Tipo de Violencia
+TTipo Violencia,     TIPOVIOL,   1,  TIPOVIOL.CNV
+STipo Violencia,     TIPOVIOL,   1,  TIPOVIOL.CNV
+
+
+;       Definicoes para Tipo de Acidente
+TTipo Acidente,      TIPOACID,   1,  TIPOACID.CNV
+STipo Acidente,      TIPOACID,   1,  TIPOACID.CNV
+
+
+;       Definicoes para Fonte de Informacao
+TFonte Informac,     FONTINFO,   1,  FONTINFO.CNV
+SFonte Informac,     FONTINFO,   1,  FONTINFO.CNV
+
+
+;       Definicoes para Acidente de Trabalho
+TAcid Trabalho,      ACIDTRAB,   1,  ACIDTRAB.CNV
+SAcid Trabalho,      ACIDTRAB,   1,  ACIDTRAB.CNV
+
+
+;       Definicoes para Local do Acidente
+TLocal Acidente,     LOCACID,    1,  LOCACID.CNV
+SLocal Acidente,     LOCACID,    1,  LOCACID.CNV
+
+
+;       Definicoes para UF informante
+DUF Informante,      UFINFORM,   1,  UF.CNV
+SUF Informante,      UFINFORM,   1,  UF.CNV
+CUF Informante,      UFINFORM,   1,  UFC.CNV

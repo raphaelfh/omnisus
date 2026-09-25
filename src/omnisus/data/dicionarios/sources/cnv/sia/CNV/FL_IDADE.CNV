@@ -1,0 +1,6 @@
+5 1
+      1  IDADE NÃO EXIGIDA                                  0
+      2  IDADE COMPATIVEL COM O SIGTAP                      1
+      3  IDADE FORA DA FAIXA DO SIGTAP                      2
+      4  IDADE INEXISTENTE                                  3
+      5  IDADE EM BRANCO                                    4

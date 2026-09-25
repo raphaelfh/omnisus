@@ -1,0 +1,12 @@
+; houve versões do SIA/APAC que o Carater de Atendimento era opcional,
+; isto e, poderia conter BRANCOS
+9 2  L
+      1  ELETIVO                                            01
+      2  URGÊNCIA                                           02
+      3  ACIDENTE NO LOCAL TRABALHO OU A SERViÇO DA EMPRESA 03
+      4  ACIDENTE NO TRAJETO PARA O TRABALHO                04
+      5  OUTROS TIPOS DE ACIDENTE DE TRÂNSITO               05
+      6  OUTROS TIPOS LESÕES/ENVENENAMENTOS(AGENT.FIS./QUIM.06
+      7  INFORMAÇÃO INEXISTENTE  (BPA-C)                    99
+      8  CARATER DE ATENDIMENTO NÃO INFORMADO               00,  ,
+      9  CARATER DE ATENDIMENTO INVALIDO                    07,10,12,20,53,54,57,0-,0E,0U

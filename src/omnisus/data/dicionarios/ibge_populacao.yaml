@@ -1,0 +1,32 @@
+name: ibge_populacao
+title: IBGE — Visão de compatibilidade da população municipal
+profile: tabular-data-resource
+encoding: utf-8
+schema:
+  fields:
+    - name: codigo_ibge
+      type: string
+      label: Município (IBGE), território da edição
+      constraints: { required: true, pattern: '^[0-9]{7}$' }
+    - name: ano
+      type: integer
+      label: Ano de referência da edição
+      constraints: { required: true }
+    - name: populacao
+      type: integer
+      label: População em pessoas (UInt64)
+      constraints: { required: true, minimum: 0 }
+  primaryKey: [codigo_ibge, ano]
+x-source-format: json
+x-source-family: ibge
+x-source-url: "https://servicodados.ibge.gov.br/api/v3/agregados"
+x-canonical-table: ibge_population
+x-canonical-key: [publication_id, codigo_ibge, ano]
+x-manifest-table: ibge_population_manifest
+x-products:
+  estimate: { aggregate: 6579, variable: 9324, editions: latest-only }
+  census-2010: { aggregate: 202, variable: 93, classifications: '2[0]|1[0]' }
+  census-2022: { aggregate: 4714, variable: 93 }
+x-ambiguity: 'Múltiplas publicações por município/ano impedem leitura de populacao na visão; selecionar publication_id na tabela canônica.'
+x-partitions: [ano]
+x-version: "3.0.0"

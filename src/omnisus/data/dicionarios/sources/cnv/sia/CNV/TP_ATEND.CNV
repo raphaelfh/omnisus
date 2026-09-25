@@ -1,0 +1,7 @@
+06 2 L
+     01  LAUDO GERAL                                        00
+     02  MEDICAMENTOS                                       01,06
+     03  NEFROLOGIA                                         02
+     04  QUIMIOTERAPIA                                      03
+     05  RADIOTERAPIA                                       04
+     06  CIRURGIA BARIATRICA                                05

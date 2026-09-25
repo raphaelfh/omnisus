@@ -1,0 +1,45 @@
+name: docs
+
+on:
+  push:
+    branches: [main]
+  # Build (without deploying) on PRs, so a docs break is caught before merge
+  # rather than on main.
+  pull_request:
+
+concurrency:
+  group: docs-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v7
+      - run: uv python install 3.13
+      - run: uv sync --frozen --extra docs
+        # --strict turns broken links into failures.
+      - run: uv run mkdocs build --strict
+      - if: github.event_name == 'push'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: site/
+
+  # Only main may deploy: the github-pages environment rejects PR refs, so the
+  # environment lives on this push-only job instead of on the build.
+  deploy:
+    if: github.event_name == 'push'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v5
+        id: deployment

@@ -1,0 +1,11 @@
+10 2 L
+     10  RAÇA/COR NÃO EXIGIDO                               00
+      1  BRANCA                                             01
+      2  PRETA                                              02
+      3  PARDA                                              03
+      4  AMARELA                                            04
+      5  INDIGENA                                           05
+      6  SEM INFORMAÇÃO                                     99,  ,
+      7  RAÇA/COR=06 (INDEVIDO)                             06
+      8  RAÇA/COR=09 (INDEVIDO)                             09
+      9  RAÇA/COR  (OUTROS INDEVIDOS)                       1M,1G,1C,DE, D,87

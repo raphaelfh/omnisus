@@ -1,0 +1,191 @@
+name: cnes_estabelecimentos
+title: CNES — Estabelecimentos (ST)
+profile: tabular-data-resource
+# latin-1 define os 256 bytes; cp1252 deixa 0x81, 0x8D, 0x8F, 0x90 e 0x9D sem
+# caractere e derrubava a importação inteira (RDSP2308 AUD_JUST 0x90,
+# STSP2212 ALVARA 0x8F). value.encode("latin-1") devolve os bytes do arquivo.
+encoding: latin-1
+description: |
+  Cadastro Nacional de Estabelecimentos de Saúde (CNES) — arquivo ST.
+  Os arquivos públicos CNES-ST do DATASUS NÃO carregam o nome do
+  estabelecimento (RAZAO_SOCIAL/NOMEFANT) — esses campos foram retirados na
+  anonimização. Para obter o nome, é necessário a API CNES
+  (``cnes.datasus.gov.br/services/estabelecimentos/{cnes}``), que é outro
+  pipeline. Este YAML reflete apenas o que o DBF público carrega.
+schema:
+  fields:
+    - name: cnes
+      type: string
+      label: CNES
+      description: "Código CNES (7 dígitos)"
+      constraints: { required: true }
+    - name: codufmun
+      type: string
+      label: Município (IBGE)
+      x-normalization-hint: lpad_6
+      foreignKeys:
+        - { fields: codufmun, reference: { resource: aux_municipios, fields: codigo_6 } }
+    - name: cnpj_man
+      type: string
+      label: CNPJ da mantenedora
+    - name: tp_unid
+      type: string
+      label: Tipo de unidade
+      x-decode:
+        '01': POSTO DE SAUDE
+        '02': CENTRO DE SAUDE/UNIDADE BASICA
+        '04': POLICLINICA
+        '05': HOSPITAL GERAL
+        '07': HOSPITAL ESPECIALIZADO
+        '09': PRONTO SOCORRO DE HOSPITAL GERAL (ANTIGO)
+        '12': PRONTO SOCORRO TRAUMATO-ORTOPEDICO (ANTIGO)
+        '15': UNIDADE MISTA
+        '20': PRONTO SOCORRO GERAL
+        '21': PRONTO SOCORRO ESPECIALIZADO
+        '22': CONSULTORIO ISOLADO
+        '32': UNIDADE MOVEL FLUVIAL
+        '36': CLINICA/CENTRO DE ESPECIALIDADE
+        '39': UNIDADE DE APOIO DIAGNOSE E TERAPIA (SADT ISOLADO)
+        '40': UNIDADE MOVEL TERRESTRE
+        '42': UNIDADE MOVEL DE NIVEL PRE-HOSPITALAR NA AREA DE URGENCIA
+        '43': FARMACIA
+        '45': UNIDADE DE SAUDE DA FAMILIA
+        '50': UNIDADE DE VIGILANCIA EM SAUDE
+        '60': COOPERATIVA OU EMPRESA DE CESSAO DE TRABALHADORES NA SAUDE
+        '61': CENTRO DE PARTO NORMAL - ISOLADO
+        '62': HOSPITAL/DIA - ISOLADO
+        '63': UNIDADE AUTORIZADORA
+        '64': CENTRAL DE REGULACAO DE SERVICOS DE SAUDE
+        '65': UNIDADE DE VIGILANCIA EPIDEMIOLOGIA (ANTIGO)
+        '66': UNIDADE DE VIGILANCIA SANITARIA (ANTIGO)
+        '67': LABORATORIO CENTRAL DE SAUDE PUBLICA LACEN
+        '68': CENTRAL DE GESTAO EM SAUDE
+        '69': CENTRO DE ATENCAO HEMOTERAPIA E OU HEMATOLOGICA
+        '70': CENTRO DE ATENCAO PSICOSSOCIAL
+        '71': CENTRO DE APOIO A SAUDE DA FAMILIA
+        '72': UNIDADE DE ATENCAO A SAUDE INDIGENA
+        '73': PRONTO ATENDIMENTO
+        '74': POLO ACADEMIA DA SAUDE
+        '75': TELESSAUDE
+        '76': CENTRAL DE REGULACAO MEDICA DAS URGENCIAS
+        '77': SERVICO DE ATENCAO DOMICILIAR ISOLADO(HOME CARE)
+        '78': UNIDADE DE ATENCAO EM REGIME RESIDENCIAL
+        '79': OFICINA ORTOPEDICA
+        '80': LABORATORIO DE SAUDE PUBLICA
+        '81': CENTRAL DE REGULACAO DO ACESSO
+        '82': CENTRAL DE NOTIFICACAO,CAPTACAO E DISTRIB DE ORGAOS ESTADUAL
+        '83': POLO DE PREVENCAO DE DOENCAS E AGRAVOS E PROMOCAO DA SAUDE
+        '84': CENTRAL DE ABASTECIMENTO
+        '85': CENTRO DE IMUNIZACAO
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 69bb9effc85c90811cf4e7ebd21a31189a28aac2b860a92e8488aacf425b8925
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: cnes-tab-50988af5d88b
+            pages: []
+            locator: 'Estabelecimento.def: XTipo de Estabelecimento, TP_UNID, 1, CNV\TP_ESTAB.CNV; CNV/TP_ESTAB.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''01'' era ''Posto de Saúde'', CNV ''POSTO
+            DE SAUDE''; ''02'' era ''Centro de Saúde / UBS'', CNV ''CENTRO DE SAUDE/UNIDADE BASICA''; ''04''
+            era ''Policlínica'', CNV ''POLICLINICA''; ''05'' era ''Hospital Geral'', CNV ''HOSPITAL GERAL'';
+            ''07'' era ''Hospital Especializado'', CNV ''HOSPITAL ESPECIALIZADO''; ''15'' era ''Unidade Mista'',
+            CNV ''UNIDADE MISTA''; ''20'' era ''Pronto Socorro Geral'', CNV ''PRONTO SOCORRO GERAL''; ''21''
+            era ''Pronto Socorro Especializado'', CNV ''PRONTO SOCORRO ESPECIALIZADO''; ''22'' era ''Consultório
+            Isolado'', CNV ''CONSULTORIO ISOLADO''; ''32'' era ''Unidade Móvel Fluvial'', CNV ''UNIDADE MOVEL
+            FLUVIAL''; ''36'' era ''Clínica / Centro de Especialidade'', CNV ''CLINICA/CENTRO DE ESPECIALIDADE'';
+            ''39'' era ''Unidade de Apoio Diagnose e Terapia (SADT Isolado)'', CNV ''UNIDADE DE APOIO DIAGNOSE
+            E TERAPIA (SADT ISOLADO)''; ''40'' era ''Unidade Móvel Terrestre'', CNV ''UNIDADE MOVEL TERRESTRE'';
+            ''42'' era ''Unidade Móvel Pré-Hospitalar (Urgência)'', CNV ''UNIDADE MOVEL DE NIVEL PRE-HOSPITALAR
+            NA AREA DE URGENCIA''; ''43'' era ''Farmácia'', CNV ''FARMACIA''; ''50'' era ''Unidade de Vigilância
+            em Saúde'', CNV ''UNIDADE DE VIGILANCIA EM SAUDE''; ''60'' era ''Cooperativa ou Empresa de Cessão
+            de Trabalhadores'', CNV ''COOPERATIVA OU EMPRESA DE CESSAO DE TRABALHADORES NA SAUDE''; ''61''
+            era ''Centro de Parto Normal Isolado'', CNV ''CENTRO DE PARTO NORMAL - ISOLADO''; ''62'' era ''Hospital/Dia
+            Isolado'', CNV ''HOSPITAL/DIA - ISOLADO''; ''63'' era ''Unidade Autorizadora'', CNV ''UNIDADE
+            AUTORIZADORA''; ''64'' era ''Central de Regulação de Serviços de Saúde'', CNV ''CENTRAL DE REGULACAO
+            DE SERVICOS DE SAUDE''; ''67'' era ''Laboratório Central de Saúde Pública (LACEN)'', CNV ''LABORATORIO
+            CENTRAL DE SAUDE PUBLICA LACEN''; ''68'' era ''Central de Gestão em Saúde'', CNV ''CENTRAL DE
+            GESTAO EM SAUDE''; ''69'' era ''Centro de Atenção Hemoterápica/Hematológica'', CNV ''CENTRO DE
+            ATENCAO HEMOTERAPIA E OU HEMATOLOGICA''; ''70'' era ''Centro de Atenção Psicossocial (CAPS)'',
+            CNV ''CENTRO DE ATENCAO PSICOSSOCIAL''; ''71'' era ''Centro de Apoio à Saúde da Família'', CNV
+            ''CENTRO DE APOIO A SAUDE DA FAMILIA''; ''72'' era ''Unidade de Atenção à Saúde Indígena'', CNV
+            ''UNIDADE DE ATENCAO A SAUDE INDIGENA''; ''73'' era ''Pronto Atendimento'', CNV ''PRONTO ATENDIMENTO'';
+            ''74'' era ''Polo Academia da Saúde'', CNV ''POLO ACADEMIA DA SAUDE''; ''75'' era ''Telessaúde'',
+            CNV ''TELESSAUDE''; ''76'' era ''Central de Regulação Médica das Urgências'', CNV ''CENTRAL DE
+            REGULACAO MEDICA DAS URGENCIAS''; ''77'' era ''Serviço de Atenção Domiciliar Isolado'', CNV ''SERVICO
+            DE ATENCAO DOMICILIAR ISOLADO(HOME CARE)''; ''78'' era ''Unidade de Atenção em Regime Residencial'',
+            CNV ''UNIDADE DE ATENCAO EM REGIME RESIDENCIAL''; ''79'' era ''Oficina Ortopédica'', CNV ''OFICINA
+            ORTOPEDICA''; ''80'' era ''Laboratório de Saúde Pública'', CNV ''LABORATORIO DE SAUDE PUBLICA'';
+            ''81'' era ''Central de Regulação do Acesso'', CNV ''CENTRAL DE REGULACAO DO ACESSO''; ''82''
+            era ''Central de Notificação, Captação e Distribuição de Órgãos'', CNV ''CENTRAL DE NOTIFICACAO,CAPTACAO
+            E DISTRIB DE ORGAOS ESTADUAL''; ''83'' era ''Polo de Prevenção de Doenças e Promoção da Saúde'',
+            CNV ''POLO DE PREVENCAO DE DOENCAS E AGRAVOS E PROMOCAO DA SAUDE''; ''84'' era ''Central de Abastecimento'',
+            CNV ''CENTRAL DE ABASTECIMENTO'''
+    - name: nat_jur
+      type: string
+      label: Natureza jurídica (CONCLA)
+    - name: turno_at
+      type: string
+      label: Turno de atendimento
+      x-decode:
+        '  -99': Turno não informado
+        '01': ATENDIMENTO TURNOS INTERMITENTES
+        '02': ATENDIMENTO CONTÍNUO 24 HORAS/DIA (Pl Sab Dom Fer)
+        '03': ATENDIMENTO TURNOS MANHÃ/TARDE/NOITE
+        '04': ATENDIMENTO SOMENTE PELA MANHÃ
+        '05': ATENDIMENTO SOMENTE À TARDE
+        '06': ATENDIMENTO TURNOS MANHÃ/TARDE
+        '07': ATENDIMENTO SOMENTE À NOITE
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 9f63ab7b7e25166ccc2991a16b4235862478859cbbb1226fe0063ce110716eee
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: cnes-tab-50988af5d88b
+            pages: []
+            locator: 'Estabelecimento.def: XTurno Atendimento, TURNO_AT, 1, CNV\TurnosAt.cnv; CNV/TurnosAt.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''Manhã'', CNV não lista;
+            ''2'' era ''Tarde'', CNV não lista; ''3'' era ''Manhã / Tarde'', CNV não lista; ''4'' era ''Manhã
+            / Tarde / Noite'', CNV não lista; ''5'' era ''Manhã / Noite'', CNV não lista; ''6'' era ''Tarde
+            / Noite'', CNV não lista; ''7'' era ''Atendimento contínuo (24h)'', CNV não lista'
+    - name: nivate_a
+      type: string
+      label: Nível de atenção
+    - name: dt_atual
+      type: string
+      label: Data de atualização
+    - name: competen
+      type: string
+      label: Competência (YYYYMM)
+    - name: ano
+      type: integer
+      label: Ano
+      constraints: { required: true }
+    - name: mes
+      type: integer
+      label: Mês
+      constraints: { required: true, minimum: 1, maximum: 12 }
+    - name: uf
+      type: string
+      label: UF
+      constraints: { required: true, pattern: "^[A-Z]{2}$" }
+x-source-format: dbc
+x-source-family: datasus_ftp
+x-source-prefix: ST
+x-partitions: [ano, mes]
+x-version: "2.2.0"

@@ -1,0 +1,983 @@
+name: sih_aih_rejeitada
+title: SIHSUS — AIH rejeitada (RJ)
+profile: tabular-data-resource
+encoding: latin-1
+x-version: 1.1.0
+x-source-format: dbc
+x-partitions:
+- _source_ano
+x-evidence:
+  physical_schema: sih_rj_rr_2024_01_mini.dbc, 90 fields; observed 2026-09-22
+  semantic_status: Physical inventory. Category maps only where a TabWin CNV binds the
+    field and decodes every non-blank value of the fixture (vinculos.json); no inferred
+    mappings.
+  dictionary_url: ftp://ftp.datasus.gov.br/dissemin/publicos/SIHSUS/200801_/Doc/IT_SIHSUS_1603.pdf
+  source_url: ftp://ftp.datasus.gov.br/dissemin/publicos/SIHSUS/200801_/Dados/RJRR2401.dbc
+schema:
+  fields:
+  - name: uf_zi
+    type: string
+  - name: ano_cmpt
+    type: string
+  - name: mes_cmpt
+    type: string
+  - name: espec
+    type: string
+    x-decode:
+      '01': 01-Cirúrgico
+      '02': 02-Obstétricos
+      '03': 03-Clínico
+      '04': 04-Crônicos
+      '05': 05-Psiquiatria
+      '06': 06-Pneumologia Sanitária (Tisiologia)
+      '07': 07-Pediátricos
+      '08': 08-Reabilitação
+      '09': 09-Leito Dia / Cirúrgicos
+      '10': 10-Leito Dia / Aids
+      '11': 11-Leito Dia / Fibrose Cística
+      '12': 12-Leito Dia / Intercorrência Pós-Transplante
+      '13': 13-Leito Dia / Geriatria
+      '14': 14-Leito Dia / Saúde Mental
+      '51': 51-UTI II Adulto COVID 19
+      '52': 52-UTI II Pediátrica COVID 19
+      '64': 64-Unidade Intermediária
+      '65': 65-Unidade Intermediária Neonatal
+      '74': 74-UTI I
+      '75': 75-UTI Adulto II
+      '76': 76-UTI Adulto III
+      '77': 77-UTI Infantil I
+      '78': 78-UTI Infantil II
+      '79': 79-UTI Infantil III
+      '80': 80-UTI Neonatal I
+      '81': 81-UTI Neonatal II
+      '82': 82-UTI Neonatal III
+      '83': 83-UTI Queimados
+      '84': 84-Acolhimento Noturno
+      '85': 85-UTI Coronariana-UCO tipo II
+      '86': 86-UTI Coronariana-UCO tipo III
+      '87': 87-Saúde Mental (Clínico)
+      '88': 88-Queimado Adulto (Clínico)
+      '89': 89-Queimado Pediátrico (Clínico)
+      '90': 90-Queimado Adulto (Cirúrgico)
+      '91': 91-Queimado Pediátrico (Cirúrgico)
+      '92': 92-UCI Unidade de Cuidados Intermediarios Neonatal Convencional
+      '93': 93-UCI Unidade de Cuidados Intermediarios Neonatal Canguru
+      '94': 94-UCI Unidade de Cuidados Intermediarios Pediatrico
+      '95': 95-UCI Unidade de Cuidados Intermediarios Adulto
+      '96': 96-Suporte Ventilatório Pulmonar COVID-19
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: e1b507f238c6949b3f843a2135f0f7a4dfe4a3799dbe86d0b1e3bbc0cd0bab5e
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sih-tab-f05b32f32908
+          pages: []
+          locator: 'RJ2008.DEF: XLeito\Especialidade, ESPEC, 1, CNV\LEITOS.CNV; CNV/LEITOS.CNV'
+        note: Mapa do CNV.
+      issues:
+      - id: espec-17-sem-fonte
+        status: open
+        description: '''17'' fica sem rótulo: LEITOS.CNV (TAB_SIH), ligado a ESPEC no RD2008.DEF e no RJ2008.DEF,
+          lista 41 códigos, 01 a 14, 51, 52, 64, 65 e 74 a 96; o IT SIHSUS 1603 descreve ESPEC sem códigos
+          (p. 1). SP 2022: 75 linhas (RJSP2201 6, RJSP2202 20, RJSP2203 49).'
+  - name: cgc_hosp
+    type: string
+  - name: n_aih
+    type: string
+  - name: ident
+    type: string
+    x-decode:
+      '0': Outras/ignorado
+      '1': Normal
+      '2': Outras/ignorado
+      '3': Outras/ignorado
+      '4': Outras/ignorado
+      '5': Longa permanência
+      '6': Outras/ignorado
+      '7': Outras/ignorado
+      '8': Outras/ignorado
+      '9': Outras/ignorado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 09f3215720dc054cd57289cab5d47ecb7ef2e2d78b9fec9fbe9d112a5c891fc5
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sih-tab-f05b32f32908
+          pages: []
+          locator: 'RJ2008.DEF: XTipo de AIH, IDENT, 1, CNV\IDENT.CNV; CNV/IDENT.CNV'
+        note: Mapa do CNV.
+  - name: cep
+    type: string
+  - name: munic_res
+    type: string
+  - name: nasc
+    type: string
+  - name: sexo
+    type: string
+    x-decode:
+      '0': Ignorado
+      '1': Masculino
+      '2': Feminino
+      '3': Feminino
+      '4': Ignorado
+      '5': Ignorado
+      '6': Ignorado
+      '7': Ignorado
+      '8': Ignorado
+      '9': Ignorado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 42339c23e104260a8f96eac31ab54010db19ec1275aca55ab5ea4e6c4e09e239
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sih-tab-f05b32f32908
+          pages: []
+          locator: 'RJ2008.DEF: XSexo, SEXO, 1, CNV\SEXO.CNV; CNV/SEXO.CNV'
+        note: Mapa do CNV.
+  - name: uti_mes_in
+    type: integer
+  - name: uti_mes_an
+    type: integer
+  - name: uti_mes_al
+    type: integer
+  - name: uti_mes_to
+    type: integer
+  - name: marca_uti
+    type: string
+    x-decode:
+      '00': Não utilizou UTI
+      '01': Utilizou mais de um tipo de UTI
+      '51': UTI adulto - tipo II COVID 19
+      '52': UTI pediátrica - tipo II COVID 19
+      '74': UTI adulto - tipo I
+      '75': UTI adulto - tipo II
+      '76': UTI adulto - tipo III
+      '77': UTI infantil - tipo I
+      '78': UTI infantil - tipo II
+      '79': UTI infantil - tipo III
+      '80': UTI neonatal - tipo I
+      '81': UTI neonatal - tipo II
+      '82': UTI neonatal - tipo III
+      '83': UTI de queimados
+      '85': UTI coronariana tipo II - UCO tipo II
+      '86': UTI coronariana tipo III - UCO tipo III
+      '99': UTI Doador
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 4343b6a34196e50049905b4ff1ab2cbd43a1a662772e16c05b5d36d629cd1e25
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sih-tab-f05b32f32908
+          pages: []
+          locator: 'RJ2008.DEF: XTipo de UTI, MARCA_UTI, 1, CNV\MARCAUTI.CNV; CNV/MARCAUTI.CNV'
+        note: Mapa do CNV.
+  - name: uti_int_in
+    type: integer
+  - name: uti_int_an
+    type: integer
+  - name: uti_int_al
+    type: integer
+  - name: uti_int_to
+    type: integer
+  - name: diar_acom
+    type: integer
+  - name: qt_diarias
+    type: integer
+  - name: proc_solic
+    type: string
+  - name: proc_rea
+    type: string
+  - name: val_sh
+    type: number
+  - name: val_sp
+    type: number
+  - name: val_sadt
+    type: number
+  - name: val_rn
+    type: number
+  - name: val_acomp
+    type: number
+  - name: val_ortp
+    type: number
+  - name: val_sangue
+    type: number
+  - name: val_sadtsr
+    type: number
+  - name: val_transp
+    type: number
+  - name: val_obsang
+    type: number
+  - name: val_ped1ac
+    type: number
+  - name: val_tot
+    type: number
+  - name: val_uti
+    type: number
+  - name: us_tot
+    type: number
+  - name: dt_inter
+    type: string
+  - name: dt_saida
+    type: string
+  - name: diag_princ
+    type: string
+  - name: diag_secun
+    type: string
+  - name: cobranca
+    type: string
+    x-decode:
+      '11': Alta curado
+      '12': Alta melhorado
+      '13': Alta da mãe/puérpera e permanência recém-nascido
+      '14': Alta a pedido
+      '15': Alta com previsão de retorno p/acomp do paciente
+      '16': Alta por evasão
+      '17': Alta da mãe/puérpera e do recém-nascido
+      '18': Alta por outros motivos
+      '19': Alta de paciente agudo em psiquiatria
+      '21': Permanência por características próprias da doença
+      '22': Permanência por intercorrência
+      '23': Permanência por impossibilidade sócio-familiar
+      '24': Permanência proc doação órg, tec, cél-doador vivo
+      '25': Permanência proc doação órg, tec, cél-doador morto
+      '26': Permanência por mudança de procedimento
+      '27': Permanência por reoperação
+      '28': Permanência por outros motivos
+      '29': Transferência para internação domiciliar
+      '31': Transferência para outro estabelecimento
+      '32': Transferência para internação domiciliar
+      '41': Óbito com DO fornecida pelo médico assistente
+      '42': Óbito com DO fornecida pelo IML
+      '43': Óbito com DO fornecida pelo SVO
+      '51': Encerramento administrativo
+      '61': Alta da mãe/puérpera e do recém-nascido
+      '62': Alta da mãe/puérpera e permanência recém-nascido
+      '63': Alta da mãe/puérpera e óbito do recém-nascido
+      '64': Alta da mãe/puérpera com óbito fetal
+      '65': Óbito da gestante e do concepto
+      '66': Óbito da mãe/puérpera e alta do recém-nascido
+      '67': Óbito da mãe/puérpera e permanência recém-nascido
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 08cdd9aaf92b1ff40a62cf03086db6c6875bc4e6256ac5336d6788fd364d07c9
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sih-tab-f05b32f32908
+          pages: []
+          locator: 'RJ2008.DEF: LMotivo Saída/Permanência, COBRANCA, 1, CNV\SAIDAPERM.CNV; CNV/SAIDAPERM.CNV'
+        note: Mapa do CNV.
+  - name: natureza
+    type: string
+    x-decode:
+      '00': Ignorado
+      '01': Ignorado
+      '02': Ignorado
+      '03': Ignorado
+      '04': Ignorado
+      '05': Ignorado
+      '06': Ignorado
+      '07': Ignorado
+      '08': Ignorado
+      '09': Ignorado
+      '10': Próprio
+      '11': Ignorado
+      '12': Ignorado
+      '13': Ignorado
+      '14': Ignorado
+      '15': Ignorado
+      '16': Ignorado
+      '17': Ignorado
+      '18': Ignorado
+      '19': Ignorado
+      '20': Contratado
+      '21': Ignorado
+      '22': Contratado optante SIMPLES
+      '23': Ignorado
+      '24': Ignorado
+      '25': Ignorado
+      '26': Ignorado
+      '27': Ignorado
+      '28': Ignorado
+      '29': Ignorado
+      '30': Federal
+      '31': Federal Verba Própria
+      '32': Ignorado
+      '33': Ignorado
+      '34': Ignorado
+      '35': Ignorado
+      '36': Ignorado
+      '37': Ignorado
+      '38': Ignorado
+      '39': Ignorado
+      '40': Estadual
+      '41': Estadual Verba Própria
+      '42': Ignorado
+      '43': Ignorado
+      '44': Ignorado
+      '45': Ignorado
+      '46': Ignorado
+      '47': Ignorado
+      '48': Ignorado
+      '49': Ignorado
+      '50': Municipal
+      '51': Ignorado
+      '52': Ignorado
+      '53': Ignorado
+      '54': Ignorado
+      '55': Ignorado
+      '56': Ignorado
+      '57': Ignorado
+      '58': Ignorado
+      '59': Ignorado
+      '60': Filantrópico
+      '61': Filantrópico isento tributos e contr.sociais
+      '62': Ignorado
+      '63': Filantrópico isento IR e contr.s/lucro líquido
+      '64': Ignorado
+      '65': Ignorado
+      '66': Ignorado
+      '67': Ignorado
+      '68': Ignorado
+      '69': Ignorado
+      '70': Universitário Ensino
+      '71': Ignorado
+      '72': Ignorado
+      '73': Ignorado
+      '74': Ignorado
+      '75': Ignorado
+      '76': Ignorado
+      '77': Ignorado
+      '78': Ignorado
+      '79': Ignorado
+      '80': Sindicato
+      '81': Ignorado
+      '82': Ignorado
+      '83': Ignorado
+      '84': Ignorado
+      '85': Ignorado
+      '86': Ignorado
+      '87': Ignorado
+      '88': Ignorado
+      '89': Ignorado
+      '90': Universitário Pesquisas
+      '91': Univ. Pesquisas isento tributos e contr.sociais
+      '92': Universitário de ensino e pesquisa privado
+      '93': Univ. Pesquisas isento IR e contr.s/lucro líquido
+      '94': Universitário de ensino e pesquisa privado
+      '95': Ignorado
+      '96': Ignorado
+      '97': Ignorado
+      '98': Ignorado
+      '99': Ignorado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: d9e116a3616391f2860d66ffa88f4cff04022c7583923d95c131a75c3247ef71
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sih-tab-f05b32f32908
+          pages: []
+          locator: 'RJ2008.DEF: LNatureza, NATUREZA, 1, CNV\NATUREZA.CNV; CNV/NATUREZA.CNV'
+        note: Mapa do CNV.
+  - name: nat_jur
+    type: string
+  - name: gestao
+    type: string
+    x-decode:
+      '0': Estadual
+      '1': Municipal plena assist
+      '2': Estadual plena
+      '3': Não definida
+      '4': Não definida
+      '5': Não definida
+      '6': Não definida
+      '7': Não definida
+      '8': Não definida
+      '9': Não definida
+      E: Estadual plena
+      M: Municipal plena assist
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 1f7afbd8ec687eb01947ff6759a9a6d7af201a75af70f9a19f7a41d576aca7d7
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sih-tab-f05b32f32908
+          pages: []
+          locator: 'RJ2008.DEF: XGestão, GESTAO, 1, CNV\GESTAO.CNV; CNV/GESTAO.CNV'
+        note: Mapa do CNV.
+  - name: rubrica
+    type: integer
+  - name: ind_vdrl
+    type: string
+    x-decode:
+      ? ''
+      : Não informado
+      '0': Não
+      '1': Sim
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 36112cfe5d4d0c9bf13a3fa3d30b015b2579fdd97f064214ea37bcc42a49bf68
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sih-tab-f05b32f32908
+          pages: []
+          locator: 'RJ2008.DEF: XFez VDRL, IND_VDRL, 1, CNV\SIMNAO.CNV; CNV/SIMNAO.CNV'
+        note: Mapa do CNV.
+  - name: munic_mov
+    type: string
+  - name: cod_idade
+    type: string
+  - name: idade
+    type: integer
+  - name: dias_perm
+    type: integer
+  - name: morte
+    type: integer
+    x-decode:
+      '0': Sem óbito
+      '1': Com óbito
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: b9f5ab9277a51625f5753fd63190d7c055200c29dba492081f1b15c143d11bc1
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sih-tab-f05b32f32908
+          pages: []
+          locator: 'RJ2008.DEF: XÓbitos, MORTE, 1, CNV\MORTES.CNV; CNV/MORTES.CNV'
+        note: Mapa do CNV.
+  - name: nacional
+    type: string
+  - name: num_proc
+    type: string
+  - name: car_int
+    type: string
+    x-decode:
+      '01': 01 Eletivo
+      '02': 02 Urgência
+      '03': 03 Acidente no local trabalho ou a serv da empresa
+      '04': 04 Acidente no trajeto para o trabalho
+      '05': 05 Outros tipo de acidente de trânsito
+      '06': 06 Out tp lesões e envenen por agent quím físicos
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: b57ffa55dcb62d0e624514e530e6fed1e0a44f9f809efd5781e25e227d08a11d
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sih-tab-f05b32f32908
+          pages: []
+          locator: 'RJ2008.DEF: LCarater atendimento, CAR_INT, 1, CNV\CARATEND.CNV; CNV/CARATEND.CNV'
+        note: Mapa do CNV.
+  - name: tot_pt_sp
+    type: integer
+  - name: cpf_aut
+    type: string
+  - name: homonimo
+    type: string
+  - name: num_filhos
+    type: integer
+  - name: instru
+    type: string
+    x-decode:
+      '0': Ignorado/não se aplica
+      '1': Analfabeto
+      '2': 1º grau
+      '3': 2º grau
+      '4': 3º grau
+      '5': Ignorado/não se aplica
+      '6': Ignorado/não se aplica
+      '7': Ignorado/não se aplica
+      '8': Ignorado/não se aplica
+      '9': Ignorado/não se aplica
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 595254be2c676a5195ea0ca54a893ffbd5afeac487ded164340700af37e75d95
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sih-tab-f05b32f32908
+          pages: []
+          locator: 'RJ2008.DEF: XGrau de instrução, INSTRU, 1, CNV\INSTRU.CNV; CNV/INSTRU.CNV'
+        note: Mapa do CNV.
+  - name: cid_notif
+    type: string
+  - name: contracep1
+    type: string
+  - name: contracep2
+    type: string
+  - name: gestrisco
+    type: string
+    x-decode:
+      ? ''
+      : Não informado
+      '0': Não
+      '1': Sim
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 36112cfe5d4d0c9bf13a3fa3d30b015b2579fdd97f064214ea37bcc42a49bf68
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sih-tab-f05b32f32908
+          pages: []
+          locator: 'RJ2008.DEF: XGestante de risco, GESTRISCO, 1, CNV\SIMNAO.CNV; CNV/SIMNAO.CNV'
+        note: Mapa do CNV.
+  - name: insc_pn
+    type: string
+  - name: seq_aih5
+    type: string
+  - name: cbor
+    type: string
+  - name: cnaer
+    type: string
+  - name: vincprev
+    type: string
+    x-decode:
+      '0': Não classificado
+      '1': Autônomo
+      '2': Desempregado
+      '3': Aposentado
+      '4': Não segurado
+      '5': Empregado
+      '6': Empregador
+      '7': Não classificado
+      '8': Não classificado
+      '9': Não classificado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 52f021de88a24ff76075cbea8171064f8430de036ac18981ef4980504033719c
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sih-tab-f05b32f32908
+          pages: []
+          locator: 'RJ2008.DEF: XVínculo previdenciário, VINCPREV, 1, CNV\VINCPREV.CNV; CNV/VINCPREV.CNV'
+        note: Mapa do CNV.
+  - name: gestor_cod
+    type: string
+  - name: gestor_tp
+    type: string
+  - name: gestor_cpf
+    type: string
+  - name: gestor_dt
+    type: string
+  - name: cnes
+    type: string
+  - name: cnpj_mant
+    type: string
+  - name: infehosp
+    type: string
+    x-decode:
+      ? ''
+      : Não informado
+      '0': Não
+      '1': Sim
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 36112cfe5d4d0c9bf13a3fa3d30b015b2579fdd97f064214ea37bcc42a49bf68
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sih-tab-f05b32f32908
+          pages: []
+          locator: 'RJ2008.DEF: XInfecção Hospitalar, INFEHOSP, 1, CNV\SIMNAO.CNV; CNV/SIMNAO.CNV'
+        note: Mapa do CNV.
+  - name: cid_asso
+    type: string
+  - name: cid_morte
+    type: string
+  - name: complex
+    type: string
+    x-decode:
+      '00': Não se aplica
+      '01': Atenção Básica
+      '02': Média complexidade
+      '03': Alta complexidade
+      '04': Não se aplica
+      '05': Não se aplica
+      '06': Não se aplica
+      '07': Não se aplica
+      '08': Não se aplica
+      '09': Não se aplica
+      '10': Não se aplica
+      '11': Não se aplica
+      '12': Não se aplica
+      '13': Não se aplica
+      '14': Não se aplica
+      '15': Não se aplica
+      '16': Não se aplica
+      '17': Não se aplica
+      '18': Não se aplica
+      '19': Não se aplica
+      '20': Não se aplica
+      '21': Não se aplica
+      '22': Não se aplica
+      '23': Não se aplica
+      '24': Não se aplica
+      '25': Não se aplica
+      '26': Não se aplica
+      '27': Não se aplica
+      '28': Não se aplica
+      '29': Não se aplica
+      '30': Não se aplica
+      '31': Não se aplica
+      '32': Não se aplica
+      '33': Não se aplica
+      '34': Não se aplica
+      '35': Não se aplica
+      '36': Não se aplica
+      '37': Não se aplica
+      '38': Não se aplica
+      '39': Não se aplica
+      '40': Não se aplica
+      '41': Não se aplica
+      '42': Não se aplica
+      '43': Não se aplica
+      '44': Não se aplica
+      '45': Não se aplica
+      '46': Não se aplica
+      '47': Não se aplica
+      '48': Não se aplica
+      '49': Não se aplica
+      '50': Não se aplica
+      '51': Não se aplica
+      '52': Não se aplica
+      '53': Não se aplica
+      '54': Não se aplica
+      '55': Não se aplica
+      '56': Não se aplica
+      '57': Não se aplica
+      '58': Não se aplica
+      '59': Não se aplica
+      '60': Não se aplica
+      '61': Não se aplica
+      '62': Não se aplica
+      '63': Não se aplica
+      '64': Não se aplica
+      '65': Não se aplica
+      '66': Não se aplica
+      '67': Não se aplica
+      '68': Não se aplica
+      '69': Não se aplica
+      '70': Não se aplica
+      '71': Não se aplica
+      '72': Não se aplica
+      '73': Não se aplica
+      '74': Não se aplica
+      '75': Não se aplica
+      '76': Não se aplica
+      '77': Não se aplica
+      '78': Não se aplica
+      '79': Não se aplica
+      '80': Não se aplica
+      '81': Não se aplica
+      '82': Não se aplica
+      '83': Não se aplica
+      '84': Não se aplica
+      '85': Não se aplica
+      '86': Não se aplica
+      '87': Não se aplica
+      '88': Não se aplica
+      '89': Não se aplica
+      '90': Não se aplica
+      '91': Não se aplica
+      '92': Não se aplica
+      '93': Não se aplica
+      '94': Não se aplica
+      '95': Não se aplica
+      '96': Não se aplica
+      '97': Não se aplica
+      '98': Não se aplica
+      '99': Não se aplica
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 05fbb346cbf08e3a75b6a1d1f4a470c42b08e01620734d7d26d1158ce2c650f2
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sih-tab-f05b32f32908
+          pages: []
+          locator: 'RJ2008.DEF: LComplexidade  Procedimentos, COMPLEX, 1, CNV\COMPLEX2.CNV; CNV/COMPLEX2.CNV'
+        note: Mapa do CNV.
+  - name: financ
+    type: string
+    x-decode:
+      '01': 01 Atenção Básica (PAB)
+      '02': 02 Assistência Farmacêutica
+      '04': 04 Fundo de Ações Estratégicas e Compensações FAEC
+      '05': 05 Incentivo - MAC
+      '06': 06 Média e Alta Complexidade (MAC)
+      '07': 07 Vigilância em Saúde
+      '08': 08 Gestão em Saúde
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: b502a7a998f58f54bb87882d47423fe45e2abb8414a5183bba213b61687fce51
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sih-tab-f05b32f32908
+          pages: []
+          locator: 'RJ2008.DEF: XFinanciamento, FINANC, 1, CNV\FINANC.CNV; CNV/FINANC.CNV'
+        note: Mapa do CNV.
+      issues:
+      - id: financ-00-sem-fonte
+        status: open
+        description: '''00'' fica sem rótulo: FINANC.CNV (TAB_SIH), ligado a FINANC no RJ2008.DEF, lista
+          01, 02 e 04 a 08; o IT SIHSUS 1603 descreve FINANC sem códigos (p. 3). SP 2022: 196 linhas (RJSP2207
+          93, RJSP2209 61, RJSP2210 42).'
+  - name: faec_tp
+    type: string
+  - name: regct
+    type: string
+    x-decode:
+      '0000': SEM CONTRATO
+      '7010': ESTABELECIMENTO SEM GERAÇÃO DE CREDITO no  grupo 1
+      '7100': TABELA DE NAO GERACAO DE CREDITO POR PRODUCAO NA I
+      '7101': ESTABELECIMENTO DE SAUDE SEM GERACAO DE CREDITO NA
+      '7102': ESTABELECIMENTO DE SAUDE SEM GERACAO DE CREDITO NA
+      '7103': ESTABELECIMENTO DE SAUDE SEM GERACAO DE CREDITO NA
+      '7104': ESTABELECIMENTO DE SAUDE SEM GERACAO DE CREDITO NA
+      '7105': ESTABELECIMENTO DE SAUDE SEM GERACAO DE CREDITO PA
+      '7106': ESTABELECIMENTO SEM GERAÇÃO DE CREDITO TOTAL - INC
+      '7107': ESTABELECIMENTO SEM GERACAO DE CREDITO NAS ACOES E
+      '7108': ESTABELECIMENTO SEM GERACAO DE CREDITO(INCENTIVO A
+      '7109': ESTABELECIMENTO SEM GERACAO DE CREDITO TOTAL-MEC
+      '7110': ESTABELECIMENTO DE SAUDE DA ESTRUTURA DO MINISTERI
+      '7111': ESTABELECIMENTO DE SAUDE SEM GERACAO DE CREDITO -
+      '7112': ESTABELECIMENTO SEM GERAÇÃO DE CREDITO TOTAL - INC
+      '7113': ESTABELECIMENTO SEM GERAÇÃO DE CREDITO TOTAL - INC
+      '7114': ESTABELECIMENTO DE SAÚDE SEM GERAÇÃO DE CRÉDITO TO
+      '7115': ESTABELECIMENTO DE SAÚDE SEM GERAÇÃO DE CRÉDITO NA
+      '7116': ESTABELECIMENTO DE SAÚDE SEM GERAÇÃO DE CRÉDITO NA
+      '7117': ESTABELECIMENTO DE SAÚDE SEM GERAÇÃO DE CRÉDITO NA
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: db5d6d2946bb6dbdb9fbb509768bbee7f30206b93eb25fa16287f4873b6d7018
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sih-tab-f05b32f32908
+          pages: []
+          locator: 'RJ2008.DEF: LRegra Contratual, REGCT, 1, CNV\REGCT.CNV; CNV/REGCT.cnv'
+        note: Mapa do CNV.
+  - name: raca_cor
+    type: string
+    x-decode:
+      '00': Sem informação
+      '01': Branca
+      '02': Preta
+      '03': Parda
+      '04': Amarela
+      '05': Indígena
+      '06': Sem informação
+      '07': Sem informação
+      '08': Sem informação
+      '09': Sem informação
+      '10': Sem informação
+      '11': Sem informação
+      '12': Sem informação
+      '13': Sem informação
+      '14': Sem informação
+      '15': Sem informação
+      '16': Sem informação
+      '17': Sem informação
+      '18': Sem informação
+      '19': Sem informação
+      '20': Sem informação
+      '21': Sem informação
+      '22': Sem informação
+      '23': Sem informação
+      '24': Sem informação
+      '25': Sem informação
+      '26': Sem informação
+      '27': Sem informação
+      '28': Sem informação
+      '29': Sem informação
+      '30': Sem informação
+      '31': Sem informação
+      '32': Sem informação
+      '33': Sem informação
+      '34': Sem informação
+      '35': Sem informação
+      '36': Sem informação
+      '37': Sem informação
+      '38': Sem informação
+      '39': Sem informação
+      '40': Sem informação
+      '41': Sem informação
+      '42': Sem informação
+      '43': Sem informação
+      '44': Sem informação
+      '45': Sem informação
+      '46': Sem informação
+      '47': Sem informação
+      '48': Sem informação
+      '49': Sem informação
+      '50': Sem informação
+      '51': Sem informação
+      '52': Sem informação
+      '53': Sem informação
+      '54': Sem informação
+      '55': Sem informação
+      '56': Sem informação
+      '57': Sem informação
+      '58': Sem informação
+      '59': Sem informação
+      '60': Sem informação
+      '61': Sem informação
+      '62': Sem informação
+      '63': Sem informação
+      '64': Sem informação
+      '65': Sem informação
+      '66': Sem informação
+      '67': Sem informação
+      '68': Sem informação
+      '69': Sem informação
+      '70': Sem informação
+      '71': Sem informação
+      '72': Sem informação
+      '73': Sem informação
+      '74': Sem informação
+      '75': Sem informação
+      '76': Sem informação
+      '77': Sem informação
+      '78': Sem informação
+      '79': Sem informação
+      '80': Sem informação
+      '81': Sem informação
+      '82': Sem informação
+      '83': Sem informação
+      '84': Sem informação
+      '85': Sem informação
+      '86': Sem informação
+      '87': Sem informação
+      '88': Sem informação
+      '89': Sem informação
+      '90': Sem informação
+      '91': Sem informação
+      '92': Sem informação
+      '93': Sem informação
+      '94': Sem informação
+      '95': Sem informação
+      '96': Sem informação
+      '97': Sem informação
+      '98': Sem informação
+      '99': Sem informação
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: b100d29201424a2b8a0c000bc5e062f9106eabdccce5416e2620d1f8164a86ec
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sih-tab-f05b32f32908
+          pages: []
+          locator: 'RJ2008.DEF: XCor/raça, RACA_COR, 1, CNV\RACACOR.CNV; CNV/RACACOR.CNV'
+        note: Mapa do CNV.
+  - name: etnia
+    type: string
+  - name: st_situac
+    type: string
+    x-decode:
+      '0': AIH autorizada
+      '1': AIH rejeitada
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: cc603e321b1c0d6fe06b275b30d249257c66e27fc5537b6bc9d497322f139b39
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sih-tab-f05b32f32908
+          pages: []
+          locator: 'RJ2008.DEF: XSituação rejeição, ST_SITUAC, 1, CNV\SITREJEICAO.CNV; CNV/sitrejeicao.cnv'
+        note: Mapa do CNV.
+  - name: st_bloq
+    type: string
+    x-decode:
+      '0': AIH autorizada
+      '2': Bloqueio AIH
+      '4': Cancelamento AIH
+      '5': Liberação bloqueio AIH
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: e1fe6ac7656e1e81877e79956982b5a985b3d6975b3a91f23a9f3f9adbcf7096
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sih-tab-f05b32f32908
+          pages: []
+          locator: 'RJ2008.DEF: XSituação bloqueio, ST_BLOQ, 1, CNV\SITBLOQUEIO.CNV; CNV/sitbloqueio.cnv'
+        note: Mapa do CNV.
+  - name: st_mot_blo
+    type: string
+  - name: sequencia
+    type: integer
+  - name: remessa
+    type: string

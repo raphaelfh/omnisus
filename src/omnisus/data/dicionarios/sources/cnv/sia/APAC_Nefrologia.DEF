@@ -1,0 +1,455 @@
+; APAC _ Nefrologia - Janeiro de 2008 em diante
+;*************************************************************************
+ADADOS\AN*.DBC
+H?
+RC:\TEMP\RELPROD.TXT
+IValor TOTAL Aprovado,  AP_VL_AP
+IMotivo Saida-Alta ,  AP_ALTA
+IMotivo Saida-Óbito,  AP_OBITO
+IMotivo Saida-Encerram,  AP_ENCERR
+IMotivo Saida-Permanên,  AP_PERMAN
+IMotivo Saida-Transfer,  AP_TRANSF
+;*************************************************************************
+;  DADOS ESPECIFICOS DE APAC DE NEFROLOGIA
+;*************************************************************************
+XPeso do Paciente  ,  AN_PESO    , 1 , CNV/PESO.CNV
+XAltura do Paciente,  AN_ALTURA  , 1 , CNV/ALTURA.CNV
+XDiurese em ml     ,  AN_DIURES  , 1 , CNV/DIURESE.CNV
+XGlicose em mg/dl  ,  AN_GLICOS  , 1 , CNV/GLICOSE.CNV
+XAcesso Vascular   ,  AN_ACEVAS  , 1 , CNV/ACES_VASC.CNV
+XUltrass. Abdominal,  AN_ULSOAB  , 1 , CNV/ULTRA_AB.CNV
+XTRU-Taxa Red.Ureia,  AN_TRU     , 1 , CNV/TRU.CNV
+XQtde.Interv.Fístol,  AN_INTFIS  , 1 , CNV/QT_FISTOLA.CNV
+XInscrito no CNCDO ,  AN_CNCDO   , 1 , CNV/CNCDO.CNV
+XAlbumina em g%    ,  AN_ALBUMI  , 1 , CNV/ALBINA.CNV
+XIndicativo de HCV ,  AN_HCV     , 1 , CNV/HCV.CNV
+XIndicat.  de HBsAg,  AN_HBSAG   , 1 , CNV/HBSAG.CNV
+XIndic.pres.HIV    ,  AN_HIV     , 1 , CNV/HIV.CNV
+XHB em g%          ,  AN_HB      , 1 , CNV/HB.CNV
+;*************************************************************************
+;  Variáveis referentes a dados das COMPETENCIAS
+;*************************************************************************
+X**  COMPETENCIAS  ,  TITULO     , LINHA_COMENTARIO_REFERENTE_DADOS_DE_COMPETENCIAS
+TMês de Processamento,  AP_MVM     , 1 , CNV/ANOMES2008.CNV
+SMês de Processamento,  AP_MVM     , 1 , CNV/ANOMES2008.CNV
+TSemestre de Processamento,  AP_MVM, 1 , CNV/SEME2008.CNV
+SSemestre de Processamento,  AP_MVM, 1 , CNV/SEME2008.CNV
+TAno de Processamento,  AP_MVM     , 1 , CNV/ANO_2008.CNV
+SAno de Processamento,  AP_MVM     , 1 , CNV/ANO_2008.CNV
+TMês de Atendimento,    AP_CMP     , 1 , CNV/ANOMES2008.CNV
+SMês de Atendimento,    AP_CMP     , 1 , CNV/ANOMES2008.CNV
+TSemestre de Atendimento,  AP_CMP  , 1 , CNV/Seme2008.CNV
+SSemestre de Atendimento,  AP_CMP  , 1 , CNV/Seme2008.CNV
+TAno de Atendimento,  AP_CMP       , 1 , CNV/ANO_2008.CNV
+SAno de Atendimento,  AP_CMP       , 1 , CNV/ANO_2008.CNV
+;*************************************************************************
+;  Variáveis referentes ao GESTOR
+;*************************************************************************
+X** GESTOR PRODUÇÃO,  TITULO     ,LINHA_COMENTARIO_REFERENTE_DADOS_DE_COMPETENCIAS
+DTipo de Gestão    ,  AP_CONDIC  , 1 , CNV/TP_GESTAO.CNV
+CTipo de Gestão    ,  AP_CONDIC  , 1 , CNV/TPGEST_C.CNV
+STipo de Gestão    ,  AP_CONDIC  , 1 , CNV/TP_GESTAO.CNV
+;DGestor Produção   , AP_GESTAO  , 1 , CNV/MUNICBR.CNV
+;SGestor Produção   , AP_GESTAO  , 1 , CNV/MUNICBR.CNV
+LGestor da Produção,AP_GESTAO    , 1 , CNV/BR_MUNICGESTOR.CNV
+SGestor da Produção,AP_GESTAO    , 1 , CNV/BR_MUNICGESTOR.CNV
+;*************************************************************************
+;  Variáveis referentes ao procedimento principal SEGUNDO A TABELA UNIFICADA DE 2008
+;*************************************************************************
+x** PROCEDIMENTOS  ,  TITULO     ,LINHA_COMENTARIO_REFERENTE_DADOS_DOS_PROCEDIMENTOS_DA_TABELA_UNIFICADA
+LProcedimento Principal,  AP_PRIPAL  , IP_DSCR, DBF/TB_SIGTAW.DBF
+SProcedimento Principal,  AP_PRIPAL  , IP_DSCR, DBF/TB_SIGTAW.DBF
+;*************************************************************************
+;  Variavéis especificas de APAC
+;*************************************************************************
+X** IDENTIFIC.APAC ,  TITULO     ,LINHA_COMENTARIO_REFERENTE_DADOS_DE_IDENTIFICACAO_DA_APAC
+XMês de Início-APAC,  AP_DTINIC  , 1 , CNV/ANOMES2008.CNV
+XAno de Início-APAC,  AP_DTINIC  , 1 , CNV/ANO_2008.CNV
+XMês de FIM-APAC   ,  AP_DTFIM   , 1 , CNV/ANOMES2008.CNV
+XAno de FIM-APAC   ,  AP_DTFIM   , 1 , CNV/ANO_2008.CNV
+XTipo de Atendimento,  AP_TPATEN , 1 , CNV/TP_ATEND.CNV
+XTipo de APAC      ,  AP_TPAPAC  , 1 , CNV/TP_APAC.CNV
+XCarater Atendimento,  AP_CATEND , 1 , CNV/CARAT_AT.CNV
+XMotivo Saída-Permanência,  AP_MOTSAI  , 1 , CNV/MOTSAIPE.CNV
+XMotivo Saída-Alta ,  AP_ALTA    , 1 , CNV/ALTA.CNV
+XMotivo Saída-Óbito,  AP_OBITO   , 1 , CNV/OBITO.CNV
+XMotivo Saída-Encerramento, AP_ENCERR  , 1 , CNV/ENCERRAM.CNV
+XMotivo Saída-Permanência,  AP_PERMAN  , 1 , CNV/PERMANEN.CNV
+XMotivo Saída-Transferência,AP_TRANSF  , 1 , CNV/TRANSFER.CNV
+XMês de Ocorrência ,        AP_DTOCOR  , 1 , CNV/ANOMES2008.CNV
+XAno de Ocorrência ,        AP_DTOCOR  , 1 , CNV/ANO_2008.CNV
+XMês da Solicitação,        AP_DTSOLIC , 1 , CNV/ANOMES2008.CNV
+XAno da Solicitação,        AP_DTSOLIC , 1 , CNV/ANO_2008.CNV
+XMês da Autorização,        AP_DTAUT   , 1 , CNV/ANOMES2008.CNV
+XAno da Autorização,        AP_DTAUT   , 1 , CNV/ANO_2008.CNV
+;*************************************************************************
+;  Variáveis referentes ao DIAGNOSTICO
+;*************************************************************************
+L** DIAGNOSTICO    ,  TITULO     , LINHA_COMENTARIO_REFERENTE_DADOS_DIAGNOSTICO_DO_PACIENTE
+S** DIAGNOSTICO    ,  TITULO     , LINHA_COMENTARIO_REFERENTE_DADOS_DIAGNOSTICO_DO_PACIENTE
+LCID Principal/Topografia,  AP_CIDPRI  , CD_DESCR, DBF/S_CID.DBF
+SCID Principal/Topografia,  AP_CIDPRI  , CD_DESCR, DBF/S_CID.DBF
+LCID Secundário          ,  AP_CIDSEC  , CD_DESCR, DBF/S_CID.DBF
+SCID Secundário          ,  AP_CIDSEC  , CD_DESCR, DBF/S_CID.DBF
+LCID Causas Associadas   ,  AP_CIDCAS  , CD_DESCR, DBF/S_CID.DBF
+SCID Causas Associadas   ,  AP_CIDCAS  , CD_DESCR, DBF/S_CID.DBF
+;*************************************************************************
+;  Variáveis referentes ao ESTABELECIMENTO EXECUTANTE
+;*************************************************************************
+X** CNES EXECUTANTE,  TITULO     , LINHA_COMENTARIO_REFERENTE_DADOS_DO_ESTABELECIMENTO_EXECUTANTE
+L + NOME FANTASIA  ,  TITULO     , LINHA_COMENTARIO_REFERENTE_DADOS_DO_ESTABELECIMENTO_EXECUTANTE
+S + NOME FANTASIA  ,  TITULO     , LINHA_COMENTARIO_REFERENTE_DADOS_DO_ESTABELECIMENTO_EXECUTANTE
+;*************************************************************************
+DCNES Executante - AC,  AP_CODUNI  , FANTASIA,  DBF/CADGERAC.DBF
+SCNES Executante - AC,  AP_CODUNI  , FANTASIA,  DBF/CADGERAC.DBF
+DCNES Executante - AL,  AP_CODUNI  , FANTASIA,  DBF/CADGERAL.DBF
+SCNES Executante - AL,  AP_CODUNI  , FANTASIA,  DBF/CADGERAL.DBF
+DCNES Executante - AM,  AP_CODUNI  , FANTASIA,  DBF/CADGERAM.DBF
+SCNES Executante - AM,  AP_CODUNI  , FANTASIA,  DBF/CADGERAM.DBF
+DCNES Executante - AP,  AP_CODUNI  , FANTASIA,  DBF/CADGERAP.DBF
+SCNES Executante - AP,  AP_CODUNI  , FANTASIA,  DBF/CADGERAP.DBF
+DCNES Executante - BA,  AP_CODUNI  , FANTASIA,  DBF/CADGERBA.DBF
+SCNES Executante - BA,  AP_CODUNI  , FANTASIA,  DBF/CADGERBA.DBF
+DCNES Executante - CE,  AP_CODUNI  , FANTASIA,  DBF/CADGERCE.DBF
+SCNES Executante - CE,  AP_CODUNI  , FANTASIA,  DBF/CADGERCE.DBF
+DCNES Executante - DF,  AP_CODUNI  , FANTASIA,  DBF/CADGERDF.DBF
+SCNES Executante - DF,  AP_CODUNI  , FANTASIA,  DBF/CADGERDF.DBF
+DCNES Executante - ES,  AP_CODUNI  , FANTASIA,  DBF/CADGERES.DBF
+SCNES Executante - ES,  AP_CODUNI  , FANTASIA,  DBF/CADGERES.DBF
+DCNES Executante - GO,  AP_CODUNI  , FANTASIA,  DBF/CADGERGO.DBF
+SCNES Executante - GO,  AP_CODUNI  , FANTASIA,  DBF/CADGERGO.DBF
+DCNES Executante - MA,  AP_CODUNI  , FANTASIA,  DBF/CADGERMA.DBF
+SCNES Executante - MA,  AP_CODUNI  , FANTASIA,  DBF/CADGERMA.DBF
+DCNES Executante - MG,  AP_CODUNI  , FANTASIA,  DBF/CADGERMG.DBF
+SCNES Executante - MG,  AP_CODUNI  , FANTASIA,  DBF/CADGERMG.DBF
+DCNES Executante - MS,  AP_CODUNI  , FANTASIA,  DBF/CADGERMS.DBF
+SCNES Executante - MS,  AP_CODUNI  , FANTASIA,  DBF/CADGERMS.DBF
+DCNES Executante - MT,  AP_CODUNI  , FANTASIA,  DBF/CADGERMT.DBF
+SCNES Executante - MT,  AP_CODUNI  , FANTASIA,  DBF/CADGERMT.DBF
+DCNES Executante - PA,  AP_CODUNI  , FANTASIA,  DBF/CADGERPA.DBF
+SCNES Executante - PA,  AP_CODUNI  , FANTASIA,  DBF/CADGERPA.DBF
+DCNES Executante - PB,  AP_CODUNI  , FANTASIA,  DBF/CADGERPB.DBF
+SCNES Executante - PB,  AP_CODUNI  , FANTASIA,  DBF/CADGERPB.DBF
+DCNES Executante - PE,  AP_CODUNI  , FANTASIA,  DBF/CADGERPE.DBF
+SCNES Executante - PE,  AP_CODUNI  , FANTASIA,  DBF/CADGERPE.DBF
+DCNES Executante - PI,  AP_CODUNI  , FANTASIA,  DBF/CADGERPI.DBF
+SCNES Executante - PI,  AP_CODUNI  , FANTASIA,  DBF/CADGERPI.DBF
+DCNES Executante - PR,  AP_CODUNI  , FANTASIA,  DBF/CADGERPR.DBF
+SCNES Executante - PR,  AP_CODUNI  , FANTASIA,  DBF/CADGERPR.DBF
+DCNES Executante - RJ,  AP_CODUNI  , FANTASIA,  DBF/CADGERRJ.DBF
+SCNES Executante - RJ,  AP_CODUNI  , FANTASIA,  DBF/CADGERRJ.DBF
+DCNES Executante - RN,  AP_CODUNI  , FANTASIA,  DBF/CADGERRN.DBF
+SCNES Executante - RN,  AP_CODUNI  , FANTASIA,  DBF/CADGERRN.DBF
+DCNES Executante - RO,  AP_CODUNI  , FANTASIA,  DBF/CADGERRO.DBF
+SCNES Executante - RO,  AP_CODUNI  , FANTASIA,  DBF/CADGERRO.DBF
+DCNES Executante - RR,  AP_CODUNI  , FANTASIA,  DBF/CADGERRR.DBF
+SCNES Executante - RR,  AP_CODUNI  , FANTASIA,  DBF/CADGERRR.DBF
+DCNES Executante - RS,  AP_CODUNI  , FANTASIA,  DBF/CADGERRS.DBF
+SCNES Executante - RS,  AP_CODUNI  , FANTASIA,  DBF/CADGERRS.DBF
+DCNES Executante - SC,  AP_CODUNI  , FANTASIA,  DBF/CADGERSC.DBF
+SCNES Executante - SC,  AP_CODUNI  , FANTASIA,  DBF/CADGERSC.DBF
+DCNES Executante - SE,  AP_CODUNI  , FANTASIA,  DBF/CADGERSE.DBF
+SCNES Executante - SE,  AP_CODUNI  , FANTASIA,  DBF/CADGERSE.DBF
+DCNES Executante - SP,  AP_CODUNI  , FANTASIA,  DBF/CADGERSP.DBF
+SCNES Executante - SP,  AP_CODUNI  , FANTASIA,  DBF/CADGERSP.DBF
+DCNES Executante - TO,  AP_CODUNI  , FANTASIA,  DBF/CADGERTO.DBF
+SCNES Executante - TO,  AP_CODUNI  , FANTASIA,  DBF/CADGERTO.DBF
+;*************************************************************************
+L** CNES EXECUTANTE,  TITULO     , LINHA_COMENTARIO_REFERENTE_DADOS_DO_ESTABELECIMENTO_EXECUTANTE
+L + RAZÃO SOCIAL   ,  TITULO     , LINHA_COMENTARIO_REFERENTE_DADOS_DO_ESTABELECIMENTO_EXECUTANTE
+S + RAZÃO SOCIAL   ,  TITULO     , LINHA_COMENTARIO_REFERENTE_DADOS_DO_ESTABELECIMENTO_EXECUTANTE
+;*************************************************************************
+DCNPJ/CPF Executante - AC,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERAC.DBF
+SCNPJ/CPF Executante - AC,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERAC.DBF
+DCNPJ/CPF Executante - AL,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERAL.DBF
+SCNPJ/CPF Executante - AL,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERAL.DBF
+DCNPJ/CPF Executante - AM,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERAM.DBF
+SCNPJ/CPF Executante - AM,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERAM.DBF
+DCNPJ/CPF Executante - AP,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERAP.DBF
+SCNPJ/CPF Executante - AP,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERAP.DBF
+DCNPJ/CPF Executante - BA,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERBA.DBF
+SCNPJ/CPF Executante - BA,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERBA.DBF
+DCNPJ/CPF Executante - CE,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERCE.DBF
+SCNPJ/CPF Executante - CE,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERCE.DBF
+DCNPJ/CPF Executante - DF,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERDF.DBF
+SCNPJ/CPF Executante - DF,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERDF.DBF
+DCNPJ/CPF Executante - ES,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERES.DBF
+SCNPJ/CPF Executante - ES,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERES.DBF
+DCNPJ/CPF Executante - GO,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERGO.DBF
+SCNPJ/CPF Executante - GO,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERGO.DBF
+DCNPJ/CPF Executante - MA,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERMA.DBF
+SCNPJ/CPF Executante - MA,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERMA.DBF
+DCNPJ/CPF Executante - MG,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERMG.DBF
+SCNPJ/CPF Executante - MG,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERMG.DBF
+DCNPJ/CPF Executante - MS,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERMS.DBF
+SCNPJ/CPF Executante - MS,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERMS.DBF
+DCNPJ/CPF Executante - MT,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERMT.DBF
+SCNPJ/CPF Executante - MT,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERMT.DBF
+DCNPJ/CPF Executante - PA,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERPA.DBF
+SCNPJ/CPF Executante - PA,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERPA.DBF
+DCNPJ/CPF Executante - PB,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERPB.DBF
+SCNPJ/CPF Executante - PB,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERPB.DBF
+DCNPJ/CPF Executante - PE,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERPE.DBF
+SCNPJ/CPF Executante - PE,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERPE.DBF
+DCNPJ/CPF Executante - PI,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERPI.DBF
+SCNPJ/CPF Executante - PI,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERPI.DBF
+DCNPJ/CPF Executante - PR,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERPR.DBF
+SCNPJ/CPF Executante - PR,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERPR.DBF
+DCNPJ/CPF Executante - RJ,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERRJ.DBF
+SCNPJ/CPF Executante - RJ,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERRJ.DBF
+DCNPJ/CPF Executante - RN,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERRN.DBF
+SCNPJ/CPF Executante - RN,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERRN.DBF
+DCNPJ/CPF Executante - RO,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERRO.DBF
+SCNPJ/CPF Executante - RO,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERRO.DBF
+DCNPJ/CPF Executante - RR,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERRR.DBF
+SCNPJ/CPF Executante - RR,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERRR.DBF
+DCNPJ/CPF Executante - RS,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERRS.DBF
+SCNPJ/CPF Executante - RS,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERRS.DBF
+DCNPJ/CPF Executante - SC,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERSC.DBF
+SCNPJ/CPF Executante - SC,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERSC.DBF
+DCNPJ/CPF Executante - SE,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERSE.DBF
+SCNPJ/CPF Executante - SE,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERSE.DBF
+DCNPJ/CPF Executante - SP,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERSP.DBF
+SCNPJ/CPF Executante - SP,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERSP.DBF
+DCNPJ/CPF Executante - TO,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERTO.DBF
+SCNPJ/CPF Executante - TO,  AP_CODUNI  , RAZ_SOCI,  DBF/CADGERTO.DBF
+DEsfera Administrativa ,    AP_TIPPRE  , 1 , CNV/ESFERA.CNV
+CEsfera Administrativa ,    AP_TIPPRE  , 1 , CNV/ESFERA_C.CNV
+SEsfera Administrativa ,    AP_TIPPRE  , 1 , CNV/ESFERA.CNV
+XTipo Estabelecimento ,     AP_TPUPS   , 1 , CNV/TP_ESTAB.CNV
+XTipo Prestador    ,        AP_TIPPRE  , 1 , CNV/TIPOPRES.CNV
+LNatureza Jurídica ,        AP_NAT_JUR , 1 , CNV/NATJUR.CNV
+CNatureza Jurídica ,        AP_NAT_JUR , 1 , CNV/NATJURC.CNV
+SNatureza Jurídica ,        AP_NAT_JUR , 1 , CNV/NATJURC.CNV
+LEsfera Jurídica   ,        AP_NAT_JUR , 1 , CNV/ESFERAJUR.CNV
+CEsfera Jurídica   ,        AP_NAT_JUR , 1 , CNV/ESFERAJURC.CNV
+SEsfera Jurídica   ,        AP_NAT_JUR , 1 , CNV/ESFERAJURC.CNV
+XMantida/Individual,        AP_MN_IND  , 1 , CNV/MANT_IND.CNV
+;*************************************************************************
+;  Variáveis referentes ao LOCALIZAÇÃO DO ESTABELECIMENTO
+;*************************************************************************
+D**LOCAL.EXECUTANTE,  TITULO    , LINHA_COMENTARIO_LOCALIZACAO_ESTABELECIMENTO_EXECUTANTE
+S**LOCAL.EXECUTANTE,  TITULO    , LINHA_COMENTARIO_LOCALIZACAO_ESTABELECIMENTO_EXECUTANTE
+;TReg. Norte       ,  AP_UFMUN  , 1 , CNV/regiaono.cnv
+;SReg. Norte       ,  AP_UFMUN  , 1 , CNV/regiaono.cnv
+;TReg. Nordeste    ,  AP_UFMUN  , 1 , CNV/regiaone.cnv
+;SReg. Nordeste    ,  AP_UFMUN  , 1 , CNV/regiaone.cnv
+;TReg. Centro      ,  AP_UFMUN  , 1 , CNV/regiaoco.cnv
+;SReg. Centro      ,  AP_UFMUN  , 1 , CNV/regiaoco.cnv
+;TReg. Sudeste     ,  AP_UFMUN  , 1 , CNV/regiaose.cnv
+;SReg. Sudeste     ,  AP_UFMUN  , 1 , CNV/regiaose.cnv
+;TReg. Sul         ,  AP_UFMUN  , 1 , CNV/regiaosu.cnv
+;SReg. Sul         ,  AP_UFMUN  , 1 , CNV/regiaosu.cnv
+;-------------------------------------------
+;Alteração da base territorial - 20/05/2015
+;-------------------------------------------
+;TRegioes BR-Estabelecimento,  AP_UFMUN  , 1 , CNV/REGIAOBR.CNV
+;SRegioes BR-Estabelecimento,  AP_UFMUN  , 1 , CNV/REGIAOBR.CNV
+;DUF Estabelecim.   ,  AP_UFMUN  , 1 , CNV/UF.CNV
+;CUF Estabelecim.   ,  AP_UFMUN  , 1 , CNV/UF_COL.CNV
+;SUF Estabelecim.   ,  AP_UFMUN  , 1 , CNV/UF.CNV
+;DMunic.do Estabel  ,  AP_UFMUN  , 1 , CNV/MUNICBR.CNV
+;SMunic.do Estabel  ,  AP_UFMUN  , 1 , CNV/MUNICBR.CNV
+;XEstab.em Brasília ,  AP_UFMUN  , 1 , CNV/MUNIC_DF.cnv
+;-------------------------------------------
+;Alteração da base territorial - 20/05/2015
+;-------------------------------------------
+;       Definições  para município de Atendimento - 20/05/2015
+LUF Atendimento,       AP_UFMUN , 1,  CNV/BR_UF.CNV
+LUF Atendimento Sigla, AP_UFMUN , 1,  CNV/BR_UFSIGLA.CNV
+CUF Atendimento,       AP_UFMUN , 1,  CNV/BR_UFSIGLA.CNV
+SUF Atendimento,       AP_UFMUN , 1,  CNV/BR_UF.CNV
+LRegião Atendimento,   AP_UFMUN , 1,  CNV/BR_REGIAO.CNV
+CRegião Atendimento,   AP_UFMUN , 1,  CNV/BR_REGIAO.CNV
+SRegião Atendimento,   AP_UFMUN , 1,  CNV/BR_REGIAO.CNV
+LRegião/UF Atendimento,AP_UFMUN , 1,  CNV/BR_REGIAOUF.CNV
+XMunicípio Atendimento - BR,  AP_UFMUN , 1,  CNV/BR_MUNICIP.CNV
+XMunicípio Atendimento - AC,  AP_UFMUN , 1,  CNV/AC_MUNICIP.CNV
+XMunicípio Atendimento - AL,  AP_UFMUN , 1,  CNV/AL_MUNICIP.CNV
+XMunicípio Atendimento - AM,  AP_UFMUN , 1,  CNV/AM_MUNICIP.CNV
+XMunicípio Atendimento - AP,  AP_UFMUN , 1,  CNV/AP_MUNICIP.CNV
+XMunicípio Atendimento - BA,  AP_UFMUN , 1,  CNV/BA_MUNICIP.CNV
+XMunicípio Atendimento - CE,  AP_UFMUN , 1,  CNV/CE_MUNICIP.CNV
+XMunicípio Atendimento - DF,  AP_UFMUN , 1,  CNV/DF_MUNICIP.CNV
+XMunicípio Atendimento - ES,  AP_UFMUN , 1,  CNV/ES_MUNICIP.CNV
+XMunicípio Atendimento - GO,  AP_UFMUN , 1,  CNV/GO_MUNICIP.CNV
+XMunicípio Atendimento - MA,  AP_UFMUN , 1,  CNV/MA_MUNICIP.CNV
+XMunicípio Atendimento - MG,  AP_UFMUN , 1,  CNV/MG_MUNICIP.CNV
+XMunicípio Atendimento - MS,  AP_UFMUN , 1,  CNV/MS_MUNICIP.CNV
+XMunicípio Atendimento - MT,  AP_UFMUN , 1,  CNV/MT_MUNICIP.CNV
+XMunicípio Atendimento - PA,  AP_UFMUN , 1,  CNV/PA_MUNICIP.CNV
+XMunicípio Atendimento - PB,  AP_UFMUN , 1,  CNV/PB_MUNICIP.CNV
+XMunicípio Atendimento - PE,  AP_UFMUN , 1,  CNV/PE_MUNICIP.CNV
+XMunicípio Atendimento - PI,  AP_UFMUN , 1,  CNV/PI_MUNICIP.CNV
+XMunicípio Atendimento - PR,  AP_UFMUN , 1,  CNV/PR_MUNICIP.CNV
+XMunicípio Atendimento - RJ,  AP_UFMUN , 1,  CNV/RJ_MUNICIP.CNV
+XMunicípio Atendimento - RN,  AP_UFMUN , 1,  CNV/RN_MUNICIP.CNV
+XMunicípio Atendimento - RO,  AP_UFMUN , 1,  CNV/RO_MUNICIP.CNV
+XMunicípio Atendimento - RR,  AP_UFMUN , 1,  CNV/RR_MUNICIP.CNV
+XMunicípio Atendimento - RS,  AP_UFMUN , 1,  CNV/RS_MUNICIP.CNV
+XMunicípio Atendimento - SC,  AP_UFMUN , 1,  CNV/SC_MUNICIP.CNV
+XMunicípio Atendimento - SE,  AP_UFMUN , 1,  CNV/SE_MUNICIP.CNV
+XMunicípio Atendimento - SP,  AP_UFMUN , 1,  CNV/SP_MUNICIP.CNV
+XMunicípio Atendimento - TO,  AP_UFMUN , 1,  CNV/TO_MUNICIP.CNV
+LCapital Atendimento,         AP_UFMUN , 1,  CNV/BR_CAPITAL.CNV
+CCapital Atendimento,         AP_UFMUN , 1,  CNV/BR_CAPITAL.CNV
+SCapital Atendimento,         AP_UFMUN , 1,  CNV/BR_CAPITAL.CNV
+LRegião Saúde Atendimento,    AP_UFMUN , 1,  CNV/BR_REGSAUD.CNV
+LMacro Região Saúde Atend.,   AP_UFMUN , 1,  CNV/BR_MACSAUD.CNV
+LDivisão Administrativa Atend,AP_UFMUN , 1,  CNV/BR_DIVADM.CNV
+LMicro IBGE Atendimento,      AP_UFMUN , 1,  CNV/BR_MICIBGE.CNV
+LRegião Metropolitana Atend., AP_UFMUN , 1,  CNV/BR_REGMETR.CNV
+LTerritório Cidadania Atend., AP_UFMUN , 1,  CNV/BR_TERRCID.CNV
+LMacro PNDR Atendimento,      AP_UFMUN , 1,  CNV/BR_PNDR.CNV
+CRegião Saúde Atendimento,    AP_UFMUN , 1,  CNV/BR_regsaud.CNV
+CMacro Reg.Saúde Atend,       AP_UFMUN , 1,  CNV/BR_MACSAUD.CNV
+CDivisão Administrativa Atend.,AP_UFMUN, 1,  CNV/BR_DIVADM.CNV
+CMicro IBGE Atendimento,      AP_UFMUN , 1,  CNV/BR_MICIBGE.CNV
+CRegião Metropolitana Atend., AP_UFMUN , 1,  CNV/BR_REGMETR.CNV
+CTerritório Cidadania Atend., AP_UFMUN , 1,  CNV/BR_TERRCID.CNV
+CMacro PNDR Atendimento,      AP_UFMUN , 1,  CNV/BR_PNDR.CNV
+SRegião Saúde Atendimento,    AP_UFMUN , 1,  CNV/BR_REGSAUD.CNV
+SMacro Reg.Saúde Atend,       AP_UFMUN , 1,  CNV/BR_MACSAUD.CNV
+SDivisão Administrativa Atend.,AP_UFMUN, 1,  CNV/BR_DIVADM.CNV
+SMicro BGE Atendimento,       AP_UFMUN , 1,  CNV/BR_MICIBGE.CNV
+SRegião Metropolitana Atend,  AP_UFMUN , 1,  CNV/BR_REGMETR.CNV
+STerritório Cidadania Atend,  AP_UFMUN , 1,  CNV/BR_TERRCID.CNV
+SMacro PNDR Atendimento,      AP_UFMUN , 1,  CNV/BR_PNDR.CNV
+SMun Amazônia.Legal Atend.,   AP_UFMUN , 1,  CNV/BR_AMAZLEGAL.CNV
+SMun Extrema Pobreza Atend.,  AP_UFMUN , 1,  CNV/BR_EXTRPOBREZ.CNV
+SMun Faixa Fronteira Atend.,  AP_UFMUN , 1,  CNV/BR_FRONTFAIXA.CNV
+SMun Zona Fronteira Atend.,   AP_UFMUN , 1,  CNV/BR_FRONTZONA.CNV
+SMun Semi Árido Atend.,       AP_UFMUN , 1,  CNV/BR_SEMIARIDO.CNV
+;*************************************************************************
+;  Variáveis referentes ao ESTABELECIMENTO SOLICITANTE
+;*************************************************************************
+L**CNES SOLICITANTE,  TITULO    , LINHA_COMENTARIO_DADOS_DO_ESTABELECIMENTO_SOLICITANTE
+S**CNES SOLICITANTE,  TITULO    , LINHA_COMENTARIO_DADOS_DO_ESTABELECIMENTO_SOLICITANTE
+DCNES Solicitante - AC,  AP_UNISOL , FANTASIA,  DBF/CADGERAC.DBF
+SCNES Solicitante - AC,  AP_UNISOL , FANTASIA,  DBF/CADGERAC.DBF
+DCNES Solicitante - AL,  AP_UNISOL , FANTASIA,  DBF/CADGERAL.DBF
+SCNES Solicitante - AL,  AP_UNISOL , FANTASIA,  DBF/CADGERAL.DBF
+DCNES Solicitante - AM,  AP_UNISOL , FANTASIA,  DBF/CADGERAM.DBF
+SCNES Solicitante - AM,  AP_UNISOL , FANTASIA,  DBF/CADGERAM.DBF
+DCNES Solicitante - AP,  AP_UNISOL , FANTASIA,  DBF/CADGERAP.DBF
+SCNES Solicitante - AP,  AP_UNISOL , FANTASIA,  DBF/CADGERAP.DBF
+DCNES Solicitante - BA,  AP_UNISOL , FANTASIA,  DBF/CADGERBA.DBF
+SCNES Solicitante - BA,  AP_UNISOL , FANTASIA,  DBF/CADGERBA.DBF
+DCNES Solicitante - CE,  AP_UNISOL , FANTASIA,  DBF/CADGERCE.DBF
+SCNES Solicitante - CE,  AP_UNISOL , FANTASIA,  DBF/CADGERCE.DBF
+DCNES Solicitante - DF,  AP_UNISOL , FANTASIA,  DBF/CADGERDF.DBF
+SCNES Solicitante - DF,  AP_UNISOL , FANTASIA,  DBF/CADGERDF.DBF
+DCNES Solicitante - ES,  AP_UNISOL , FANTASIA,  DBF/CADGERES.DBF
+SCNES Solicitante - ES,  AP_UNISOL , FANTASIA,  DBF/CADGERES.DBF
+DCNES Solicitante - GO,  AP_UNISOL , FANTASIA,  DBF/CADGERGO.DBF
+SCNES Solicitante - GO,  AP_UNISOL , FANTASIA,  DBF/CADGERGO.DBF
+DCNES Solicitante - MA,  AP_UNISOL , FANTASIA,  DBF/CADGERMA.DBF
+SCNES Solicitante - MA,  AP_UNISOL , FANTASIA,  DBF/CADGERMA.DBF
+DCNES Solicitante - MG,  AP_UNISOL , FANTASIA,  DBF/CADGERMG.DBF
+SCNES Solicitante - MG,  AP_UNISOL , FANTASIA,  DBF/CADGERMG.DBF
+DCNES Solicitante - MS,  AP_UNISOL , FANTASIA,  DBF/CADGERMS.DBF
+SCNES Solicitante - MS,  AP_UNISOL , FANTASIA,  DBF/CADGERMS.DBF
+DCNES Solicitante - MT,  AP_UNISOL , FANTASIA,  DBF/CADGERMT.DBF
+SCNES Solicitante - MT,  AP_UNISOL , FANTASIA,  DBF/CADGERMT.DBF
+DCNES Solicitante - PA,  AP_UNISOL , FANTASIA,  DBF/CADGERPA.DBF
+SCNES Solicitante - PA,  AP_UNISOL , FANTASIA,  DBF/CADGERPA.DBF
+DCNES Solicitante - PB,  AP_UNISOL , FANTASIA,  DBF/CADGERPB.DBF
+SCNES Solicitante - PB,  AP_UNISOL , FANTASIA,  DBF/CADGERPB.DBF
+DCNES Solicitante - PE,  AP_UNISOL , FANTASIA,  DBF/CADGERPE.DBF
+SCNES Solicitante - PE,  AP_UNISOL , FANTASIA,  DBF/CADGERPE.DBF
+DCNES Solicitante - PI,  AP_UNISOL , FANTASIA,  DBF/CADGERPI.DBF
+SCNES Solicitante - PI,  AP_UNISOL , FANTASIA,  DBF/CADGERPI.DBF
+DCNES Solicitante - PR,  AP_UNISOL , FANTASIA,  DBF/CADGERPR.DBF
+SCNES Solicitante - PR,  AP_UNISOL , FANTASIA,  DBF/CADGERPR.DBF
+DCNES Solicitante - RJ,  AP_UNISOL , FANTASIA,  DBF/CADGERRJ.DBF
+SCNES Solicitante - RJ,  AP_UNISOL , FANTASIA,  DBF/CADGERRJ.DBF
+DCNES Solicitante - RN,  AP_UNISOL , FANTASIA,  DBF/CADGERRN.DBF
+SCNES Solicitante - RN,  AP_UNISOL , FANTASIA,  DBF/CADGERRN.DBF
+DCNES Solicitante - RO,  AP_UNISOL , FANTASIA,  DBF/CADGERRO.DBF
+SCNES Solicitante - RO,  AP_UNISOL , FANTASIA,  DBF/CADGERRO.DBF
+DCNES Solicitante - RR,  AP_UNISOL , FANTASIA,  DBF/CADGERRR.DBF
+SCNES Solicitante - RR,  AP_UNISOL , FANTASIA,  DBF/CADGERRR.DBF
+DCNES Solicitante - RS,  AP_UNISOL , FANTASIA,  DBF/CADGERRS.DBF
+SCNES Solicitante - RS,  AP_UNISOL , FANTASIA,  DBF/CADGERRS.DBF
+DCNES Solicitante - SC,  AP_UNISOL , FANTASIA,  DBF/CADGERSC.DBF
+SCNES Solicitante - SC,  AP_UNISOL , FANTASIA,  DBF/CADGERSC.DBF
+DCNES Solicitante - SE,  AP_UNISOL , FANTASIA,  DBF/CADGERSE.DBF
+SCNES Solicitante - SE,  AP_UNISOL , FANTASIA,  DBF/CADGERSE.DBF
+DCNES Solicitante - SP,  AP_UNISOL , FANTASIA,  DBF/CADGERSP.DBF
+SCNES Solicitante - SP,  AP_UNISOL , FANTASIA,  DBF/CADGERSP.DBF
+DCNES Solicitante - TO,  AP_UNISOL , FANTASIA,  DBF/CADGERTO.DBF
+SCNES Solicitante - TO,  AP_UNISOL , FANTASIA,  DBF/CADGERTO.DBF
+;*************************************************************************
+;  Variáveis referentes ao PACIENTE
+;*************************************************************************
+X**   PACIENTE     ,  TITULO    , LINHA_COMENTARIO_REFERENTE_DADOS_DO_PACIENTE
+XSexo do Paciente  ,  AP_SEXO   , 1 , CNV/SEXO.CNV
+XIdade detalhada   ,  AP_COIDADE, 1 , CNV/IDADEDET.CNV
+XFaixa Etária (18) ,  AP_COIDADE, 1 , CNV/IDADE18.CNV
+XRaça/Cor Paciente ,  AP_RACACOR, 1 , CNV/RACA_COR.CNV
+XNacionalidade     ,  AP_UFNACIO, 1 , CNV/UFNACIO.CNV
+;DMunic.da Resid.Pac,  AP_MUNPCN , 1 , CNV/MUNICBR.CNV
+;SMunic.da Resid.Pac,  AP_MUNPCN , 1 , CNV/MUNICBR.CNV
+;XRes.Pac.emBrasília,  AP_MUNPCN , 1 , CNV/MUNIC_DF.CNV
+;   Definições para residência - 20/05/2015
+XMunicípio Residência - BR,  AP_MUNPCN ,  1,  CNV/BR_MUNICIP.CNV
+XMunicípio Residência - AC,  AP_MUNPCN ,  1,  CNV/AC_MUNICIP.CNV
+XMunicípio Residência - AL,  AP_MUNPCN ,  1,  CNV/AL_MUNICIP.CNV
+XMunicípio Residência - AM,  AP_MUNPCN ,  1,  CNV/AM_MUNICIP.CNV
+XMunicípio Residência - AP,  AP_MUNPCN ,  1,  CNV/AP_MUNICIP.CNV
+XMunicípio Residência - BA,  AP_MUNPCN ,  1,  CNV/BA_MUNICIP.CNV
+XMunicípio Residência - CE,  AP_MUNPCN ,  1,  CNV/CE_MUNICIP.CNV
+XMunicípio Residência - DF,  AP_MUNPCN ,  1,  CNV/DF_MUNICIP.CNV
+XMunicípio Residência - ES,  AP_MUNPCN ,  1,  CNV/ES_MUNICIP.CNV
+XMunicípio Residência - GO,  AP_MUNPCN ,  1,  CNV/GO_MUNICIP.CNV
+XMunicípio Residência - MA,  AP_MUNPCN ,  1,  CNV/MA_MUNICIP.CNV
+XMunicípio Residência - MG,  AP_MUNPCN ,  1,  CNV/MG_MUNICIP.CNV
+XMunicípio Residência - MS,  AP_MUNPCN ,  1,  CNV/MS_MUNICIP.CNV
+XMunicípio Residência - MT,  AP_MUNPCN ,  1,  CNV/MT_MUNICIP.CNV
+XMunicípio Residência - PA,  AP_MUNPCN ,  1,  CNV/PA_MUNICIP.CNV
+XMunicípio Residência - PB,  AP_MUNPCN ,  1,  CNV/PB_MUNICIP.CNV
+XMunicípio Residência - PE,  AP_MUNPCN ,  1,  CNV/PE_MUNICIP.CNV
+XMunicípio Residência - PI,  AP_MUNPCN ,  1,  CNV/PI_MUNICIP.CNV
+XMunicípio Residência - PR,  AP_MUNPCN ,  1,  CNV/PR_MUNICIP.CNV
+XMunicípio Residência - RJ,  AP_MUNPCN ,  1,  CNV/RJ_MUNICIP.CNV
+XMunicípio Residência - RN,  AP_MUNPCN ,  1,  CNV/RN_MUNICIP.CNV
+XMunicípio Residência - RO,  AP_MUNPCN ,  1,  CNV/RO_MUNICIP.CNV
+XMunicípio Residência - RR,  AP_MUNPCN ,  1,  CNV/RR_MUNICIP.CNV
+XMunicípio Residência - RS,  AP_MUNPCN ,  1,  CNV/RS_MUNICIP.CNV
+XMunicípio Residência - SC,  AP_MUNPCN ,  1,  CNV/SC_MUNICIP.CNV
+XMunicípio Residência - SE,  AP_MUNPCN ,  1,  CNV/SE_MUNICIP.CNV
+XMunicípio Residência - SP,  AP_MUNPCN ,  1,  CNV/SP_MUNICIP.CNV
+XMunicípio Residência - TO,  AP_MUNPCN ,  1,  CNV/TO_MUNICIP.CNV
+LCapital Residência,     AP_MUNPCN ,  1,  CNV/BR_CAPITAL.CNV
+CCapital Residência,     AP_MUNPCN ,  1,  CNV/BR_CAPITAL.CNV
+SCapital Residência,     AP_MUNPCN ,  1,  CNV/BR_CAPITAL.CNV
+LRegião Saúde Residência,   AP_MUNPCN ,  1,  CNV/BR_REGSAUD.CNV
+LMacro Região Saúde Resid.,AP_MUNPCN ,  1,  CNV/BR_MACSAUD.CNV
+LDivisão Administrativa Resid.,    AP_MUNPCN ,  1,  CNV/BR_DIVADM.CNV
+LMicro IBGE Residência,   AP_MUNPCN ,  1,  CNV/BR_MICIBGE.CNV
+LRegião Metropolitana Resid.,    AP_MUNPCN ,  1,  CNV/BR_REGMETR.CNV
+LTerritório Cidadania Resid.,  AP_MUNPCN ,  1,  CNV/BR_TERRCID.CNV
+LMacro PNDR Residência,   AP_MUNPCN ,  1,  CNV/BR_PNDR.CNV
+CRegião Saúde Residência,   AP_MUNPCN ,  1,  CNV/BR_regsaud.CNV
+CMacro Região Saúde Res,AP_MUNPCN ,  1,  CNV/BR_MACSAUD.CNV
+CDivisão Administrativa Resid.,    AP_MUNPCN ,  1,  CNV/BR_DIVADM.CNV
+CMicro BGE Residência,   AP_MUNPCN ,  1,  CNV/BR_MICIBGE.CNV
+CRegião Metropolitana Resid.,    AP_MUNPCN ,  1,  CNV/BR_REGMETR.CNV
+CTerritório Cidadania Resid.,  AP_MUNPCN ,  1,  CNV/BR_TERRCID.CNV
+CMacro PNDR Residência,   AP_MUNPCN ,  1,  CNV/BR_PNDR.CNV
+SRegião Saúde Residência,   AP_MUNPCN ,  1,  CNV/BR_REGSAUD.CNV
+SMacro Região Saúde Res,AP_MUNPCN ,  1,  CNV/BR_MACSAUD.CNV
+SDivisão Admistrativa Resid.,    AP_MUNPCN ,  1,  CNV/BR_DIVADM.CNV
+SMicro IBGE Residência,   AP_MUNPCN ,  1,  CNV/BR_MICIBGE.CNV
+SRegião Metropolitana Resid.,    AP_MUNPCN ,  1,  CNV/BR_REGMETR.CNV
+STerritório Cidadania Resid.,  AP_MUNPCN ,  1,  CNV/BR_TERRCID.CNV
+SMacro PNDR Residência,   AP_MUNPCN ,  1,  CNV/BR_PNDR.CNV
+SMun Amazônia Legal Resid.,AP_MUNPCN ,  1,  CNV/BR_AMAZLEGAL.CNV
+SMun Extrema Pobreza Resid., AP_MUNPCN ,  1,  CNV/BR_EXTRPOBREZ.CNV
+SMun Faixa Fronteira Resid.,AP_MUNPCN ,  1,  CNV/BR_FRONTFAIXA.CNV
+SMun Zona Fronteira Resid.,AP_MUNPCN ,  1,  CNV/BR_FRONTZONA.CNV
+SMun Semi Árido Resid.,AP_MUNPCN ,  1,  CNV/BR_SEMIARIDO.CNV
+TInvasão Estadual  ,  AP_UFDIF  , 1 , CNV/INVASAO.CNV
+SInvasão Estadual  ,  AP_UFDIF  , 1 , CNV/INVASAO.CNV
+TInvasão Municipal ,  AP_MNDIF  , 1 , CNV/INVASAO.CNV
+SInvasão Municipal ,  AP_MNDIF  , 1 , CNV/SIMNAO.CNV

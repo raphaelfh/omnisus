@@ -1,0 +1,876 @@
+; Nascidos Vivos - Brasil
+
+Ac:\sivitaisweb\sinasc\dbf\dn*.db* 
+
+; Definições do Local de Ocorrencia
+
+; Origem: Oracle, FTP e Seade
+XORIGEM,                   ORIGEM,   1,  ORIGEM.CNV
+XHora Nasc,              HORANASC,   1,  HORAOBITO.CNV
+
+; DN Nova
+Sestab,                  codestab,   1,  ndn.cnv
+lestab,                  codestab,   1,  ndn.cnv
+SNUMERODN,               NUMERODN,   1,  NDN.CNV
+LNUMERODN,               NUMERODN,   1,  NDN.CNV
+LHosp Amigo,             CODESTAB,   1,  HAMIGO.CNV
+SHosp Amigo,             CODESTAB,   1,  HAMIGO.CNV
+XDN novo modelo,         NUMERODN,   1,  modelnumDN.cnv
+XDN epidemiologica,      STDNEPIDEM, 1,  DNNOVA.CNV
+
+
+; Definições para Ano e Mes do Nascimento
+;
+XAno do Nascimento,      DTNASC,     7,  ANO.CNV
+XMes do Nascimento,      DTNASC,     3,  MESES.CNV
+XMes do Cadastro,        DTCADASTRO, 3,  MESES.CNV
+XMes Recebimento,        DTRECEBIM,  3,  MESES.CNV
+XAno Recebimento,        DTRECEBIM,  7,  ANO.CNV
+XMes 1º Recebimento =<2014,     DTRECORIG,  3,  MESES.CNV
+XMes 1º Recebimento >2014,     DTRECORIGA,  3,  MESES.CNV
+XAno 1º Recebimento =<2014,     DTRECORIGA,  7,  ANO.CNV
+XAno 1º Recebimento >2014,     DTRECORIGA,  7,  ANO.CNV
+;
+
+; Definições para Sexo
+;
+XSexo,                   SEXO,       1,  SEXO.CNV
+;
+  
+; Definições para Peso ao Nascer
+;
+LPeso ao Nascer em gramas,      PESO,      1,   PESO1.CNV
+CPeso ao Nascer em gramas,      PESO,      1,   PESO1.CNV
+SPeso em gramas,               PESO,      1,   PESO1.CNV
+;
+
+; Definições para APGAR
+;
+LApgar 1º Minuto,        APGAR1,    1,   APGAR.CNV
+LApgar 5º Minuto,        APGAR5,    1,   APGAR.CNV
+CApgar 1º Minuto,        APGAR1,    1,   APGAR.CNV
+CApgar 5º Minuto,        APGAR5,    1,   APGAR.CNV
+;
+
+; Definições do Local de Ocorrencia
+TLocal Ocorrencia,       LOCNASC,   1,   LOCOCOR.CNV
+SLocal Ocorrencia,       LOCNASC,   1,   LOCOCOR.CNV
+;
+
+XEstabelecim Saude 24,    CODESTAB,  DESCESTAB,  CNES24.DBF
+XEstabelecim Saude 26,    CODESTAB,  DESCESTAB,  CNES26.DBF
+;LBairro Res,            CODBAIRES, DESCBAI,    C:\TABWIN\BAIRRO.DBF
+;SBairro Res,            CODBAIRES, DESCBAI,    C:\TABWIN\BAIRRO.DBF
+;SLogradouro Res,        CODENDRES, DESCLOG,    C:\TABWIN\LOGRAD.DBF
+;SLogradouro Res,        CODENDRES, DESCLOG,    C:\TABWIN\LOGRAD.DBF
+
+
+XEsf Adm pub/ñpub 24,       CODESTAB,   1,  ESFERA24.cnv
+XEsf Adm pub/ñpub 26,       CODESTAB,   1,  ESFERA26.cnv
+LNatur Organiz 2006,     CODESTAB,   1, NAT_ORG.CNV
+SNatur Organiz 2006,     CODESTAB,   1, NAT_ORG.CNV
+LNat Org Estab 2007,     CODESTAB,   1, NATDN07.CNV
+SNat Org Estab 2007,     CODESTAB,   1, NATDN07.CNV
+
+
+; Definições para estado civil
+;
+XEsc Mae Anos  ,         ESCMAE,     1, INSTRUC.CNV
+XEsc Mae Serie Concl,    ESCMAE2010, 1, ESC2010.CNV
+XEsc Mae Agregegado,     ESCMAEAGR1, 1, ESCAGR1.CNV
+;
+XEstado Civil,           ESTCIVMAE,  1, ESTCIV.CNV
+XSituacao Conjugal,      ESTCIVMAE,  1, SITCONJU.CNV
+;
+;
+XRaca Cor da Mae,        RACACORMAE, 1, RACA.CNV
+
+; Lista de Anomalias Congenitas Prioritarias para Vigilancia
+LAC Prioritária 2025 1,  CODANOMAL,  1,  ACprior2025.CNV
+SAC Prioritária 2025 1,  CODANOMAL,  1,  ACprior2025.CNV
+LAC Prioritária 2025 2,  CODANOMAL,  5,  ACprior2025.CNV
+SAC Prioritária 2025 2,  CODANOMAL,  5,  ACprior2025.CNV
+LAC Prioritária 2025 3,  CODANOMAL,  9,  ACprior2025.CNV
+SAC Prioritária 2025 3,  CODANOMAL,  9,  ACprior2025.CNV
+LAC Prioritária 2025 4,  CODANOMAL,  13, ACprior2025.CNV
+SAC Prioritária 2025 4,  CODANOMAL,  13, ACprior2025.CNV
+LAC Prioritária 2025 5,  CODANOMAL,  17, ACprior2025.CNV
+SAC Prioritária 2025 5,  CODANOMAL,  17, ACprior2025.CNV
+
+; Agrupamentos das Anomalias Congenitas Prioritarias para Vigilancia
+LAC Grupos Prior2025 1,  CODANOMAL,  1,  GRUPOSprior2025.CNV
+SAC Grupos Prior2025 1,  CODANOMAL,  1,  GRUPOSprior2025.CNV
+LAC Grupos Prior2025 2,  CODANOMAL,  5,  GRUPOSprior2025.CNV
+SAC Grupos Prior2025 2,  CODANOMAL,  5,  GRUPOSprior2025.CNV
+LAC Grupos Prior2025 3,  CODANOMAL,  9,  GRUPOSprior2025.CNV
+SAC Grupos Prior2025 3,  CODANOMAL,  9,  GRUPOSprior2025.CNV
+LAC Grupos Prior2025 4,  CODANOMAL,  13, GRUPOSprior2025.CNV
+SAC Grupos Prior2025 4,  CODANOMAL,  13, GRUPOSprior2025.CNV
+LAC Grupos Prior2025 5,  CODANOMAL,  17, GRUPOSprior2025.CNV
+SAC Grupos Prior2025 5,  CODANOMAL,  17, GRUPOSprior2025.CNV
+
+; Idade da mae
+CFx Etaria Mae(8),       IDADEMAE,   1, FXIDADZ.CNV
+CFx.Etaria Mae(5),       IDADEMAE,   1, IDADE5.CNV
+SFx.Etaria Mae(5),       IDADEMAE,   1, IDADE5.CNV
+CFx.Padrão Mãe,          IDADEMAE,   1, IDADEMAE.CNV
+SFx.Padrão Mae,          IDADEMAE,   1, IDADEMAE.CNV
+LFx.Et Detalhada,        IDADEMAE,   1, IDADET.CNV
+CFx Etaria 11,           IDADEMAE,   1, FXTABNET.CNV
+SFx.Et Detalhada,        IDADEMAE,   1, IDADET.CNV
+CFx.Mae adolescen,       IDADEMAE,   1, IDADOL.CNV
+SFx.Mae adolescen,       IDADEMAE,   1, IDADOL.CNV
+XIdade do Pai,           IDADEPAI,   1, IDADEPAI.CNV
+;
+
+
+SOcupacao,               CODOCUPMAE, 1, CBO2002.CNV
+LOcupacao,               CODOCUPMAE, 1, CBO2002.CNV
+LOcup Grande Grupo,      CODOCUPMAE, 1, GRUPO1.CNV
+SOcup Grande Grupo,      CODOCUPMAE, 1, GRUPO1.CNV
+LOcup Subgrupo 3d,       CODOCUPMAE, 1, GRUPO3.CNV
+SOcup Subgrupo 3d,       CODOCUPMAE, 1, GRUPO3.CNV
+LOc Subgrupo Princ,      CODOCUPMAE, 1, GRUPO2.CNV
+SOc Subgrupo Princ,      CODOCUPMAE, 1, GRUPO2.CNV
+LOcupac Familia 4d,      CODOCUPMAE, 1, GRUPO4.CNV
+SOcupac Familia 4d,      CODOCUPMAE, 1, GRUPO4.CNV
+;
+
+;Ocupacao para arquivos ate o ano 2005
+;
+LOcup Sist Antigo,       CODOCUPMAE, 1, OCUPA.CNV
+SOcup Sist Antigo,       CODOCUPMAE, 1, OCUPA.CNV
+LOc Gr Sist Antigo,      CODOCUPMAE, 1, GRUPOCUP.CNV
+SOc Gr Sist Antigo,      CODOCUPMAE, 1, GRUPOCUP.CNV
+
+
+; Definições para Duracao da Gestacao
+;
+XVersao Sistema,         VERSAOSIST, 1, VERSAO.CNV
+;
+XConsultas,              CONSULTAS,  1, CONSULT.CNV
+XConsultas Detalh,       CONSPRENAT, 1, SEMADUM.CNV
+XGest Anteriores,        QTDGESTANT, 1, GESTANT.CNV
+XPartos Vag Anter,       QTDPARTNOR, 1, PARTON.CNV
+XN Cesareas Anter,       QTDPARTCES, 1, PARTON.CNV
+XDuracao Gestação,       GESTACAO,   1, SEMANAS.CNV
+XSemanas Gest Detalh,    SEMAGESTAC, 1, SEMADUM.CNV
+XMetodo Estimar,         TPMETESTIM, 1, TPMETODO.CNV
+XMes 1ª Consulta,        MESPRENAT,  1, MEGEST.CNV
+XParto Apresentacao,     TPAPRESENT, 1, PARAPRE.CNV
+XTrab Parto Induzido,    STTRABPART, 1, ANOMAL.CNV
+XCesarea Ocorr TParto,   STCESPARTO, 1, STPARTO.CNV
+XNasc Assistido,         TPNASCASSI, 1, TPASSIST.CNV
+;
+;
+; Definições para Tipo de Gravidez
+;
+XTipo de Gravidez,       GRAVIDEZ,   1,  GRAVIDEZ.CNV 
+;
+
+; Definições para Tipo de Parto
+;
+XTipo de Parto,          PARTO,      1,  PARTO.CNV 
+;
+
+; Definições para Número de consultas Pré-Natal
+;
+XCons Pre-Natal,         CONSULTAS,  1,  CONSULT.CNV 
+;
+XInstalacao,             CODINST,    1,  CODINST.CNV
+LMunic instalacao,       CODINST,    4,  MUNICBR.CNV
+SMunic instalacao,       CODINST,    4,  MUNICBR.CNV
+LNumero Micro,           CODINST,    10, MICRO.CNV
+
+;	Definições para Classificação de risco epidemiológico para Cesárea e adequação do pré-natal
+XClassif. Robson,         TPROBSON,       1,  ROBSON.CNV
+XAdeq acesso PréNatal,    KOTELCHUCK,     1,  KOTELCHUCK.CNV
+
+
+;       Definições para Regioes do Pais de Residencia da MÆe
+;
+DRegiao Resid,           CODMUNRES,  1,  REGIAO.CNV
+CRegiao Resid,           CODMUNRES,  1,  REGIAOC.CNV
+SRegiao Resid,           CODMUNRES,  1,  REGIAO.CNV
+
+
+;
+;       Definições para UF de Residencia da MÆe
+;
+DUF  Residencia,         CODMUNRES,  1,  UF.CNV
+CUF  Residencia,         CODMUNRES,  1,  UFC.CNV
+LUF/Regiao,              CODMUNRES,  1,  UFREG.CNV
+SUF  Residencia,         CODMUNRES,  1,  UF.CNV
+LPais Residencia,        CODPAISRES, 1,  PAIS.CNV
+;
+
+;       Definições para Capitais de Residencia da MÆe
+;
+DCapital Residencia,     CODMUNRES,  1,  CAPITAIS.CNV
+SCapital Residencia,     CODMUNRES,  1,  CAPITAIS.CNV
+;
+
+;       Definições para Municipio de residencia da Mãe
+;
+DMunic Resid-BR,         CODMUNRES,  1,  MUNICBR.CNV
+SMunic Resid-BR,         CODMUNRES,  1,  MUNICBR.CNV
+DMunic Resid-RO,         CODMUNRES,  1,  MUNICRO.CNV
+SMunic Resid-RO,         CODMUNRES,  1,  MUNICRO.CNV
+DMunic Resid-AC,         CODMUNRES,  1,  MUNICAC.CNV
+SMunic Resid-AC,         CODMUNRES,  1,  MUNICAC.CNV
+DMunic Resid-AM,         CODMUNRES,  1,  MUNICAM.CNV
+SMunic Resid-AM,         CODMUNRES,  1,  MUNICAM.CNV
+DMunic Resid-RR,         CODMUNRES,  1,  MUNICRR.CNV
+SMunic Resid-RR,         CODMUNRES,  1,  MUNICRR.CNV
+DMunic Resid-PA,         CODMUNRES,  1,  MUNICPA.CNV
+SMunic Resid-PA,         CODMUNRES,  1,  MUNICPA.CNV
+DMunic Resid-AP,         CODMUNRES,  1,  MUNICAP.CNV
+SMunic Resid-AP,         CODMUNRES,  1,  MUNICAP.CNV
+DMunic Resid-TO,         CODMUNRES,  1,  MUNICTO.CNV
+SMunic Resid-TO,         CODMUNRES,  1,  MUNICTO.CNV
+DMunic Resid-MA,         CODMUNRES,  1,  MUNICMA.CNV
+SMunic Resid-MA,         CODMUNRES,  1,  MUNICMA.CNV
+DMunic Resid-PI,         CODMUNRES,  1,  MUNICPI.CNV
+SMunic Resid-PI,         CODMUNRES,  1,  MUNICPI.CNV
+DMunic Resid-CE,         CODMUNRES,  1,  MUNICCE.CNV
+SMunic Resid-CE,         CODMUNRES,  1,  MUNICCE.CNV
+DMunic Resid-RN,         CODMUNRES,  1,  MUNICRN.CNV
+SMunic Resid-RN,         CODMUNRES,  1,  MUNICRN.CNV
+DMunic Resid-PB,         CODMUNRES,  1,  MUNICPB.CNV
+SMunic Resid-PB,         CODMUNRES,  1,  MUNICPB.CNV
+DMunic Resid-PE,         CODMUNRES,  1,  MUNICPE.CNV
+SMunic Resid-PE,         CODMUNRES,  1,  MUNICPE.CNV
+DMunic Resid-AL,         CODMUNRES,  1,  MUNICAL.CNV
+SMunic Resid-AL,         CODMUNRES,  1,  MUNICAL.CNV
+DMunic Resid-SE,         CODMUNRES,  1,  MUNICSE.CNV
+SMunic Resid-SE,         CODMUNRES,  1,  MUNICSE.CNV
+DMunic Resid-BA,         CODMUNRES,  1,  MUNICBA.CNV
+SMunic Resid-BA,         CODMUNRES,  1,  MUNICBA.CNV
+DMunic Resid-MG,         CODMUNRES,  1,  MUNICMG.CNV
+SMunic Resid-MG,         CODMUNRES,  1,  MUNICMG.CNV
+DMunic Resid-ES,         CODMUNRES,  1,  MUNICES.CNV
+SMunic Resid-ES,         CODMUNRES,  1,  MUNICES.CNV
+DMunic Resid-RJ,         CODMUNRES,  1,  MUNICRJ.CNV
+SMunic Resid-RJ,         CODMUNRES,  1,  MUNICRJ.CNV
+DMunic Resid-SP,         CODMUNRES,  1,  MUNICSP.CNV
+SMunic Resid-SP,         CODMUNRES,  1,  MUNICSP.CNV
+DMunic Resid-PR,         CODMUNRES,  1,  MUNICPR.CNV
+SMunic Resid-PR,         CODMUNRES,  1,  MUNICPR.CNV
+DMunic Resid-SC,         CODMUNRES,  1,  MUNICSC.CNV
+SMunic Resid-SC,         CODMUNRES,  1,  MUNICSC.CNV
+DMunic Resid-RS,         CODMUNRES,  1,  MUNICRS.CNV
+SMunic Resid-RS,         CODMUNRES,  1,  MUNICRS.CNV
+DMunic Resid-MS,         CODMUNRES,  1,  MUNICMS.CNV
+SMunic Resid-MS,         CODMUNRES,  1,  MUNICMS.CNV
+DMunic Resid-MT,         CODMUNRES,  1,  MUNICMT.CNV
+SMunic Resid-MT,         CODMUNRES,  1,  MUNICMT.CNV
+DMunic Resid-GO,         CODMUNRES,  1,  MUNICGO.CNV
+SMunic Resid-GO,         CODMUNRES,  1,  MUNICGO.CNV
+DMunic Resid-DF,         CODMUNRES,  1,  MUNICDF.CNV
+SMunic Resid-DF,         CODMUNRES,  1,  MUNICDF.CNV
+;
+;
+;
+;
+;       Definições para Regioes do Pais de Ocorrencia do Nascimento
+;
+DRegião Ocorrencia,      CODMUNNASC, 1,  REGIAO.CNV
+CRegião Ocorrencia,      CODMUNNASC, 1,  REGIAOC.CNV
+SRegião Ocorrencia,      CODMUNNASC, 1,  REGIAO.CNV
+;
+;       Definições para UF de Ocorrencia do Nascimento
+;
+DUF Ocorrencia,          CODMUNNASC, 1,  UF.CNV
+CUF Ocorrencia,          CODMUNNASC, 1,  UFC.CNV
+SUF Ocorrencia,          CODMUNNASC, 1,  UF.CNV
+;
+;       Definições para Capitais de Ocorrencia do Nascimento
+;
+DCapital Ocorr,          CODMUNNASC, 1,  CAPITAIS.CNV
+SCapital Ocorr,          CODMUNNASC, 1,  CAPITAIS.CNV
+;
+;       Definições para Municipio de residencia da MÆe
+;
+DMunic Ocorr-BR,         CODMUNNASC, 1,  MUNICBR.CNV
+SMunic Ocorr-BR,         CODMUNNASC, 1,  MUNICBR.CNV
+DMunic Ocorr-RO,         CODMUNNASC, 1,  MUNICRO.CNV
+SMunic Ocorr-RO,         CODMUNNASC, 1,  MUNICRO.CNV
+DMunic Ocorr-AC,         CODMUNNASC, 1,  MUNICAC.CNV
+SMunic Ocorr-AC,         CODMUNNASC, 1,  MUNICAC.CNV
+DMunic Ocorr-AM,         CODMUNNASC, 1,  MUNICAM.CNV
+SMunic Ocorr-AM,         CODMUNNASC, 1,  MUNICAM.CNV
+DMunic Ocorr-RR,         CODMUNNASC, 1,  MUNICRR.CNV
+SMunic Ocorr-RR,         CODMUNNASC, 1,  MUNICRR.CNV
+DMunic Ocorr-PA,         CODMUNNASC, 1,  MUNICPA.CNV
+SMunic Ocorr-PA,         CODMUNNASC, 1,  MUNICPA.CNV
+DMunic Ocorr-AP,         CODMUNNASC, 1,  MUNICAP.CNV
+SMunic Ocorr-AP,         CODMUNNASC, 1,  MUNICAP.CNV
+DMunic Ocorr-TO,         CODMUNNASC, 1,  MUNICTO.CNV
+SMunic Ocorr-TO,         CODMUNNASC, 1,  MUNICTO.CNV
+DMunic Ocorr-MA,         CODMUNNASC, 1,  MUNICMA.CNV
+SMunic Ocorr-MA,         CODMUNNASC, 1,  MUNICMA.CNV
+DMunic Ocorr-PI,         CODMUNNASC, 1,  MUNICPI.CNV
+SMunic Ocorr-PI,         CODMUNNASC, 1,  MUNICPI.CNV
+DMunic Ocorr-CE,         CODMUNNASC, 1,  MUNICCE.CNV
+SMunic Ocorr-CE,         CODMUNNASC, 1,  MUNICCE.CNV
+DMunic Ocorr-RN,         CODMUNNASC, 1,  MUNICRN.CNV
+SMunic Ocorr-RN,         CODMUNNASC, 1,  MUNICRN.CNV
+DMunic Ocorr-PB,         CODMUNNASC, 1,  MUNICPB.CNV
+SMunic Ocorr-PB,         CODMUNNASC, 1,  MUNICPB.CNV
+DMunic Ocorr-PE,         CODMUNNASC, 1,  MUNICPE.CNV
+SMunic Ocorr-PE,         CODMUNNASC, 1,  MUNICPE.CNV
+DMunic Ocorr-AL,         CODMUNNASC, 1,  MUNICAL.CNV
+SMunic Ocorr-AL,         CODMUNNASC, 1,  MUNICAL.CNV
+DMunic Ocorr-SE,         CODMUNNASC, 1,  MUNICSE.CNV
+SMunic Ocorr-SE,         CODMUNNASC, 1,  MUNICSE.CNV
+DMunic Ocorr-BA,         CODMUNNASC, 1,  MUNICBA.CNV
+SMunic Ocorr-BA,         CODMUNNASC, 1,  MUNICBA.CNV
+DMunic Ocorr-MG,         CODMUNNASC, 1,  MUNICMG.CNV
+SMunic Ocorr-MG,         CODMUNNASC, 1,  MUNICMG.CNV
+DMunic Ocorr-ES,         CODMUNNASC, 1,  MUNICES.CNV
+SMunic Ocorr-ES,         CODMUNNASC, 1,  MUNICES.CNV
+DMunic Ocorr-RJ,         CODMUNNASC, 1,  MUNICRJ.CNV
+SMunic Ocorr-RJ,         CODMUNNASC, 1,  MUNICRJ.CNV
+DMunic Ocorr-SP,         CODMUNNASC, 1,  MUNICSP.CNV
+SMunic Ocorr-SP,         CODMUNNASC, 1,  MUNICSP.CNV
+DMunic Ocorr-PR,         CODMUNNASC, 1,  MUNICPR.CNV
+SMunic Ocorr-PR,         CODMUNNASC, 1,  MUNICPR.CNV
+DMunic Ocorr-SC,         CODMUNNASC, 1,  MUNICSC.CNV
+SMunic Ocorr-SC,         CODMUNNASC, 1,  MUNICSC.CNV
+DMunic Ocorr-RS,         CODMUNNASC, 1,  MUNICRS.CNV
+SMunic Ocorr-RS,         CODMUNNASC, 1,  MUNICRS.CNV
+DMunic Ocorr-MS,         CODMUNNASC, 1,  MUNICMS.CNV
+SMunic Ocorr-MS,         CODMUNNASC, 1,  MUNICMS.CNV
+DMunic Ocorr-MT,         CODMUNNASC, 1,  MUNICMT.CNV
+SMunic Ocorr-MT,         CODMUNNASC, 1,  MUNICMT.CNV
+DMunic Ocorr-GO,         CODMUNNASC, 1,  MUNICGO.CNV
+SMunic Ocorr-GO,         CODMUNNASC, 1,  MUNICGO.CNV
+DMunic Ocorr-DF,         CODMUNNASC, 1,  MUNICDF.CNV
+SMunic Ocorr-DF,         CODMUNNASC, 1,  MUNICDF.CNV
+;
+
+XUF Natural Mae,         CODUFNATU,  1,  UFC.CNV
+LMun Natural Mae,        CODMUNNATU, 1,  MUNICBR.CNV
+
+;
+XRaca Cor Nascido,       RACACOR,    1,  RACA.CNV
+;
+TFilhos Nasc.Vivos,      QTDFILVIVO, 1,  FILTIDO.CNV
+TFilhos Nasc.Mortos,     QTDFILMORT, 1,  FILTIDO.CNV
+;
+XDN preenchida por,      TPFUNCRESP, 1,  TPFUNC.CNV
+;
+; Definições para a anomalia
+XAnomalia detectada,     IDANOMAL,   1,  IDANOMAL.CNV
+;
+LAnomal Agrup 1,         CODANOMAL,  1,  ECLAMC.CNV
+LAnomal Agrup 2,         CODANOMAL,  5,  ECLAMC.CNV
+LAnomal Agrup 3,         CODANOMAL,  9,  ECLAMC.CNV
+LAnomal Agrup 4,         CODANOMAL,  13, ECLAMC.CNV
+LAnomal Agrup 5,         CODANOMAL,  17, ECLAMC.CNV
+LAnomalia 1,             CODANOMAL,  1,  CID1017.CNV
+SAnomalia 1,             CODANOMAL,  1,  CID1017.CNV
+LAnomalia 2,             CODANOMAL,  5,  CID1017.CNV
+SAnomalia 2,             CODANOMAL,  5,  CID1017.CNV
+LAnomalia 3,             CODANOMAL,  9,  CID1017.CNV
+SAnomalia 3,             CODANOMAL,  9,  CID1017.CNV
+LAnomalia 4,             CODANOMAL,  13, CID1017.CNV
+SAnomalia 4,             CODANOMAL,  13, CID1017.CNV
+LAnomalia 5,             CODANOMAL,  17, CID1017.CNV
+SAnomalia 5,             CODANOMAL,  17, CID1017.CNV
+
+;*********************************CODMUNRES*******************************************************
+
+;CIRuu.CNV: CIR da UF uu - código e nome, em ordem de código
+
+SCIR Res RO cod,                  CODMUNRES,    1,    CIRRO.CNV
+LCIR Res RO cod,                  CODMUNRES,    1,    CIRRO.CNV
+SCIR Res AC cod,                  CODMUNRES,    1,    CIRAC.CNV
+LCIR Res AC cod,                  CODMUNRES,    1,    CIRAC.CNV
+SCIR Res AM cod,                  CODMUNRES,    1,    CIRAM.CNV
+LCIR Res AM cod,                  CODMUNRES,    1,    CIRAM.CNV
+SCIR Res RR cod,                  CODMUNRES,    1,    CIRRR.CNV
+LCIR Res RR cod,                  CODMUNRES,    1,    CIRRR.CNV
+SCIR Res PA cod,                  CODMUNRES,    1,    CIRPA.CNV
+LCIR Res PA cod,                  CODMUNRES,    1,    CIRPA.CNV
+SCIR Res AP cod,                  CODMUNRES,    1,    CIRAP.CNV
+LCIR Res AP cod,                  CODMUNRES,    1,    CIRAP.CNV
+SCIR Res TO cod,                  CODMUNRES,    1,    CIRTO.CNV
+LCIR Res TO cod,                  CODMUNRES,    1,    CIRTO.cNV
+SCIR Res MA cod,                  CODMUNRES,    1,    CIRMA.CNV
+LCIR Res MA cod,                  CODMUNRES,    1,    CIRMA.CNV
+SCIR Res PI cod,                  CODMUNRES,    1,    CIRPI.CNV
+LCIR Res PI cod,                  CODMUNRES,    1,    CIRPI.CNV
+SCIR Res CE cod,                  CODMUNRES,    1,    CIRCE.CNV
+LCIR Res CE cod,                  CODMUNRES,    1,    CIRCE.CNV
+SCIR Res RN cod,                  CODMUNRES,    1,    CIRRN.CNV
+LCIR Res RN cod,                  CODMUNRES,    1,    CIRRN.CNV
+SCIR Res PB cod,                  CODMUNRES,    1,    CIRPB.CNV
+LCIR Res PB cod,                  CODMUNRES,    1,    CIRPB.CNV
+SCIR Res PE cod,                  CODMUNRES,    1,    CIRPE.CNV
+LCIR Res PE cod,                  CODMUNRES,    1,    CIRPE.CNV
+SCIR Res AL cod,                  CODMUNRES,    1,    CIRAL.CNV
+LCIR Res AL cod,                  CODMUNRES,    1,    CIRAL.CNV
+SCIR Res SE cod,                  CODMUNRES,    1,    CIRSE.CNV
+LCIR Res SE cod,                  CODMUNRES,    1,    CIRSE.CNV
+SCIR Res BA cod,                  CODMUNRES,    1,    CIRBA.CNV
+LCIR Res BA cod,                  CODMUNRES,    1,    CIRBA.CNV
+SCIR Res MG cod,                  CODMUNRES,    1,    CIRMG.CNV
+LCIR Res MG cod,                  CODMUNRES,    1,    CIRMG.CNV
+SCIR Res ES cod,                  CODMUNRES,    1,    CIRES.CNV
+LCIR Res ES cod,                  CODMUNRES,    1,    CIRES.CNV
+SCIR Res RJ cod,                  CODMUNRES,    1,    CIRRJ.CNV
+LCIR Res RJ cod,                  CODMUNRES,    1,    CIRRJ.CNV
+SCIR Res SP cod,                  CODMUNRES,    1,    CIRSP.CNV
+LCIR Res SP cod,                  CODMUNRES,    1,    CIRSP.CNV
+SCIR Res PR cod,                  CODMUNRES,    1,    CIRPR.CNV
+LCIR Res PR cod,                  CODMUNRES,    1,    CIRPR.CNV
+SCIR Res SC cod,                  CODMUNRES,    1,    CIRSC.CNV
+LCIR Res SC cod,                  CODMUNRES,    1,    CIRSC.CNV
+SCIR Res RS cod,                  CODMUNRES,    1,    CIRRS.CNV
+LCIR Res RS cod,                  CODMUNRES,    1,    CIRRS.CNV
+SCIR Res MS cod,                  CODMUNRES,    1,    CIRMS.CNV
+LCIR Res MS cod,                  CODMUNRES,    1,    CIRMS.CNV
+SCIR Res MT cod,                  CODMUNRES,    1,    CIRMT.CNV
+LCIR Res MT cod,                  CODMUNRES,    1,    CIRMT.CNV
+SCIR Res GO cod,                  CODMUNRES,    1,    CIRGO.CNV
+LCIR Res GO cod,                  CODMUNRES,    1,    CIRGO.CNV
+SCIR Res DF cod,                  CODMUNRES,    1,    CIRDF.CNV
+LCIR Res DF cod,                  CODMUNRES,    1,    CIRDF.CNV
+
+SCIR Res BR cod,                  CODMUNRES,    1,    CIRBR.CNV
+LCIR Res BR cod,                  CODMUNRES,    1,    CIRBR.CNV
+
+
+
+;CIRuuC.CNV: CIR da UF uu - nome, em ordem alfabética
+
+
+
+
+SCIR Res RO nome,                 CODMUNRES,     1,    CIRROC.CNV
+LCIR Res RO nome,                 CODMUNRES,     1,    CIRROC.CNV
+SCIR Res AC nome,                 CODMUNRES,     1,    CIRACC.CNV
+LCIR Res AC nome,                 CODMUNRES,     1,    CIRACC.CNV
+SCIR Res AM nome,                 CODMUNRES,     1,    CIRAMC.CNV
+LCIR Res AM nome,                 CODMUNRES,     1,    CIRAMC.CNV
+SCIR Res RR nome,                 CODMUNRES,     1,    CIRRRC.CNV
+LCIR Res RR nome,                 CODMUNRES,     1,    CIRRRC.CNV
+SCIR Res PA nome,                 CODMUNRES,     1,    CIRPAC.CNV
+LCIR Res PA nome,                 CODMUNRES,     1,    CIRPAC.CNV
+SCIR Res AP nome,                 CODMUNRES,     1,    CIRAPC.CNV
+LCIR Res AP nome,                 CODMUNRES,     1,    CIRAPC.CNV
+SCIR Res TO nome,                 CODMUNRES,     1,    CIRTOC.CNV
+LCIR Res TO nome,                 CODMUNRES,     1,    CIRTOC.cNV
+SCIR Res MA nome,                 CODMUNRES,     1,    CIRMAC.CNV
+LCIR Res MA nome,                 CODMUNRES,     1,    CIRMAC.CNV
+SCIR Res PI nome,                 CODMUNRES,     1,    CIRPIC.CNV
+LCIR Res PI nome,                 CODMUNRES,     1,    CIRPIC.CNV
+SCIR Res CE nome,                 CODMUNRES,     1,    CIRCEC.CNV
+LCIR Res CE nome,                 CODMUNRES,     1,    CIRCEC.CNV
+SCIR Res RN nome,                 CODMUNRES,     1,    CIRRNC.CNV
+LCIR Res RN nome,                 CODMUNRES,     1,    CIRRNC.CNV
+SCIR Res PB nome,                 CODMUNRES,     1,    CIRPBC.CNV
+LCIR Res PB nome,                 CODMUNRES,     1,    CIRPBC.CNV
+SCIR Res PE nome,                 CODMUNRES,     1,    CIRPEC.CNV
+LCIR Res PE nome,                 CODMUNRES,     1,    CIRPEC.CNV
+SCIR Res AL nome,                 CODMUNRES,     1,    CIRALC.CNV
+LCIR Res AL nome,                 CODMUNRES,     1,    CIRALC.CNV
+SCIR Res SE nome,                 CODMUNRES,     1,    CIRSEC.CNV
+LCIR Res SE nome,                 CODMUNRES,     1,    CIRSEC.CNV
+SCIR Res BA nome,                 CODMUNRES,     1,    CIRBAC.CNV
+LCIR Res BA nome,                 CODMUNRES,     1,    CIRBAC.CNV
+SCIR Res MG nome,                 CODMUNRES,     1,    CIRMGC.CNV
+LCIR Res MG nome,                 CODMUNRES,     1,    CIRMGC.CNV
+SCIR Res ES nome,                 CODMUNRES,     1,    CIRESC.CNV
+LCIR Res ES nome,                 CODMUNRES,     1,    CIRESC.CNV
+SCIR Res RJ nome,                 CODMUNRES,     1,    CIRRJC.CNV
+LCIR Res RJ nome,                 CODMUNRES,     1,    CIRRJC.CNV
+SCIR Res SP nome,                 CODMUNRES,     1,    CIRSPC.CNV
+LCIR Res SP nome,                 CODMUNRES,     1,    CIRSPC.CNV
+SCIR Res PR nome,                 CODMUNRES,     1,    CIRPRC.CNV
+LCIR Res PR nome,                 CODMUNRES,     1,    CIRPRC.CNV
+SCIR Res SC nome,                 CODMUNRES,     1,    CIRSCC.CNV
+LCIR Res SC nome,                 CODMUNRES,     1,    CIRSCC.CNV
+SCIR Res RS nome,                 CODMUNRES,     1,    CIRRSC.CNV
+LCIR Res RS nome,                 CODMUNRES,     1,    CIRRSC.CNV
+SCIR Res MS nome,                 CODMUNRES,     1,    CIRMSC.CNV
+LCIR Res MS nome,                 CODMUNRES,     1,    CIRMSC.CNV
+SCIR Res MT nome,                 CODMUNRES,     1,    CIRMTC.CNV
+LCIR Res MT nome,                 CODMUNRES,     1,    CIRMTC.CNV
+SCIR Res GO nome,                 CODMUNRES,     1,    CIRGOC.CNV
+LCIR Res GO nome,                 CODMUNRES,     1,    CIRGOC.CNV
+SCIR Res DF nome,                 CODMUNRES,     1,    CIRDFC.CNV
+LCIR Res DF nome,                 CODMUNRES,     1,    CIRDFC.CNV
+
+SCIR Res BR nome,                 CODMUNRES,     1,    CIRBRC.CNV
+LCIR Res BR nome,                 CODMUNRES,     1,    CIRBRC.CNV
+
+
+;CIRuuN.CNV: CIR da UF uu - código e nome, em ordem alfabética
+
+
+SCIR Res RO cod+nome,             CODMUNRES,    1,    CIRRON.CNV
+LCIR Res RO cod+nome,             CODMUNRES,    1,    CIRRON.CNV
+SCIR Res AC cod+nome,             CODMUNRES,    1,    CIRACN.CNV
+LCIR Res AC cod+nome,             CODMUNRES,    1,    CIRACN.CNV
+SCIR Res AM cod+nome,             CODMUNRES,    1,    CIRAMN.CNV
+LCIR Res AM cod+nome,             CODMUNRES,    1,    CIRAMN.CNV
+SCIR Res RR cod+nome,             CODMUNRES,    1,    CIRRRN.CNV
+LCIR Res RR cod+nome,             CODMUNRES,    1,    CIRRRN.CNV
+SCIR Res PA cod+nome,             CODMUNRES,    1,    CIRPAN.CNV
+LCIR Res PA cod+nome,             CODMUNRES,    1,    CIRPAN.CNV
+SCIR Res AP cod+nome,             CODMUNRES,    1,    CIRAPN.CNV
+LCIR Res AP cod+nome,             CODMUNRES,    1,    CIRAPN.CNV
+SCIR Res TO cod+nome,             CODMUNRES,    1,    CIRTON.CNV
+LCIR Res TO cod+nome,             CODMUNRES,    1,    CIRTON.cNV
+SCIR Res MA cod+nome,             CODMUNRES,    1,    CIRMAN.CNV
+LCIR Res MA cod+nome,             CODMUNRES,    1,    CIRMAN.CNV
+SCIR Res PI cod+nome,             CODMUNRES,    1,    CIRPIN.CNV
+LCIR Res PI cod+nome,             CODMUNRES,    1,    CIRPIN.CNV
+SCIR Res CE cod+nome,             CODMUNRES,    1,    CIRCEN.CNV
+LCIR Res CE cod+nome,             CODMUNRES,    1,    CIRCEN.CNV
+SCIR Res RN cod+nome,             CODMUNRES,    1,    CIRRNN.CNV
+LCIR Res RN cod+nome,             CODMUNRES,    1,    CIRRNN.CNV
+SCIR Res PB cod+nome,             CODMUNRES,    1,    CIRPBN.CNV
+LCIR Res PB cod+nome,             CODMUNRES,    1,    CIRPBN.CNV
+SCIR Res PE cod+nome,             CODMUNRES,    1,    CIRPEN.CNV
+LCIR Res PE cod+nome,             CODMUNRES,    1,    CIRPEN.CNV
+SCIR Res AL cod+nome,             CODMUNRES,    1,    CIRALN.CNV
+LCIR Res AL cod+nome,             CODMUNRES,    1,    CIRALN.CNV
+SCIR Res SE cod+nome,             CODMUNRES,    1,    CIRSEN.CNV
+LCIR Res SE cod+nome,             CODMUNRES,    1,    CIRSEN.CNV
+SCIR Res BA cod+nome,             CODMUNRES,    1,    CIRBAN.CNV
+LCIR Res BA cod+nome,             CODMUNRES,    1,    CIRBAN.CNV
+SCIR Res MG cod+nome,             CODMUNRES,    1,    CIRMGN.CNV
+LCIR Res MG cod+nome,             CODMUNRES,    1,    CIRMGN.CNV
+SCIR Res ES cod+nome,             CODMUNRES,    1,    CIRESN.CNV
+LCIR Res ES cod+nome,             CODMUNRES,    1,    CIRESN.CNV
+SCIR Res RJ cod+nome,             CODMUNRES,    1,    CIRRJN.CNV
+LCIR Res RJ cod+nome,             CODMUNRES,    1,    CIRRJN.CNV
+SCIR Res SP cod+nome,             CODMUNRES,    1,    CIRSPN.CNV
+LCIR Res SP cod+nome,             CODMUNRES,    1,    CIRSPN.CNV
+SCIR Res PR cod+nome,             CODMUNRES,    1,    CIRPRN.CNV
+LCIR Res PR cod+nome,             CODMUNRES,    1,    CIRPRN.CNV
+SCIR Res SC cod+nome,             CODMUNRES,    1,    CIRSCN.CNV
+LCIR Res SC cod+nome,             CODMUNRES,    1,    CIRSCN.CNV
+SCIR Res RS cod+nome,             CODMUNRES,    1,    CIRRSN.CNV
+LCIR Res RS cod+nome,             CODMUNRES,    1,    CIRRSN.CNV
+SCIR Res MS cod+nome,             CODMUNRES,    1,    CIRMSN.CNV
+LCIR Res MS cod+nome,             CODMUNRES,    1,    CIRMSN.CNV
+SCIR Res MT cod+nome,             CODMUNRES,    1,    CIRMTN.CNV
+LCIR Res MT cod+nome,             CODMUNRES,    1,    CIRMTN.CNV
+SCIR Res GO cod+nome,             CODMUNRES,    1,    CIRGON.CNV
+LCIR Res GO cod+nome,             CODMUNRES,    1,    CIRGON.CNV
+SCIR Res DF cod+nome,             CODMUNRES,    1,    CIRDFN.CNV
+LCIR Res DF cod+nome,             CODMUNRES,    1,    CIRDFN.CNV
+
+SCIR Res BR cod+nome,             CODMUNRES,    1,    CIRBRN.CNV
+LCIR Res BR cod+nome,             CODMUNRES,    1,    CIRBRN.CNV
+
+
+;CIRMUuu.CNV: CIR da UF uu e Muns que as constituem, em ordem de código da CIR e alfabética do Mun
+
+
+SCIR Res RO MUN,                  CODMUNRES,    1,    CIRMURO.CNV
+LCIR Res RO MUN,                  CODMUNRES,    1,    CIRMURO.CNV
+SCIR Res AC MUN,                  CODMUNRES,    1,    CIRMUAC.CNV
+LCIR Res AC MUN,                  CODMUNRES,    1,    CIRMUAC.CNV
+SCIR Res AM MUN,                  CODMUNRES,    1,    CIRMUAM.CNV
+LCIR Res AM MUN,                  CODMUNRES,    1,    CIRMUAM.CNV
+SCIR Res RR MUN,                  CODMUNRES,    1,    CIRMURR.CNV
+LCIR Res RR MUN,                  CODMUNRES,    1,    CIRMURR.CNV
+SCIR Res PA MUN,                  CODMUNRES,    1,    CIRMUPA.CNV
+LCIR Res PA MUN,                  CODMUNRES,    1,    CIRMUPA.CNV
+SCIR Res AP MUN,                  CODMUNRES,    1,    CIRMUAP.CNV
+LCIR Res AP MUN,                  CODMUNRES,    1,    CIRMUAP.CNV
+SCIR Res TO MUN,                  CODMUNRES,    1,    CIRMUTO.CNV
+LCIR Res TO MUN,                  CODMUNRES,    1,    CIRMUTO.cNV
+SCIR Res MA MUN,                  CODMUNRES,    1,    CIRMUMA.CNV
+LCIR Res MA MUN,                  CODMUNRES,    1,    CIRMUMA.CNV
+SCIR Res PI MUN,                  CODMUNRES,    1,    CIRMUPI.CNV
+LCIR Res PI MUN,                  CODMUNRES,    1,    CIRMUPI.CNV
+SCIR Res CE MUN,                  CODMUNRES,    1,    CIRMUCE.CNV
+LCIR Res CE MUN,                  CODMUNRES,    1,    CIRMUCE.CNV
+SCIR Res RN MUN,                  CODMUNRES,    1,    CIRMURN.CNV
+LCIR Res RN MUN,                  CODMUNRES,    1,    CIRMURN.CNV
+SCIR Res PB MUN,                  CODMUNRES,    1,    CIRMUPB.CNV
+LCIR Res PB MUN,                  CODMUNRES,    1,    CIRMUPB.CNV
+SCIR Res PE MUN,                  CODMUNRES,    1,    CIRMUPE.CNV
+LCIR Res PE MUN,                  CODMUNRES,    1,    CIRMUPE.CNV
+SCIR Res AL MUN,                  CODMUNRES,    1,    CIRMUAL.CNV
+LCIR Res AL MUN,                  CODMUNRES,    1,    CIRMUAL.CNV
+SCIR Res SE MUN,                  CODMUNRES,    1,    CIRMUSE.CNV
+LCIR Res SE MUN,                  CODMUNRES,    1,    CIRMUSE.CNV
+SCIR Res BA MUN,                  CODMUNRES,    1,    CIRMUBA.CNV
+LCIR Res BA MUN,                  CODMUNRES,    1,    CIRMUBA.CNV
+SCIR Res MG MUN,                  CODMUNRES,    1,    CIRMUMG.CNV
+LCIR Res MG MUN,                  CODMUNRES,    1,    CIRMUMG.CNV
+SCIR Res ES MUN,                  CODMUNRES,    1,    CIRMUES.CNV
+LCIR Res ES MUN,                  CODMUNRES,    1,    CIRMUES.CNV
+SCIR Res RJ MUN,                  CODMUNRES,    1,    CIRMURJ.CNV
+LCIR Res RJ MUN,                  CODMUNRES,    1,    CIRMURJ.CNV
+SCIR Res SP MUN,                  CODMUNRES,    1,    CIRMUSP.CNV
+LCIR Res SP MUN,                  CODMUNRES,    1,    CIRMUSP.CNV
+SCIR Res PR MUN,                  CODMUNRES,    1,    CIRMUPR.CNV
+LCIR Res PR MUN,                  CODMUNRES,    1,    CIRMUPR.CNV
+SCIR Res SC MUN,                  CODMUNRES,    1,    CIRMUSC.CNV
+LCIR Res SC MUN,                  CODMUNRES,    1,    CIRMUSC.CNV
+SCIR Res RS MUN,                  CODMUNRES,    1,    CIRMURS.CNV
+LCIR Res RS MUN,                  CODMUNRES,    1,    CIRMURS.CNV
+SCIR Res MS MUN,                  CODMUNRES,    1,    CIRMUMS.CNV
+LCIR Res MS MUN,                  CODMUNRES,    1,    CIRMUMS.CNV
+SCIR Res MT MUN,                  CODMUNRES,    1,    CIRMUMT.CNV
+LCIR Res MT MUN,                  CODMUNRES,    1,    CIRMUMT.CNV
+SCIR Res GO MUN,                  CODMUNRES,    1,    CIRMUGO.CNV
+LCIR Res GO MUN,                  CODMUNRES,    1,    CIRMUGO.CNV
+SCIR Res DF MUN,                  CODMUNRES,    1,    CIRMUDF.CNV
+LCIR Res DF MUN,                  CODMUNRES,    1,    CIRMUDF.CNV
+
+
+;****************************************************************************************
+;*********************************CODMUNNASC********************************************
+
+;CIRuu.CNV: CIR da UF uu - código e nome, em ordem de código
+SCIR Ocor RO cod,                 CODMUNNASC,  1,    CIRRO.CNV
+LCIR Ocor RO cod,                 CODMUNNASC,  1,    CIRRO.CNV
+SCIR Ocor AC cod,                 CODMUNNASC,  1,    CIRAC.CNV
+LCIR Ocor AC cod,                 CODMUNNASC,  1,    CIRAC.CNV
+SCIR Ocor AM cod,                 CODMUNNASC,  1,    CIRAM.CNV
+LCIR Ocor AM cod,                 CODMUNNASC,  1,    CIRAM.CNV
+SCIR Ocor RR cod,                 CODMUNNASC,  1,    CIRRR.CNV
+LCIR Ocor RR cod,                 CODMUNNASC,  1,    CIRRR.CNV
+SCIR Ocor PA cod,                 CODMUNNASC,  1,    CIRPA.CNV
+LCIR Ocor PA cod,                 CODMUNNASC,  1,    CIRPA.CNV
+SCIR Ocor AP cod,                 CODMUNNASC,  1,    CIRAP.CNV
+LCIR Ocor AP cod,                 CODMUNNASC,  1,    CIRAP.CNV
+SCIR Ocor TO cod,                 CODMUNNASC,  1,    CIRTO.CNV
+LCIR Ocor TO cod,                 CODMUNNASC,  1,    CIRTO.cNV
+SCIR Ocor MA cod,                 CODMUNNASC,  1,    CIRMA.CNV
+LCIR Ocor MA cod,                 CODMUNNASC,  1,    CIRMA.CNV
+SCIR Ocor PI cod,                 CODMUNNASC,  1,    CIRPI.CNV
+LCIR Ocor PI cod,                 CODMUNNASC,  1,    CIRPI.CNV
+SCIR Ocor CE cod,                 CODMUNNASC,  1,    CIRCE.CNV
+LCIR Ocor CE cod,                 CODMUNNASC,  1,    CIRCE.CNV
+SCIR Ocor RN cod,                 CODMUNNASC,  1,    CIRRN.CNV
+LCIR Ocor RN cod,                 CODMUNNASC,  1,    CIRRN.CNV
+SCIR Ocor PB cod,                 CODMUNNASC,  1,    CIRPB.CNV
+LCIR Ocor PB cod,                 CODMUNNASC,  1,    CIRPB.CNV
+SCIR Ocor PE cod,                 CODMUNNASC,  1,    CIRPE.CNV
+LCIR Ocor PE cod,                 CODMUNNASC,  1,    CIRPE.CNV
+SCIR Ocor AL cod,                 CODMUNNASC,  1,    CIRAL.CNV
+LCIR Ocor AL cod,                 CODMUNNASC,  1,    CIRAL.CNV
+SCIR Ocor SE cod,                 CODMUNNASC,  1,    CIRSE.CNV
+LCIR Ocor SE cod,                 CODMUNNASC,  1,    CIRSE.CNV
+SCIR Ocor BA cod,                 CODMUNNASC,  1,    CIRBA.CNV
+LCIR Ocor BA cod,                 CODMUNNASC,  1,    CIRBA.CNV
+SCIR Ocor MG cod,                 CODMUNNASC,  1,    CIRMG.CNV
+LCIR Ocor MG cod,                 CODMUNNASC,  1,    CIRMG.CNV
+SCIR Ocor ES cod,                 CODMUNNASC,  1,    CIRES.CNV
+LCIR Ocor ES cod,                 CODMUNNASC,  1,    CIRES.CNV
+SCIR Ocor RJ cod,                 CODMUNNASC,  1,    CIRRJ.CNV
+LCIR Ocor RJ cod,                 CODMUNNASC,  1,    CIRRJ.CNV
+SCIR Ocor SP cod,                 CODMUNNASC,  1,    CIRSP.CNV
+LCIR Ocor SP cod,                 CODMUNNASC,  1,    CIRSP.CNV
+SCIR Ocor PR cod,                 CODMUNNASC,  1,    CIRPR.CNV
+LCIR Ocor PR cod,                 CODMUNNASC,  1,    CIRPR.CNV
+SCIR Ocor SC cod,                 CODMUNNASC,  1,    CIRSC.CNV
+LCIR Ocor SC cod,                 CODMUNNASC,  1,    CIRSC.CNV
+SCIR Ocor RS cod,                 CODMUNNASC,  1,    CIRRS.CNV
+LCIR Ocor RS cod,                 CODMUNNASC,  1,    CIRRS.CNV
+SCIR Ocor MS cod,                 CODMUNNASC,  1,    CIRMS.CNV
+LCIR Ocor MS cod,                 CODMUNNASC,  1,    CIRMS.CNV
+SCIR Ocor MT cod,                 CODMUNNASC,  1,    CIRMT.CNV
+LCIR Ocor MT cod,                 CODMUNNASC,  1,    CIRMT.CNV
+SCIR Ocor GO cod,                 CODMUNNASC,  1,    CIRGO.CNV
+LCIR Ocor GO cod,                 CODMUNNASC,  1,    CIRGO.CNV
+SCIR Ocor DF cod,                 CODMUNNASC,  1,    CIRDF.CNV
+LCIR Ocor DF cod,                 CODMUNNASC,  1,    CIRDF.CNV
+
+SCIR Ocor BR cod,                 CODMUNNASC,  1,    CIRBR.CNV
+LCIR Ocor BR cod,                 CODMUNNASC,  1,    CIRBR.CNV
+
+
+
+;CIRuuC.CNV: CIR da UF uu - nome, em ordem alfabética
+
+
+SCIR Ocor RO nome,                CODMUNNASC,  1,    CIRROC.CNV
+LCIR Ocor RO nome,                CODMUNNASC,  1,    CIRROC.CNV
+SCIR Ocor AC nome,                CODMUNNASC,  1,    CIRACC.CNV
+LCIR Ocor AC nome,                CODMUNNASC,  1,    CIRACC.CNV
+SCIR Ocor AM nome,                CODMUNNASC,  1,    CIRAMC.CNV
+LCIR Ocor AM nome,                CODMUNNASC,  1,    CIRAMC.CNV
+SCIR Ocor RR nome,                CODMUNNASC,  1,    CIRRRC.CNV
+LCIR Ocor RR nome,                CODMUNNASC,  1,    CIRRRC.CNV
+SCIR Ocor PA nome,                CODMUNNASC,  1,    CIRPAC.CNV
+LCIR Ocor PA nome,                CODMUNNASC,  1,    CIRPAC.CNV
+SCIR Ocor AP nome,                CODMUNNASC,  1,    CIRAPC.CNV
+LCIR Ocor AP nome,                CODMUNNASC,  1,    CIRAPC.CNV
+SCIR Ocor TO nome,                CODMUNNASC,  1,    CIRTOC.CNV
+LCIR Ocor TO nome,                CODMUNNASC,  1,    CIRTOC.cNV
+SCIR Ocor MA nome,                CODMUNNASC,  1,    CIRMAC.CNV
+LCIR Ocor MA nome,                CODMUNNASC,  1,    CIRMAC.CNV
+SCIR Ocor PI nome,                CODMUNNASC,  1,    CIRPIC.CNV
+LCIR Ocor PI nome,                CODMUNNASC,  1,    CIRPIC.CNV
+SCIR Ocor CE nome,                CODMUNNASC,  1,    CIRCEC.CNV
+LCIR Ocor CE nome,                CODMUNNASC,  1,    CIRCEC.CNV
+SCIR Ocor RN nome,                CODMUNNASC,  1,    CIRRNC.CNV
+LCIR Ocor RN nome,                CODMUNNASC,  1,    CIRRNC.CNV
+SCIR Ocor PB nome,                CODMUNNASC,  1,    CIRPBC.CNV
+LCIR Ocor PB nome,                CODMUNNASC,  1,    CIRPBC.CNV
+SCIR Ocor PE nome,                CODMUNNASC,  1,    CIRPEC.CNV
+LCIR Ocor PE nome,                CODMUNNASC,  1,    CIRPEC.CNV
+SCIR Ocor AL nome,                CODMUNNASC,  1,    CIRALC.CNV
+LCIR Ocor AL nome,                CODMUNNASC,  1,    CIRALC.CNV
+SCIR Ocor SE nome,                CODMUNNASC,  1,    CIRSEC.CNV
+LCIR Ocor SE nome,                CODMUNNASC,  1,    CIRSEC.CNV
+SCIR Ocor BA nome,                CODMUNNASC,  1,    CIRBAC.CNV
+LCIR Ocor BA nome,                CODMUNNASC,  1,    CIRBAC.CNV
+SCIR Ocor MG nome,                CODMUNNASC,  1,    CIRMGC.CNV
+LCIR Ocor MG nome,                CODMUNNASC,  1,    CIRMGC.CNV
+SCIR Ocor ES nome,                CODMUNNASC,  1,    CIRESC.CNV
+LCIR Ocor ES nome,                CODMUNNASC,  1,    CIRESC.CNV
+SCIR Ocor RJ nome,                CODMUNNASC,  1,    CIRRJC.CNV
+LCIR Ocor RJ nome,                CODMUNNASC,  1,    CIRRJC.CNV
+SCIR Ocor SP nome,                CODMUNNASC,  1,    CIRSPC.CNV
+LCIR Ocor SP nome,                CODMUNNASC,  1,    CIRSPC.CNV
+SCIR Ocor PR nome,                CODMUNNASC,  1,    CIRPRC.CNV
+LCIR Ocor PR nome,                CODMUNNASC,  1,    CIRPRC.CNV
+SCIR Ocor SC nome,                CODMUNNASC,  1,    CIRSCC.CNV
+LCIR Ocor SC nome,                CODMUNNASC,  1,    CIRSCC.CNV
+SCIR Ocor RS nome,                CODMUNNASC,  1,    CIRRSC.CNV
+LCIR Ocor RS nome,                CODMUNNASC,  1,    CIRRSC.CNV
+SCIR Ocor MS nome,                CODMUNNASC,  1,    CIRMSC.CNV
+LCIR Ocor MS nome,                CODMUNNASC,  1,    CIRMSC.CNV
+SCIR Ocor MT nome,                CODMUNNASC,  1,    CIRMTC.CNV
+LCIR Ocor MT nome,                CODMUNNASC,  1,    CIRMTC.CNV
+SCIR Ocor GO nome,                CODMUNNASC,  1,    CIRGOC.CNV
+LCIR Ocor GO nome,                CODMUNNASC,  1,    CIRGOC.CNV
+SCIR Ocor DF nome,                CODMUNNASC,  1,    CIRDFC.CNV
+LCIR Ocor DF nome,                CODMUNNASC,  1,    CIRDFC.CNV
+
+SCIR Ocor BR nome,                CODMUNNASC,  1,    CIRBRC.CNV
+LCIR Ocor BR nome,                CODMUNNASC,  1,    CIRBRC.CNV
+
+
+
+;CIRuuN.CNV: CIR da UF uu - código e nome, em ordem alfabética
+
+SCIR Ocor RO cod+nome,            CODMUNNASC,  1,    CIRRON.CNV
+LCIR Ocor RO cod+nome,            CODMUNNASC,  1,    CIRRON.CNV
+SCIR Ocor AC cod+nome,            CODMUNNASC,  1,    CIRACN.CNV
+LCIR Ocor AC cod+nome,            CODMUNNASC,  1,    CIRACN.CNV
+SCIR Ocor AM cod+nome,            CODMUNNASC,  1,    CIRAMN.CNV
+LCIR Ocor AM cod+nome,            CODMUNNASC,  1,    CIRAMN.CNV
+SCIR Ocor RR cod+nome,            CODMUNNASC,  1,    CIRRRN.CNV
+LCIR Ocor RR cod+nome,            CODMUNNASC,  1,    CIRRRN.CNV
+SCIR Ocor PA cod+nome,            CODMUNNASC,  1,    CIRPAN.CNV
+LCIR Ocor PA cod+nome,            CODMUNNASC,  1,    CIRPAN.CNV
+SCIR Ocor AP cod+nome,            CODMUNNASC,  1,    CIRAPN.CNV
+LCIR Ocor AP cod+nome,            CODMUNNASC,  1,    CIRAPN.CNV
+SCIR Ocor TO cod+nome,            CODMUNNASC,  1,    CIRTON.CNV
+LCIR Ocor TO cod+nome,            CODMUNNASC,  1,    CIRTON.cNV
+SCIR Ocor MA cod+nome,            CODMUNNASC,  1,    CIRMAN.CNV
+LCIR Ocor MA cod+nome,            CODMUNNASC,  1,    CIRMAN.CNV
+SCIR Ocor PI cod+nome,            CODMUNNASC,  1,    CIRPIN.CNV
+LCIR Ocor PI cod+nome,            CODMUNNASC,  1,    CIRPIN.CNV
+SCIR Ocor CE cod+nome,            CODMUNNASC,  1,    CIRCEN.CNV
+LCIR Ocor CE cod+nome,            CODMUNNASC,  1,    CIRCEN.CNV
+SCIR Ocor RN cod+nome,            CODMUNNASC,  1,    CIRRNN.CNV
+LCIR Ocor RN cod+nome,            CODMUNNASC,  1,    CIRRNN.CNV
+SCIR Ocor PB cod+nome,            CODMUNNASC,  1,    CIRPBN.CNV
+LCIR Ocor PB cod+nome,            CODMUNNASC,  1,    CIRPBN.CNV
+SCIR Ocor PE cod+nome,            CODMUNNASC,  1,    CIRPEN.CNV
+LCIR Ocor PE cod+nome,            CODMUNNASC,  1,    CIRPEN.CNV
+SCIR Ocor AL cod+nome,            CODMUNNASC,  1,    CIRALN.CNV
+LCIR Ocor AL cod+nome,            CODMUNNASC,  1,    CIRALN.CNV
+SCIR Ocor SE cod+nome,            CODMUNNASC,  1,    CIRSEN.CNV
+LCIR Ocor SE cod+nome,            CODMUNNASC,  1,    CIRSEN.CNV
+SCIR Ocor BA cod+nome,            CODMUNNASC,  1,    CIRBAN.CNV
+LCIR Ocor BA cod+nome,            CODMUNNASC,  1,    CIRBAN.CNV
+SCIR Ocor MG cod+nome,            CODMUNNASC,  1,    CIRMGN.CNV
+LCIR Ocor MG cod+nome,            CODMUNNASC,  1,    CIRMGN.CNV
+SCIR Ocor ES cod+nome,            CODMUNNASC,  1,    CIRESN.CNV
+LCIR Ocor ES cod+nome,            CODMUNNASC,  1,    CIRESN.CNV
+SCIR Ocor RJ cod+nome,            CODMUNNASC,  1,    CIRRJN.CNV
+LCIR Ocor RJ cod+nome,            CODMUNNASC,  1,    CIRRJN.CNV
+SCIR Ocor SP cod+nome,            CODMUNNASC,  1,    CIRSPN.CNV
+LCIR Ocor SP cod+nome,            CODMUNNASC,  1,    CIRSPN.CNV
+SCIR Ocor PR cod+nome,            CODMUNNASC,  1,    CIRPRN.CNV
+LCIR Ocor PR cod+nome,            CODMUNNASC,  1,    CIRPRN.CNV
+SCIR Ocor SC cod+nome,            CODMUNNASC,  1,    CIRSCN.CNV
+LCIR Ocor SC cod+nome,            CODMUNNASC,  1,    CIRSCN.CNV
+SCIR Ocor RS cod+nome,            CODMUNNASC,  1,    CIRRSN.CNV
+LCIR Ocor RS cod+nome,            CODMUNNASC,  1,    CIRRSN.CNV
+SCIR Ocor MS cod+nome,            CODMUNNASC,  1,    CIRMSN.CNV
+LCIR Ocor MS cod+nome,            CODMUNNASC,  1,    CIRMSN.CNV
+SCIR Ocor MT cod+nome,            CODMUNNASC,  1,    CIRMTN.CNV
+LCIR Ocor MT cod+nome,            CODMUNNASC,  1,    CIRMTN.CNV
+SCIR Ocor GO cod+nome,            CODMUNNASC,  1,    CIRGON.CNV
+LCIR Ocor GO cod+nome,            CODMUNNASC,  1,    CIRGON.CNV
+SCIR Ocor DF cod+nome,            CODMUNNASC,  1,    CIRDFN.CNV
+LCIR Ocor DF cod+nome,            CODMUNNASC,  1,    CIRDFN.CNV
+
+SCIR Ocor BR cod+nome,            CODMUNNASC,  1,    CIRBRN.CNV
+LCIR Ocor BR cod+nome,            CODMUNNASC,  1,    CIRBRN.CNV
+
+
+;CIRMUuu.CNV: CIR da UF uu e Muns que as constituem, em ordem de código da CIR e alfabética do Mun
+SCIR Ocor RO MUN,                 CODMUNNASC,  1,    CIRMURO.CNV
+LCIR Ocor RO MUN,                 CODMUNNASC,  1,    CIRMURO.CNV
+SCIR Ocor AC MUN,                 CODMUNNASC,  1,    CIRMUAC.CNV
+LCIR Ocor AC MUN,                 CODMUNNASC,  1,    CIRMUAC.CNV
+SCIR Ocor AM MUN,                 CODMUNNASC,  1,    CIRMUAM.CNV
+LCIR Ocor AM MUN,                 CODMUNNASC,  1,    CIRMUAM.CNV
+SCIR Ocor RR MUN,                 CODMUNNASC,  1,    CIRMURR.CNV
+LCIR Ocor RR MUN,                 CODMUNNASC,  1,    CIRMURR.CNV
+SCIR Ocor PA MUN,                 CODMUNNASC,  1,    CIRMUPA.CNV
+LCIR Ocor PA MUN,                 CODMUNNASC,  1,    CIRMUPA.CNV
+SCIR Ocor AP MUN,                 CODMUNNASC,  1,    CIRMUAP.CNV
+LCIR Ocor AP MUN,                 CODMUNNASC,  1,    CIRMUAP.CNV
+SCIR Ocor TO MUN,                 CODMUNNASC,  1,    CIRMUTO.CNV
+LCIR Ocor TO MUN,                 CODMUNNASC,  1,    CIRMUTO.cNV
+SCIR Ocor MA MUN,                 CODMUNNASC,  1,    CIRMUMA.CNV
+LCIR Ocor MA MUN,                 CODMUNNASC,  1,    CIRMUMA.CNV
+SCIR Ocor PI MUN,                 CODMUNNASC,  1,    CIRMUPI.CNV
+LCIR Ocor PI MUN,                 CODMUNNASC,  1,    CIRMUPI.CNV
+SCIR Ocor CE MUN,                 CODMUNNASC,  1,    CIRMUCE.CNV
+LCIR Ocor CE MUN,                 CODMUNNASC,  1,    CIRMUCE.CNV
+SCIR Ocor RN MUN,                 CODMUNNASC,  1,    CIRMURN.CNV
+LCIR Ocor RN MUN,                 CODMUNNASC,  1,    CIRMURN.CNV
+SCIR Ocor PB MUN,                 CODMUNNASC,  1,    CIRMUPB.CNV
+LCIR Ocor PB MUN,                 CODMUNNASC,  1,    CIRMUPB.CNV
+SCIR Ocor PE MUN,                 CODMUNNASC,  1,    CIRMUPE.CNV
+LCIR Ocor PE MUN,                 CODMUNNASC,  1,    CIRMUPE.CNV
+SCIR Ocor AL MUN,                 CODMUNNASC,  1,    CIRMUAL.CNV
+LCIR Ocor AL MUN,                 CODMUNNASC,  1,    CIRMUAL.CNV
+SCIR Ocor SE MUN,                 CODMUNNASC,  1,    CIRMUSE.CNV
+LCIR Ocor SE MUN,                 CODMUNNASC,  1,    CIRMUSE.CNV
+SCIR Ocor BA MUN,                 CODMUNNASC,  1,    CIRMUBA.CNV
+LCIR Ocor BA MUN,                 CODMUNNASC,  1,    CIRMUBA.CNV
+SCIR Ocor MG MUN,                 CODMUNNASC,  1,    CIRMUMG.CNV
+LCIR Ocor MG MUN,                 CODMUNNASC,  1,    CIRMUMG.CNV
+SCIR Ocor ES MUN,                 CODMUNNASC,  1,    CIRMUES.CNV
+LCIR Ocor ES MUN,                 CODMUNNASC,  1,    CIRMUES.CNV
+SCIR Ocor RJ MUN,                 CODMUNNASC,  1,    CIRMURJ.CNV
+LCIR Ocor RJ MUN,                 CODMUNNASC,  1,    CIRMURJ.CNV
+SCIR Ocor SP MUN,                 CODMUNNASC,  1,    CIRMUSP.CNV
+LCIR Ocor SP MUN,                 CODMUNNASC,  1,    CIRMUSP.CNV
+SCIR Ocor PR MUN,                 CODMUNNASC,  1,    CIRMUPR.CNV
+LCIR Ocor PR MUN,                 CODMUNNASC,  1,    CIRMUPR.CNV
+SCIR Ocor SC MUN,                 CODMUNNASC,  1,    CIRMUSC.CNV
+LCIR Ocor SC MUN,                 CODMUNNASC,  1,    CIRMUSC.CNV
+SCIR Ocor RS MUN,                 CODMUNNASC,  1,    CIRMURS.CNV
+LCIR Ocor RS MUN,                 CODMUNNASC,  1,    CIRMURS.CNV
+SCIR Ocor MS MUN,                 CODMUNNASC,  1,    CIRMUMS.CNV
+LCIR Ocor MS MUN,                 CODMUNNASC,  1,    CIRMUMS.CNV
+SCIR Ocor MT MUN,                 CODMUNNASC,  1,    CIRMUMT.CNV
+LCIR Ocor MT MUN,                 CODMUNNASC,  1,    CIRMUMT.CNV
+SCIR Ocor GO MUN,                 CODMUNNASC,  1,    CIRMUGO.CNV
+LCIR Ocor GO MUN,                 CODMUNNASC,  1,    CIRMUGO.CNV
+SCIR Ocor DF MUN,                 CODMUNNASC,  1,    CIRMUDF.CNV
+LCIR Ocor DF MUN,                 CODMUNNASC,  1,    CIRMUDF.CNV
+
+;****************************************************************************************
+

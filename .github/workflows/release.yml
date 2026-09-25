@@ -1,0 +1,80 @@
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v7
+      - run: uv python install 3.13
+      - name: Check tag against the single packaged version
+        shell: bash
+        run: |
+          packaged=$(python -c 'import runpy; print(runpy.run_path("src/omnisus/_version.py")["__version__"])')
+          test "$packaged" = "${GITHUB_REF_NAME#v}"
+      - run: uv build
+      - name: Record artifact checksums
+        run: sha256sum dist/* > dist/SHA256SUMS
+      - uses: actions/upload-artifact@v7
+        with:
+          name: distribution
+          path: dist/
+          if-no-files-found: error
+
+  native:
+    # The optional Rust wheels, built and tested at the tagged commit; attached to
+    # the GitHub release next to the main wheel (RELEASE.md).
+    uses: ./.github/workflows/native.yml
+
+  gate:
+    needs: build
+    name: wheel-only install (${{ matrix.os }}, py${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python: ["3.12", "3.13", "3.14"]
+    steps:
+      - uses: astral-sh/setup-uv@v7
+      - uses: actions/download-artifact@v8
+        with:
+          name: distribution
+          path: dist/
+      - run: uv python install ${{ matrix.python }}
+      - name: Install and inspect the distribution outside a checkout
+        shell: bash
+        run: |
+          uv venv -p ${{ matrix.python }} .gate
+          uv pip install --python .gate --only-binary=:all: dist/*.whl
+          uv run --python .gate --no-project python -c "import omnisus as o, polars as pl; assert o.describe_dataset('sim_obitos')['schema_version'] == '1.0.0'; assert o.label('sim_obitos', pl.DataFrame({'sexo': ['1']}))['sexo_rotulo'][0] == 'Masculino'; print(o.__version__)"
+
+  publish:
+    # Wheel artifacts are the current distribution channel. The repository
+    # owner must explicitly opt into PyPI and configure its Trusted Publisher.
+    if: vars.PUBLISH_TO_PYPI == 'true'
+    needs: gate
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/omnisus
+    permissions:
+      id-token: write
+      attestations: write
+      contents: read
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: distribution
+          path: dist/
+      - run: rm dist/SHA256SUMS
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          attestations: true

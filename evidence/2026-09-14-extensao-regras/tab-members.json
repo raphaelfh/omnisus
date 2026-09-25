@@ -1,0 +1,41 @@
+[
+  {
+    "member": "NASC_NOV_TAB/IDADEMAE.CNV",
+    "sha256": "0ee0deedc127b63f508f870b90303a70efcac4b18283ff822f6d8196c543b412",
+    "bytes": 676,
+    "zip_timestamp": [
+      2022,
+      6,
+      20,
+      14,
+      54,
+      10
+    ]
+  },
+  {
+    "member": "NASC_NOV_TAB/IDADET.CNV",
+    "sha256": "6f96a27c6f36745ea4ac08d490f731645cbbce93922bde649a3ad76cb903e972",
+    "bytes": 3811,
+    "zip_timestamp": [
+      2022,
+      6,
+      20,
+      14,
+      54,
+      10
+    ]
+  },
+  {
+    "member": "NASC_NOV_TAB/NASCIDO.def",
+    "sha256": "f30c6750a123dff4ec9ff78a1c60e5d7b4374be4fa62e6474e9c7c48057d0604",
+    "bytes": 44698,
+    "zip_timestamp": [
+      2024,
+      6,
+      7,
+      14,
+      4,
+      36
+    ]
+  }
+]

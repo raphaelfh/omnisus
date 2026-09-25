@@ -1,0 +1,550 @@
+name: sia_producao_ambulatorial
+title: SIASUS — Produção ambulatorial (PA)
+profile: tabular-data-resource
+encoding: latin-1
+x-version: 1.1.0
+x-source-format: dbc
+x-partitions:
+- _source_ano
+x-evidence:
+  physical_schema: sia_pa_rr_2024_01_mini.dbc, 60 fields; observed 2026-09-22
+  semantic_status: Physical inventory. Category maps only where a TabWin CNV binds the
+    field and decodes every non-blank value of the fixture (vinculos.json); no inferred
+    mappings.
+  dictionary_url: ftp://ftp.datasus.gov.br/dissemin/publicos/SIASUS/200801_/Doc/Informe_Tecnico_SIASUS_2019_07.pdf
+  source_url: ftp://ftp.datasus.gov.br/dissemin/publicos/SIASUS/200801_/Dados/PARR2401.dbc
+schema:
+  fields:
+  - name: pa_coduni
+    type: string
+  - name: pa_gestao
+    type: string
+  - name: pa_condic
+    type: string
+    x-decode:
+      EC: EC Estado Convencional
+      EP: EP Estado Pleno
+      MN: MN Municipio Pleno NOAS
+      MP: MP Municipio Pleno NOB
+      PA: PA Municipio Pleno da Atenção Básica NOAS
+      PB: PB Municipio Pleno da Atenção Básica NOB 96
+      PG: PG Pacto de Gestão
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 72f3ca35c0ecc8e4db4af7064ff53b13ef82152293010c35bdc942fb930b930c
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Producao_Ambulatorial.DEF: LTipo de Gestão, PA_CONDIC, 1, CNV/TP_GESTAO.CNV; CNV/TP_GESTAO.CNV'
+        note: Mapa do CNV.
+  - name: pa_ufmun
+    type: string
+  - name: pa_regct
+    type: string
+    x-decode:
+      '0000': SEM REGRA CONTRATUAL
+      '7100': TAB.DE NÃO GERAÇÃO CRÉDITO P/PROD.INTERN./AMBULAT.
+      '7101': ESTAB.S/CRÉDITO NA MEDIA COMPLEXIDADE AMBULATORIAL
+      '7102': ESTAB.S/CRÉDITO NA MEDIA COMPLEXIDADE HOSPITALAR
+      '7103': ESTAB.S/CRÉDITO NA ALTA COMPLEXIDADE AMBULATORIAL
+      '7104': ESTAB.S/CRÉDITO NA ALTA COMPLEXIDADE HOSPITALAR
+      '7105': ESTAB.S/CRED.PROCED.FINANC.FD.AÇÕES ESTRAT/COMPENS.
+      '7106': ESTABELECIM. DE SAÚDE SEM GERAÇÃO DE CRÉDITO TOTAL
+      '7107': ESTAB.S/CRÉDITO ACOES ESPEC.ODONT(INC.CEO I,II,III)
+      '7108': ESTAB.S/GER.CRÉDITO(INCENTIVO SAUDE DO TRABALHADOR)
+      '7109': ESTAB.SAÚDE (HU/MEC) SEM GERAÇÃO DE CRÉDITO TOTAL
+      '7110': ESTAB.SAUDE (MIN.SAUDE)SEM GERAÇÃO DE CRÉDITO TOTAL
+      '7111': ESTAB.SAUDE SEM GERAÇÃO DE CRÉDITO-NASF,exceto FAEC
+      '7112': ESTAB.S/CRED.TOTAL-INCL.FAEC-EXCLUSIVO P/REDE SARAH
+      '7113': ESTAB.S/CRED.TOTAL,INCL.FAEC-OUTROS ESTAB. FEDERAIS
+      '7114': ESTAB.S/GER DE CRÉD. TOTAL, INC FAEC - PRONTO ATEND
+      '7115': ESTAB S/GER DE CRÉD. MÉDIA COMPLEXIDADE - HU/MEC
+      '7116': ESTAB.SAÚDE S/GER DE CRÉDITO NA MÉDIA COMPLEX-LRPD
+      '7117': ESTAB.SAÚDE S/GER DE CRÉD. MÉD COMP(EXCETO OPM)-CER
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 47831236787d9d1cc84359f108989d2af4cd186006aedfbf765c6708e930db3c
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Producao_Ambulatorial.DEF: XRegra Contratual, PA_REGCT, 1, CNV/REGRA_C.CNV; CNV/REGRA_C.cnv'
+        note: Mapa do CNV.
+  - name: pa_incout
+    type: string
+  - name: pa_incurg
+    type: string
+  - name: pa_tpups
+    type: string
+    x-decode:
+      '  -99': TIPO ESTABELECIMENTO NÃO INFORMADO
+      '01': POSTO DE SAUDE
+      '02': CENTRO DE SAUDE/UNIDADE BASICA DE SAUDE
+      '04': POLICLINICA
+      '05': HOSPITAL GERAL
+      '07': HOSPITAL ESPECIALIZADO
+      '09': PRONTO SOCORRO DE HOSPITAL GERAL (ANTIGO)
+      '12': PRONTO SOCORRO TRAUMATO-ORTOPEDICO (ANTIGO)
+      '15': UNIDADE MISTA
+      '20': PRONTO SOCORRO GERAL
+      '21': PRONTO SOCORRO ESPECIALIZADO
+      '22': CONSULTORIO
+      '32': UNIDADE MOVEL FLUVIAL
+      '36': CLINICA ESPECIALIZADA/AMBULATORIO ESPECIALIZADO
+      '39': UNIDADE DE SERVICO DE APOIO DE DIAGNOSE E TERAPIA
+      '40': UNIDADE MOVEL TERRESTRE
+      '42': UNIDADE MOVEL DE NIVEL PRE-HOSP-URGENCIA/EMERGENCIA
+      '43': FARMACIA
+      '45': UNIDADE DE SAUDE DA FAMILIA
+      '50': UNIDADE DE VIGILANCIA EM SAUDE
+      '60': COOPERATIVA
+      '61': CENTRO DE PARTO NORMAL
+      '62': HOSPITAL DIA
+      '63': UNIDADE AUTORIZADORA
+      '64': CENTRAL DE REGULACAO DE SERVICOS DE SAUDE
+      '65': UNIDADE DE VIGILANCIA EPIDEMIOLOGIA (ANTIGO)
+      '66': UNIDADE DE VIGILANCIA SANITARIA (ANTIGO)
+      '67': LABORATORIO CENTRAL DE SAUDE PUBLICA - LACEN
+      '68': SECRETARIA DE SAUDE
+      '69': CENTRO DE ATENÇÃO HEMOTERÁPICA E/OU HEMATOLÓGICA
+      '70': CENTRO DE ATENÇÃO PSICOSSOCIAL-CAPS
+      '71': CENTRO DE APOIO A SAÚDE DA FAMÍLIA-CASF
+      '72': UNIDADE DE ATENÇÃO À SAÚDE INDÍGENA
+      '73': PRONTO ANTEDIMENTO
+      '74': ACADEMIA DA SAÚDE
+      '75': TELESAÚDE
+      '76': CENTRAL DE REGULAÇÃO MÉDICA DAS URGÊNCIAS
+      '77': SERVICO DE ATENCAO DOMICILIAR ISOLADO(HOME CARE)
+      '78': UNIDADE DE ATENCAO EM REGIME RESIDENCIAL
+      '79': OFICINA ORTOPEDICA
+      '80': ORIO DE SAUDE PUBLICA
+      '81': CENTRAL DE REGUALAÇÃO
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: cd03c42b858f4512695cf4b2d86473ab5aba4012a81b25f19d7c999b746a202f
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Producao_Ambulatorial.DEF: XTipo Estabelecimento., PA_TPUPS, 1, CNV/TP_ESTAB.CNV; CNV/TP_ESTAB.CNV'
+        note: Mapa do CNV.
+  - name: pa_tippre
+    type: string
+  - name: pa_mn_ind
+    type: string
+    x-decode:
+      I: Individual
+      M: Mantida
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: ed2c4ff4dd32b1a26949333be7166d041d821686abb6546494a31a3621f83697
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Producao_Ambulatorial.DEF: XMantida/Individual, PA_MN_IND, 1, CNV/MANT_IND.CNV; CNV/MANT_IND.CNV'
+        note: Mapa do CNV.
+  - name: pa_cnpjcpf
+    type: string
+  - name: pa_cnpjmnt
+    type: string
+  - name: pa_cnpj_cc
+    type: string
+  - name: pa_mvm
+    type: string
+  - name: pa_cmp
+    type: string
+  - name: pa_proc_id
+    type: string
+  - name: pa_tpfin
+    type: string
+    x-decode:
+      '01': 01 Atenção Básica (PAB)
+      '02': 02 Assistência Farmacêutica
+      '04': 04 Fundo de Ações Estratégicas e Compensações FAEC
+      '05': 05 Incentivo - MAC
+      '06': 06 Média e Alta Complexidade (MAC)
+      '07': 07 Vigilância em Saúde
+      '08': 08 Gestão em Saúde
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: b502a7a998f58f54bb87882d47423fe45e2abb8414a5183bba213b61687fce51
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Producao_Ambulatorial.DEF: XTipo de Financiamento, PA_TPFIN, 1, CNV/FINANC.CNV; CNV/FINANC.CNV'
+        note: Mapa do CNV.
+  - name: pa_subfin
+    type: string
+  - name: pa_nivcpl
+    type: string
+    x-decode:
+      '0': 0-Não se Aplica
+      '1': 1-Atenção Básica
+      '2': 2-Média Complexidade
+      '3': 3-Alta Complexidade
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 27edb79b23742e3aaae865d3ed30d24aa7092f3b25a2833a0900d680af13dc13
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Producao_Ambulatorial.DEF: LComplexidade Procedimento, PA_NIVCPL, 1, CNV/COMPLEX.CNV;
+            CNV/COMPLEX.CNV'
+        note: Mapa do CNV.
+  - name: pa_docorig
+    type: string
+  - name: pa_autoriz
+    type: string
+  - name: pa_cnsmed
+    type: string
+  - name: pa_cbocod
+    type: string
+  - name: pa_motsai
+    type: string
+    x-decode:
+      '00': PRODUÇÃO SEM MOTIVO DE SAÍDA (BPA-C / BPA-I)
+      '11': ALTA CURADO
+      '12': ALTA MELHORADO
+      '13': ALTA DA PUÉRPERA E PERMANÊNCIA DO RECÉM NASCIDO
+      '14': ALTA A PEDIDO
+      '15': ALTA COM PREVISÃO DE RETORNO P/ ACOMPAN. DO PACIENT
+      '16': ALTA POR EVASÃO
+      '17': ALTA DA PUÉRPERA E RECÉM NASCIDO
+      '18': ALTA POR OUTROS MOTIVOS
+      '21': PERMANÊNCIA POR CARACTERÍSTICAS PRÓPRIAS DA DOENÇA
+      '22': PERMANÊNCIA POR INTERCORRÊNCIA
+      '23': PERMANÊNCIA POR IMPOSSIBILIDADE SÓCIO-FAMILIAR
+      '24': PERMAN. POR PROCESSO-DOAÇÃO DE ÓRGÃOS-DOADOR VIVO
+      '25': PERMAN. POR PROCESSO-DOAÇÃO DE ÓRGÃOS-DOADOR MORTO
+      '26': PERMANÊNCIA POR MUDANÇA DE PROCEDIMENTO
+      '27': PERMANÊNCIA POR REOPERAÇÃO
+      '28': PERMANÊNCIA POR OUTROS MOTIVOS
+      '31': TRANSFERIDO PARA OUTRO ESTABELECIMENTO
+      '41': ÓBITO COM DECLARAÇÃO DE ÓBITO FORNEC. MÉDICO ASSIST
+      '42': ÓBITO COM DECLARAÇÃO DE ÓBITO FORNECIDA PELO I.M.L
+      '43': ÓBITO COM DECLARAÇÃO DE ÓBITO FORNECIDA PELO S.V.O
+      '51': ENCERRAMENTO ADMINSTRATIVO
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: c32352b40748bdd2b73db7c50eb49d646a98fd5b0185f4c0bbb871ed8a07be42
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Producao_Ambulatorial.DEF: XMotivo Saida-Permanência, PA_MOTSAI, 1, CNV/MOTSAIPE.CNV;
+            CNV/MOTSAIPE.CNV'
+        note: Mapa do CNV.
+  - name: pa_obito
+    type: string
+    x-decode:
+      '0': Nao houve ÓBITO
+      '1': Sim (motivo de saída-ÓBITO)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: f5896878b93ad73959088576ab8ceaa69528b4d54f750cd3759ec97717f18e7e
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Producao_Ambulatorial.DEF: XMotivo Saida-Óbito, PA_OBITO, 1, CNV/OBITO.CNV; CNV/OBITO.CNV'
+        note: Mapa do CNV.
+  - name: pa_encerr
+    type: string
+    x-decode:
+      '0': Nao houve ENCERRAMENTO
+      '1': Sim (motivo de saída-ENCERRAMENTO)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: e635d1da58b87ea0ec3801d432e2b2ff8c11f90d86601aca7e2edd9e41c0d6c9
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Producao_Ambulatorial.DEF: XMotivo Saida-Encerramento, PA_ENCERR, 1, CNV/ENCERRAM.CNV;
+            CNV/ENCERRAM.CNV'
+        note: Mapa do CNV.
+  - name: pa_perman
+    type: string
+    x-decode:
+      '0': Nao houve a PERMANÊNCIA do paciente na unidade
+      '1': Sim (motivo de saída-PERMANÊNCIA)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: fa823e6bcb07e76b0a6d4d83367443c3e034857df377dc01fe721632f97911ee
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Producao_Ambulatorial.DEF: XMotivo Saida-Permanência, PA_PERMAN, 1, CNV/PERMANEN.CNV;
+            CNV/PERMANEN.CNV'
+        note: Mapa do CNV.
+  - name: pa_alta
+    type: string
+    x-decode:
+      '0': Nao foi dado ALTA ao paciente
+      '1': Sim (motivo de saída-ALTA)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: cc9bf92868dea681ca88cae93255f8d624435f2ce36d34a9a13c45dfa4a6fb79
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Producao_Ambulatorial.DEF: XMotivo Saida-Alta, PA_ALTA, 1, CNV/ALTA.CNV; CNV/ALTA.CNV'
+        note: Mapa do CNV.
+  - name: pa_transf
+    type: string
+    x-decode:
+      '0': Nao houve TRANSFERÊNCIA do paciente
+      '1': Sim (motivo de saída-TRANSFERÊNCIA)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 798a13f55c387349e223abc2e3856a3924595eb6d7cc80a312297326d79d9fc1
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Producao_Ambulatorial.DEF: XMotivo Saida-Transferência, PA_TRANSF, 1, CNV/TRANSFER.CNV;
+            CNV/TRANSFER.CNV'
+        note: Mapa do CNV.
+  - name: pa_cidpri
+    type: string
+  - name: pa_cidsec
+    type: string
+  - name: pa_cidcas
+    type: string
+  - name: pa_catend
+    type: string
+    x-decode:
+      ? ''
+      : CARATER DE ATENDIMENTO NÃO INFORMADO
+      0-: CARATER DE ATENDIMENTO INVALIDO
+      '00': CARATER DE ATENDIMENTO NÃO INFORMADO
+      '01': ELETIVO
+      '02': URGÊNCIA
+      '03': ACIDENTE NO LOCAL TRABALHO OU A SERViÇO DA EMPRESA
+      '04': ACIDENTE NO TRAJETO PARA O TRABALHO
+      '05': OUTROS TIPOS DE ACIDENTE DE TRÂNSITO
+      '06': OUTROS TIPOS LESÕES/ENVENENAMENTOS(AGENT.FIS./QUIM.
+      '07': CARATER DE ATENDIMENTO INVALIDO
+      0E: CARATER DE ATENDIMENTO INVALIDO
+      0U: CARATER DE ATENDIMENTO INVALIDO
+      '10': CARATER DE ATENDIMENTO INVALIDO
+      '12': CARATER DE ATENDIMENTO INVALIDO
+      '20': CARATER DE ATENDIMENTO INVALIDO
+      '53': CARATER DE ATENDIMENTO INVALIDO
+      '54': CARATER DE ATENDIMENTO INVALIDO
+      '57': CARATER DE ATENDIMENTO INVALIDO
+      '99': INFORMAÇÃO INEXISTENTE  (BPA-C)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: d25d681486c1cc8a64ead3cc4cf8284925e623abd08d89a0ef734c88ed18eea1
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Producao_Ambulatorial.DEF: XCarater de Atendimento., PA_CATEND, 1, CNV/CARAT_AT.CNV;
+            CNV/CARAT_AT.CNV'
+        note: Mapa do CNV.
+  - name: pa_idade
+    type: string
+  - name: idademin
+    type: string
+  - name: idademax
+    type: string
+  - name: pa_flidade
+    type: string
+    x-decode:
+      '0': IDADE NÃO EXIGIDA
+      '1': IDADE COMPATIVEL COM O SIGTAP
+      '2': IDADE FORA DA FAIXA DO SIGTAP
+      '3': IDADE INEXISTENTE
+      '4': IDADE EM BRANCO
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: dcc86369c920a5838d7a6180f087b0a96c0dd1e0e31229d43bec94fe75dd1c79
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Producao_Ambulatorial.DEF: XDetalhes_Idade Paciente, PA_FLIDADE, 1, CNV/FL_IDADE.CNV;
+            CNV/FL_IDADE.CNV'
+        note: Mapa do CNV.
+  - name: pa_sexo
+    type: string
+    x-decode:
+      ? ''
+      : Não exigido
+      '0': Não exigido
+      F: Feminino
+      M: Masculino
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 7fee0ffdb9777cfb61481409bb715059d63990a439b59979623692f27044f97f
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Producao_Ambulatorial.DEF: XSexo do Paciente, PA_SEXO, 1, CNV/SEXO.CNV; CNV/SEXO.CNV'
+        note: Mapa do CNV.
+  - name: pa_racacor
+    type: string
+    x-decode:
+      ? ''
+      : SEM INFORMAÇÃO
+      ' D': RAÇA/COR  (OUTROS INDEVIDOS)
+      '00': RAÇA/COR NÃO EXIGIDO
+      '01': BRANCA
+      '02': PRETA
+      '03': PARDA
+      '04': AMARELA
+      '05': INDIGENA
+      '06': RAÇA/COR=06 (INDEVIDO)
+      '09': RAÇA/COR=09 (INDEVIDO)
+      1C: RAÇA/COR  (OUTROS INDEVIDOS)
+      1G: RAÇA/COR  (OUTROS INDEVIDOS)
+      1M: RAÇA/COR  (OUTROS INDEVIDOS)
+      '87': RAÇA/COR  (OUTROS INDEVIDOS)
+      '99': SEM INFORMAÇÃO
+      DE: RAÇA/COR  (OUTROS INDEVIDOS)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 11f9e1a29e3a04fb0a890a686809c331693322d2b5badf0fc35f78a4b193f082
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Producao_Ambulatorial.DEF: XRaça/Cor Paciente, PA_RACACOR, 1, CNV/RACA_COR.CNV; CNV/RACA_COR.CNV'
+        note: Mapa do CNV.
+  - name: pa_munpcn
+    type: string
+  - name: pa_qtdpro
+    type: integer
+  - name: pa_qtdapr
+    type: integer
+  - name: pa_valpro
+    type: number
+  - name: pa_valapr
+    type: number
+  - name: pa_ufdif
+    type: string
+  - name: pa_mndif
+    type: string
+  - name: pa_dif_val
+    type: number
+  - name: nu_vpa_tot
+    type: number
+  - name: nu_pa_tot
+    type: number
+  - name: pa_indica
+    type: string
+    x-decode:
+      '0': Não aprovado
+      '5': Aprovado totalmente
+      '6': Aprovado parcialmente
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 1df0600a9398ffd0254aee838002fbb1e71265d62b466d9334837641f1d4ab09
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'Producao_Ambulatorial.DEF: XProdução Aprovada/Não, PA_INDICA, 1, CNV/INDICA.CNV; CNV/INDICA.cnv'
+        note: Mapa do CNV.
+  - name: pa_codoco
+    type: string
+  - name: pa_flqt
+    type: string
+  - name: pa_fler
+    type: string
+  - name: pa_etnia
+    type: string
+  - name: pa_vl_cf
+    type: number
+  - name: pa_vl_cl
+    type: number
+  - name: pa_vl_inc
+    type: number
+  - name: pa_srv_c
+    type: string
+  - name: pa_ine
+    type: string
+  - name: pa_nat_jur
+    type: string
+# Identidade do arquivo: pa_mvm vale 202401 nos 21.341 registros de PARR2401 e pa_ufmun
+# começa por 14 (RR) em todos; pa_cmp não serve (4 competências no mesmo arquivo).
+x-identity:
+  month_column: pa_mvm
+  uf_column: pa_ufmun

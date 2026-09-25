@@ -1,0 +1,21 @@
+{
+  "consulta_utc": "2026-09-10T16:24:51.656642+00:00",
+  "endpoint": "https://datasus.saude.gov.br/wp-content/ftp.php",
+  "parametros": {
+    "fonte[]": "SINASC",
+    "tipo_arquivo[]": "DN",
+    "modalidade[]": "1",
+    "ano[]": "2023",
+    "uf[]": "RR",
+    "mes[]": "01"
+  },
+  "resposta": [
+    {
+      "fonte": "SINASC",
+      "modalidade": "Dados - Finais",
+      "arquivo": "DNRR2023.dbc",
+      "link": "<a id=\"DNRR2023.dbc\" href=\"ftp://ftp.datasus.gov.br/dissemin/publicos/SINASC/1996_/Dados/DNRES/DNRR2023.dbc\">DNRR2023.dbc</a>",
+      "endereco": "ftp://ftp.datasus.gov.br/dissemin/publicos/SINASC/1996_/Dados/DNRES/DNRR2023.dbc"
+    }
+  ]
+}

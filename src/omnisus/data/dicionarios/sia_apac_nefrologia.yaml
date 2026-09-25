@@ -1,0 +1,610 @@
+name: sia_apac_nefrologia
+title: SIASUS — APAC de Nefrologia (AN)
+profile: tabular-data-resource
+encoding: latin-1
+x-version: 1.0.0
+x-source-format: dbc
+x-partitions:
+- _source_ano
+x-evidence:
+  physical_schema: sia_an_pa_2014_10_mini.dbc, 61 fields; observed 2026-09-23
+  semantic_status: Physical inventory. Category maps only where a TabWin CNV binds the
+    field and decodes every non-blank value of the fixture (vinculos.json); no inferred
+    mappings.
+  dictionary_url: ftp://ftp.datasus.gov.br/dissemin/publicos/SIASUS/200801_/Doc/Informe_Tecnico_SIASUS_2019_07.pdf
+  source_url: ftp://ftp.datasus.gov.br/dissemin/publicos/SIASUS/200801_/Dados/ANPA1410.dbc
+schema:
+  fields:
+  - name: ap_mvm
+    type: string
+  - name: ap_condic
+    type: string
+    x-decode:
+      EC: EC Estado Convencional
+      EP: EP Estado Pleno
+      MN: MN Municipio Pleno NOAS
+      MP: MP Municipio Pleno NOB
+      PA: PA Municipio Pleno da Atenção Básica NOAS
+      PB: PB Municipio Pleno da Atenção Básica NOB 96
+      PG: PG Pacto de Gestão
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 72f3ca35c0ecc8e4db4af7064ff53b13ef82152293010c35bdc942fb930b930c
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Nefrologia.DEF: DTipo de Gestão, AP_CONDIC, 1, CNV/TP_GESTAO.CNV; CNV/TP_GESTAO.CNV'
+        note: Mapa do CNV.
+  - name: ap_gestao
+    type: string
+  - name: ap_coduni
+    type: string
+  - name: ap_autoriz
+    type: string
+  - name: ap_cmp
+    type: string
+  - name: ap_pripal
+    type: string
+  - name: ap_vl_ap
+    type: number
+  - name: ap_ufmun
+    type: string
+  - name: ap_tpups
+    type: string
+    x-decode:
+      '  -99': TIPO ESTABELECIMENTO NÃO INFORMADO
+      '01': POSTO DE SAUDE
+      '02': CENTRO DE SAUDE/UNIDADE BASICA DE SAUDE
+      '04': POLICLINICA
+      '05': HOSPITAL GERAL
+      '07': HOSPITAL ESPECIALIZADO
+      '09': PRONTO SOCORRO DE HOSPITAL GERAL (ANTIGO)
+      '12': PRONTO SOCORRO TRAUMATO-ORTOPEDICO (ANTIGO)
+      '15': UNIDADE MISTA
+      '20': PRONTO SOCORRO GERAL
+      '21': PRONTO SOCORRO ESPECIALIZADO
+      '22': CONSULTORIO
+      '32': UNIDADE MOVEL FLUVIAL
+      '36': CLINICA ESPECIALIZADA/AMBULATORIO ESPECIALIZADO
+      '39': UNIDADE DE SERVICO DE APOIO DE DIAGNOSE E TERAPIA
+      '40': UNIDADE MOVEL TERRESTRE
+      '42': UNIDADE MOVEL DE NIVEL PRE-HOSP-URGENCIA/EMERGENCIA
+      '43': FARMACIA
+      '45': UNIDADE DE SAUDE DA FAMILIA
+      '50': UNIDADE DE VIGILANCIA EM SAUDE
+      '60': COOPERATIVA
+      '61': CENTRO DE PARTO NORMAL
+      '62': HOSPITAL DIA
+      '63': UNIDADE AUTORIZADORA
+      '64': CENTRAL DE REGULACAO DE SERVICOS DE SAUDE
+      '65': UNIDADE DE VIGILANCIA EPIDEMIOLOGIA (ANTIGO)
+      '66': UNIDADE DE VIGILANCIA SANITARIA (ANTIGO)
+      '67': LABORATORIO CENTRAL DE SAUDE PUBLICA - LACEN
+      '68': SECRETARIA DE SAUDE
+      '69': CENTRO DE ATENÇÃO HEMOTERÁPICA E/OU HEMATOLÓGICA
+      '70': CENTRO DE ATENÇÃO PSICOSSOCIAL-CAPS
+      '71': CENTRO DE APOIO A SAÚDE DA FAMÍLIA-CASF
+      '72': UNIDADE DE ATENÇÃO À SAÚDE INDÍGENA
+      '73': PRONTO ANTEDIMENTO
+      '74': ACADEMIA DA SAÚDE
+      '75': TELESAÚDE
+      '76': CENTRAL DE REGULAÇÃO MÉDICA DAS URGÊNCIAS
+      '77': SERVICO DE ATENCAO DOMICILIAR ISOLADO(HOME CARE)
+      '78': UNIDADE DE ATENCAO EM REGIME RESIDENCIAL
+      '79': OFICINA ORTOPEDICA
+      '80': ORIO DE SAUDE PUBLICA
+      '81': CENTRAL DE REGUALAÇÃO
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: cd03c42b858f4512695cf4b2d86473ab5aba4012a81b25f19d7c999b746a202f
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Nefrologia.DEF: XTipo Estabelecimento, AP_TPUPS, 1, CNV/TP_ESTAB.CNV; CNV/TP_ESTAB.CNV'
+        note: Mapa do CNV.
+  - name: ap_tippre
+    type: string
+  - name: ap_mn_ind
+    type: string
+    x-decode:
+      I: Individual
+      M: Mantida
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: ed2c4ff4dd32b1a26949333be7166d041d821686abb6546494a31a3621f83697
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Nefrologia.DEF: XMantida/Individual, AP_MN_IND, 1, CNV/MANT_IND.CNV; CNV/MANT_IND.CNV'
+        note: Mapa do CNV.
+  - name: ap_cnpjcpf
+    type: string
+  - name: ap_cnpjmnt
+    type: string
+  - name: ap_cnspcn
+    type: string
+  - name: ap_coidade
+    type: string
+  - name: ap_nuidade
+    type: string
+  - name: ap_sexo
+    type: string
+    x-decode:
+      ? ''
+      : Não exigido
+      '0': Não exigido
+      F: Feminino
+      M: Masculino
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 7fee0ffdb9777cfb61481409bb715059d63990a439b59979623692f27044f97f
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Nefrologia.DEF: XSexo do Paciente, AP_SEXO, 1, CNV/SEXO.CNV; CNV/SEXO.CNV'
+        note: Mapa do CNV.
+  - name: ap_racacor
+    type: string
+    x-decode:
+      ? ''
+      : SEM INFORMAÇÃO
+      ' D': RAÇA/COR  (OUTROS INDEVIDOS)
+      '00': RAÇA/COR NÃO EXIGIDO
+      '01': BRANCA
+      '02': PRETA
+      '03': PARDA
+      '04': AMARELA
+      '05': INDIGENA
+      '06': RAÇA/COR=06 (INDEVIDO)
+      '09': RAÇA/COR=09 (INDEVIDO)
+      1C: RAÇA/COR  (OUTROS INDEVIDOS)
+      1G: RAÇA/COR  (OUTROS INDEVIDOS)
+      1M: RAÇA/COR  (OUTROS INDEVIDOS)
+      '87': RAÇA/COR  (OUTROS INDEVIDOS)
+      '99': SEM INFORMAÇÃO
+      DE: RAÇA/COR  (OUTROS INDEVIDOS)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 11f9e1a29e3a04fb0a890a686809c331693322d2b5badf0fc35f78a4b193f082
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Nefrologia.DEF: XRaça/Cor Paciente, AP_RACACOR, 1, CNV/RACA_COR.CNV; CNV/RACA_COR.CNV'
+        note: Mapa do CNV.
+  - name: ap_munpcn
+    type: string
+  - name: ap_ufnacio
+    type: string
+  - name: ap_ceppcn
+    type: string
+  - name: ap_ufdif
+    type: string
+    x-decode:
+      ? ''
+      : Não identificado
+      '0': Não houve invasão
+      '1': Sim (houve invasão)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: e50f214e8c49075d2672a183e5995237d51ee9f06cdf659957ead39c951de0a2
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Nefrologia.DEF: TInvasão Estadual, AP_UFDIF, 1, CNV/INVASAO.CNV; CNV/Invasao.CNV'
+        note: Mapa do CNV.
+  - name: ap_mndif
+    type: string
+    x-decode:
+      ? ''
+      : Não identificado
+      '0': Não houve invasão
+      '1': Sim (houve invasão)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: e50f214e8c49075d2672a183e5995237d51ee9f06cdf659957ead39c951de0a2
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Nefrologia.DEF: TInvasão Municipal, AP_MNDIF, 1, CNV/INVASAO.CNV; CNV/Invasao.CNV'
+        note: Mapa do CNV.
+  - name: ap_dtinic
+    type: string
+  - name: ap_dtfim
+    type: string
+  - name: ap_tpaten
+    type: string
+    x-decode:
+      '00': LAUDO GERAL
+      '01': MEDICAMENTOS
+      '02': NEFROLOGIA
+      '03': QUIMIOTERAPIA
+      '04': RADIOTERAPIA
+      '05': CIRURGIA BARIATRICA
+      '06': MEDICAMENTOS
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: d24bffc9535b6cf9c8d0e9d1cfb26ebb6e01d7c8c2480e012bf7255b09d58658
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Nefrologia.DEF: XTipo de Atendimento, AP_TPATEN, 1, CNV/TP_ATEND.CNV; CNV/TP_ATEND.CNV'
+        note: Mapa do CNV.
+  - name: ap_tpapac
+    type: string
+    x-decode:
+      '1': Inicial
+      '2': Continuidade
+      '3': Única
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 3e77daea55811733897715a900abbd46206b82c9b91ee962ce2620d3fac105c7
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Nefrologia.DEF: XTipo de APAC, AP_TPAPAC, 1, CNV/TP_APAC.CNV; CNV/TP_APAC.CNV'
+        note: Mapa do CNV.
+  - name: ap_motsai
+    type: string
+    x-decode:
+      '00': PRODUÇÃO SEM MOTIVO DE SAÍDA (BPA-C / BPA-I)
+      '11': ALTA CURADO
+      '12': ALTA MELHORADO
+      '13': ALTA DA PUÉRPERA E PERMANÊNCIA DO RECÉM NASCIDO
+      '14': ALTA A PEDIDO
+      '15': ALTA COM PREVISÃO DE RETORNO P/ ACOMPAN. DO PACIENT
+      '16': ALTA POR EVASÃO
+      '17': ALTA DA PUÉRPERA E RECÉM NASCIDO
+      '18': ALTA POR OUTROS MOTIVOS
+      '21': PERMANÊNCIA POR CARACTERÍSTICAS PRÓPRIAS DA DOENÇA
+      '22': PERMANÊNCIA POR INTERCORRÊNCIA
+      '23': PERMANÊNCIA POR IMPOSSIBILIDADE SÓCIO-FAMILIAR
+      '24': PERMAN. POR PROCESSO-DOAÇÃO DE ÓRGÃOS-DOADOR VIVO
+      '25': PERMAN. POR PROCESSO-DOAÇÃO DE ÓRGÃOS-DOADOR MORTO
+      '26': PERMANÊNCIA POR MUDANÇA DE PROCEDIMENTO
+      '27': PERMANÊNCIA POR REOPERAÇÃO
+      '28': PERMANÊNCIA POR OUTROS MOTIVOS
+      '31': TRANSFERIDO PARA OUTRO ESTABELECIMENTO
+      '41': ÓBITO COM DECLARAÇÃO DE ÓBITO FORNEC. MÉDICO ASSIST
+      '42': ÓBITO COM DECLARAÇÃO DE ÓBITO FORNECIDA PELO I.M.L
+      '43': ÓBITO COM DECLARAÇÃO DE ÓBITO FORNECIDA PELO S.V.O
+      '51': ENCERRAMENTO ADMINSTRATIVO
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: c32352b40748bdd2b73db7c50eb49d646a98fd5b0185f4c0bbb871ed8a07be42
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Nefrologia.DEF: XMotivo Saída-Permanência, AP_MOTSAI, 1, CNV/MOTSAIPE.CNV; CNV/MOTSAIPE.CNV'
+        note: Mapa do CNV.
+  - name: ap_obito
+    type: string
+    x-decode:
+      '0': Nao houve ÓBITO
+      '1': Sim (motivo de saída-ÓBITO)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: f5896878b93ad73959088576ab8ceaa69528b4d54f750cd3759ec97717f18e7e
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Nefrologia.DEF: XMotivo Saída-Óbito, AP_OBITO, 1, CNV/OBITO.CNV; CNV/OBITO.CNV'
+        note: Mapa do CNV.
+  - name: ap_encerr
+    type: string
+    x-decode:
+      '0': Nao houve ENCERRAMENTO
+      '1': Sim (motivo de saída-ENCERRAMENTO)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: e635d1da58b87ea0ec3801d432e2b2ff8c11f90d86601aca7e2edd9e41c0d6c9
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Nefrologia.DEF: XMotivo Saída-Encerramento, AP_ENCERR, 1, CNV/ENCERRAM.CNV; CNV/ENCERRAM.CNV'
+        note: Mapa do CNV.
+  - name: ap_perman
+    type: string
+    x-decode:
+      '0': Nao houve a PERMANÊNCIA do paciente na unidade
+      '1': Sim (motivo de saída-PERMANÊNCIA)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: fa823e6bcb07e76b0a6d4d83367443c3e034857df377dc01fe721632f97911ee
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Nefrologia.DEF: XMotivo Saída-Permanência, AP_PERMAN, 1, CNV/PERMANEN.CNV; CNV/PERMANEN.CNV'
+        note: Mapa do CNV.
+  - name: ap_alta
+    type: string
+    x-decode:
+      '0': Nao foi dado ALTA ao paciente
+      '1': Sim (motivo de saída-ALTA)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: cc9bf92868dea681ca88cae93255f8d624435f2ce36d34a9a13c45dfa4a6fb79
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Nefrologia.DEF: XMotivo Saída-Alta, AP_ALTA, 1, CNV/ALTA.CNV; CNV/ALTA.CNV'
+        note: Mapa do CNV.
+  - name: ap_transf
+    type: string
+    x-decode:
+      '0': Nao houve TRANSFERÊNCIA do paciente
+      '1': Sim (motivo de saída-TRANSFERÊNCIA)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 798a13f55c387349e223abc2e3856a3924595eb6d7cc80a312297326d79d9fc1
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Nefrologia.DEF: XMotivo Saída-Transferência, AP_TRANSF, 1, CNV/TRANSFER.CNV; CNV/TRANSFER.CNV'
+        note: Mapa do CNV.
+  - name: ap_dtocor
+    type: string
+  - name: ap_codemi
+    type: string
+  - name: ap_catend
+    type: string
+    x-decode:
+      ? ''
+      : CARATER DE ATENDIMENTO NÃO INFORMADO
+      0-: CARATER DE ATENDIMENTO INVALIDO
+      '00': CARATER DE ATENDIMENTO NÃO INFORMADO
+      '01': ELETIVO
+      '02': URGÊNCIA
+      '03': ACIDENTE NO LOCAL TRABALHO OU A SERViÇO DA EMPRESA
+      '04': ACIDENTE NO TRAJETO PARA O TRABALHO
+      '05': OUTROS TIPOS DE ACIDENTE DE TRÂNSITO
+      '06': OUTROS TIPOS LESÕES/ENVENENAMENTOS(AGENT.FIS./QUIM.
+      '07': CARATER DE ATENDIMENTO INVALIDO
+      0E: CARATER DE ATENDIMENTO INVALIDO
+      0U: CARATER DE ATENDIMENTO INVALIDO
+      '10': CARATER DE ATENDIMENTO INVALIDO
+      '12': CARATER DE ATENDIMENTO INVALIDO
+      '20': CARATER DE ATENDIMENTO INVALIDO
+      '53': CARATER DE ATENDIMENTO INVALIDO
+      '54': CARATER DE ATENDIMENTO INVALIDO
+      '57': CARATER DE ATENDIMENTO INVALIDO
+      '99': INFORMAÇÃO INEXISTENTE  (BPA-C)
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: d25d681486c1cc8a64ead3cc4cf8284925e623abd08d89a0ef734c88ed18eea1
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Nefrologia.DEF: XCarater Atendimento, AP_CATEND, 1, CNV/CARAT_AT.CNV; CNV/CARAT_AT.CNV'
+        note: Mapa do CNV.
+  - name: ap_apacant
+    type: string
+  - name: ap_unisol
+    type: string
+  - name: ap_dtsolic
+    type: string
+  - name: ap_dtaut
+    type: string
+  - name: ap_cidcas
+    type: string
+  - name: ap_cidpri
+    type: string
+  - name: ap_cidsec
+    type: string
+  - name: ap_etnia
+    type: string
+  - name: an_dtpdr
+    type: string
+  - name: an_altura
+    type: string
+  - name: an_peso
+    type: string
+  - name: an_diures
+    type: string
+  - name: an_glicos
+    type: string
+  - name: an_acevas
+    type: string
+    x-decode:
+      N: NÃO
+      S: SIM
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 694c023c50452a20868e25f318399ba00a863d813a83f28fd07191aa22332639
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Nefrologia.DEF: XAcesso Vascular, AN_ACEVAS, 1, CNV/ACES_VASC.CNV; CNV/ACES_VASC.CNV'
+        note: Mapa do CNV.
+  - name: an_ulsoab
+    type: string
+    x-decode:
+      N: NÃO
+      S: SIM
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 694c023c50452a20868e25f318399ba00a863d813a83f28fd07191aa22332639
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Nefrologia.DEF: XUltrass. Abdominal, AN_ULSOAB, 1, CNV/ULTRA_AB.CNV; CNV/ULTRA_AB.CNV'
+        note: Mapa do CNV.
+  - name: an_tru
+    type: string
+  - name: an_intfis
+    type: string
+  - name: an_cncdo
+    type: string
+    x-decode:
+      ? ''
+      : Não informado
+      N: NÃO
+      S: SIM
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: ced5340831b8245161ebbd6e7972121588b14620058439dfb49b38c221ca417c
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Nefrologia.DEF: XInscrito no CNCDO, AN_CNCDO, 1, CNV/CNCDO.CNV; CNV/CNCDO.CNV'
+        note: Mapa do CNV.
+  - name: an_albumi
+    type: string
+  - name: an_hcv
+    type: string
+    x-decode:
+      N: Negativo
+      P: Positivo
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: f5cf1e83245e6257bb567198715c8fae5017908e25bbb76979f467e67a0a3890
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Nefrologia.DEF: XIndicativo de HCV, AN_HCV, 1, CNV/HCV.CNV; CNV/HCV.CNV'
+        note: Mapa do CNV.
+  - name: an_hbsag
+    type: string
+    x-decode:
+      N: Negativo
+      P: Positivo
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: f5cf1e83245e6257bb567198715c8fae5017908e25bbb76979f467e67a0a3890
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Nefrologia.DEF: XIndicat.  de HBsAg, AN_HBSAG, 1, CNV/HBSAG.CNV; CNV/HBSAG.CNV'
+        note: Mapa do CNV.
+  - name: an_hiv
+    type: string
+    x-decode:
+      N: Negativo
+      P: Positivo
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: f5cf1e83245e6257bb567198715c8fae5017908e25bbb76979f467e67a0a3890
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sia-tab-e5812b51d802
+          pages: []
+          locator: 'APAC_Nefrologia.DEF: XIndic.pres.HIV, AN_HIV, 1, CNV/HIV.CNV; CNV/HIV.CNV'
+        note: Mapa do CNV.
+  - name: an_hb
+    type: string
+  - name: ap_natjur
+    type: string
+# Identidade do arquivo: ap_mvm vale o mês do arquivo e ap_ufmun começa pelo código IBGE
+# da UF em todos os registros da fixture (tests/fixtures/FIXTURES.md); mesma regra das
+# outras APAC.
+x-identity:
+  month_column: ap_mvm
+  uf_column: ap_ufmun

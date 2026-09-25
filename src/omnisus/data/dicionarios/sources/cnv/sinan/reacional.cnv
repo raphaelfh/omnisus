@@ -1,0 +1,8 @@
+; reacional.cnv
+; Revisado UT-Sinan 2019
+5 1                                      
+      1  não preenchido                                      ,
+      2  Reação tipo 1                                      1
+      3  Reação tipo 2                                      2
+      4  Reação tipo 1 e 2                                  3
+      5  Sem Reação                                         4

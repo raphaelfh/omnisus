@@ -1,0 +1,43 @@
+[
+  {
+    "dataset": "sinasc_nascidos_vivos",
+    "path": "data/lake/panorama-datasus/20260910T162322/SINASC/DNRR2023.dbc",
+    "url": "ftp://ftp.datasus.gov.br/dissemin/publicos/SINASC/1996_/Dados/DNRES/DNRR2023.dbc",
+    "sha256": "3b9c5cb07b3981e735bea9bc9c7967906af13047b202cc85550b92c885e82a3c",
+    "scope": {
+      "uf": "RR",
+      "ano": 2023,
+      "mes": null
+    },
+    "release": "final",
+    "retrieved_at": "2026-09-10T16:24:52.299792+00:00",
+    "release_evidence": "evidence/2026-09-14-extensao-regras/sinasc-portal.json",
+    "release_evidence_sha256": "5a380fb764e3bca57cf89eef9bc7501162d4f665a02bf0bef7ad49f3bd839f90"
+  },
+  {
+    "dataset": "sih_aih_reduzida",
+    "path": "data/lake/panorama-datasus/20260910T162322/SIHSUS/RDRR2301.dbc",
+    "url": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIHSUS/200801_/Dados/RDRR2301.dbc",
+    "sha256": "e9f717ff378477a883d19f733efe8409aee7f7795a027584b9f383364264d8e4",
+    "scope": {
+      "uf": "RR",
+      "ano": 2023,
+      "mes": 1
+    },
+    "release": "final",
+    "retrieved_at": "2026-09-10T16:24:49.054134+00:00"
+  },
+  {
+    "dataset": "sim_obitos",
+    "path": "data/lake/analytical-rules/DORR2021.dbc",
+    "url": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID10/DORES/DORR2021.dbc",
+    "sha256": "600b8af449468fec082e4e7ab6e852abae188cac73743c64dd470d122a41213a",
+    "scope": {
+      "uf": "RR",
+      "ano": 2021,
+      "mes": null
+    },
+    "release": "final",
+    "retrieved_at": "2026-09-14"
+  }
+]

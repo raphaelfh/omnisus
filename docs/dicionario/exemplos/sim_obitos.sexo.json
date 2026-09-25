@@ -1,0 +1,186 @@
+{
+  "schema_version": "0.1.0-draft",
+  "dictionary_version": "0.1.0-example",
+  "dataset": {
+    "id": "sim_obitos",
+    "category": "SIM",
+    "subtype": "DO",
+    "product": "DORES"
+  },
+  "field": {
+    "id": "sim_obitos.sexo",
+    "name": "sexo",
+    "physical_name": "SEXO",
+    "label": "Sexo",
+    "description": "Sexo da pessoa falecida.",
+    "physical_type": {
+      "type": "string",
+      "length": 1
+    },
+    "logical_type": "integer",
+    "unit": null,
+    "format": null,
+    "codes": [
+      {
+        "value": "M",
+        "label": "Masculino",
+        "missing_kind": "not_missing"
+      },
+      {
+        "value": "1",
+        "label": "Masculino",
+        "missing_kind": "not_missing"
+      },
+      {
+        "value": "F",
+        "label": "Feminino",
+        "missing_kind": "not_missing"
+      },
+      {
+        "value": "2",
+        "label": "Feminino",
+        "missing_kind": "not_missing"
+      },
+      {
+        "value": "I",
+        "label": "Ignorado",
+        "missing_kind": "ignored"
+      },
+      {
+        "value": "0",
+        "label": "Ignorado",
+        "missing_kind": "ignored"
+      },
+      {
+        "value": "9",
+        "label": "Ignorado",
+        "missing_kind": "ignored"
+      }
+    ],
+    "domain": {
+      "kind": "enum",
+      "completeness": "complete_in_source",
+      "reference": null
+    },
+    "constraints": null,
+    "relationships": [],
+    "derivation": null
+  },
+  "claims": [
+    {
+      "target": "/field/description",
+      "value_sha256": "3674c628bf38500f96c2bb0d3212e51003459cf066d6c0c19f1c074ef2aa3f40",
+      "status": "verified_in_source",
+      "checked_at": "2026-09-10",
+      "method": "Comparação da extração textual com a página renderizada do PDF oficial.",
+      "reviewer": "OpenAI Codex",
+      "evidence": [
+        {
+          "source_id": "sim-b4195ac8e0f8",
+          "pages": [
+            2
+          ],
+          "locator": "Linha 10 — Sexo / SEXO; colunas Tipo, Tam, Valores válidos e Descrição."
+        }
+      ],
+      "note": "Conferido nesta edição documental; aplicabilidade ao recorte de 2023 não confirmada."
+    },
+    {
+      "target": "/field/physical_type",
+      "value_sha256": "848e3f778dde84f2e0e943a8a871c439e45d31d3688547d85fcdb5b3987d2266",
+      "status": "verified_in_source",
+      "checked_at": "2026-09-10",
+      "method": "Comparação da extração textual com a página renderizada do PDF oficial.",
+      "reviewer": "OpenAI Codex",
+      "evidence": [
+        {
+          "source_id": "sim-b4195ac8e0f8",
+          "pages": [
+            2
+          ],
+          "locator": "Linha 10 — Sexo / SEXO; colunas Tipo, Tam, Valores válidos e Descrição."
+        }
+      ],
+      "note": "Conferido nesta edição documental; aplicabilidade ao recorte de 2023 não confirmada."
+    },
+    {
+      "target": "/field/codes",
+      "value_sha256": "446105686ab55d2bf5927a5e803e0f30e8b9224c8aa75d08da19f11def3906bc",
+      "status": "verified_in_source",
+      "checked_at": "2026-09-10",
+      "method": "Comparação da extração textual com a página renderizada do PDF oficial.",
+      "reviewer": "OpenAI Codex",
+      "evidence": [
+        {
+          "source_id": "sim-b4195ac8e0f8",
+          "pages": [
+            2
+          ],
+          "locator": "Linha 10 — Sexo / SEXO; colunas Tipo, Tam, Valores válidos e Descrição."
+        }
+      ],
+      "note": "Conferido nesta edição documental; aplicabilidade ao recorte de 2023 não confirmada."
+    },
+    {
+      "target": "/field/logical_type",
+      "value_sha256": "bb894e256c101d183cfd51432eebb3feb183cf155da5994b19a45406a3e24aac",
+      "status": "unreviewed",
+      "checked_at": null,
+      "method": null,
+      "reviewer": null,
+      "evidence": [],
+      "note": "Tipo legado de src/omnisus/data/dicionarios/sim_obitos.yaml; não validado como representação de todos os códigos documentados."
+    }
+  ],
+  "sources": [
+    {
+      "id": "sim-b4195ac8e0f8",
+      "category": "SIM",
+      "title": "Estrutura_do_SIM_2025.pdf",
+      "publisher": null,
+      "authority": "official",
+      "url": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID10/DOCS/Estrutura_do_SIM_2025.pdf",
+      "sha256": "b4195ac8e0f825a794cb487df93db41601a2f430a708172f494f1251b55eeeb1",
+      "bytes": 634146,
+      "edition": "07/2025",
+      "published_on": null,
+      "retrieved_on": "2026-09-10",
+      "last_checked_on": "2026-09-10"
+    }
+  ],
+  "applicability": {
+    "status": "unknown",
+    "data_period": "2023",
+    "valid_from": null,
+    "valid_until": null,
+    "conditions": [
+      "Produto SIM/DO/DORES; arquivo amostrado de Roraima em 2023."
+    ],
+    "reason": "A edição do documento é 07/2025. Não foi estabelecida sua vigência para o arquivo DORR2023.dbc.",
+    "evidence": []
+  },
+  "observations": [
+    {
+      "file": "DORR2023.dbc",
+      "url": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID10/DORES/DORR2023.dbc",
+      "sha256": "15b5203507161b7c35f9c69a52c955bdac133629549099b85a88e03a9a45baf0",
+      "data_period": "2023",
+      "uf": "RR",
+      "field_name": "SEXO",
+      "checked_at": "2026-09-10",
+      "scope": "Presença da coluna na amostra; não valida domínio completo nem a vigência do manual."
+    }
+  ],
+  "issues": [
+    {
+      "id": "legacy-logical-type",
+      "status": "open",
+      "description": "O YAML atual declara integer, mas o documento também lista M, F e I. Revisar compatibilidade antes de alterar o tipo ou converter dados."
+    },
+    {
+      "id": "edition-applicability",
+      "status": "open",
+      "description": "Confirmar uma referência aplicável a 2023 antes de interpretar automaticamente esse recorte."
+    }
+  ]
+}

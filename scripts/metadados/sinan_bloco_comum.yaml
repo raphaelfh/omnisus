@@ -1,0 +1,665 @@
+# Campos SINAN escritos uma vez; scripts/metadados/gerar_sinan.py os copia para os
+# dicionários. Um código só entra em x-decode se uma fonte oficial o lista.
+#
+# comum: campos da Notificação Individual (DIC_DADOS_Notificacao_Individual_v5.pdf,
+#   registro sinan-b3e0561c7a2d). Cada campo vai para todo dicionário SINAN que o tem;
+#   o gerador nunca acrescenta nem remove campos (a lista vem do descritor DBF).
+# agravo: mapas que só valem para um dicionário (Anexo I e dicionário do agravo).
+#
+# Em `fontes`, `codigos` lista os códigos que aquela fonte cita. A união de `codigos`
+# tem de ser exatamente as chaves de x-decode. Uma fonte com `membro` é um CNV
+# empacotado em data/dicionarios/sources/cnv/; o gerador confere que cada código
+# está no CNV. O branco ('') só entra onde a página o nomeia ("0 ou branco").
+#
+# `revisado_em` é o `checked_at` de toda claim `/field/codes` gerada deste bloco:
+# mudar a data aqui redata as claims de todos os dicionários SINAN.
+revisado_em: '2026-09-22'
+comum:
+- name: tp_not
+  type: string
+  x-decode:
+    '1': Negativa
+    '2': Individual
+    '3': Surto
+    '4': Agregado
+  fontes:
+  - source_id: sinan-b3e0561c7a2d
+    pages: [1]
+    locator: '1. Tipo de Notificação (TP_NOT): 1 – Negativa, 2 – Individual, 3 – Surto, 4 – Agregado'
+    codigos: ['1', '2', '3', '4']
+- name: id_agravo
+  type: string
+- name: dt_notific
+  type: date
+- name: sem_not
+  type: string
+- name: nu_ano
+  type: string
+- name: sg_uf_not
+  type: string
+- name: id_municip
+  type: string
+- name: id_regiona
+  type: string
+- name: id_unidade
+  type: string
+- name: dt_sin_pri
+  type: date
+- name: sem_pri
+  type: string
+- name: ano_nasc
+  type: string
+- name: nu_idade_n
+  type: integer
+  label: Idade
+  x-metadata:
+    physical_name: NU_IDADE_N
+    unit: encoded
+    derivation:
+      kind: coded_age
+      inputs:
+      - nu_idade_n
+      rule_version: 1.0.0
+      output:
+      - idade_anos_completos
+      - idade_quantidade
+      - idade_unidade
+    applicability:
+      status: confirmed
+      data_period: null
+      valid_from: null
+      valid_until: null
+      conditions:
+      - Only the exact source identities in dataset.analytics.validated_sources.
+      reason: Documented rule compared with the complete-file audits of 2026-09-21
+        (evidence/2026-09-21-w3-idade-sinan/) and 2026-09-22
+        (evidence/2026-09-22-w6-idade-tb/); no applicability to other source
+        hashes is inferred.
+      evidence:
+      - source_id: sinan-b3e0561c7a2d
+        pages: [3, 4]
+        locator: '10. Idade (NU_IDADE_N): 1º dígito 1 Hora, 2 Dia, 3 Mês, 4 Ano; ex.
+          3009 = nove meses, 4018 = dezoito anos'
+- name: cs_sexo
+  type: string
+  x-decode:
+    M: Masculino
+    F: Feminino
+    I: Ignorado
+  x-metadata:
+    missing_codes:
+      I: ignored
+  fontes:
+  - source_id: sinan-b3e0561c7a2d
+    pages: [4]
+    locator: '11. Sexo (CS_SEXO): M- Masculino, F- Feminino, I- Ignorado'
+    codigos: [M, F, I]
+- name: cs_gestant
+  type: string
+  x-decode:
+    '1': 1º Trimestre
+    '2': 2º Trimestre
+    '3': 3º Trimestre
+    '4': Idade gestacional ignorada
+    '5': Não
+    '6': Não se aplica
+    '9': Ignorado
+  x-metadata:
+    missing_codes:
+      '6': not_applicable
+      '9': ignored
+  fontes:
+  - source_id: sinan-b3e0561c7a2d
+    pages: [4]
+    locator: '12. Gestante (CS_GESTANT): 1 a 6 e 9. Ignorado'
+    codigos: ['1', '2', '3', '4', '5', '6', '9']
+- name: cs_raca
+  type: string
+  x-decode:
+    '1': branca
+    '2': preta
+    '3': amarela
+    '4': parda
+    '5': indígena
+    '9': Ignorado
+  x-metadata:
+    missing_codes:
+      '9': ignored
+  fontes:
+  - source_id: sinan-b3e0561c7a2d
+    pages: [5]
+    locator: '13. Raça/Cor (CS_RACA): 1- branca, 2- preta, 3- amarela, 4- parda, 5- indígena, 9 Ignorado'
+    codigos: ['1', '2', '3', '4', '5', '9']
+- name: cs_escol_n
+  type: string
+  x-decode:
+    '0': Analfabeto
+    '00': Analfabeto
+    '1': 1ª a 4ª série incompleta do EF
+    '01': 1ª a 4ª série incompleta do EF
+    '2': 4ª série completa do EF (antigo 1° grau)
+    '02': 4ª série completa do EF (antigo 1° grau)
+    '3': 5ª à 8ª série incompleta do EF (antigo ginásio ou 1° grau)
+    '03': 5ª à 8ª série incompleta do EF (antigo ginásio ou 1° grau)
+    '4': Ensino fundamental completo (antigo ginásio ou 1° grau)
+    '04': Ensino fundamental completo (antigo ginásio ou 1° grau)
+    '5': Ensino médio incompleto (antigo colegial ou 2° grau)
+    '05': Ensino médio incompleto (antigo colegial ou 2° grau)
+    '6': Ensino médio completo (antigo colegial ou 2° grau)
+    '06': Ensino médio completo (antigo colegial ou 2° grau)
+    '7': Educação superior incompleta
+    '07': Educação superior incompleta
+    '8': Educação superior completa
+    '08': Educação superior completa
+    '9': Ignorado
+    '09': Ignorado
+    '10': Não se aplica
+  x-metadata:
+    missing_codes:
+      '9': ignored
+      '09': ignored
+      '10': not_applicable
+  fontes:
+  - source_id: sinan-b3e0561c7a2d
+    pages: [5]
+    locator: '14. Escolaridade (CS_ESCOL_N): 1. a 8., 9. Ignorado, 10. Não se aplica; a
+      primeira categoria está impressa como "43 Analfabeto"'
+    codigos: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+  - source_id: sinan-tab-cad66ee38781
+    membro: sinan/Escolarnet.cnv
+    pages: []
+    locator: 'TAB_SINANNET/Escolarnet.cnv: 0 e 00 Analfabeto; 01 a 09 na mesma linha de 1 a 9'
+    codigos: ['0', '00', '01', '02', '03', '04', '05', '06', '07', '08', '09']
+- name: sg_uf
+  type: string
+- name: id_mn_resi
+  type: string
+- name: id_rg_resi
+  type: string
+- name: id_pais
+  type: string
+- name: nduplic_n
+  type: string
+  x-decode:
+    '': Não identificado
+    '0': Não identificado
+    '1': Não é duplicidade (não listar)
+    '2': Duplicidade (não contar)
+  fontes:
+  - source_id: sinan-b3e0561c7a2d
+    pages: [8]
+    locator: 'Não Listar/Não Contar (NDUPLIC_N): 0 ou branco – Não identificado, 1 – Não é
+      duplicidade (não listar), 2 – Duplicidade (não contar)'
+    codigos: ['', '0', '1', '2']
+- name: in_vincula
+  type: string
+  x-decode:
+    '': Não Vinculado
+    '0': Não Vinculado
+    '1': Vinculado
+  fontes:
+  - source_id: sinan-b3e0561c7a2d
+    pages: [9]
+    locator: 'Vinculação (IN_VINCULA): 0 ou branco – Não Vinculado, 1 – Vinculado'
+    codigos: ['', '0', '1']
+- name: dt_invest
+  type: date
+- name: tpautocto
+  type: string
+  x-decode:
+    '1': Sim
+    '2': Não
+    '3': Indeterminado
+  fontes:
+  - source_id: sinan-b3e0561c7a2d
+    pages: [9]
+    locator: '34-O caso é Autóctone de residência? (TPAUTOCTO): 1 – Sim, 2 – Não, 3 – Indeterminado'
+    codigos: ['1', '2', '3']
+- name: coufinf
+  type: string
+- name: copaisinf
+  type: string
+- name: comuninf
+  type: string
+- name: doenca_tra
+  type: string
+  x-decode:
+    '1': Sim
+    '2': Não
+    '9': Ignorado
+  x-metadata:
+    missing_codes:
+      '9': ignored
+  fontes:
+  - source_id: sinan-b3e0561c7a2d
+    pages: [13]
+    locator: '40-Doença relacionada ao trabalho (DOENCA_TRA): 1 – Sim, 2 – Não, 9 – Ignorado'
+    codigos: ['1', '2', '9']
+- name: dt_obito
+  type: date
+- name: dt_encerra
+  type: date
+- name: dt_digita
+  type: date
+- name: dt_transus
+  type: date
+- name: dt_transdm
+  type: date
+- name: dt_transsm
+  type: date
+- name: dt_transrm
+  type: date
+- name: dt_transrs
+  type: date
+- name: dt_transse
+  type: date
+- name: nu_lote_v
+  type: string
+- name: nu_lote_h
+  type: string
+- name: cs_flxret
+  type: string
+  x-decode:
+    '0': Não
+    '1': habilitado para envio
+    '2': enviado
+  fontes:
+  - source_id: sinan-b3e0561c7a2d
+    pages: [15]
+    locator: 'Fluxo de retorno (CS_FLXRET): 0 - Não, 1 - habilitado para envio., 2 - enviado'
+    codigos: ['0', '1', '2']
+- name: flxrecebi
+  type: string
+- name: migrado_w
+  type: string
+  x-decode:
+    '1': migrado do Sinan Windows
+  fontes:
+  - source_id: sinan-b3e0561c7a2d
+    pages: [15]
+    locator: 'Identifica migração (MIGRADO_W): 1- migrado do Sinan Windows'
+    codigos: ['1']
+agravo:
+  sinan_chagas:
+  - name: classi_fin
+    type: string
+    x-decode:
+      '1': confirmado
+      '2': descartado
+      '8': Inconclusivo
+    fontes:
+    - source_id: sinan-16c598f86fbf
+      pages: [10]
+      locator: '57. Classificação Final (CLASSI_FIN): 1-confirmado, 2-descartado'
+      codigos: ['1', '2']
+    - source_id: sinan-b3e0561c7a2d
+      pages: [18]
+      locator: 'Anexo I, Doença de Chagas: 8. Inconclusivo (anexo marcado "Falta concluir
+        revisão", p. 17)'
+      codigos: ['8']
+    nota: ['O código 8 vem do Anexo I, marcado "Falta concluir revisão" (p. 17).']
+  - name: criterio
+    type: string
+    x-decode:
+      '1': laboratório
+      '2': clínico-epidemiológico
+      '3': clínico
+    fontes:
+    - source_id: sinan-16c598f86fbf
+      pages: [10]
+      locator: '58. Critério de Confirmação/Descarte (CRITERIO): 1-laboratório, 2-clínico-epidemiológico,
+        3-clínico'
+      codigos: ['1', '2', '3']
+  - name: evolucao
+    type: string
+    x-decode:
+      '1': vivo
+      '2': óbito por chagas
+      '3': óbito por outras causas
+      '9': ignorado
+    x-metadata:
+      missing_codes:
+        '9': ignored
+    fontes:
+    - source_id: sinan-16c598f86fbf
+      pages: [10]
+      locator: '59. Evolução do caso (EVOLUCAO): 1 – vivo, 2- óbito por chagas, 3- óbito por
+        outras causas, 9- ignorado'
+      codigos: ['1', '2', '3', '9']
+  sinan_tuberculose:
+  # DOENCA_TRA: TuberculNET5_0.def marca "variável utilizada até versão Sinan 4.2" e o
+  # dicionário de tuberculose (2020) não a lista; no arquivo completo TUBEBR20 traz 0 a 6
+  # (7 registros com 6). Sem mapa.
+  - name: doenca_tra
+    type: string
+    description: >-
+      Doença relacionada ao trabalho: no TUBEBR20 o campo traz 0 a 6 (7 registros com 6),
+      mas nenhuma página do dicionário de tuberculose de 2020 o lista, por isso fica sem
+      decodificação.
+  - name: tratamento
+    type: string
+    x-decode:
+      '1': Caso Novo
+      '2': Recidiva
+      '3': Reingresso após Abandono
+      '4': Não Sabe
+      '5': Transferência
+      '6': Pós-óbito
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [1]
+      locator: '32. Tipo de Entrada (DBF TRATAMENTO): 1. Caso Novo a 6. Pós-óbito'
+      codigos: ['1', '2', '3', '4', '5', '6']
+  - &sim_nao_ign
+    name: pop_liber
+    type: string
+    x-decode:
+      '1': Sim
+      '2': Não
+      '9': Ignorado
+    x-metadata:
+      missing_codes:
+        '9': ignored
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [2]
+      locator: '33. Populações Especiais, População privada de liberdade (POP_LIBER): 1. Sim, 2. Não, 9. Ignorado'
+      codigos: ['1', '2', '9']
+  - <<: *sim_nao_ign
+    name: pop_rua
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [3]
+      locator: '33. Populações Especiais, População em situação de rua (POP_RUA): 1. Sim, 2. Não, 9. Ignorado'
+      codigos: ['1', '2', '9']
+  - <<: *sim_nao_ign
+    name: pop_saude
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [3]
+      locator: '33. Populações Especiais, Profissional de saúde (POP_SAUDE): 1. Sim, 2. Não, 9. Ignorado'
+      codigos: ['1', '2', '9']
+  - <<: *sim_nao_ign
+    name: pop_imig
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [3]
+      locator: '33. Populações Especiais, Imigrante (POP_IMIG): 1. Sim, 2. Não, 9. Ignorado'
+      codigos: ['1', '2', '9']
+  - <<: *sim_nao_ign
+    name: benef_gov
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [3]
+      locator: '34. Beneficiário de programa de transferência de renda do governo (BENEF_GOV): 1- Sim, 2- Não, 9- Ignorado'
+      codigos: ['1', '2', '9']
+  - name: forma
+    type: string
+    x-decode:
+      '1': Pulmonar
+      '2': Extrapulmonar
+      '3': Pulmonar + Extrapulmonar
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [3]
+      locator: '35. Forma (FORMA): 1. Pulmonar, 2. Extrapulmonar, 3. Pulmonar + Extrapulmonar'
+      codigos: ['1', '2', '3']
+  - name: extrapu1_n
+    type: string
+    x-decode:
+      '1': Pleural
+      '2': Gang. Perif.
+      '3': Geniturinária
+      '4': Óssea
+      '5': Ocular
+      '6': Miliar
+      '7': Meningoencefálico
+      '8': Cutânea
+      '9': Laringea
+      '10': Outra
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [4]
+      locator: '36. Se extrapulmonar (dicionário: EXTRAPU_N; DBF: EXTRAPU1_N): 1. Pleural a 10. Outra'
+      codigos: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+  - <<: *sim_nao_ign
+    name: agravaids
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [5]
+      locator: '37. Doenças e agravos associados, Aids (AGRAVAIDS): 1. Sim, 2. Não, 9. Ignorado'
+      codigos: ['1', '2', '9']
+  - <<: *sim_nao_ign
+    name: agravalcoo
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [5]
+      locator: '37. Doenças e agravos associados, Alcoolismo (AGRAVALCOO): 1. Sim, 2. Não, 9. Ignorado'
+      codigos: ['1', '2', '9']
+  - <<: *sim_nao_ign
+    name: agravdiabe
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [5]
+      locator: '37. Doenças e agravos associados, Diabetes (AGRAVDIABE): 1. Sim, 2. Não, 9. Ignorado'
+      codigos: ['1', '2', '9']
+  - <<: *sim_nao_ign
+    name: agravdoenc
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [5]
+      locator: '37. Doenças e agravos associados, Doença Mental (AGRAVDOENC): 1. Sim, 2. Não, 9. Ignorado'
+      codigos: ['1', '2', '9']
+  - <<: *sim_nao_ign
+    name: agravdroga
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [5]
+      locator: '37. Doenças e agravos associados, Uso de drogas ilícitas (dicionário: AGRAVDROGAS; DBF: AGRAVDROGA): 1. Sim, 2. Não, 9. Ignorado'
+      codigos: ['1', '2', '9']
+  - <<: *sim_nao_ign
+    name: agravtabac
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [5]
+      locator: '37. Doenças e agravos associados, Tabagismo (dicionário: AGRAVTABACO; DBF: AGRAVTABAC): 1. Sim, 2. Não, 9. Ignorado'
+      codigos: ['1', '2', '9']
+  - <<: *sim_nao_ign
+    name: agravoutra
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [5]
+      locator: '37. Doenças e agravos associados, Outras (AGRAVOUTRA): 1. Sim, 2. Não, 9. Ignorado'
+      codigos: ['1', '2', '9']
+  - &baciloscopia
+    name: bacilosc_e
+    type: string
+    x-decode:
+      '1': Positiva
+      '2': Negativa
+      '3': Não realizada
+      '4': Não se aplica
+    x-metadata:
+      missing_codes:
+        '4': not_applicable
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [6]
+      locator: '38. Baciloscopia de escarro (diagnóstico) (BACILOSC_E): 1. Positiva, 2. Negativa, 3. Não realizada, 4. Não se aplica'
+      codigos: ['1', '2', '3', '4']
+  - name: raiox_tora
+    type: string
+    x-decode:
+      '1': Suspeito
+      '2': Normal
+      '3': Outra patologia
+      '4': Não realizado
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [6]
+      locator: '39. Radiografia do tórax (RAIOX_TORA): 1. Suspeito, 2. Normal, 3. Outra patologia, 4. Não realizado'
+      codigos: ['1', '2', '3', '4']
+  - name: hiv
+    type: string
+    x-decode:
+      '1': Positivo
+      '2': Negativo
+      '3': Em andamento
+      '4': Não realizado
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [6]
+      locator: '40. HIV (HIV): 1. Positivo, 2. Negativo, 3. Em andamento, 4. Não realizado'
+      codigos: ['1', '2', '3', '4']
+  - <<: *sim_nao_ign
+    name: ant_retro
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [7]
+      locator: '41. Terapia Antirretroviral durante o tratamento para a TB (dicionário: ANTIRRETROVIRAL; DBF: ANT_RETRO): 1. Sim, 2. Não, 9. Ignorado'
+      codigos: ['1', '2', '9']
+  - name: histopatol
+    type: string
+    x-decode:
+      '1': Baar Positivo
+      '2': Sugestivo de TB
+      '3': Não sugestivo de TB
+      '4': Em andamento
+      '5': Não realizado
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [7]
+      locator: '42. Histopatologia (HISTOPATOL): 1. Baar Positivo a 5. Não realizado'
+      codigos: ['1', '2', '3', '4', '5']
+  - name: cultura_es
+    type: string
+    x-decode:
+      '1': Positiva
+      '2': Negativa
+      '3': Em andamento
+      '4': Não realizada
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [8]
+      locator: '43. Cultura (CULTURA_ES): 1. Positiva, 2. Negativa, 3. Em andamento, 4. Não realizada'
+      codigos: ['1', '2', '3', '4']
+  - name: test_molec
+    type: string
+    x-decode:
+      '1': Detectável sensível à Rifampicina
+      '2': Detectável resistente à Rifampicina
+      '3': Não detectável
+      '4': Inconclusivo
+      '5': Não realizado
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [8]
+      locator: '44. Teste Molecular Rápido TB (dicionário: TESTE_MOLEC; DBF: TEST_MOLEC): 1 a 5'
+      codigos: ['1', '2', '3', '4', '5']
+  - name: test_sensi
+    type: string
+    x-decode:
+      '1': Resistente somente à Isoniazida
+      '2': Resistente somente à Rifampicina
+      '3': Resistente à Isoniazida e Rifampicina
+      '4': Resistente a outras drogas de 1ª linha
+      '5': Sensível
+      '6': Em andamento
+      '7': Não realizado
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [8, 9]
+      locator: '45. Teste de Sensibilidade (dicionário: TEST_SENSIBILID; DBF: TEST_SENSI): 1 a 7'
+      codigos: ['1', '2', '3', '4', '5', '6', '7']
+  - <<: *baciloscopia
+    name: bacilosc_1
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [16]
+      locator: '58. Baciloscopia no 1º mês (BACILOSC_1): 1- Positiva, 2- Negativa, 3- Não realizada, 4- Não se aplica'
+      codigos: ['1', '2', '3', '4']
+  - <<: *baciloscopia
+    name: bacilosc_2
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [16]
+      locator: '58. Baciloscopia no 2º mês (BACILOSC_2): 1- Positiva, 2- Negativa, 3- Não realizada, 4- Não se aplica'
+      codigos: ['1', '2', '3', '4']
+  - <<: *baciloscopia
+    name: bacilosc_3
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [17]
+      locator: '58. Baciloscopia no 3º mês (BACILOSC_3): 1- Positiva, 2- Negativa, 3- Não realizada, 4- Não se aplica'
+      codigos: ['1', '2', '3', '4']
+  - <<: *baciloscopia
+    name: bacilosc_4
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [17]
+      locator: '58. Baciloscopia no 4º mês (BACILOSC_4): 1- Positiva, 2- Negativa, 3- Não realizada, 4- Não se aplica'
+      codigos: ['1', '2', '3', '4']
+  - <<: *baciloscopia
+    name: bacilosc_5
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [17]
+      locator: '58. Baciloscopia no 5º mês (BACILOSC_5): 1- Positiva, 2- Negativa, 3- Não realizada, 4- Não se aplica'
+      codigos: ['1', '2', '3', '4']
+  - <<: *baciloscopia
+    name: bacilosc_6
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [17]
+      locator: '58. Baciloscopia no 6º mês (BACILOSC_6): 1- Positiva, 2- Negativa, 3- Não realizada, 4- Não se aplica'
+      codigos: ['1', '2', '3', '4']
+  - <<: *baciloscopia
+    name: bac_apos_6
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [18]
+      locator: '58. Baciloscopia após 6º mês (dicionário: BACILOSC_APOS_6; DBF: BAC_APOS_6): 1- Positiva, 2- Negativa, 3- Não realizada, 4- Não se aplica'
+      codigos: ['1', '2', '3', '4']
+  - <<: *sim_nao_ign
+    name: tratsup_at
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [19]
+      locator: '60. Tratamento Diretamente Observado (TDO) realizado (TRATSUP_AT): 1- Sim, 2- Não, 9- Ignorado'
+      codigos: ['1', '2', '9']
+  - name: situa_ence
+    type: string
+    x-decode:
+      '1': Cura
+      '2': Abandono
+      '3': Óbito por TB
+      '4': Óbito por outras causas
+      '5': Transferência
+      '6': Mudança de Diagnóstico
+      '7': TB-DR
+      '8': Mudança de Esquema
+      '9': Falência
+      '10': Abandono Primário
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [19, 20]
+      locator: '62. Situação de encerramento (SITUA_ENCE): 1. Cura a 10. Abandono Primário
+        (o dicionário diz Varchar2(1); o DBF é C 2)'
+      codigos: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+  - name: transf
+    type: string
+    x-decode:
+      '1': Mesmo município
+      '2': Município diferente (mesma UF)
+      '3': UF diferente
+      '4': País diferente
+      '9': Ignorado
+    x-metadata:
+      missing_codes:
+        '9': ignored
+    fontes:
+    - source_id: sinan-0e0aac57f975
+      pages: [20, 21]
+      locator: '63. Se transferência (TRANSF): 1. Mesmo município, 2. Município diferente (mesma
+        UF), 3. UF diferente, 4. País diferente, 9. Ignorado'
+      codigos: ['1', '2', '3', '4', '9']

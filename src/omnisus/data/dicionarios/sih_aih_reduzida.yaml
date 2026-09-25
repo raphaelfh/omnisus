@@ -1,0 +1,1709 @@
+name: sih_aih_reduzida
+title: SIHSUS — AIH Reduzida (RD)
+profile: tabular-data-resource
+# latin-1 define os 256 bytes; cp1252 deixa 0x81, 0x8D, 0x8F, 0x90 e 0x9D sem
+# caractere e derrubava a importação inteira (RDSP2308 AUD_JUST 0x90,
+# STSP2212 ALVARA 0x8F). value.encode("latin-1") devolve os bytes do arquivo.
+encoding: latin-1
+schema:
+  fields:
+    # ========================================================================
+    # Identificação Administrativa
+    # ========================================================================
+    - name: uf_zi
+      type: string
+      label: UF do gestor
+    - name: ano_cmpt
+      type: integer
+      label: Ano de competência
+    - name: mes_cmpt
+      type: integer
+      label: Mês de competência
+    - name: n_aih
+      type: string
+      label: Número da AIH
+    - name: ident
+      type: string
+      label: Tipo da AIH
+      x-decode:
+        '0': Outras/ignorado
+        '1': Normal
+        '2': Outras/ignorado
+        '3': Outras/ignorado
+        '4': Outras/ignorado
+        '5': Longa permanência
+        '6': Outras/ignorado
+        '7': Outras/ignorado
+        '8': Outras/ignorado
+        '9': Outras/ignorado
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 09f3215720dc054cd57289cab5d47ecb7ef2e2d78b9fec9fbe9d112a5c891fc5
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sih-tab-f05b32f32908
+            pages: []
+            locator: 'RD2008.DEF: XTipo de AIH, IDENT, 1, CNV\IDENT.CNV; CNV/IDENT.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''AIH Principal (tipo 1)'',
+            CNV ''Normal''; ''3'' era ''AIH de Continuação (tipo 3)'', CNV ''Outras/ignorado''; ''5'' era
+            ''AIH Longa permanência (tipo 5)'', CNV ''Longa permanência'''
+    - name: sequencia
+      type: integer
+      label: Sequencial na remessa
+    - name: remessa
+      type: string
+      label: Número da remessa
+
+    # ========================================================================
+    # Estabelecimento
+    # ========================================================================
+    - name: cgc_hosp
+      type: string
+      label: CNPJ do hospital
+    - name: cnes
+      type: string
+      label: CNES do hospital
+      description: |
+        Código CNES do hospital (7 dígitos). O nome resolve via
+        ``aux_cnes`` quando ``import_cnes_master()`` foi rodado.
+      foreignKeys:
+        - { fields: cnes, reference: { resource: aux_cnes, fields: cnes } }
+    - name: cnpj_mant
+      type: string
+      label: CNPJ da mantenedora
+    - name: munic_mov
+      type: string
+      label: Município do hospital (IBGE)
+      x-normalization-hint: lpad_6
+      foreignKeys:
+        - { fields: munic_mov, reference: { resource: aux_municipios, fields: codigo_6 } }
+    - name: natureza
+      type: string
+      label: Natureza jurídica (antigo)
+      description: Natureza jurídica do hospital, com conteúdo até maio de 2012.
+      x-decode:
+        '00': Ignorado
+        '01': Ignorado
+        '02': Ignorado
+        '03': Ignorado
+        '04': Ignorado
+        '05': Ignorado
+        '06': Ignorado
+        '07': Ignorado
+        '08': Ignorado
+        '09': Ignorado
+        '10': Próprio
+        '11': Ignorado
+        '12': Ignorado
+        '13': Ignorado
+        '14': Ignorado
+        '15': Ignorado
+        '16': Ignorado
+        '17': Ignorado
+        '18': Ignorado
+        '19': Ignorado
+        '20': Contratado
+        '21': Ignorado
+        '22': Contratado optante SIMPLES
+        '23': Ignorado
+        '24': Ignorado
+        '25': Ignorado
+        '26': Ignorado
+        '27': Ignorado
+        '28': Ignorado
+        '29': Ignorado
+        '30': Federal
+        '31': Federal Verba Própria
+        '32': Ignorado
+        '33': Ignorado
+        '34': Ignorado
+        '35': Ignorado
+        '36': Ignorado
+        '37': Ignorado
+        '38': Ignorado
+        '39': Ignorado
+        '40': Estadual
+        '41': Estadual Verba Própria
+        '42': Ignorado
+        '43': Ignorado
+        '44': Ignorado
+        '45': Ignorado
+        '46': Ignorado
+        '47': Ignorado
+        '48': Ignorado
+        '49': Ignorado
+        '50': Municipal
+        '51': Ignorado
+        '52': Ignorado
+        '53': Ignorado
+        '54': Ignorado
+        '55': Ignorado
+        '56': Ignorado
+        '57': Ignorado
+        '58': Ignorado
+        '59': Ignorado
+        '60': Filantrópico
+        '61': Filantrópico isento tributos e contr.sociais
+        '62': Ignorado
+        '63': Filantrópico isento IR e contr.s/lucro líquido
+        '64': Ignorado
+        '65': Ignorado
+        '66': Ignorado
+        '67': Ignorado
+        '68': Ignorado
+        '69': Ignorado
+        '70': Universitário Ensino
+        '71': Ignorado
+        '72': Ignorado
+        '73': Ignorado
+        '74': Ignorado
+        '75': Ignorado
+        '76': Ignorado
+        '77': Ignorado
+        '78': Ignorado
+        '79': Ignorado
+        '80': Sindicato
+        '81': Ignorado
+        '82': Ignorado
+        '83': Ignorado
+        '84': Ignorado
+        '85': Ignorado
+        '86': Ignorado
+        '87': Ignorado
+        '88': Ignorado
+        '89': Ignorado
+        '90': Universitário Pesquisas
+        '91': Univ. Pesquisas isento tributos e contr.sociais
+        '92': Universitário de ensino e pesquisa privado
+        '93': Univ. Pesquisas isento IR e contr.s/lucro líquido
+        '94': Universitário de ensino e pesquisa privado
+        '95': Ignorado
+        '96': Ignorado
+        '97': Ignorado
+        '98': Ignorado
+        '99': Ignorado
+      x-metadata:
+        claims:
+        - target: /field/description
+          value_sha256: d9a20f8fb8d4f6f9f01aeeb252cf4c53d42def67c0bd2fba6989e46f396508e4
+          status: verified_in_source
+          checked_at: '2026-09-23'
+          method: pdf-read
+          reviewer: maintainer review
+          evidence:
+          - source_id: sihsus-1e89d5f2cc41
+            pages:
+            - 2
+            locator: 'NATUREZA char(2): "Natureza jurídica do hospital (com conteúdo até maio/12)"'
+          note: Descrição do layout; os arquivos de RR de 2022 e 2024 trazem só '00'.
+        - target: /field/codes
+          value_sha256: d9e116a3616391f2860d66ffa88f4cff04022c7583923d95c131a75c3247ef71
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sih-tab-f05b32f32908
+            pages: []
+            locator: 'RD2008.DEF: LNatureza, NATUREZA, 1, CNV\NATUREZA.CNV; CNV/NATUREZA.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''10'' era ''Administração direta da
+            saúde (MS/SES/SMS)'', CNV ''Próprio''; ''20'' era ''Administração direta de outros órgãos'', CNV
+            ''Contratado''; ''30'' era ''Administração indireta — Autarquias'', CNV ''Federal''; ''40'' era
+            ''Administração indireta — Fundações públicas'', CNV ''Estadual''; ''50'' era ''Administração
+            indireta — Empresa pública'', CNV ''Municipal''; ''60'' era ''Administração indireta — Org. social
+            pública'', CNV ''Filantrópico''; ''61'' era ''Entidade beneficente sem fins lucrativos'', CNV
+            ''Filantrópico isento tributos e contr.sociais''; ''70'' era ''Entidade empresarial'', CNV ''Universitário
+            Ensino''; ''80'' era ''Entidade sem fins lucrativos'', CNV ''Sindicato'''
+    - name: nat_jur
+      type: string
+      label: Natureza jurídica (CONCLA)
+    - name: gestao
+      type: string
+      label: Tipo de gestão
+      x-decode:
+        '0': Estadual
+        '1': Municipal plena assist
+        '2': Estadual plena
+        '3': Não definida
+        '4': Não definida
+        '5': Não definida
+        '6': Não definida
+        '7': Não definida
+        '8': Não definida
+        '9': Não definida
+        E: Estadual plena
+        M: Municipal plena assist
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 1f7afbd8ec687eb01947ff6759a9a6d7af201a75af70f9a19f7a41d576aca7d7
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sih-tab-f05b32f32908
+            pages: []
+            locator: 'RD2008.DEF: XGestão, GESTAO, 1, CNV\GESTAO.CNV; CNV/GESTAO.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''Municipal'', CNV ''Municipal
+            plena assist''; ''3'' era ''Municipal plena (NOAS)'', CNV ''Não definida''; ''4'' era ''Municipal
+            plena (NOB)'', CNV ''Não definida'''
+    - name: espec
+      type: string
+      label: Especialidade do leito
+      x-decode:
+        '01': 01-Cirúrgico
+        '02': 02-Obstétricos
+        '03': 03-Clínico
+        '04': 04-Crônicos
+        '05': 05-Psiquiatria
+        '06': 06-Pneumologia Sanitária (Tisiologia)
+        '07': 07-Pediátricos
+        '08': 08-Reabilitação
+        '09': 09-Leito Dia / Cirúrgicos
+        '10': 10-Leito Dia / Aids
+        '11': 11-Leito Dia / Fibrose Cística
+        '12': 12-Leito Dia / Intercorrência Pós-Transplante
+        '13': 13-Leito Dia / Geriatria
+        '14': 14-Leito Dia / Saúde Mental
+        '51': 51-UTI II Adulto COVID 19
+        '52': 52-UTI II Pediátrica COVID 19
+        '64': 64-Unidade Intermediária
+        '65': 65-Unidade Intermediária Neonatal
+        '74': 74-UTI I
+        '75': 75-UTI Adulto II
+        '76': 76-UTI Adulto III
+        '77': 77-UTI Infantil I
+        '78': 78-UTI Infantil II
+        '79': 79-UTI Infantil III
+        '80': 80-UTI Neonatal I
+        '81': 81-UTI Neonatal II
+        '82': 82-UTI Neonatal III
+        '83': 83-UTI Queimados
+        '84': 84-Acolhimento Noturno
+        '85': 85-UTI Coronariana-UCO tipo II
+        '86': 86-UTI Coronariana-UCO tipo III
+        '87': 87-Saúde Mental (Clínico)
+        '88': 88-Queimado Adulto (Clínico)
+        '89': 89-Queimado Pediátrico (Clínico)
+        '90': 90-Queimado Adulto (Cirúrgico)
+        '91': 91-Queimado Pediátrico (Cirúrgico)
+        '92': 92-UCI Unidade de Cuidados Intermediarios Neonatal Convencional
+        '93': 93-UCI Unidade de Cuidados Intermediarios Neonatal Canguru
+        '94': 94-UCI Unidade de Cuidados Intermediarios Pediatrico
+        '95': 95-UCI Unidade de Cuidados Intermediarios Adulto
+        '96': 96-Suporte Ventilatório Pulmonar COVID-19
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: e1b507f238c6949b3f843a2135f0f7a4dfe4a3799dbe86d0b1e3bbc0cd0bab5e
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sih-tab-f05b32f32908
+            pages: []
+            locator: 'RD2008.DEF: XLeito\Especialidade, ESPEC, 1, CNV\LEITOS.CNV; CNV/LEITOS.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''01'' era ''Cirúrgico'', CNV ''01-Cirúrgico'';
+            ''02'' era ''Obstétrico'', CNV ''02-Obstétricos''; ''03'' era ''Clínico'', CNV ''03-Clínico'';
+            ''04'' era ''Crônico (longa permanência)'', CNV ''04-Crônicos''; ''05'' era ''Psiquiatria'', CNV
+            ''05-Psiquiatria''; ''06'' era ''Pneumologia sanitária'', CNV ''06-Pneumologia Sanitária (Tisiologia)'';
+            ''07'' era ''Reabilitação'', CNV ''07-Pediátricos''; ''08'' era ''Clínico/Cirúrgico'', CNV ''08-Reabilitação'';
+            ''09'' era ''Pediatria clínica'', CNV ''09-Leito Dia / Cirúrgicos''; ''10'' era ''Pediatria cirúrgica'',
+            CNV ''10-Leito Dia / Aids''; ''11'' era ''Hospital-dia'', CNV ''11-Leito Dia / Fibrose Cística'';
+            ''12'' era ''Psiquiatria hospital-dia'', CNV ''12-Leito Dia / Intercorrência Pós-Transplante'''
+        - id: espec-17-sem-fonte
+          status: open
+          description: '''17'' fica sem rótulo: LEITOS.CNV (TAB_SIH), ligado a ESPEC no RD2008.DEF e no RJ2008.DEF,
+            lista 41 códigos, 01 a 14, 51, 52, 64, 65 e 74 a 96; o IT SIHSUS 1603 descreve ESPEC sem códigos
+            (p. 1). SP 2022: 36 linhas (RDSP2201 23, RDSP2202 13).'
+    - name: complex
+      type: string
+      label: Complexidade
+      x-decode:
+        '00': Não se aplica
+        '01': Atenção Básica
+        '02': Média complexidade
+        '03': Alta complexidade
+        '04': Não se aplica
+        '05': Não se aplica
+        '06': Não se aplica
+        '07': Não se aplica
+        '08': Não se aplica
+        '09': Não se aplica
+        '10': Não se aplica
+        '11': Não se aplica
+        '12': Não se aplica
+        '13': Não se aplica
+        '14': Não se aplica
+        '15': Não se aplica
+        '16': Não se aplica
+        '17': Não se aplica
+        '18': Não se aplica
+        '19': Não se aplica
+        '20': Não se aplica
+        '21': Não se aplica
+        '22': Não se aplica
+        '23': Não se aplica
+        '24': Não se aplica
+        '25': Não se aplica
+        '26': Não se aplica
+        '27': Não se aplica
+        '28': Não se aplica
+        '29': Não se aplica
+        '30': Não se aplica
+        '31': Não se aplica
+        '32': Não se aplica
+        '33': Não se aplica
+        '34': Não se aplica
+        '35': Não se aplica
+        '36': Não se aplica
+        '37': Não se aplica
+        '38': Não se aplica
+        '39': Não se aplica
+        '40': Não se aplica
+        '41': Não se aplica
+        '42': Não se aplica
+        '43': Não se aplica
+        '44': Não se aplica
+        '45': Não se aplica
+        '46': Não se aplica
+        '47': Não se aplica
+        '48': Não se aplica
+        '49': Não se aplica
+        '50': Não se aplica
+        '51': Não se aplica
+        '52': Não se aplica
+        '53': Não se aplica
+        '54': Não se aplica
+        '55': Não se aplica
+        '56': Não se aplica
+        '57': Não se aplica
+        '58': Não se aplica
+        '59': Não se aplica
+        '60': Não se aplica
+        '61': Não se aplica
+        '62': Não se aplica
+        '63': Não se aplica
+        '64': Não se aplica
+        '65': Não se aplica
+        '66': Não se aplica
+        '67': Não se aplica
+        '68': Não se aplica
+        '69': Não se aplica
+        '70': Não se aplica
+        '71': Não se aplica
+        '72': Não se aplica
+        '73': Não se aplica
+        '74': Não se aplica
+        '75': Não se aplica
+        '76': Não se aplica
+        '77': Não se aplica
+        '78': Não se aplica
+        '79': Não se aplica
+        '80': Não se aplica
+        '81': Não se aplica
+        '82': Não se aplica
+        '83': Não se aplica
+        '84': Não se aplica
+        '85': Não se aplica
+        '86': Não se aplica
+        '87': Não se aplica
+        '88': Não se aplica
+        '89': Não se aplica
+        '90': Não se aplica
+        '91': Não se aplica
+        '92': Não se aplica
+        '93': Não se aplica
+        '94': Não se aplica
+        '95': Não se aplica
+        '96': Não se aplica
+        '97': Não se aplica
+        '98': Não se aplica
+        '99': Não se aplica
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 05fbb346cbf08e3a75b6a1d1f4a470c42b08e01620734d7d26d1158ce2c650f2
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sih-tab-f05b32f32908
+            pages: []
+            locator: 'RD2008.DEF: LComplexidade do Procedimento, COMPLEX, 1, CNV\COMPLEX2.CNV; CNV/COMPLEX2.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''01'' era ''Atenção básica'', CNV ''Atenção
+            Básica'''
+
+    # ========================================================================
+    # Paciente
+    # ========================================================================
+    - name: nasc
+      type: date
+      label: Data de nascimento
+      x-format: yyyyMMdd
+      x-metadata:
+        physical_name: NASC
+        physical_type:
+          type: string
+          length: 8
+        applicability:
+          status: confirmed
+          data_period: null
+          valid_from: null
+          valid_until: null
+          conditions:
+          - Only the exact source identities in dataset.analytics.validated_sources.
+          reason: Documented rule compared with snapshot5 and the complete-file audit of
+            2026-09-14; no applicability to other source hashes is inferred.
+          evidence:
+          - source_id: sihsus-1e89d5f2cc41
+            pages:
+            - 1
+            locator: Layout RD, linha NASC, char(8), descrição da data
+        claims:
+        - target: /field/format
+          value_sha256: 22b7645fd60de2bfe0dc4203b75a4a01b1c8ff1a856491178e3c3bf01d6230d6
+          status: verified_in_source
+          checked_at: '2026-09-14'
+          method: Official PDF field/page inspection and comparison with audited snapshot.
+          reviewer: OpenAI Codex
+          evidence:
+          - source_id: sihsus-1e89d5f2cc41
+            pages:
+            - 1
+            locator: Layout RD, linha NASC, char(8), descrição da data
+          note: Applicability restricted to exact audited source identities.
+        - target: /field/physical_type
+          value_sha256: d250552cb2cfdaafce9d365c236eb53a1f7a34dfeee9dd571daa0ab10900e5c1
+          status: verified_in_source
+          checked_at: '2026-09-14'
+          method: Official PDF field/page inspection and comparison with audited snapshot.
+          reviewer: OpenAI Codex
+          evidence:
+          - source_id: sihsus-1e89d5f2cc41
+            pages:
+            - 1
+            locator: Layout RD, linha NASC, char(8), descrição da data
+          note: Applicability restricted to exact audited source identities.
+    - name: sexo
+      type: string
+      label: Sexo
+      x-decode:
+        '0': Ignorado
+        '1': Masculino
+        '2': Feminino
+        '3': Feminino
+        '4': Ignorado
+        '5': Ignorado
+        '6': Ignorado
+        '7': Ignorado
+        '8': Ignorado
+        '9': Ignorado
+      x-metadata:
+        physical_name: SEXO
+        physical_type:
+          type: string
+          length: 1
+        missing_codes:
+          '1': not_missing
+          '2': not_missing
+          '0': ignored
+          '9': ignored
+          '3': not_missing
+          '4': ignored
+          '5': ignored
+          '6': ignored
+          '7': ignored
+          '8': ignored
+        applicability:
+          status: confirmed
+          data_period: null
+          valid_from: null
+          valid_until: null
+          conditions:
+          - Only the exact source identities in dataset.analytics.validated_sources.
+          reason: Documented rule compared with snapshot5 and the complete-file audit of 2026-09-14; no applicability
+            to other source hashes is inferred.
+          evidence:
+          - source_id: sih-tab-714ed980d483
+            pages: []
+            locator: RD2008.DEF and CNV/SEXO.CNV:1 masculine,2/3 feminine
+        claims:
+        - target: /field/physical_type
+          value_sha256: 848e3f778dde84f2e0e943a8a871c439e45d31d3688547d85fcdb5b3987d2266
+          status: verified_in_source
+          checked_at: '2026-09-14'
+          method: Official SIM PDF / SIH TabWin source comparison; see audit evidence.
+          reviewer: OpenAI Codex
+          evidence:
+          - source_id: sihsus-1e89d5f2cc41
+            pages:
+            - 1
+            locator: SEXO char(1)
+          note: Applies only to audited source identities.
+        - target: /field/codes
+          value_sha256: fe81abcf0da350abe5172403d439ec4b93e2f31899091cd50336544ffae50b3f
+          status: verified_in_source
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sih-tab-f05b32f32908
+            pages: []
+            locator: 'RD2008.DEF: XSexo, SEXO, 1, CNV\SEXO.CNV; CNV/SEXO.CNV'
+          note: Mapa do CNV.
+    - name: munic_res
+      type: string
+      label: Município de residência (IBGE)
+      x-normalization-hint: lpad_6
+      foreignKeys:
+        - { fields: munic_res, reference: { resource: aux_municipios, fields: codigo_6 } }
+    - name: cep
+      type: string
+      label: CEP do paciente
+    - name: cod_idade
+      type: string
+      label: Unidade da idade
+      x-decode:
+        "0": "Ignorada"
+        "2": "Dias"
+        "3": "Meses"
+        "4": "Anos"
+        "5": "Mais de 100 anos"
+    - name: idade
+      type: integer
+      label: Idade
+      x-metadata:
+        physical_name: IDADE
+        unit: encoded
+        derivation:
+          kind: coded_age
+          inputs:
+          - idade
+          - cod_idade
+          rule_version: 1.2.0
+          output:
+          - idade_anos_completos
+          - idade_quantidade
+          - idade_unidade
+        applicability:
+          status: confirmed
+          data_period: null
+          valid_from: null
+          valid_until: null
+          conditions:
+          - Only the exact source identities in dataset.analytics.validated_sources.
+          reason: Documented rule compared with snapshot5 and the complete-file audit of
+            2026-09-14; no applicability to other source hashes is inferred.
+          evidence:
+          - source_id: sih-tab-714ed980d483
+            pages: []
+            locator: RD2008.DEF, CNV/IDADEDET.CNV; composite unit+two-digit quantity
+    - name: nacional
+      type: string
+      label: Nacionalidade
+    - name: raca_cor
+      type: string
+      label: Raça/cor
+      x-decode:
+        '00': Sem informação
+        '01': Branca
+        '02': Preta
+        '03': Parda
+        '04': Amarela
+        '05': Indígena
+        '06': Sem informação
+        '07': Sem informação
+        '08': Sem informação
+        '09': Sem informação
+        '10': Sem informação
+        '11': Sem informação
+        '12': Sem informação
+        '13': Sem informação
+        '14': Sem informação
+        '15': Sem informação
+        '16': Sem informação
+        '17': Sem informação
+        '18': Sem informação
+        '19': Sem informação
+        '20': Sem informação
+        '21': Sem informação
+        '22': Sem informação
+        '23': Sem informação
+        '24': Sem informação
+        '25': Sem informação
+        '26': Sem informação
+        '27': Sem informação
+        '28': Sem informação
+        '29': Sem informação
+        '30': Sem informação
+        '31': Sem informação
+        '32': Sem informação
+        '33': Sem informação
+        '34': Sem informação
+        '35': Sem informação
+        '36': Sem informação
+        '37': Sem informação
+        '38': Sem informação
+        '39': Sem informação
+        '40': Sem informação
+        '41': Sem informação
+        '42': Sem informação
+        '43': Sem informação
+        '44': Sem informação
+        '45': Sem informação
+        '46': Sem informação
+        '47': Sem informação
+        '48': Sem informação
+        '49': Sem informação
+        '50': Sem informação
+        '51': Sem informação
+        '52': Sem informação
+        '53': Sem informação
+        '54': Sem informação
+        '55': Sem informação
+        '56': Sem informação
+        '57': Sem informação
+        '58': Sem informação
+        '59': Sem informação
+        '60': Sem informação
+        '61': Sem informação
+        '62': Sem informação
+        '63': Sem informação
+        '64': Sem informação
+        '65': Sem informação
+        '66': Sem informação
+        '67': Sem informação
+        '68': Sem informação
+        '69': Sem informação
+        '70': Sem informação
+        '71': Sem informação
+        '72': Sem informação
+        '73': Sem informação
+        '74': Sem informação
+        '75': Sem informação
+        '76': Sem informação
+        '77': Sem informação
+        '78': Sem informação
+        '79': Sem informação
+        '80': Sem informação
+        '81': Sem informação
+        '82': Sem informação
+        '83': Sem informação
+        '84': Sem informação
+        '85': Sem informação
+        '86': Sem informação
+        '87': Sem informação
+        '88': Sem informação
+        '89': Sem informação
+        '90': Sem informação
+        '91': Sem informação
+        '92': Sem informação
+        '93': Sem informação
+        '94': Sem informação
+        '95': Sem informação
+        '96': Sem informação
+        '97': Sem informação
+        '98': Sem informação
+        '99': Sem informação
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: b100d29201424a2b8a0c000bc5e062f9106eabdccce5416e2620d1f8164a86ec
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sih-tab-f05b32f32908
+            pages: []
+            locator: 'RD2008.DEF: XCor/raça, RACA_COR, 1, CNV\RACACOR.CNV; CNV/RACACOR.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''Branca'', CNV não lista;
+            ''2'' era ''Preta'', CNV não lista; ''3'' era ''Parda'', CNV não lista; ''4'' era ''Amarela'',
+            CNV não lista; ''5'' era ''Indígena'', CNV não lista'
+    - name: etnia
+      type: string
+      label: Etnia (se indígena)
+    - name: cbor
+      type: string
+      label: Ocupação (CBO)
+    - name: homonimo
+      type: string
+      label: Homônimo
+      x-decode: { "0": "Não", "1": "Sim" }
+      x-metadata:
+        issues:
+        - id: homonimo-sem-fonte
+          status: open
+          description: '''2'' fica sem rótulo: nenhuma fonte dá os códigos. IT_SIHSUS_1603, p. 3,
+            só descreve o campo ("Indicador se o paciente da AIH é homônimo do paciente de outra
+            AIH"), e nenhum DEF ou CNV do TAB_SIH.zip (f05b32f32908) cita HOMONIMO. ''0'' e ''1''
+            também não têm fonte. RR 2024-01: ''2'' em 39 AIHs.'
+
+    # ========================================================================
+    # Internação
+    # ========================================================================
+    - name: dt_inter
+      type: date
+      label: Data de internação
+      x-format: yyyyMMdd
+      x-metadata:
+        physical_name: DT_INTER
+        physical_type:
+          type: string
+          length: 8
+        applicability:
+          status: confirmed
+          data_period: null
+          valid_from: null
+          valid_until: null
+          conditions:
+          - Only the exact source identities in dataset.analytics.validated_sources.
+          reason: Documented rule compared with snapshot5 and the complete-file audit of
+            2026-09-14; no applicability to other source hashes is inferred.
+          evidence:
+          - source_id: sihsus-1e89d5f2cc41
+            pages:
+            - 2
+            locator: Layout RD, linha DI_INTER, char(8), descrição da data
+        claims:
+        - target: /field/format
+          value_sha256: 22b7645fd60de2bfe0dc4203b75a4a01b1c8ff1a856491178e3c3bf01d6230d6
+          status: conflicting
+          checked_at: '2026-09-14'
+          method: Official PDF field/page inspection and comparison with audited snapshot.
+          reviewer: OpenAI Codex
+          evidence:
+          - source_id: sihsus-1e89d5f2cc41
+            pages:
+            - 2
+            locator: Layout RD, linha DI_INTER, char(8), descrição da data
+          note: Official layout spells DI_INTER and aaammdd despite char(8). The yyyyMMdd
+            interpretation is confirmed only for the exact audited source hashes, not
+            a literal transcription of this row.
+        - target: /field/physical_type
+          value_sha256: d250552cb2cfdaafce9d365c236eb53a1f7a34dfeee9dd571daa0ab10900e5c1
+          status: verified_in_source
+          checked_at: '2026-09-14'
+          method: Official PDF field/page inspection and comparison with audited snapshot.
+          reviewer: OpenAI Codex
+          evidence:
+          - source_id: sihsus-1e89d5f2cc41
+            pages:
+            - 2
+            locator: Layout RD, linha DI_INTER, char(8), descrição da data
+          note: Applicability restricted to exact audited source identities.
+        issues:
+        - id: documentary-format-typo
+          status: open
+          description: Official layout spells DI_INTER and aaammdd despite char(8). The
+            yyyyMMdd interpretation is confirmed only for the exact audited source hashes,
+            not a literal transcription of this row.
+    - name: dt_saida
+      type: date
+      label: Data de saída
+      x-format: yyyyMMdd
+      x-metadata:
+        physical_name: DT_SAIDA
+        physical_type:
+          type: string
+          length: 8
+        applicability:
+          status: confirmed
+          data_period: null
+          valid_from: null
+          valid_until: null
+          conditions:
+          - Only the exact source identities in dataset.analytics.validated_sources.
+          reason: Documented rule compared with snapshot5 and the complete-file audit of
+            2026-09-14; no applicability to other source hashes is inferred.
+          evidence:
+          - source_id: sihsus-1e89d5f2cc41
+            pages:
+            - 2
+            locator: Layout RD, linha DT_SAIDA, char(8), descrição da data
+        claims:
+        - target: /field/format
+          value_sha256: 22b7645fd60de2bfe0dc4203b75a4a01b1c8ff1a856491178e3c3bf01d6230d6
+          status: verified_in_source
+          checked_at: '2026-09-14'
+          method: Official PDF field/page inspection and comparison with audited snapshot.
+          reviewer: OpenAI Codex
+          evidence:
+          - source_id: sihsus-1e89d5f2cc41
+            pages:
+            - 2
+            locator: Layout RD, linha DT_SAIDA, char(8), descrição da data
+          note: Applicability restricted to exact audited source identities.
+        - target: /field/physical_type
+          value_sha256: d250552cb2cfdaafce9d365c236eb53a1f7a34dfeee9dd571daa0ab10900e5c1
+          status: verified_in_source
+          checked_at: '2026-09-14'
+          method: Official PDF field/page inspection and comparison with audited snapshot.
+          reviewer: OpenAI Codex
+          evidence:
+          - source_id: sihsus-1e89d5f2cc41
+            pages:
+            - 2
+            locator: Layout RD, linha DT_SAIDA, char(8), descrição da data
+          note: Applicability restricted to exact audited source identities.
+    - name: dias_perm
+      type: integer
+      label: Dias de permanência
+    - name: qt_diarias
+      type: integer
+      label: Diárias cobradas
+    - name: car_int
+      type: string
+      label: Caráter da internação
+      x-decode:
+        '01': 01 Eletivo
+        '02': 02 Urgência
+        '03': 03 Acidente no local trabalho ou a serv da empresa
+        '04': 04 Acidente no trajeto para o trabalho
+        '05': 05 Outros tipo de acidente de trânsito
+        '06': 06 Out tp lesões e envenen por agent quím físicos
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: b57ffa55dcb62d0e624514e530e6fed1e0a44f9f809efd5781e25e227d08a11d
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sih-tab-f05b32f32908
+            pages: []
+            locator: 'RD2008.DEF: LCaráter atendimento, CAR_INT, 1, CNV\CARATEND.CNV; CNV/CARATEND.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''01'' era ''Eletiva'', CNV ''01 Eletivo'';
+            ''02'' era ''Urgência'', CNV ''02 Urgência''; ''03'' era ''Acidente no local de trabalho'', CNV
+            ''03 Acidente no local trabalho ou a serv da empresa''; ''04'' era ''Acidente no trajeto p/ trabalho'',
+            CNV ''04 Acidente no trajeto para o trabalho''; ''05'' era ''Outros acidentes de trânsito'', CNV
+            ''05 Outros tipo de acidente de trânsito''; ''06'' era ''Outras causas externas'', CNV ''06 Out
+            tp lesões e envenen por agent quím físicos''; ''1'' era ''Eletiva'', CNV não lista; ''2'' era
+            ''Urgência'', CNV não lista'
+    - name: cobranca
+      type: string
+      label: Motivo de saída/cobrança
+      x-decode:
+        '11': Alta curado
+        '12': Alta melhorado
+        '13': Alta da mãe/puérpera e permanência recém-nascido
+        '14': Alta a pedido
+        '15': Alta com previsão de retorno p/acomp do paciente
+        '16': Alta por evasão
+        '17': Alta da mãe/puérpera e do recém-nascido
+        '18': Alta por outros motivos
+        '19': Alta de paciente agudo em psiquiatria
+        '21': Permanência por características próprias da doença
+        '22': Permanência por intercorrência
+        '23': Permanência por impossibilidade sócio-familiar
+        '24': Permanência proc doação órg, tec, cél-doador vivo
+        '25': Permanência proc doação órg, tec, cél-doador morto
+        '26': Permanência por mudança de procedimento
+        '27': Permanência por reoperação
+        '28': Permanência por outros motivos
+        '29': Transferência para internação domiciliar
+        '31': Transferência para outro estabelecimento
+        '32': Transferência para internação domiciliar
+        '41': Óbito com DO fornecida pelo médico assistente
+        '42': Óbito com DO fornecida pelo IML
+        '43': Óbito com DO fornecida pelo SVO
+        '51': Encerramento administrativo
+        '61': Alta da mãe/puérpera e do recém-nascido
+        '62': Alta da mãe/puérpera e permanência recém-nascido
+        '63': Alta da mãe/puérpera e óbito do recém-nascido
+        '64': Alta da mãe/puérpera com óbito fetal
+        '65': Óbito da gestante e do concepto
+        '66': Óbito da mãe/puérpera e alta do recém-nascido
+        '67': Óbito da mãe/puérpera e permanência recém-nascido
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 08cdd9aaf92b1ff40a62cf03086db6c6875bc4e6256ac5336d6788fd364d07c9
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sih-tab-f05b32f32908
+            pages: []
+            locator: 'RD2008.DEF: LMotivo Saída/Permanência, COBRANCA, 1, CNV\SAIDAPERM.CNV; CNV/SAIDAPERM.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''15'' era ''Alta com previsão de retorno'',
+            CNV ''Alta com previsão de retorno p/acomp do paciente''; ''21'' era ''Permanência por característica
+            da doença'', CNV ''Permanência por características próprias da doença''; ''23'' era ''Permanência
+            por impossibilidade socio-familiar'', CNV ''Permanência por impossibilidade sócio-familiar'';
+            ''24'' era ''Permanência por processo de doação de órgãos'', CNV ''Permanência proc doação órg,
+            tec, cél-doador vivo''; ''25'' era ''Permanência por mudança de procedimento'', CNV ''Permanência
+            proc doação órg, tec, cél-doador morto''; ''26'' era ''Permanência por reoperação'', CNV ''Permanência
+            por mudança de procedimento''; ''27'' era ''Permanência por outros motivos'', CNV ''Permanência
+            por reoperação''; ''28'' era ''Transferência para outro estab.'', CNV ''Permanência por outros
+            motivos''; ''31'' era ''Transferência para internação domiciliar'', CNV ''Transferência para outro
+            estabelecimento''; ''41'' era ''Óbito com DO pelo médico assistente'', CNV ''Óbito com DO fornecida
+            pelo médico assistente''; ''42'' era ''Óbito com DO pelo IML'', CNV ''Óbito com DO fornecida pelo
+            IML''; ''43'' era ''Óbito com DO pelo SVO'', CNV ''Óbito com DO fornecida pelo SVO''; ''61'' era
+            ''Alta mãe/puérpera e RN'', CNV ''Alta da mãe/puérpera e do recém-nascido''; ''62'' era ''Alta
+            mãe/puérpera e permanência RN'', CNV ''Alta da mãe/puérpera e permanência recém-nascido''; ''63''
+            era ''Alta mãe/puérpera e óbito RN'', CNV ''Alta da mãe/puérpera e óbito do recém-nascido''; ''64''
+            era ''Alta mãe/puérpera com óbito neonatal'', CNV ''Alta da mãe/puérpera com óbito fetal''; ''65''
+            era ''Óbito mãe/puérpera e alta RN'', CNV ''Óbito da gestante e do concepto''; ''66'' era ''Óbito
+            mãe/puérpera e permanência RN'', CNV ''Óbito da mãe/puérpera e alta do recém-nascido''; ''67''
+            era ''Óbito mãe/puérpera e óbito RN'', CNV ''Óbito da mãe/puérpera e permanência recém-nascido'''
+    - name: morte
+      type: integer
+      label: Óbito
+      x-decode:
+        '0': Sem óbito
+        '1': Com óbito
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: b9f5ab9277a51625f5753fd63190d7c055200c29dba492081f1b15c143d11bc1
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sih-tab-f05b32f32908
+            pages: []
+            locator: 'RD2008.DEF: XÓbitos, MORTE, 1, CNV\MORTES.CNV; CNV/MORTES.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''0'' era ''Não'', CNV ''Sem óbito'';
+            ''1'' era ''Sim'', CNV ''Com óbito'''
+
+    # ========================================================================
+    # Procedimentos
+    # ========================================================================
+    - name: proc_solic
+      type: string
+      label: Procedimento solicitado (SIGTAP)
+    - name: proc_rea
+      type: string
+      label: Procedimento realizado (SIGTAP)
+
+    # ========================================================================
+    # Diagnósticos CID-10
+    # ========================================================================
+    - name: diag_princ
+      type: string
+      label: Diagnóstico principal (CID-10)
+      foreignKeys:
+        - { fields: diag_princ, reference: { resource: aux_cid10, fields: codigo } }
+    - name: diag_secun
+      type: string
+      label: Diagnóstico secundário
+      foreignKeys:
+        - { fields: diag_secun, reference: { resource: aux_cid10, fields: codigo } }
+    - name: cid_notif
+      type: string
+      label: CID notificação compulsória
+    - name: cid_asso
+      type: string
+      label: CID causa associada
+      foreignKeys:
+        - { fields: cid_asso, reference: { resource: aux_cid10, fields: codigo } }
+    - name: cid_morte
+      type: string
+      label: CID causa da morte
+      foreignKeys:
+        - { fields: cid_morte, reference: { resource: aux_cid10, fields: codigo } }
+    - name: infehosp
+      type: string
+      label: Infecção hospitalar
+      x-decode:
+        ? ''
+        : Não informado
+        '0': Não
+        '1': Sim
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 36112cfe5d4d0c9bf13a3fa3d30b015b2579fdd97f064214ea37bcc42a49bf68
+          status: verified_in_source
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sih-tab-f05b32f32908
+            pages: []
+            locator: 'RD2008.DEF: XInfecção Hospitalar, INFEHOSP, 1, CNV\SIMNAO.CNV; CNV/SIMNAO.CNV'
+          note: Mapa do CNV.
+
+    # ========================================================================
+    # UTI / UCI
+    # ========================================================================
+    - name: uti_mes_in
+      type: integer
+      label: Dias UTI mês internação
+    - name: uti_mes_an
+      type: integer
+      label: Dias UTI mês anterior
+    - name: uti_mes_al
+      type: integer
+      label: Dias UTI mês alta
+    - name: uti_mes_to
+      type: integer
+      label: Total dias UTI
+    - name: marca_uti
+      type: string
+      label: Tipo de UTI
+      x-decode:
+        '00': Não utilizou UTI
+        '01': Utilizou mais de um tipo de UTI
+        '51': UTI adulto - tipo II COVID 19
+        '52': UTI pediátrica - tipo II COVID 19
+        '74': UTI adulto - tipo I
+        '75': UTI adulto - tipo II
+        '76': UTI adulto - tipo III
+        '77': UTI infantil - tipo I
+        '78': UTI infantil - tipo II
+        '79': UTI infantil - tipo III
+        '80': UTI neonatal - tipo I
+        '81': UTI neonatal - tipo II
+        '82': UTI neonatal - tipo III
+        '83': UTI de queimados
+        '85': UTI coronariana tipo II - UCO tipo II
+        '86': UTI coronariana tipo III - UCO tipo III
+        '99': UTI Doador
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 4343b6a34196e50049905b4ff1ab2cbd43a1a662772e16c05b5d36d629cd1e25
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sih-tab-f05b32f32908
+            pages: []
+            locator: 'RD2008.DEF: XTipo de UTI, MARCA_UTI, 1, CNV\MARCAUTI.CNV; CNV/MARCAUTI.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''01'' era ''UTI Adulto tipo I'', CNV
+            ''Utilizou mais de um tipo de UTI''; ''02'' era ''UTI Adulto tipo II'', CNV não lista; ''03''
+            era ''UTI Adulto tipo III'', CNV não lista; ''04'' era ''UTI Infantil tipo I'', CNV não lista;
+            ''05'' era ''UTI Infantil tipo II'', CNV não lista; ''06'' era ''UTI Infantil tipo III'', CNV
+            não lista; ''07'' era ''UTI Neonatal tipo I'', CNV não lista; ''08'' era ''UTI Neonatal tipo II'',
+            CNV não lista; ''09'' era ''UTI Neonatal tipo III'', CNV não lista; ''10'' era ''UTI de Queimados'',
+            CNV não lista; ''11'' era ''UTI Coronariana tipo II (UCO II)'', CNV não lista; ''12'' era ''UTI
+            Coronariana tipo III (UCO III)'', CNV não lista; ''74'' era ''UTI Adulto (antes da tipificação)'',
+            CNV ''UTI adulto - tipo I''; ''75'' era ''UTI Infantil (antes da tipificação)'', CNV ''UTI adulto
+            - tipo II''; ''76'' era ''UTI Neonatal (antes da tipificação)'', CNV ''UTI adulto - tipo III'''
+    - name: val_uti
+      type: number
+      label: Valor UTI
+    - name: uti_int_in
+      type: integer
+      label: Dias UCI mês internação
+    - name: uti_int_an
+      type: integer
+      label: Dias UCI mês anterior
+    - name: uti_int_al
+      type: integer
+      label: Dias UCI mês alta
+    - name: uti_int_to
+      type: integer
+      label: Total dias UCI
+    - name: marca_uci
+      type: string
+      label: Tipo de UCI
+      x-decode:
+        '00': Não utilizou UCI
+        '01': Unidade de cuidados intermed neonatal convencional
+        '02': Unidade de cuidados intermed neonatal canguru
+        '03': Unidade intermediária neonatal
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 54278ce7f2601738cc118761108d23734257ccb60a94714cb69339bc3e74d07e
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sih-tab-f05b32f32908
+            pages: []
+            locator: 'RD2008.DEF: XTipo de UCI, MARCA_UCI, 1, CNV\MARCAUCI.CNV; CNV/MARCAUCI.cnv'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''51'' era ''UCI Adulto'', CNV não lista;
+            ''52'' era ''UCI Pediátrica/Neonatal convencional'', CNV não lista; ''53'' era ''UCI Neonatal
+            canguru'', CNV não lista'
+    - name: val_uci
+      type: number
+      label: Valor UCI
+
+    # ========================================================================
+    # Acompanhante e Valores Financeiros
+    # ========================================================================
+    - name: diar_acom
+      type: integer
+      label: Diárias de acompanhante
+    - name: val_sh
+      type: number
+      label: Valor serviços hospitalares
+    - name: val_sp
+      type: number
+      label: Valor serviços profissionais
+    - name: val_sadt
+      type: number
+      label: Valor SADT
+    - name: val_rn
+      type: number
+      label: Valor recém-nascido
+    - name: val_acomp
+      type: number
+      label: Valor acompanhante
+    - name: val_ortp
+      type: number
+      label: Valor órteses/próteses
+    - name: val_sangue
+      type: number
+      label: Valor sangue/hemoderivados
+    - name: val_sadtsr
+      type: number
+      label: Valor tomografia/ressonância
+    - name: val_transp
+      type: number
+      label: Valor transplantes
+    - name: val_obsang
+      type: number
+      label: Valor analgesia obstétrica
+    - name: val_ped1ac
+      type: number
+      label: Valor acompanhante pediatria
+    - name: val_tot
+      type: number
+      label: Valor total da AIH
+    - name: us_tot
+      type: number
+      label: Valor total (dólar referência)
+    - name: val_sh_fed
+      type: number
+      label: Complemento federal — SH
+    - name: val_sp_fed
+      type: number
+      label: Complemento federal — SP
+    - name: val_sh_ges
+      type: number
+      label: Complemento gestor — SH
+    - name: val_sp_ges
+      type: number
+      label: Complemento gestor — SP
+
+    # ========================================================================
+    # Financiamento
+    # ========================================================================
+    - name: financ
+      type: string
+      label: Tipo de financiamento
+      x-decode:
+        '01': 01 Atenção Básica (PAB)
+        '02': 02 Assistência Farmacêutica
+        '04': 04 Fundo de Ações Estratégicas e Compensações FAEC
+        '05': 05 Incentivo - MAC
+        '06': 06 Média e Alta Complexidade (MAC)
+        '07': 07 Vigilância em Saúde
+        '08': 08 Gestão em Saúde
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: b502a7a998f58f54bb87882d47423fe45e2abb8414a5183bba213b61687fce51
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sih-tab-f05b32f32908
+            pages: []
+            locator: 'RD2008.DEF: XFinanciamento, FINANC, 1, CNV\FINANC.CNV; CNV/FINANC.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''01'' era ''PAB — Piso da Atenção Básica'',
+            CNV ''01 Atenção Básica (PAB)''; ''02'' era ''MAC (antigo)'', CNV ''02 Assistência Farmacêutica'';
+            ''04'' era ''FAEC — Fundo de Ações Estratégicas'', CNV ''04 Fundo de Ações Estratégicas e Compensações
+            FAEC''; ''05'' era ''Incentivo MAC'', CNV ''05 Incentivo - MAC''; ''06'' era ''MAC — Média e Alta
+            Complexidade'', CNV ''06 Média e Alta Complexidade (MAC)''; ''07'' era ''Incentivo FAEC'', CNV
+            ''07 Vigilância em Saúde'''
+    - name: faec_tp
+      type: string
+      label: Subtipo FAEC
+    - name: regct
+      type: string
+      label: Regra contratual
+    - name: rubrica
+      type: string
+      label: Rubrica orçamentária
+
+    # ========================================================================
+    # Dados Obstétricos / Trabalho
+    # ========================================================================
+    - name: num_filhos
+      type: integer
+      label: Número de filhos
+    - name: instru
+      type: string
+      label: Grau de instrução
+      x-decode:
+        '0': Ignorado/não se aplica
+        '1': Analfabeto
+        '2': 1º grau
+        '3': 2º grau
+        '4': 3º grau
+        '5': Ignorado/não se aplica
+        '6': Ignorado/não se aplica
+        '7': Ignorado/não se aplica
+        '8': Ignorado/não se aplica
+        '9': Ignorado/não se aplica
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 595254be2c676a5195ea0ca54a893ffbd5afeac487ded164340700af37e75d95
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sih-tab-f05b32f32908
+            pages: []
+            locator: 'RD2008.DEF: XGrau de instrução, INSTRU, 1, CNV\INSTRU.CNV; CNV/INSTRU.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''0'' era ''Ignorado'', CNV ''Ignorado/não
+            se aplica''; ''2'' era ''Ensino Fundamental'', CNV ''1º grau''; ''3'' era ''Ensino Médio'', CNV
+            ''2º grau''; ''4'' era ''Ensino Superior'', CNV ''3º grau''; ''9'' era ''Ignorado'', CNV ''Ignorado/não
+            se aplica'''
+    - name: contracep1
+      type: string
+      label: 1º método contraceptivo
+    - name: contracep2
+      type: string
+      label: 2º método contraceptivo
+    - name: gestrisco
+      type: string
+      label: Gestante alto risco
+      x-decode:
+        ? ''
+        : Não informado
+        '0': Não
+        '1': Sim
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 36112cfe5d4d0c9bf13a3fa3d30b015b2579fdd97f064214ea37bcc42a49bf68
+          status: verified_in_source
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sih-tab-f05b32f32908
+            pages: []
+            locator: 'RD2008.DEF: XGestante de risco, GESTRISCO, 1, CNV\SIMNAO.CNV; CNV/SIMNAO.CNV'
+          note: Mapa do CNV.
+    - name: insc_pn
+      type: string
+      label: Inscrição pré-natal
+    - name: cnaer
+      type: string
+      label: CNAE (acidente de trabalho)
+    - name: vincprev
+      type: string
+      label: Vínculo previdenciário
+      x-decode:
+        '0': Não classificado
+        '1': Autônomo
+        '2': Desempregado
+        '3': Aposentado
+        '4': Não segurado
+        '5': Empregado
+        '6': Empregador
+        '7': Não classificado
+        '8': Não classificado
+        '9': Não classificado
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 52f021de88a24ff76075cbea8171064f8430de036ac18981ef4980504033719c
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sih-tab-f05b32f32908
+            pages: []
+            locator: 'RD2008.DEF: XVínculo previdenciário, VINCPREV, 1, CNV\VINCPREV.CNV; CNV/VINCPREV.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''Previdência social'', CNV
+            ''Autônomo''; ''2'' era ''Não'', CNV ''Desempregado'''
+    - name: ind_vdrl
+      type: string
+      label: Exame VDRL (sífilis)
+      x-decode:
+        ? ''
+        : Não informado
+        '0': Não
+        '1': Sim
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: 36112cfe5d4d0c9bf13a3fa3d30b015b2579fdd97f064214ea37bcc42a49bf68
+          status: conflicting
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sih-tab-f05b32f32908
+            pages: []
+            locator: 'RD2008.DEF: XFez VDRL, IND_VDRL, 1, CNV\SIMNAO.CNV; CNV/SIMNAO.CNV'
+          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        issues:
+        - id: cnv-difere-do-mapa-anterior
+          status: open
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''0'' era ''Não realizado'', CNV ''Não'';
+            ''1'' era ''Reagente (positivo)'', CNV ''Sim''; ''2'' era ''Não reagente (negativo)'', CNV não
+            lista; ''9'' era ''Ignorado'', CNV não lista'
+
+    # ========================================================================
+    # Autorização e Auditoria
+    # ========================================================================
+    - name: num_proc
+      type: string
+      label: Número do processamento
+    - name: cpf_aut
+      type: string
+      label: CPF do autorizador
+    - name: gestor_cod
+      type: string
+      label: Código motivo autorização
+    - name: gestor_tp
+      type: string
+      label: Tipo gestor autorizador
+      x-decode:
+        "0": "Sem autorização"
+        "1": "Auditor"
+        "2": "Autorizador"
+    - name: gestor_cpf
+      type: string
+      label: CPF do gestor
+    - name: gestor_dt
+      type: date
+      label: Data de autorização
+      x-format: yyyyMMdd
+      x-metadata:
+        physical_name: GESTOR_DT
+        physical_type:
+          type: string
+          length: 8
+        applicability:
+          status: confirmed
+          data_period: null
+          valid_from: null
+          valid_until: null
+          conditions:
+          - Only the exact source identities in dataset.analytics.validated_sources.
+          reason: Documented rule compared with snapshot5 and the complete-file audit of
+            2026-09-14; no applicability to other source hashes is inferred.
+          evidence:
+          - source_id: sihsus-1e89d5f2cc41
+            pages:
+            - 3
+            locator: Layout RD, linha GESTOR_DT, char(8), descrição da data
+        claims:
+        - target: /field/format
+          value_sha256: 22b7645fd60de2bfe0dc4203b75a4a01b1c8ff1a856491178e3c3bf01d6230d6
+          status: verified_in_source
+          checked_at: '2026-09-14'
+          method: Official PDF field/page inspection and comparison with audited snapshot.
+          reviewer: OpenAI Codex
+          evidence:
+          - source_id: sihsus-1e89d5f2cc41
+            pages:
+            - 3
+            locator: Layout RD, linha GESTOR_DT, char(8), descrição da data
+          note: Applicability restricted to exact audited source identities.
+        - target: /field/physical_type
+          value_sha256: d250552cb2cfdaafce9d365c236eb53a1f7a34dfeee9dd571daa0ab10900e5c1
+          status: verified_in_source
+          checked_at: '2026-09-14'
+          method: Official PDF field/page inspection and comparison with audited snapshot.
+          reviewer: OpenAI Codex
+          evidence:
+          - source_id: sihsus-1e89d5f2cc41
+            pages:
+            - 3
+            locator: Layout RD, linha GESTOR_DT, char(8), descrição da data
+          note: Applicability restricted to exact audited source identities.
+    - name: aud_just
+      type: string
+      label: Justificativa do auditor
+    - name: sis_just
+      type: string
+      label: Justificativa do sistema
+    - name: tot_pt_sp
+      type: integer
+      label: Total pontos serviços profissionais
+    - name: seq_aih5
+      type: string
+      label: Sequencial longa permanência
+
+    # ========================================================================
+    # Partições + proveniência (adicionados pelo ETL)
+    # ========================================================================
+    - name: ano
+      type: integer
+      label: Ano
+      constraints: { required: true }
+      x-metadata:
+        derivation:
+          kind: source_partition
+          input: source_uri
+          rule: DATASUS filename scope
+    - name: mes
+      type: integer
+      label: Mês
+      constraints: { minimum: 1, maximum: 12 }
+      x-metadata:
+        derivation:
+          kind: source_partition
+          input: source_uri
+          rule: DATASUS filename scope
+    - name: uf
+      type: string
+      label: UF
+      constraints: { required: true, pattern: "^[A-Z]{2}$" }
+      x-metadata:
+        derivation:
+          kind: source_partition
+          input: source_uri
+          rule: DATASUS filename scope
+    - name: _source_release
+      type: string
+      label: Modalidade da fonte
+      x-decode: {final: Final, prelim: Preliminar}
+      derivation: {kind: publication, input: source_uri, rule: release_from_uri}
+      x-metadata:
+        derivation:
+          kind: publication
+          input: source_uri
+          rule: release_from_uri
+    - name: diagsec1
+      type: string
+      label: Diagnóstico secundário 1
+    - name: tpdisec1
+      type: string
+      label: Tipo de diagnóstico secundário 1
+    - name: diagsec2
+      type: string
+      label: Diagnóstico secundário 2
+    - name: tpdisec2
+      type: string
+      label: Tipo de diagnóstico secundário 2
+    - name: diagsec3
+      type: string
+      label: Diagnóstico secundário 3
+    - name: tpdisec3
+      type: string
+      label: Tipo de diagnóstico secundário 3
+    - name: diagsec4
+      type: string
+      label: Diagnóstico secundário 4
+    - name: tpdisec4
+      type: string
+      label: Tipo de diagnóstico secundário 4
+    - name: diagsec5
+      type: string
+      label: Diagnóstico secundário 5
+    - name: tpdisec5
+      type: string
+      label: Tipo de diagnóstico secundário 5
+    - name: diagsec6
+      type: string
+      label: Diagnóstico secundário 6
+    - name: tpdisec6
+      type: string
+      label: Tipo de diagnóstico secundário 6
+    - name: diagsec7
+      type: string
+      label: Diagnóstico secundário 7
+    - name: tpdisec7
+      type: string
+      label: Tipo de diagnóstico secundário 7
+    - name: diagsec8
+      type: string
+      label: Diagnóstico secundário 8
+    - name: tpdisec8
+      type: string
+      label: Tipo de diagnóstico secundário 8
+    - name: diagsec9
+      type: string
+      label: Diagnóstico secundário 9
+    - name: tpdisec9
+      type: string
+      label: Tipo de diagnóstico secundário 9
+
+x-source-format: dbc
+x-source-family: datasus_ftp
+x-source-prefix: RD
+x-partitions: [ano, uf, mes]
+x-version: "2.6.0"
+
+x-analytics:
+  version: 1.2.0
+  applicability_policy: exact_audited_source_identity
+  validated_sources:
+  - uf: RR
+    ano: 2023
+    mes: 1
+    release: final
+    source_sha256: e9f717ff378477a883d19f733efe8409aee7f7795a027584b9f383364264d8e4
+  - ano: 2024
+    mes: 1
+    uf: SP
+    release: final
+    source_sha256: 9d0d841b8d0c6fa4600a06a2da9f861e0ac0e8681a4f772378a8f25f929e4847
+  - ano: 2024
+    mes: 2
+    uf: SP
+    release: final
+    source_sha256: 5ba1da3b7d7025ee7cc4b69b0f69808ffb25040916ffffac732e637c5d845d8a
+  - ano: 2024
+    mes: 3
+    uf: SP
+    release: final
+    source_sha256: 0ed4fbc0c04d5aa2f8a1fea2037c50e3470c43afea07d358a5d510bc52e61523
+  - ano: 2024
+    mes: 4
+    uf: SP
+    release: final
+    source_sha256: 6ce518e7c7701143859ce0ee3a105613677d2568fb2b8925a976546d5d7dd920
+  - ano: 2024
+    mes: 5
+    uf: SP
+    release: final
+    source_sha256: f2d924b6dd7bd7f36dface3a90136837546b4f6354cdd38c0ed3d4d33f50fe15
+  - ano: 2025
+    mes: 1
+    uf: SP
+    release: final
+    source_sha256: 33f811186a6a4dfa377cea2b75e739a7b1316c516d8895473af4c3685a095553
+  - ano: 2025
+    mes: 2
+    uf: SP
+    release: final
+    source_sha256: 7d196729e3b5ba3c1fe3d184f3b5f3b73813abe9a0bd28bbd5c669b1437413b7
+  age:
+    field: idade
+    kind: sih
+    units:
+      '2':
+        unit: day
+        minimum_value: 0
+        maximum_value: 29
+      '3':
+        unit: month
+        minimum_value: 1
+        maximum_value: 11
+      '4':
+        unit: year
+        minimum_value: 1
+        maximum_value: 99
+      '5':
+        unit: year
+        offset: 100
+        minimum_value: 0
+        maximum_value: 30
+    maximum_value: 99
+    unit_field: cod_idade
+    invalid_composites:
+    - '000'
+    - '999'
+    evidence:
+    - source_id: sih-tab-714ed980d483
+      pages: []
+      locator: RD2008.DEF, CNV/IDADEDET.CNV; composite unit+two-digit quantity
+    notes:
+    - IDADE999 is not a universal ignored sentinel. Composites000/999 are invalid.
+    - Composite312 maps11months in IDADEDET but is outside this exact-quantity decoder;
+      unsupported.
+    - Composite 230 is "1 mês" in IDADEDET, not 30 days; unsupported since rule 1.2.0
+      (1.1.0 read it as 30 days because the 2026-09-14 snapshot held days 0-30).
+  sex:
+    field: sexo
+    categories:
+      '1': male
+      '2': female
+      '0': null
+      '9': null
+      '3': female
+      '4': null
+      '5': null
+      '6': null
+      '7': null
+      '8': null
+    evidence:
+    - source_id: sih-tab-714ed980d483
+      pages: []
+      locator: RD2008.DEF and CNV/SEXO.CNV:1 masculine,2/3 feminine
+    - source_id: tabnet-5a97b03fe23a
+      pages:
+      - 21
+      locator: MESES.CNV example - a code listed after the fallback range takes the later
+        line ("prevalece, por aparecer por último")
+  dates:
+  - nasc
+  - dt_inter
+  - dt_saida
+  - gestor_dt

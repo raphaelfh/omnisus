@@ -1,0 +1,3951 @@
+{
+  "snapshot_id": 5,
+  "target_kind": "local",
+  "library_version": "0.3.0",
+  "audited_at": "2026-09-14T22:24:52.961215+00:00",
+  "datasets": {
+    "sim_obitos": {
+      "projection": {
+        "columns": [
+          {
+            "name": "idade_anos_completos",
+            "sql_type": "INTEGER",
+            "expression": "CAST(CASE WHEN ((trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) IS NULL OR trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) = '')) OR (NOT regexp_full_match(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), '[0-9]{3}')) OR ((trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) IN ('000')) OR (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) IN ('9'))) THEN NULL WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '0' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN 0 WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '1' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN 0 WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '2' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN 0 WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '3' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 11) THEN (TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) // 12) WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '4' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN (TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) + 0) WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '5' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN (TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) + 100) ELSE NULL END AS INTEGER)"
+          },
+          {
+            "name": "idade_status",
+            "sql_type": "VARCHAR",
+            "expression": "CASE WHEN (trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) IS NULL OR trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) = '') THEN 'missing' WHEN NOT regexp_full_match(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), '[0-9]{3}') THEN 'invalid' WHEN (trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) IN ('000')) OR (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) IN ('9')) THEN 'ignored' WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '0' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN 'valid' WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '1' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN 'valid' WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '2' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN 'valid' WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '3' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 11) THEN 'valid' WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '4' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN 'valid' WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '5' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN 'valid' ELSE 'unsupported' END"
+          },
+          {
+            "name": "sexo_categoria",
+            "sql_type": "VARCHAR",
+            "expression": "CASE WHEN trim(CAST(\"sexo\" AS VARCHAR)) = '1' THEN 'male' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = '2' THEN 'female' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = 'M' THEN 'male' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = 'F' THEN 'female' ELSE NULL END"
+          },
+          {
+            "name": "sexo_status",
+            "sql_type": "VARCHAR",
+            "expression": "CASE WHEN trim(CAST(\"sexo\" AS VARCHAR)) IS NULL OR trim(CAST(\"sexo\" AS VARCHAR)) = '' THEN 'missing' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = '1' THEN 'valid' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = '2' THEN 'valid' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = '0' THEN 'ignored' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = '9' THEN 'ignored' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = 'M' THEN 'valid' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = 'F' THEN 'valid' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = 'I' THEN 'ignored' ELSE 'unsupported' END"
+          },
+          {
+            "name": "dtobito_data",
+            "sql_type": "DATE",
+            "expression": "CASE WHEN regexp_full_match(trim(CAST(\"dtobito\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtobito\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END"
+          },
+          {
+            "name": "dtobito_data_status",
+            "sql_type": "VARCHAR",
+            "expression": "CASE WHEN trim(CAST(\"dtobito\" AS VARCHAR)) IS NULL OR trim(CAST(\"dtobito\" AS VARCHAR)) = '' THEN 'missing' WHEN (CASE WHEN regexp_full_match(trim(CAST(\"dtobito\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtobito\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END) IS NULL THEN 'invalid' ELSE 'valid' END"
+          },
+          {
+            "name": "dtnasc_data",
+            "sql_type": "DATE",
+            "expression": "CASE WHEN regexp_full_match(trim(CAST(\"dtnasc\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtnasc\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END"
+          },
+          {
+            "name": "dtnasc_data_status",
+            "sql_type": "VARCHAR",
+            "expression": "CASE WHEN trim(CAST(\"dtnasc\" AS VARCHAR)) IS NULL OR trim(CAST(\"dtnasc\" AS VARCHAR)) = '' THEN 'missing' WHEN (CASE WHEN regexp_full_match(trim(CAST(\"dtnasc\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtnasc\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END) IS NULL THEN 'invalid' ELSE 'valid' END"
+          },
+          {
+            "name": "dtatestado_data",
+            "sql_type": "DATE",
+            "expression": "CASE WHEN regexp_full_match(trim(CAST(\"dtatestado\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtatestado\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END"
+          },
+          {
+            "name": "dtatestado_data_status",
+            "sql_type": "VARCHAR",
+            "expression": "CASE WHEN trim(CAST(\"dtatestado\" AS VARCHAR)) IS NULL OR trim(CAST(\"dtatestado\" AS VARCHAR)) = '' THEN 'missing' WHEN (CASE WHEN regexp_full_match(trim(CAST(\"dtatestado\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtatestado\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END) IS NULL THEN 'invalid' ELSE 'valid' END"
+          },
+          {
+            "name": "dtinvestig_data",
+            "sql_type": "DATE",
+            "expression": "CASE WHEN regexp_full_match(trim(CAST(\"dtinvestig\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtinvestig\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END"
+          },
+          {
+            "name": "dtinvestig_data_status",
+            "sql_type": "VARCHAR",
+            "expression": "CASE WHEN trim(CAST(\"dtinvestig\" AS VARCHAR)) IS NULL OR trim(CAST(\"dtinvestig\" AS VARCHAR)) = '' THEN 'missing' WHEN (CASE WHEN regexp_full_match(trim(CAST(\"dtinvestig\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtinvestig\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END) IS NULL THEN 'invalid' ELSE 'valid' END"
+          },
+          {
+            "name": "dtcadinv_data",
+            "sql_type": "DATE",
+            "expression": "CASE WHEN regexp_full_match(trim(CAST(\"dtcadinv\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtcadinv\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END"
+          },
+          {
+            "name": "dtcadinv_data_status",
+            "sql_type": "VARCHAR",
+            "expression": "CASE WHEN trim(CAST(\"dtcadinv\" AS VARCHAR)) IS NULL OR trim(CAST(\"dtcadinv\" AS VARCHAR)) = '' THEN 'missing' WHEN (CASE WHEN regexp_full_match(trim(CAST(\"dtcadinv\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtcadinv\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END) IS NULL THEN 'invalid' ELSE 'valid' END"
+          },
+          {
+            "name": "dtconinv_data",
+            "sql_type": "DATE",
+            "expression": "CASE WHEN regexp_full_match(trim(CAST(\"dtconinv\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtconinv\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END"
+          },
+          {
+            "name": "dtconinv_data_status",
+            "sql_type": "VARCHAR",
+            "expression": "CASE WHEN trim(CAST(\"dtconinv\" AS VARCHAR)) IS NULL OR trim(CAST(\"dtconinv\" AS VARCHAR)) = '' THEN 'missing' WHEN (CASE WHEN regexp_full_match(trim(CAST(\"dtconinv\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtconinv\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END) IS NULL THEN 'invalid' ELSE 'valid' END"
+          },
+          {
+            "name": "dtcadinf_data",
+            "sql_type": "DATE",
+            "expression": "CASE WHEN regexp_full_match(trim(CAST(\"dtcadinf\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtcadinf\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END"
+          },
+          {
+            "name": "dtcadinf_data_status",
+            "sql_type": "VARCHAR",
+            "expression": "CASE WHEN trim(CAST(\"dtcadinf\" AS VARCHAR)) IS NULL OR trim(CAST(\"dtcadinf\" AS VARCHAR)) = '' THEN 'missing' WHEN (CASE WHEN regexp_full_match(trim(CAST(\"dtcadinf\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtcadinf\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END) IS NULL THEN 'invalid' ELSE 'valid' END"
+          },
+          {
+            "name": "dtconcaso_data",
+            "sql_type": "DATE",
+            "expression": "CASE WHEN regexp_full_match(trim(CAST(\"dtconcaso\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtconcaso\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END"
+          },
+          {
+            "name": "dtconcaso_data_status",
+            "sql_type": "VARCHAR",
+            "expression": "CASE WHEN trim(CAST(\"dtconcaso\" AS VARCHAR)) IS NULL OR trim(CAST(\"dtconcaso\" AS VARCHAR)) = '' THEN 'missing' WHEN (CASE WHEN regexp_full_match(trim(CAST(\"dtconcaso\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtconcaso\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END) IS NULL THEN 'invalid' ELSE 'valid' END"
+          },
+          {
+            "name": "dtcadastro_data",
+            "sql_type": "DATE",
+            "expression": "CASE WHEN regexp_full_match(trim(CAST(\"dtcadastro\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtcadastro\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END"
+          },
+          {
+            "name": "dtcadastro_data_status",
+            "sql_type": "VARCHAR",
+            "expression": "CASE WHEN trim(CAST(\"dtcadastro\" AS VARCHAR)) IS NULL OR trim(CAST(\"dtcadastro\" AS VARCHAR)) = '' THEN 'missing' WHEN (CASE WHEN regexp_full_match(trim(CAST(\"dtcadastro\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtcadastro\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END) IS NULL THEN 'invalid' ELSE 'valid' END"
+          },
+          {
+            "name": "dtrecebim_data",
+            "sql_type": "DATE",
+            "expression": "CASE WHEN regexp_full_match(trim(CAST(\"dtrecebim\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtrecebim\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END"
+          },
+          {
+            "name": "dtrecebim_data_status",
+            "sql_type": "VARCHAR",
+            "expression": "CASE WHEN trim(CAST(\"dtrecebim\" AS VARCHAR)) IS NULL OR trim(CAST(\"dtrecebim\" AS VARCHAR)) = '' THEN 'missing' WHEN (CASE WHEN regexp_full_match(trim(CAST(\"dtrecebim\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtrecebim\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END) IS NULL THEN 'invalid' ELSE 'valid' END"
+          },
+          {
+            "name": "dtrecoriga_data",
+            "sql_type": "DATE",
+            "expression": "CASE WHEN regexp_full_match(trim(CAST(\"dtrecoriga\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtrecoriga\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END"
+          },
+          {
+            "name": "dtrecoriga_data_status",
+            "sql_type": "VARCHAR",
+            "expression": "CASE WHEN trim(CAST(\"dtrecoriga\" AS VARCHAR)) IS NULL OR trim(CAST(\"dtrecoriga\" AS VARCHAR)) = '' THEN 'missing' WHEN (CASE WHEN regexp_full_match(trim(CAST(\"dtrecoriga\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtrecoriga\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END) IS NULL THEN 'invalid' ELSE 'valid' END"
+          }
+        ],
+        "unavailable": [],
+        "rule_version": "1.0.0",
+        "metadata_hash": "17aa74a58d4e974b28597d3b87361248d63cbd870528d64f65a593ddb9fb0f30"
+      },
+      "publications": [
+        {
+          "publication_id": "c420647f-79f5-41ca-8a3b-1afd09b3600e",
+          "scope_json": "{\"ano\":2023,\"uf\":\"RR\"}",
+          "source_sha256": "15b5203507161b7c35f9c69a52c955bdac133629549099b85a88e03a9a45baf0",
+          "source_uri": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID10/DORES/DORR2023.dbc"
+        },
+        {
+          "publication_id": "3d6d3bef-69c9-4a70-bd14-e5307fc03e2b",
+          "scope_json": "{\"ano\":2022,\"uf\":\"RR\"}",
+          "source_sha256": "6643344fe1ab587d648e5e0ea8cf7e3ef9e5b5b7021a12dcbbc54f5724d2ec65",
+          "source_uri": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID10/DORES/DORR2022.dbc"
+        },
+        {
+          "publication_id": "efdef7ea-d009-4b3c-807f-642643378e9a",
+          "scope_json": "{\"ano\":2024,\"uf\":\"RR\"}",
+          "source_sha256": "86d66d736b83e5653d86d55eb47ab6db6b3e8238de3d362f9237768ed5c8a79a",
+          "source_uri": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID10/DORES/DORR2024.dbc"
+        },
+        {
+          "publication_id": "e68d231e-46f3-4c2e-aab3-7f2cd36d6c91",
+          "scope_json": "{\"ano\":2024,\"uf\":\"SP\"}",
+          "source_sha256": "fac57a15fe3d7efa3b0f2d797043a9335ef3d9dd6e824623031d71471533daf8",
+          "source_uri": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID10/DORES/DOSP2024.dbc"
+        }
+      ],
+      "schema_before": [
+        {
+          "column_name": "origem",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tipobito",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtobito",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "horaobito",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "natural",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "codmunnatu",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtnasc",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "idade",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "sexo",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "racacor",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "estciv",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "esc",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "esc2010",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "seriescfal",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "ocup",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "codmunres",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "lococor",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "codestab",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "estabdescr",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "codmunocor",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "idademae",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "escmae",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "escmae2010",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "seriescmae",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "ocupmae",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "qtdfilvivo",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "qtdfilmort",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "gravidez",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "semagestac",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "gestacao",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "parto",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "obitoparto",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "peso",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpmorteoco",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "obitograv",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "obitopuerp",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "assistmed",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "exame",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cirurgia",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "necropsia",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "linhaa",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "linhab",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "linhac",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "linhad",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "linhaii",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "causabas",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cb_pre",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "comunsvoim",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtatestado",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "circobito",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "acidtrab",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "fonte",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "numerolote",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tppos",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtinvestig",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "causabas_o",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtcadastro",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "atestante",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "stcodifica",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "codificado",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "versaosist",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "versaoscb",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "fonteinv",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtrecebim",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "atestado",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtrecoriga",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "causamat",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "escmaeagr1",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "escfalagr1",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "stdoepidem",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "stdonova",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "difdata",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "nudiasobco",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "nudiasobin",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtcadinv",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpobitocor",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtconinv",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "fontes",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpresginfo",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpnivelinv",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "nudiasinf",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtcadinf",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "morteparto",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtconcaso",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "fontesinf",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "altcausa",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "contador",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "ano",
+          "column_type": "USMALLINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uf",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "_source_release",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        }
+      ],
+      "schema_after": [
+        {
+          "column_name": "origem",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tipobito",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtobito",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "horaobito",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "natural",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "codmunnatu",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtnasc",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "idade",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "sexo",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "racacor",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "estciv",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "esc",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "esc2010",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "seriescfal",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "ocup",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "codmunres",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "lococor",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "codestab",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "estabdescr",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "codmunocor",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "idademae",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "escmae",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "escmae2010",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "seriescmae",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "ocupmae",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "qtdfilvivo",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "qtdfilmort",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "gravidez",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "semagestac",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "gestacao",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "parto",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "obitoparto",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "peso",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpmorteoco",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "obitograv",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "obitopuerp",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "assistmed",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "exame",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cirurgia",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "necropsia",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "linhaa",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "linhab",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "linhac",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "linhad",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "linhaii",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "causabas",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cb_pre",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "comunsvoim",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtatestado",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "circobito",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "acidtrab",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "fonte",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "numerolote",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tppos",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtinvestig",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "causabas_o",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtcadastro",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "atestante",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "stcodifica",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "codificado",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "versaosist",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "versaoscb",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "fonteinv",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtrecebim",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "atestado",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtrecoriga",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "causamat",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "escmaeagr1",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "escfalagr1",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "stdoepidem",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "stdonova",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "difdata",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "nudiasobco",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "nudiasobin",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtcadinv",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpobitocor",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtconinv",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "fontes",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpresginfo",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpnivelinv",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "nudiasinf",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtcadinf",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "morteparto",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dtconcaso",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "fontesinf",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "altcausa",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "contador",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "ano",
+          "column_type": "USMALLINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uf",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "_source_release",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        }
+      ],
+      "total_before": 361228,
+      "total_after": 361228,
+      "bands": [
+        {
+          "band": "0-4",
+          "n": 7359
+        },
+        {
+          "band": "5-14",
+          "n": 1528
+        },
+        {
+          "band": "15-24",
+          "n": 5807
+        },
+        {
+          "band": "25-34",
+          "n": 10088
+        },
+        {
+          "band": "35-44",
+          "n": 17730
+        },
+        {
+          "band": "45-54",
+          "n": 28934
+        },
+        {
+          "band": "55-64",
+          "n": 51691
+        },
+        {
+          "band": "65-74",
+          "n": 78172
+        },
+        {
+          "band": "75+",
+          "n": 159568
+        },
+        {
+          "band": "Desconhecida",
+          "n": 351
+        }
+      ],
+      "sex": [
+        {
+          "sexo_categoria": "female",
+          "sexo_status": "valid",
+          "n": 169054
+        },
+        {
+          "sexo_categoria": "male",
+          "sexo_status": "valid",
+          "n": 192100
+        },
+        {
+          "sexo_categoria": null,
+          "sexo_status": "ignored",
+          "n": 74
+        }
+      ],
+      "statuses": {
+        "idade_status": [
+          {
+            "status": "ignored",
+            "n": 351
+          },
+          {
+            "status": "valid",
+            "n": 360877
+          }
+        ],
+        "sexo_status": [
+          {
+            "status": "ignored",
+            "n": 74
+          },
+          {
+            "status": "valid",
+            "n": 361154
+          }
+        ],
+        "dtobito_data_status": [
+          {
+            "status": "valid",
+            "n": 361228
+          }
+        ],
+        "dtnasc_data_status": [
+          {
+            "status": "missing",
+            "n": 562
+          },
+          {
+            "status": "valid",
+            "n": 360666
+          }
+        ],
+        "dtatestado_data_status": [
+          {
+            "status": "missing",
+            "n": 222
+          },
+          {
+            "status": "valid",
+            "n": 361006
+          }
+        ],
+        "dtinvestig_data_status": [
+          {
+            "status": "missing",
+            "n": 316723
+          },
+          {
+            "status": "valid",
+            "n": 44505
+          }
+        ],
+        "dtcadinv_data_status": [
+          {
+            "status": "missing",
+            "n": 348243
+          },
+          {
+            "status": "valid",
+            "n": 12985
+          }
+        ],
+        "dtconinv_data_status": [
+          {
+            "status": "missing",
+            "n": 348421
+          },
+          {
+            "status": "valid",
+            "n": 12807
+          }
+        ],
+        "dtcadinf_data_status": [
+          {
+            "status": "missing",
+            "n": 356081
+          },
+          {
+            "status": "valid",
+            "n": 5147
+          }
+        ],
+        "dtconcaso_data_status": [
+          {
+            "status": "missing",
+            "n": 356618
+          },
+          {
+            "status": "valid",
+            "n": 4610
+          }
+        ],
+        "dtcadastro_data_status": [
+          {
+            "status": "missing",
+            "n": 153
+          },
+          {
+            "status": "valid",
+            "n": 361075
+          }
+        ],
+        "dtrecebim_data_status": [
+          {
+            "status": "missing",
+            "n": 50
+          },
+          {
+            "status": "valid",
+            "n": 361178
+          }
+        ],
+        "dtrecoriga_data_status": [
+          {
+            "status": "valid",
+            "n": 361228
+          }
+        ]
+      },
+      "raw_schema_and_total_unchanged": true
+    },
+    "sih_aih_reduzida": {
+      "projection": {
+        "columns": [
+          {
+            "name": "idade_anos_completos",
+            "sql_type": "INTEGER",
+            "expression": "CAST(CASE WHEN ((trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) IS NULL OR trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) = '') OR (trim(CAST((\"cod_idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) IS NULL OR trim(CAST((\"cod_idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) = '')) OR (NOT regexp_full_match(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), '[0-9]+') OR NOT regexp_full_match(trim(CAST((\"cod_idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), '[0-9]+') OR (TRY_CAST(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) AS BIGINT) BETWEEN 0 AND 99 AND (trim(CAST((\"cod_idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) || lpad(CAST(TRY_CAST(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) AS BIGINT) AS VARCHAR), 2, '0')) IN ('000', '999'))) OR ((FALSE) OR (FALSE)) THEN NULL WHEN (trim(CAST((\"cod_idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) = '2' AND TRY_CAST(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) AS BIGINT) BETWEEN 0 AND 30) THEN 0 WHEN (trim(CAST((\"cod_idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) = '3' AND TRY_CAST(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) AS BIGINT) BETWEEN 1 AND 11) THEN (TRY_CAST(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) AS BIGINT) // 12) WHEN (trim(CAST((\"cod_idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) = '4' AND TRY_CAST(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) AS BIGINT) BETWEEN 1 AND 99) THEN (TRY_CAST(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) AS BIGINT) + 0) WHEN (trim(CAST((\"cod_idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) = '5' AND TRY_CAST(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) AS BIGINT) BETWEEN 0 AND 30) THEN (TRY_CAST(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) AS BIGINT) + 100) ELSE NULL END AS INTEGER)"
+          },
+          {
+            "name": "idade_status",
+            "sql_type": "VARCHAR",
+            "expression": "CASE WHEN (trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) IS NULL OR trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) = '') OR (trim(CAST((\"cod_idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) IS NULL OR trim(CAST((\"cod_idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) = '') THEN 'missing' WHEN NOT regexp_full_match(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), '[0-9]+') OR NOT regexp_full_match(trim(CAST((\"cod_idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), '[0-9]+') OR (TRY_CAST(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) AS BIGINT) BETWEEN 0 AND 99 AND (trim(CAST((\"cod_idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) || lpad(CAST(TRY_CAST(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) AS BIGINT) AS VARCHAR), 2, '0')) IN ('000', '999')) THEN 'invalid' WHEN (FALSE) OR (FALSE) THEN 'ignored' WHEN (trim(CAST((\"cod_idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) = '2' AND TRY_CAST(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) AS BIGINT) BETWEEN 0 AND 30) THEN 'valid' WHEN (trim(CAST((\"cod_idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) = '3' AND TRY_CAST(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) AS BIGINT) BETWEEN 1 AND 11) THEN 'valid' WHEN (trim(CAST((\"cod_idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) = '4' AND TRY_CAST(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) AS BIGINT) BETWEEN 1 AND 99) THEN 'valid' WHEN (trim(CAST((\"cod_idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) = '5' AND TRY_CAST(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) AS BIGINT) BETWEEN 0 AND 30) THEN 'valid' ELSE 'unsupported' END"
+          },
+          {
+            "name": "sexo_categoria",
+            "sql_type": "VARCHAR",
+            "expression": "CASE WHEN trim(CAST(\"sexo\" AS VARCHAR)) = '1' THEN 'male' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = '2' THEN 'female' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = '3' THEN 'female' ELSE NULL END"
+          },
+          {
+            "name": "sexo_status",
+            "sql_type": "VARCHAR",
+            "expression": "CASE WHEN trim(CAST(\"sexo\" AS VARCHAR)) IS NULL OR trim(CAST(\"sexo\" AS VARCHAR)) = '' THEN 'missing' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = '1' THEN 'valid' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = '2' THEN 'valid' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = '0' THEN 'ignored' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = '9' THEN 'ignored' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = '3' THEN 'valid' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = '4' THEN 'ignored' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = '5' THEN 'ignored' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = '6' THEN 'ignored' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = '7' THEN 'ignored' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = '8' THEN 'ignored' ELSE 'unsupported' END"
+          },
+          {
+            "name": "nasc_data",
+            "sql_type": "DATE",
+            "expression": "CASE WHEN regexp_full_match(trim(CAST(\"nasc\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"nasc\" AS VARCHAR)), '%Y%m%d')::DATE ELSE NULL END"
+          },
+          {
+            "name": "nasc_data_status",
+            "sql_type": "VARCHAR",
+            "expression": "CASE WHEN trim(CAST(\"nasc\" AS VARCHAR)) IS NULL OR trim(CAST(\"nasc\" AS VARCHAR)) = '' THEN 'missing' WHEN (CASE WHEN regexp_full_match(trim(CAST(\"nasc\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"nasc\" AS VARCHAR)), '%Y%m%d')::DATE ELSE NULL END) IS NULL THEN 'invalid' ELSE 'valid' END"
+          },
+          {
+            "name": "dt_inter_data",
+            "sql_type": "DATE",
+            "expression": "CASE WHEN regexp_full_match(trim(CAST(\"dt_inter\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dt_inter\" AS VARCHAR)), '%Y%m%d')::DATE ELSE NULL END"
+          },
+          {
+            "name": "dt_inter_data_status",
+            "sql_type": "VARCHAR",
+            "expression": "CASE WHEN trim(CAST(\"dt_inter\" AS VARCHAR)) IS NULL OR trim(CAST(\"dt_inter\" AS VARCHAR)) = '' THEN 'missing' WHEN (CASE WHEN regexp_full_match(trim(CAST(\"dt_inter\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dt_inter\" AS VARCHAR)), '%Y%m%d')::DATE ELSE NULL END) IS NULL THEN 'invalid' ELSE 'valid' END"
+          },
+          {
+            "name": "dt_saida_data",
+            "sql_type": "DATE",
+            "expression": "CASE WHEN regexp_full_match(trim(CAST(\"dt_saida\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dt_saida\" AS VARCHAR)), '%Y%m%d')::DATE ELSE NULL END"
+          },
+          {
+            "name": "dt_saida_data_status",
+            "sql_type": "VARCHAR",
+            "expression": "CASE WHEN trim(CAST(\"dt_saida\" AS VARCHAR)) IS NULL OR trim(CAST(\"dt_saida\" AS VARCHAR)) = '' THEN 'missing' WHEN (CASE WHEN regexp_full_match(trim(CAST(\"dt_saida\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dt_saida\" AS VARCHAR)), '%Y%m%d')::DATE ELSE NULL END) IS NULL THEN 'invalid' ELSE 'valid' END"
+          },
+          {
+            "name": "gestor_dt_data",
+            "sql_type": "DATE",
+            "expression": "CASE WHEN regexp_full_match(trim(CAST(\"gestor_dt\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"gestor_dt\" AS VARCHAR)), '%Y%m%d')::DATE ELSE NULL END"
+          },
+          {
+            "name": "gestor_dt_data_status",
+            "sql_type": "VARCHAR",
+            "expression": "CASE WHEN trim(CAST(\"gestor_dt\" AS VARCHAR)) IS NULL OR trim(CAST(\"gestor_dt\" AS VARCHAR)) = '' THEN 'missing' WHEN (CASE WHEN regexp_full_match(trim(CAST(\"gestor_dt\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"gestor_dt\" AS VARCHAR)), '%Y%m%d')::DATE ELSE NULL END) IS NULL THEN 'invalid' ELSE 'valid' END"
+          }
+        ],
+        "unavailable": [],
+        "rule_version": "1.0.0",
+        "metadata_hash": "5f1ce6f8332a470f44a99c477396d02c5d3e307ff2a22482d901342ddc223ee7"
+      },
+      "publications": [
+        {
+          "publication_id": "e74f789f-6d1f-4f09-b5b0-b7d769b68415",
+          "scope_json": "{\"ano\":2024,\"mes\":1,\"uf\":\"SP\"}",
+          "source_sha256": "9d0d841b8d0c6fa4600a06a2da9f861e0ac0e8681a4f772378a8f25f929e4847",
+          "source_uri": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIHSUS/200801_/Dados/RDSP2401.dbc"
+        },
+        {
+          "publication_id": "1574ce57-b1d3-4876-9077-89e5374f444a",
+          "scope_json": "{\"ano\":2024,\"mes\":2,\"uf\":\"SP\"}",
+          "source_sha256": "5ba1da3b7d7025ee7cc4b69b0f69808ffb25040916ffffac732e637c5d845d8a",
+          "source_uri": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIHSUS/200801_/Dados/RDSP2402.dbc"
+        },
+        {
+          "publication_id": "8a0f2317-2f99-4704-9481-76b70c638c83",
+          "scope_json": "{\"ano\":2024,\"mes\":3,\"uf\":\"SP\"}",
+          "source_sha256": "0ed4fbc0c04d5aa2f8a1fea2037c50e3470c43afea07d358a5d510bc52e61523",
+          "source_uri": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIHSUS/200801_/Dados/RDSP2403.dbc"
+        },
+        {
+          "publication_id": "7037c030-6617-4cd2-9e07-3753bc31669f",
+          "scope_json": "{\"ano\":2024,\"mes\":4,\"uf\":\"SP\"}",
+          "source_sha256": "6ce518e7c7701143859ce0ee3a105613677d2568fb2b8925a976546d5d7dd920",
+          "source_uri": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIHSUS/200801_/Dados/RDSP2404.dbc"
+        },
+        {
+          "publication_id": "47e3a7eb-f67d-459c-8e4b-03dca632e700",
+          "scope_json": "{\"ano\":2024,\"mes\":5,\"uf\":\"SP\"}",
+          "source_sha256": "f2d924b6dd7bd7f36dface3a90136837546b4f6354cdd38c0ed3d4d33f50fe15",
+          "source_uri": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIHSUS/200801_/Dados/RDSP2405.dbc"
+        },
+        {
+          "publication_id": "8057ad44-77ca-4996-8926-9e6278179d9d",
+          "scope_json": "{\"ano\":2025,\"mes\":1,\"uf\":\"SP\"}",
+          "source_sha256": "33f811186a6a4dfa377cea2b75e739a7b1316c516d8895473af4c3685a095553",
+          "source_uri": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIHSUS/200801_/Dados/RDSP2501.dbc"
+        },
+        {
+          "publication_id": "4867650e-fc02-42d8-84f6-518ba8a1ac31",
+          "scope_json": "{\"ano\":2025,\"mes\":2,\"uf\":\"SP\"}",
+          "source_sha256": "7d196729e3b5ba3c1fe3d184f3b5f3b73813abe9a0bd28bbd5c669b1437413b7",
+          "source_uri": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIHSUS/200801_/Dados/RDSP2502.dbc"
+        }
+      ],
+      "schema_before": [
+        {
+          "column_name": "uf_zi",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "ano_cmpt",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "mes_cmpt",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "espec",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cgc_hosp",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "n_aih",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "ident",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cep",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "munic_res",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "nasc",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "sexo",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uti_mes_in",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uti_mes_an",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uti_mes_al",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uti_mes_to",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "marca_uti",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uti_int_in",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uti_int_an",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uti_int_al",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uti_int_to",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diar_acom",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "qt_diarias",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "proc_solic",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "proc_rea",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sh",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sp",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sadt",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_rn",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_acomp",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_ortp",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sangue",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sadtsr",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_transp",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_obsang",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_ped1ac",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_tot",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_uti",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "us_tot",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dt_inter",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dt_saida",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diag_princ",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diag_secun",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cobranca",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "natureza",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "nat_jur",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "gestao",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "rubrica",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "ind_vdrl",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "munic_mov",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cod_idade",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "idade",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dias_perm",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "morte",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "nacional",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "num_proc",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "car_int",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tot_pt_sp",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cpf_aut",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "homonimo",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "num_filhos",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "instru",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cid_notif",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "contracep1",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "contracep2",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "gestrisco",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "insc_pn",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "seq_aih5",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cbor",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cnaer",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "vincprev",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "gestor_cod",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "gestor_tp",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "gestor_cpf",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "gestor_dt",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cnes",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cnpj_mant",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "infehosp",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cid_asso",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cid_morte",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "complex",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "financ",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "faec_tp",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "regct",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "raca_cor",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "etnia",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "sequencia",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "remessa",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "aud_just",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "sis_just",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sh_fed",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sp_fed",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sh_ges",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sp_ges",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_uci",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "marca_uci",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec1",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec2",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec3",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec4",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec5",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec6",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec7",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec8",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec9",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec1",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec2",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec3",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec4",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec5",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec6",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec7",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec8",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec9",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "ano",
+          "column_type": "USMALLINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uf",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "mes",
+          "column_type": "UTINYINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "_source_release",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        }
+      ],
+      "schema_after": [
+        {
+          "column_name": "uf_zi",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "ano_cmpt",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "mes_cmpt",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "espec",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cgc_hosp",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "n_aih",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "ident",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cep",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "munic_res",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "nasc",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "sexo",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uti_mes_in",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uti_mes_an",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uti_mes_al",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uti_mes_to",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "marca_uti",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uti_int_in",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uti_int_an",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uti_int_al",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uti_int_to",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diar_acom",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "qt_diarias",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "proc_solic",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "proc_rea",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sh",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sp",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sadt",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_rn",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_acomp",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_ortp",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sangue",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sadtsr",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_transp",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_obsang",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_ped1ac",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_tot",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_uti",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "us_tot",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dt_inter",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dt_saida",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diag_princ",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diag_secun",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cobranca",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "natureza",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "nat_jur",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "gestao",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "rubrica",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "ind_vdrl",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "munic_mov",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cod_idade",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "idade",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "dias_perm",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "morte",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "nacional",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "num_proc",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "car_int",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tot_pt_sp",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cpf_aut",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "homonimo",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "num_filhos",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "instru",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cid_notif",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "contracep1",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "contracep2",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "gestrisco",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "insc_pn",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "seq_aih5",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cbor",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cnaer",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "vincprev",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "gestor_cod",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "gestor_tp",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "gestor_cpf",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "gestor_dt",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cnes",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cnpj_mant",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "infehosp",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cid_asso",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "cid_morte",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "complex",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "financ",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "faec_tp",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "regct",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "raca_cor",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "etnia",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "sequencia",
+          "column_type": "BIGINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "remessa",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "aud_just",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "sis_just",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sh_fed",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sp_fed",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sh_ges",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_sp_ges",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "val_uci",
+          "column_type": "DOUBLE",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "marca_uci",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec1",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec2",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec3",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec4",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec5",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec6",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec7",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec8",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "diagsec9",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec1",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec2",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec3",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec4",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec5",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec6",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec7",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec8",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "tpdisec9",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "ano",
+          "column_type": "USMALLINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "uf",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "mes",
+          "column_type": "UTINYINT",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        },
+        {
+          "column_name": "_source_release",
+          "column_type": "VARCHAR",
+          "null": "YES",
+          "key": null,
+          "default": "NULL",
+          "extra": null
+        }
+      ],
+      "total_before": 1646463,
+      "total_after": 1646463,
+      "bands": [
+        {
+          "band": "0-4",
+          "n": 121427
+        },
+        {
+          "band": "5-14",
+          "n": 78113
+        },
+        {
+          "band": "15-24",
+          "n": 169855
+        },
+        {
+          "band": "25-34",
+          "n": 236400
+        },
+        {
+          "band": "35-44",
+          "n": 204829
+        },
+        {
+          "band": "45-54",
+          "n": 190941
+        },
+        {
+          "band": "55-64",
+          "n": 226190
+        },
+        {
+          "band": "65-74",
+          "n": 225910
+        },
+        {
+          "band": "75+",
+          "n": 192798
+        }
+      ],
+      "sex": [
+        {
+          "sexo_categoria": "female",
+          "sexo_status": "valid",
+          "n": 913968
+        },
+        {
+          "sexo_categoria": "male",
+          "sexo_status": "valid",
+          "n": 732495
+        }
+      ],
+      "statuses": {
+        "idade_status": [
+          {
+            "status": "valid",
+            "n": 1646463
+          }
+        ],
+        "sexo_status": [
+          {
+            "status": "valid",
+            "n": 1646463
+          }
+        ],
+        "nasc_data_status": [
+          {
+            "status": "valid",
+            "n": 1646463
+          }
+        ],
+        "dt_inter_data_status": [
+          {
+            "status": "valid",
+            "n": 1646463
+          }
+        ],
+        "dt_saida_data_status": [
+          {
+            "status": "valid",
+            "n": 1646463
+          }
+        ],
+        "gestor_dt_data_status": [
+          {
+            "status": "missing",
+            "n": 1646463
+          }
+        ]
+      },
+      "raw_schema_and_total_unchanged": true
+    }
+  },
+  "audit_script_sha256": "8c85b67ee9bb1ac4be91a2d5de20acb23e8b8acf6068700ddc8e97702d56023d",
+  "library_revision": "c51d08d432f19feb17fecda05de444d2f13f31b9",
+  "working_tree_dirty": false,
+  "snapshots_before": [
+    {
+      "snapshot_id": 0,
+      "snapshot_time": "2026-09-14 00:50:53.284115-03",
+      "changes": "{schemas_created=[main]}"
+    },
+    {
+      "snapshot_id": 1,
+      "snapshot_time": "2026-09-14 00:50:53.307756-03",
+      "changes": "{tables_created=[main.aux_uf], tables_inserted_into=[1]}"
+    },
+    {
+      "snapshot_id": 2,
+      "snapshot_time": "2026-09-14 00:50:53.319067-03",
+      "changes": "{tables_created=[main.aux_municipios], tables_inserted_into=[2]}"
+    },
+    {
+      "snapshot_id": 3,
+      "snapshot_time": "2026-09-14 00:50:53.340389-03",
+      "changes": "{tables_created=[main.aux_cid10], tables_inserted_into=[3]}"
+    },
+    {
+      "snapshot_id": 4,
+      "snapshot_time": "2026-09-14 00:51:23.041092-03",
+      "changes": "{tables_created=[main.sih_aih_reduzida, main._omnisus_publications], tables_altered=[4], tables_inserted_into=[4], inlined_insert=[6]}"
+    },
+    {
+      "snapshot_id": 5,
+      "snapshot_time": "2026-09-14 00:53:58.07184-03",
+      "changes": "{tables_created=[main.sim_obitos], tables_altered=[7], tables_inserted_into=[7], inlined_insert=[6]}"
+    }
+  ],
+  "snapshots_after": [
+    {
+      "snapshot_id": 0,
+      "snapshot_time": "2026-09-14 00:50:53.284115-03",
+      "changes": "{schemas_created=[main]}"
+    },
+    {
+      "snapshot_id": 1,
+      "snapshot_time": "2026-09-14 00:50:53.307756-03",
+      "changes": "{tables_created=[main.aux_uf], tables_inserted_into=[1]}"
+    },
+    {
+      "snapshot_id": 2,
+      "snapshot_time": "2026-09-14 00:50:53.319067-03",
+      "changes": "{tables_created=[main.aux_municipios], tables_inserted_into=[2]}"
+    },
+    {
+      "snapshot_id": 3,
+      "snapshot_time": "2026-09-14 00:50:53.340389-03",
+      "changes": "{tables_created=[main.aux_cid10], tables_inserted_into=[3]}"
+    },
+    {
+      "snapshot_id": 4,
+      "snapshot_time": "2026-09-14 00:51:23.041092-03",
+      "changes": "{tables_created=[main.sih_aih_reduzida, main._omnisus_publications], tables_altered=[4], tables_inserted_into=[4], inlined_insert=[6]}"
+    },
+    {
+      "snapshot_id": 5,
+      "snapshot_time": "2026-09-14 00:53:58.07184-03",
+      "changes": "{tables_created=[main.sim_obitos], tables_altered=[7], tables_inserted_into=[7], inlined_insert=[6]}"
+    }
+  ],
+  "snapshot_history_unchanged": true
+}

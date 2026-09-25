@@ -1,0 +1,43 @@
+42 2 L
+      1  ACADEMIA DA SAÚDE                                  74
+      2  CENTRAL DE REGUALAÇÃO                              81
+      3  CENTRAL DE REGULAÇÃO MÉDICA DAS URGÊNCIAS          76
+      4  CENTRO DE APOIO A SAÚDE DA FAMÍLIA-CASF            71
+      5  CENTRO DE ATENÇÃO HEMOTERÁPICA E/OU HEMATOLÓGICA   69
+      6  CENTRO DE ATENÇÃO PSICOSSOCIAL-CAPS                70
+      7  CENTRO DE PARTO NORMAL                             61
+      8  CENTRO DE SAUDE/UNIDADE BASICA DE SAUDE            02
+      9  CENTRAL DE REGULACAO DE SERVICOS DE SAUDE          64
+     10  CLINICA ESPECIALIZADA/AMBULATORIO ESPECIALIZADO    36
+     11  CONSULTORIO                                        22
+     12  COOPERATIVA                                        60
+     13  FARMACIA                                           43
+     14  HOSPITAL ESPECIALIZADO                             07
+     15  HOSPITAL GERAL                                     05
+     16  HOSPITAL DIA                                       62
+     17  LABORATORIO CENTRAL DE SAUDE PUBLICA - LACEN       67
+     18  ORIO DE SAUDE PUBLICA                              80
+     19  POLICLINICA                                        04
+     20  OFICINA ORTOPEDICA                                 79
+     21  POSTO DE SAUDE                                     01
+     22  PRONTO ANTEDIMENTO                                 73
+     23  PRONTO SOCORRO ESPECIALIZADO                       21
+     24  PRONTO SOCORRO GERAL                               20
+     25  SECRETARIA DE SAUDE                                68
+     26  SERVICO DE ATENCAO DOMICILIAR ISOLADO(HOME CARE)   77
+     27  UNIDADE AUTORIZADORA                               63
+     28  UNIDADE DE ATENÇÃO À SAÚDE INDÍGENA                72
+     29  UNIDADE DE ATENCAO EM REGIME RESIDENCIAL           78
+     30  UNIDADE DE SERVICO DE APOIO DE DIAGNOSE E TERAPIA  39
+     31  UNIDADE DE SAUDE DA FAMILIA                        45
+     32  UNIDADE DE VIGILANCIA EM SAUDE                     50
+     33  UNIDADE DE VIGILANCIA EPIDEMIOLOGIA (ANTIGO)       65
+     34  UNIDADE DE VIGILANCIA SANITARIA (ANTIGO)           66
+     35  UNIDADE MISTA                                      15
+     36  UNIDADE MOVEL DE NIVEL PRE-HOSP-URGENCIA/EMERGENCIA42
+     37  UNIDADE MOVEL FLUVIAL                              32
+     38  UNIDADE MOVEL TERRESTRE                            40
+     39  TELESAÚDE                                          75
+     40  PRONTO SOCORRO DE HOSPITAL GERAL (ANTIGO)          09
+     41  PRONTO SOCORRO TRAUMATO-ORTOPEDICO (ANTIGO)        12
+     42  TIPO ESTABELECIMENTO NÃO INFORMADO                   -99

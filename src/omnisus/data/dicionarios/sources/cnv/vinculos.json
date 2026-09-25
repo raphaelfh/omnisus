@@ -1,0 +1,1473 @@
+{
+  "membros": {
+    "cnes/CNV/Ativ_Ens.CNV": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "CNV/Ativ_Ens.CNV",
+      "sha256": "f38c595a191db4484d5e629dd878095b413cd04226ce4d0ed803a05529395662"
+    },
+    "cnes/CNV/ESTABENS.CNV": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "CNV/ESTABENS.CNV",
+      "sha256": "bafca77ce78b7965d47925e9d6220934abe7870a249703d1ae50f6fef21780e2"
+    },
+    "cnes/CNV/ESTABFIL.CNV": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "CNV/ESTABFIL.CNV",
+      "sha256": "6b77acc9222a931925b8ec2562409369829b845fa883b1ee9c15e0b22334b88d"
+    },
+    "cnes/CNV/Esp_leit.CNV": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "CNV/Esp_leit.CNV",
+      "sha256": "54d1e48787e8174e8270196901516a3dea2724b25092f45b588394c7a5cb2f06"
+    },
+    "cnes/CNV/Flux_Cli.CNV": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "CNV/Flux_Cli.CNV",
+      "sha256": "da1f8d3e5612c2f34fbd83b74c187d2046f12fbdab3261012e8017a61d0a88cc"
+    },
+    "cnes/CNV/IND_SUS.CNV": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "CNV/IND_SUS.CNV",
+      "sha256": "64eb5bd09a6335c1b1711407c1fbab835af76158d9a1d9beba30ab0ed8cb52be"
+    },
+    "cnes/CNV/NIVELDEP.CNV": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "CNV/NIVELDEP.CNV",
+      "sha256": "596f3cef25902d93bae0fd9872b8effd30c60a6493793d7be55b05eade0b89dd"
+    },
+    "cnes/CNV/Srv_Caract.CNV": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "CNV/Srv_Caract.CNV",
+      "sha256": "8aa5cd97780d5569f498b86eddb1d62d7543eac751971a841da8b612196445c9"
+    },
+    "cnes/CNV/TPGESTAO.CNV": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "CNV/TPGESTAO.CNV",
+      "sha256": "23e6b4df60360d7c3ab9824eb6502537f6bfed6ccdc931a04aa7f3d551304cf8"
+    },
+    "cnes/CNV/TP_DESAT.CNV": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "CNV/TP_DESAT.CNV",
+      "sha256": "1e2f924e62bd8b624890dce0db0fb7527311aca74f4cd28134d29267322a7abf"
+    },
+    "cnes/CNV/TP_ESTAB.CNV": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "CNV/TP_ESTAB.CNV",
+      "sha256": "43dd168dbb18c9ee6a8c12f2d0541a42d5e78aee338d902356af2f549a779c62"
+    },
+    "cnes/CNV/TurnosAt.CNV": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "CNV/TurnosAt.CNV",
+      "sha256": "8846ff94efb491576c1035fbac1554fb908bec4b23658914b88986ef88703d66"
+    },
+    "cnes/CNV/Vinc_SUS.cnv": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "CNV/Vinc_SUS.cnv",
+      "sha256": "5581db2a5afa7600fab30672894e8d49b4b8fe08203fad7dbad78ce4dc1fc214"
+    },
+    "cnes/CNV/motdesat.cnv": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "CNV/motdesat.cnv",
+      "sha256": "c81b2ba8cdc7c8bdf3d03bce4d29872fbe374bfb750a227c9f1c7b3a0a1bdd55"
+    },
+    "cnes/CNV/tip1leit.cnv": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "CNV/tip1leit.cnv",
+      "sha256": "6724827391d8497170f0f77443772bdff418c79905ec3b99e41f8364e59aff17"
+    },
+    "cnes/CNV/tipoeqpC.cnv": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "CNV/tipoeqpC.cnv",
+      "sha256": "a7c738ea692fdd1b41ad1312e96ba57dff9585925d1952f8fbc7a429f1e4c451"
+    },
+    "cnes/CNV/tiposegm.cnv": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "CNV/tiposegm.cnv",
+      "sha256": "b764e87fa6d252e7013c265187908d970c1bdb5437981251861e569962e4f6c2"
+    },
+    "cnes/DadosComplementares.def": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "DadosComplementares.def",
+      "sha256": "88219a3c136f4dd49d7ecaa8aa8dae4a983566d62f1b6468194a88580dc86230"
+    },
+    "cnes/Equipamento.def": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "Equipamento.def",
+      "sha256": "ed59ce0f1906f0078624c41e10946e110829306a77452c861b2adcfc997e9758"
+    },
+    "cnes/Equipes.def": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "Equipes.def",
+      "sha256": "45cfc2b1eca443b96c2383caaf646047b880170419f7bd7e5688f702f71838a4"
+    },
+    "cnes/Estabel_Ensino.def": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "Estabel_Ensino.def",
+      "sha256": "ee7844a7328406379bf48d4e911f653ee419c0b623ff04014e1aa81eee14f2a8"
+    },
+    "cnes/Estabel_Filantropico.def": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "Estabel_Filantropico.def",
+      "sha256": "eded837e4ccfe3beb550ebc1c29f28f1cf4eacf9e5118fa95272401487cb069c"
+    },
+    "cnes/Estabelecimento.def": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "Estabelecimento.def",
+      "sha256": "778d442a794ac34a93b1c796359f0ed9872fe5047befb3c39300cab02c91200d"
+    },
+    "cnes/Gestao_de_Metas.def": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "Gestao_de_Metas.def",
+      "sha256": "a6b366ce91cabe4c94645a49dbcab3de83258a5cf9eee71602724676e30848f9"
+    },
+    "cnes/Habilitacao.def": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "Habilitacao.def",
+      "sha256": "e26e69aeea25172c271c75d47805399139543e6ad3804906fc79713c439c2eee"
+    },
+    "cnes/Incentivos.def": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "Incentivos.def",
+      "sha256": "b39ca972daacc4a691d1222901ce19d1bbd783f4da35ec1c3804ead7e12b36a5"
+    },
+    "cnes/Leitos_Especialidade.def": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "Leitos_Especialidade.def",
+      "sha256": "bc7305a62b31e284399d67b62945cac71f0f09b1c1b481eb4e8f2b14d8e712f6"
+    },
+    "cnes/Regras_Contratuais.def": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "Regras_Contratuais.def",
+      "sha256": "bbf9a748f3d66128d87632b57d437f2613af8da838bab1fbe832223aa143b987"
+    },
+    "cnes/Servico_Especializado_200803_.def": {
+      "fonte": "cnes-tab-50988af5d88b",
+      "membro": "Servico_Especializado_200803_.def",
+      "sha256": "c29475ecc594c118a4824615ebc85c532b22255118c7021ae8b496c6e834756b"
+    },
+    "sia/APAC_Cirurgia_Bariatica.DEF": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "APAC_Cirurgia_Bariatica.DEF",
+      "sha256": "71a13073bddc096779be8b3c2f48e673a7c156108fe67648446ed5c72ef61c18"
+    },
+    "sia/APAC_Confeccao_de_Fistula.DEF": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "APAC_Confeccao_de_Fistula.DEF",
+      "sha256": "505ddc63faa49c5b63cc8038f2c10ba9b22a1ee9f2093a400a06df07bc586e15"
+    },
+    "sia/APAC_Laudos_Diversos.DEF": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "APAC_Laudos_Diversos.DEF",
+      "sha256": "4194ffab4109215739f94abb4a200d66fb120e5be2edc2528b079425db90bb51"
+    },
+    "sia/APAC_Medicamentos.DEF": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "APAC_Medicamentos.DEF",
+      "sha256": "f73b0c1c5a92de9e7724dcb4f4e8b4b2b91ff7aff75b9411f38d9c6c62d78ba0"
+    },
+    "sia/APAC_Nefrologia.DEF": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "APAC_Nefrologia.DEF",
+      "sha256": "704461c069561a967017d082a63d126772e1cbc6ea536143ee29e452171b2954"
+    },
+    "sia/APAC_Pos_Cirurgia_Bariatica.def": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "APAC_Pos_Cirurgia_Bariatica.def",
+      "sha256": "08a4ac168bbfb6723fa43d2fc803d3a479b9254299f8af1f3d692ec120030122"
+    },
+    "sia/APAC_Quimioterapia.DEF": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "APAC_Quimioterapia.DEF",
+      "sha256": "09bbd06d7c3e11090d761e9ffc0057e96a1c6fefdd010b9a8666f4c3775ec2c8"
+    },
+    "sia/APAC_Radioterapia.DEF": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "APAC_Radioterapia.DEF",
+      "sha256": "bbb21ae83bfe4658b3efbaf5f616c6947533614efcd202046e8f66251f349a32"
+    },
+    "sia/APAC_Tratamento_Dialitico.DEF": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "APAC_Tratamento_Dialitico.DEF",
+      "sha256": "dad685d110baee5d15a2fddd58de0fb7e61d6fcd2902cd50ff288aac02f3493a"
+    },
+    "sia/Atencao_Domiciliar.def": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "Atencao_Domiciliar.def",
+      "sha256": "ce9bc11248ddde6be65e22297a41e8da95cd778803aec00b5fb2a41befa3f34a"
+    },
+    "sia/CNV/ACES_VASC.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/ACES_VASC.CNV",
+      "sha256": "da7f026713ae0669d626ae4661cbd33af72df9a7e76337dc0e1cba7f0d41b615"
+    },
+    "sia/CNV/ALTA.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/ALTA.CNV",
+      "sha256": "a5e05f3502c17394cbcf2955084b8b66ee4fc90e23321316545829e3d0493704"
+    },
+    "sia/CNV/CARAT_AT.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/CARAT_AT.CNV",
+      "sha256": "a77bb94465f339b74a9fbf8ab0a5b33768d09acea0878a5aea4b473e10c0c62d"
+    },
+    "sia/CNV/CNCDO.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/CNCDO.CNV",
+      "sha256": "0674c22723f2907e794e66d952221b395d7a508ec3a167979e8c4f16d59804b0"
+    },
+    "sia/CNV/COBERTURA.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/COBERTURA.CNV",
+      "sha256": "fa5d03494937b3ff157f2073ecc7c9d3e82f76e38368d3cfa861080eb06c5717"
+    },
+    "sia/CNV/COMPLEX.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/COMPLEX.CNV",
+      "sha256": "f8201cf64d26d40b43c821ec33ba4d763cb1cf4a01c9e701c1ef3783bd442ec3"
+    },
+    "sia/CNV/CONT_TRAT.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/CONT_TRAT.CNV",
+      "sha256": "ce9a794a28377229c1ac06b96650b3afa69f793c8f05d731d69ea230681b45ba"
+    },
+    "sia/CNV/ENCERRAM.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/ENCERRAM.CNV",
+      "sha256": "e227054349dc3f8532101e1072b0bc7d273fe7df41b9d93e74081acecaf4640f"
+    },
+    "sia/CNV/ESTADIO.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/ESTADIO.CNV",
+      "sha256": "ac0f544793c09abc2c9046e7110885e1483c63ac783e5b2aa1f27f7a3af20a62"
+    },
+    "sia/CNV/FINALID.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/FINALID.CNV",
+      "sha256": "4b358fa677f188aa7f2bf9f2dfd862438c815749ecb0be7e40d9fe5cb306ab6d"
+    },
+    "sia/CNV/FINANC.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/FINANC.CNV",
+      "sha256": "2bb82d161efc13ea8781afe2e757758ab81c58f62320f2b558e19b196ba4a4c9"
+    },
+    "sia/CNV/FL_IDADE.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/FL_IDADE.CNV",
+      "sha256": "44a70baafd38bc399b54f021fa86b9a38c14eb0425797e18665e7c601e187d43"
+    },
+    "sia/CNV/GESTANTE.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/GESTANTE.CNV",
+      "sha256": "7f7ce5b2677f0caefd3f1dd9d21c6149bcad50ad65aa4a7e9fabc99d674ea363"
+    },
+    "sia/CNV/HBSAG.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/HBSAG.CNV",
+      "sha256": "79e07340642df4286c20a6f50dadbf4958950de1e32a3ca923237a312661c4a9"
+    },
+    "sia/CNV/HCV.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/HCV.CNV",
+      "sha256": "79e07340642df4286c20a6f50dadbf4958950de1e32a3ca923237a312661c4a9"
+    },
+    "sia/CNV/HIV.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/HIV.CNV",
+      "sha256": "79e07340642df4286c20a6f50dadbf4958950de1e32a3ca923237a312661c4a9"
+    },
+    "sia/CNV/INDICA.cnv": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/INDICA.cnv",
+      "sha256": "71f65859098fbe186f43aa784a06d56e201afcc1f727e1623f73b0df7f91fd53"
+    },
+    "sia/CNV/Invasao.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/Invasao.CNV",
+      "sha256": "0cfed04bd4e306b0f53862afa05e08fa088a9d19146592787ea57115448bda52"
+    },
+    "sia/CNV/LINF_INV.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/LINF_INV.CNV",
+      "sha256": "bb8b9529d735f9236c06e4026e3709b6a0db8005dc208661a06bc712944532b3"
+    },
+    "sia/CNV/LOC_REALIZ.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/LOC_REALIZ.CNV",
+      "sha256": "6ff8b02efdad75fc346b68f9971bed0ac41b64d8981e012f45ae98cd836940e9"
+    },
+    "sia/CNV/MANT_IND.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/MANT_IND.CNV",
+      "sha256": "eac16361c3b3a9e75ee61311ebfd2cba17621fa3fad29e95c3cda228886fea7e"
+    },
+    "sia/CNV/MOTSAIPE.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/MOTSAIPE.CNV",
+      "sha256": "e2d7bea65f775a0a5332279480fd4d4dca74457a6dc691361f3b9808ea153252"
+    },
+    "sia/CNV/OBITO.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/OBITO.CNV",
+      "sha256": "485b311f296ac395a34f4adbbaaa73dc2d0dc535756f350bc9f92d72324efa34"
+    },
+    "sia/CNV/PERMANEN.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/PERMANEN.CNV",
+      "sha256": "df7e72a1302f4cd829ac5e427360b139be12f295f9fe96666ce094d40dec8d7f"
+    },
+    "sia/CNV/RACA_COR.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/RACA_COR.CNV",
+      "sha256": "19784a10ea8ae115015e48824c1d7cc13a6392bd4999b1e3d153859dc711a363"
+    },
+    "sia/CNV/REGRA_C.cnv": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/REGRA_C.cnv",
+      "sha256": "e8499a3f6707d74f133c483172110bc0b5d7fc738a5f1bf68dbbc42d22c1c73d"
+    },
+    "sia/CNV/SEXO.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/SEXO.CNV",
+      "sha256": "e22a3c442b7a08586165147d6aeef5a242139fb13b19a79d878fccc01d8e42a3"
+    },
+    "sia/CNV/SIT_RUA.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/SIT_RUA.CNV",
+      "sha256": "da7f026713ae0669d626ae4661cbd33af72df9a7e76337dc0e1cba7f0d41b615"
+    },
+    "sia/CNV/TP_APAC.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/TP_APAC.CNV",
+      "sha256": "e7aa55187c7e81685a753274b08fcf68286179ab724783d33961dfb256531f1f"
+    },
+    "sia/CNV/TP_ATEND.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/TP_ATEND.CNV",
+      "sha256": "87b2ac671446f03c74e9c1e81f41bd00ccb7f53f6b339275aab9da79a77ef492"
+    },
+    "sia/CNV/TP_ESTAB.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/TP_ESTAB.CNV",
+      "sha256": "cc9a925f8eed3e29eff356311dd3ed8a481f5cf26efe16262d96af2d67535b94"
+    },
+    "sia/CNV/TP_GESTAO.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/TP_GESTAO.CNV",
+      "sha256": "b426c21cda42d8f1147a038236edd4529f7162f8a81589b7ba957166afdf38ad"
+    },
+    "sia/CNV/TRANSFER.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/TRANSFER.CNV",
+      "sha256": "c1434e4798ea55a7770df5d89fc2751e89bf2c9ab038cb6fc1488b4ff8527369"
+    },
+    "sia/CNV/TRANSPL.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/TRANSPL.CNV",
+      "sha256": "46e15294bae22e7a8698dae8643a67dec4e2c5277594fff2f0fbcf374562facd"
+    },
+    "sia/CNV/ULTRA_AB.CNV": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/ULTRA_AB.CNV",
+      "sha256": "da7f026713ae0669d626ae4661cbd33af72df9a7e76337dc0e1cba7f0d41b615"
+    },
+    "sia/CNV/destino.cnv": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/destino.cnv",
+      "sha256": "9c2bc8366de665362438ffbb6f49182e25e6ee086d81a7df564ee0ea0b57bd96"
+    },
+    "sia/CNV/origem.cnv": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "CNV/origem.cnv",
+      "sha256": "6dccad68ca80499000519aed18c7e7ef387a8c2f53eb61bdd893f9cd684046dc"
+    },
+    "sia/Producao_Ambulatorial.DEF": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "Producao_Ambulatorial.DEF",
+      "sha256": "edc71ae65414a90aca22cb8a95af4d411869eb6c3ce64ea6142a8c7112d7f668"
+    },
+    "sia/RAAS_Psicossocial.def": {
+      "fonte": "sia-tab-e5812b51d802",
+      "membro": "RAAS_Psicossocial.def",
+      "sha256": "b6a4aa9913f898f14eff80aff2f96ac15a65b9cec3aad53fbff9dc8e31a18cc9"
+    },
+    "sih/CNV/CARATEND.CNV": {
+      "fonte": "sih-tab-f05b32f32908",
+      "membro": "CNV/CARATEND.CNV",
+      "sha256": "e57c08cd045e6eab1403013d96c7782c963d17bddf4864840a964b99155d27f8"
+    },
+    "sih/CNV/COMPLEX2.CNV": {
+      "fonte": "sih-tab-f05b32f32908",
+      "membro": "CNV/COMPLEX2.CNV",
+      "sha256": "680eb03bd06964cf4dae4b571bc757990688279adb164b54d5253009d8a3975f"
+    },
+    "sih/CNV/FINANC.CNV": {
+      "fonte": "sih-tab-f05b32f32908",
+      "membro": "CNV/FINANC.CNV",
+      "sha256": "2bb82d161efc13ea8781afe2e757758ab81c58f62320f2b558e19b196ba4a4c9"
+    },
+    "sih/CNV/GESTAO.CNV": {
+      "fonte": "sih-tab-f05b32f32908",
+      "membro": "CNV/GESTAO.CNV",
+      "sha256": "c8d5e054def7ff4552507263aa77f9c4332ee86198a7479130fef1cd9e946c0e"
+    },
+    "sih/CNV/IDENT.CNV": {
+      "fonte": "sih-tab-f05b32f32908",
+      "membro": "CNV/IDENT.CNV",
+      "sha256": "85fe489e20e61abff994fc22d836ca208d7e9fee947bb5dbc76193d883c53828"
+    },
+    "sih/CNV/INSTRU.CNV": {
+      "fonte": "sih-tab-f05b32f32908",
+      "membro": "CNV/INSTRU.CNV",
+      "sha256": "ecdd8359a9fe8a07f77e250e758de9d8a0ac88901527f87d5f7271916a11ab04"
+    },
+    "sih/CNV/LEITOS.CNV": {
+      "fonte": "sih-tab-f05b32f32908",
+      "membro": "CNV/LEITOS.CNV",
+      "sha256": "040504bd1af5aae1e28d9384abad44dcece26d03b1886a5d6ccd578da93f0eda"
+    },
+    "sih/CNV/MARCAUCI.cnv": {
+      "fonte": "sih-tab-f05b32f32908",
+      "membro": "CNV/MARCAUCI.cnv",
+      "sha256": "0c8cb72cabdc68afd64a9eaaadc2a86bd2aa5df9497bd5abc5dc9e8498f8b027"
+    },
+    "sih/CNV/MARCAUTI.CNV": {
+      "fonte": "sih-tab-f05b32f32908",
+      "membro": "CNV/MARCAUTI.CNV",
+      "sha256": "4b6525c4e605d4ac13e3e8798e303f2e41728f9f574eafa7d2e1e33a321733ac"
+    },
+    "sih/CNV/MORTES.CNV": {
+      "fonte": "sih-tab-f05b32f32908",
+      "membro": "CNV/MORTES.CNV",
+      "sha256": "f92d8ba2da0dbbab84a799309743a271c13eb974c1ff49f02b72079348cceb5e"
+    },
+    "sih/CNV/NATUREZA.CNV": {
+      "fonte": "sih-tab-f05b32f32908",
+      "membro": "CNV/NATUREZA.CNV",
+      "sha256": "837f2978a3703a15e97f4c451c2dcd2885a96e666998d6bce43b0d220ad41935"
+    },
+    "sih/CNV/RACACOR.CNV": {
+      "fonte": "sih-tab-f05b32f32908",
+      "membro": "CNV/RACACOR.CNV",
+      "sha256": "9a9a88bea4575d91f1f5a81ad8b3423e235f4ce21d3e3541825a529b131e63f7"
+    },
+    "sih/CNV/REGCT.cnv": {
+      "fonte": "sih-tab-f05b32f32908",
+      "membro": "CNV/REGCT.cnv",
+      "sha256": "64160f575228701a0cc939bdff7dc42363c0549f7a14d2ca07f0ee491bd65bc1"
+    },
+    "sih/CNV/SAIDAPERM.CNV": {
+      "fonte": "sih-tab-f05b32f32908",
+      "membro": "CNV/SAIDAPERM.CNV",
+      "sha256": "d00a78954b51b8f8ae277b34f62113e64d85fbf132bba8d1d003689aefbb7d2d"
+    },
+    "sih/CNV/SEXO.CNV": {
+      "fonte": "sih-tab-f05b32f32908",
+      "membro": "CNV/SEXO.CNV",
+      "sha256": "003e1b250d26b987867b9d0c1d155c42e340c4a62bffdcd4db85c7c41e60691e"
+    },
+    "sih/CNV/SIMNAO.CNV": {
+      "fonte": "sih-tab-f05b32f32908",
+      "membro": "CNV/SIMNAO.CNV",
+      "sha256": "5342ebacf07638a3098cf4155448fd1d7b0408e65eb1854caa7f5653e7d9cd39"
+    },
+    "sih/CNV/TP_VAL.CNV": {
+      "fonte": "sih-tab-f05b32f32908",
+      "membro": "CNV/TP_VAL.CNV",
+      "sha256": "b0b3ace2d37a7be3bf1f0da4b1e4d3ef7f72825aef0ca5f1160cb78591fbe7fc"
+    },
+    "sih/CNV/VINCPREV.CNV": {
+      "fonte": "sih-tab-f05b32f32908",
+      "membro": "CNV/VINCPREV.CNV",
+      "sha256": "f5a6c3ec24355fefd3c2d9f439ca0020df028c8ddcd0a2b246ad99831056f1df"
+    },
+    "sih/CNV/sitbloqueio.cnv": {
+      "fonte": "sih-tab-f05b32f32908",
+      "membro": "CNV/sitbloqueio.cnv",
+      "sha256": "14c1f0456c7de53944edf870f3757cca6ea80f3142f5cf26c1438548f863433b"
+    },
+    "sih/CNV/sitrejeicao.cnv": {
+      "fonte": "sih-tab-f05b32f32908",
+      "membro": "CNV/sitrejeicao.cnv",
+      "sha256": "cce36f3c34fda62bb48ceffeb785496bb3752594d79f913c269b033bf4de59fc"
+    },
+    "sih/DBF/MOTERRO.dbf": {
+      "fonte": "sih-tab-f05b32f32908",
+      "membro": "DBF/MOTERRO.dbf",
+      "sha256": "1cf988a1ec0e31c8055329c27f5c6b180135be1196067d3c0db849fe0cd47892"
+    },
+    "sih/Motivo_de_Erro.DEF": {
+      "fonte": "sih-tab-f05b32f32908",
+      "membro": "Motivo_de_Erro.DEF",
+      "sha256": "f73894afa89b9eb14c67df691f5fee59ce075213077bd907c3b9bf9f89a09acc"
+    },
+    "sih/RD2008.DEF": {
+      "fonte": "sih-tab-f05b32f32908",
+      "membro": "RD2008.DEF",
+      "sha256": "15376fb2e56917b4122fa475b15f1e270e9daa4238f518d75e6bb6044372c652"
+    },
+    "sih/RJ2008.DEF": {
+      "fonte": "sih-tab-f05b32f32908",
+      "membro": "RJ2008.DEF",
+      "sha256": "e15919a4050e40595aabaf94772f1ed0deaa685db71d3f574dd6a4dc24c28f61"
+    },
+    "sih/SP2008.DEF": {
+      "fonte": "sih-tab-f05b32f32908",
+      "membro": "SP2008.DEF",
+      "sha256": "7744873b2324ed37cc281ad87ab51ea950b3c624733683ed36c4a5f8360f74f8"
+    },
+    "sim/ACIDTRAB.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/ACIDTRAB.CNV",
+      "sha256": "1c7190214cf79f68d1344dc6b83a52b421c6200fd92414017752c1eb6f637293"
+    },
+    "sim/ASSMEDIC.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/ASSMEDIC.CNV",
+      "sha256": "420390e92f0ddad0066d757131f36f3d8af2b00dba9a80001b6ac8e55708f655"
+    },
+    "sim/ATESTANT.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/ATESTANT.CNV",
+      "sha256": "61c66996e9f53e15dc25b3b051e07d6e612bdb6852b70cd736c3bfb86e5c5a6b"
+    },
+    "sim/CBO2002.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/CBO2002.CNV",
+      "sha256": "bcb30b0f8a098b2fbcaf1e3a36188b5fb08adfe390f90d9b64edf2e4c2a30cd6"
+    },
+    "sim/CIRURGIA.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/CIRURGIA.CNV",
+      "sha256": "420390e92f0ddad0066d757131f36f3d8af2b00dba9a80001b6ac8e55708f655"
+    },
+    "sim/CODIFICA1.cnv": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/CODIFICA1.cnv",
+      "sha256": "ca468cdffc216adcc269d5ca565f352620efcbf5698f1a93af1d3a9c4f74b321"
+    },
+    "sim/DONOVA.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/DONOVA.CNV",
+      "sha256": "606b1860645ae01925f66ee43ccd05884b38b2c2a69136cf9b123d808c21ad30"
+    },
+    "sim/ESCAGR1.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/ESCAGR1.CNV",
+      "sha256": "29e76a80cea6718ed9ede4e9d19dc7c7699c68c2b3d8a1c50f79d29f05b0b7f2"
+    },
+    "sim/ESTCIV.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/ESTCIV.CNV",
+      "sha256": "4bbb3225f6f201793d37c365c45047734fee9febae7575dba2fd4bb286583f4d"
+    },
+    "sim/EXAME.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/EXAME.CNV",
+      "sha256": "420390e92f0ddad0066d757131f36f3d8af2b00dba9a80001b6ac8e55708f655"
+    },
+    "sim/FONTEINV.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/FONTEINV.CNV",
+      "sha256": "79383fe833ba81cdcee2f592088e6b84a411e0a0e1e4cefdf95643c75774f2fc"
+    },
+    "sim/FONTINFO.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/FONTINFO.CNV",
+      "sha256": "c802d5e6447dfa07ced631f0603f2f1f934451922165486d131d25c19a5f36b4"
+    },
+    "sim/GRAVIDEZ.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/GRAVIDEZ.CNV",
+      "sha256": "3ec91c3da072efd2e947dac65353c32377b3bec7f9fee1d4937b70ec3d452528"
+    },
+    "sim/INSTRUC.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/INSTRUC.CNV",
+      "sha256": "a12d8be1f0a5c18a7123ba63a2ad2a85607b839a39418953dcd06f590eab7c6d"
+    },
+    "sim/INVESTIG.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/INVESTIG.CNV",
+      "sha256": "91c725dd7df6efcb2bcb5004234ac3dc28927f2f8c34187ec0fa2152b3fd9ddc"
+    },
+    "sim/LOCOCOR.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/LOCOCOR.CNV",
+      "sha256": "796bf2591e03f82a0bc09cd90da64957794d421924ada68515a0ba9cba3db42b"
+    },
+    "sim/NECROPS.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/NECROPS.CNV",
+      "sha256": "420390e92f0ddad0066d757131f36f3d8af2b00dba9a80001b6ac8e55708f655"
+    },
+    "sim/OBITOFE1.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/OBITOFE1.CNV",
+      "sha256": "a34593926ee18f7e1a99d47324c8dbb9e367193926eb50db10997e9d09be4fb4"
+    },
+    "sim/OBITOFE2.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/OBITOFE2.CNV",
+      "sha256": "842a3f2ebccbb985461f6adf88086f2cae0461a11a62ce92edb313afee1f9c4e"
+    },
+    "sim/OMUFER.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/OMUFER.CNV",
+      "sha256": "f1e17dd3a69684d8ee554a3db6a8eca28b4c151a312947dead3bf5639dd9e3d1"
+    },
+    "sim/Obito_1979_95_CID-09.DEF": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/Obito_1979_95_CID-09.DEF",
+      "sha256": "f9c2b4d94d5a8e1df4f23a39863121c7a36f6dd2e12f4083109922e3903cc9b2"
+    },
+    "sim/Obito_1996_CID10.def": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/Obito_1996_CID10.def",
+      "sha256": "d49ad0b46aecb84120a72b3ab588f6086edf362cd9b9d644005537c5fa9b7f9a"
+    },
+    "sim/PARTO.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/PARTO.CNV",
+      "sha256": "a3635cbaaae5172c3d2b390f3b3d8dc2f1e6ea5bdcc0654e5380dc32260fc486"
+    },
+    "sim/RACACOR.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/RACACOR.CNV",
+      "sha256": "c6c2ac4a03327b2e508cd393354b6625f0ad84431ee733d321f8ba50268fe4ac"
+    },
+    "sim/SEMANAS.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/SEMANAS.CNV",
+      "sha256": "cc6a1d9ed122a60da4910621697caba5e3aa77e7d4bdd40e06f31169b486ed5a"
+    },
+    "sim/SERIEFAL.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/SERIEFAL.CNV",
+      "sha256": "19cf0127a446b461fee6b090f60237a9a59a6b450c2b31384648dee744cf106b"
+    },
+    "sim/TIPOACID.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/TIPOACID.CNV",
+      "sha256": "3bfc6783cd937dffff0e98b6b3e4a4b3c160a6d4a9f86b05363de6fe09dd4162"
+    },
+    "sim/TIPOBITO.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/TIPOBITO.CNV",
+      "sha256": "7659d82b055e597c41957c5ee08e8f64cd9df47f174c782fb80f0bc4314d8862"
+    },
+    "sim/TIPOVIOL.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/TIPOVIOL.CNV",
+      "sha256": "cb70c3bf7f60b118bc48e5dbae759fb99beb7098e4e2e97ff328457d2ba4ac57"
+    },
+    "sim/VERSCB.CNV": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/VERSCB.CNV",
+      "sha256": "5dd67a0ec68c4e3a5842111ac97c51e25c5a370b42e8aa85e1fdf4aaa8ba74a8"
+    },
+    "sim/obitoPUE.cnv": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/obitoPUE.cnv",
+      "sha256": "eb8bb3e4dd6a436873de513b79018964ff91a5016caeab587fd785a763bdaaef"
+    },
+    "sim/obitogra.cnv": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/obitogra.cnv",
+      "sha256": "0d807317ec3a75d0c7a1b5a2b5b85d6377f93524b979364a1d0c2522dde4d0e4"
+    },
+    "sim/oparto.cnv": {
+      "fonte": "sim-tab-bb1c9f02668e",
+      "membro": "OBITOS_CID10_TAB/tabdo/oparto.cnv",
+      "sha256": "949148fb9272532e4d2a8b09c7c49974e5560bba64bb53fa1b676db424659325"
+    },
+    "sinan/AvaliaN.cnv": {
+      "fonte": "sinan-tab-cad66ee38781",
+      "membro": "TAB_SINANNET/AvaliaN.cnv",
+      "sha256": "ac2f94b3d49cfdffbf0fc4a4e02cb7680b82ee0fda354fcae9f9bec0cbe3055e"
+    },
+    "sinan/ChagasNET.def": {
+      "fonte": "sinan-tab-cad66ee38781",
+      "membro": "TAB_SINANNET/ChagasNET.def",
+      "sha256": "5f488aecb8f912b7e3a48a6e23e0f8cf179b25d8522c7a07a6b93250df22e7a0"
+    },
+    "sinan/Escolarnet.cnv": {
+      "fonte": "sinan-tab-cad66ee38781",
+      "membro": "TAB_SINANNET/Escolarnet.cnv",
+      "sha256": "33045d21d10069a992bd756416a9223f8bd66009dfbf3678856359c3b2d6597c"
+    },
+    "sinan/HansNET.def": {
+      "fonte": "sinan-tab-cad66ee38781",
+      "membro": "TAB_SINANNET/HansNET.def",
+      "sha256": "a34b74be69ecd3fdc53799fadbbbc5f8387746600ae992e71e73df3776ced66c"
+    },
+    "sinan/SAIDAhans.cnv": {
+      "fonte": "sinan-tab-cad66ee38781",
+      "membro": "TAB_SINANNET/SAIDAhans.cnv",
+      "sha256": "2052d76d57563a1bd44732b37d99395672e3802c420faaa0ce558a1b74740e06"
+    },
+    "sinan/TuberculNET5_0.def": {
+      "fonte": "sinan-tab-cad66ee38781",
+      "membro": "TAB_SINANNET/TuberculNET5_0.def",
+      "sha256": "2fa0533a2e106ea66618e7073db525a51a29473e7e1d71f4b850dfff7c8f4d7f"
+    },
+    "sinan/reacional.cnv": {
+      "fonte": "sinan-tab-cad66ee38781",
+      "membro": "TAB_SINANNET/reacional.cnv",
+      "sha256": "b8a772541233ffa40e5975327b9676b92af7ef48e25563d909c04e8e0b08a4d8"
+    },
+    "sinasc/ANOMAL.CNV": {
+      "fonte": "sinasc-tab-de43d0c99630",
+      "membro": "Arquivos Auxiliares para Tabulação a partir de 1996/ANOMAL.CNV",
+      "sha256": "2e720af3ac565ad05422b16998728a1f56e631d8150b1004cc2d7bd1f7cb5fd7"
+    },
+    "sinasc/CONSULT.CNV": {
+      "fonte": "sinasc-tab-de43d0c99630",
+      "membro": "Arquivos Auxiliares para Tabulação a partir de 1996/CONSULT.CNV",
+      "sha256": "38d78c686e57c63d4a0e95751b8e364667b809095562922b689a99d2aaf08ae2"
+    },
+    "sinasc/ESC2010.CNV": {
+      "fonte": "sinasc-tab-de43d0c99630",
+      "membro": "Arquivos Auxiliares para Tabulação a partir de 1996/ESC2010.CNV",
+      "sha256": "0b82a5ead976ac14fe6408bef953add4d8f42618093539341206107501682da9"
+    },
+    "sinasc/ESCAGR1.CNV": {
+      "fonte": "sinasc-tab-de43d0c99630",
+      "membro": "Arquivos Auxiliares para Tabulação a partir de 1996/ESCAGR1.CNV",
+      "sha256": "1e993689d360f75bcd218684e28fdd418ad02cdadcea675a4a89bc075d014969"
+    },
+    "sinasc/ESTCIV.CNV": {
+      "fonte": "sinasc-tab-de43d0c99630",
+      "membro": "Arquivos Auxiliares para Tabulação a partir de 1996/ESTCIV.CNV",
+      "sha256": "cddba1932c183a94518230812f55d1a4a0b21f8f9134c1cd148639bd28fcb2e3"
+    },
+    "sinasc/GRAVIDEZ.CNV": {
+      "fonte": "sinasc-tab-de43d0c99630",
+      "membro": "Arquivos Auxiliares para Tabulação a partir de 1996/GRAVIDEZ.CNV",
+      "sha256": "5ea976ed92d40999ca32add74ebce62b13edc5899704fa746d204d857962df99"
+    },
+    "sinasc/INSTRUC.CNV": {
+      "fonte": "sinasc-tab-de43d0c99630",
+      "membro": "Arquivos Auxiliares para Tabulação a partir de 1996/INSTRUC.CNV",
+      "sha256": "8831ed35b790f136381dd3ed6ab0c9c56473cb91e4d43622c5ed60a19f697b04"
+    },
+    "sinasc/KOTELCHUCK.CNV": {
+      "fonte": "sinasc-tab-de43d0c99630",
+      "membro": "Arquivos Auxiliares para Tabulação a partir de 1996/KOTELCHUCK.CNV",
+      "sha256": "2ac2e33488f32c544995856409ecc0b68677e698c78fd0f28b7ce4876f1ae6a9"
+    },
+    "sinasc/LOCOCOR.CNV": {
+      "fonte": "sinasc-tab-de43d0c99630",
+      "membro": "Arquivos Auxiliares para Tabulação a partir de 1996/LOCOCOR.CNV",
+      "sha256": "291037c19f61afaf383cf9830b915f3ef7f2d8b749f0cec933b6b3ab4610ca3b"
+    },
+    "sinasc/NASCIDO.def": {
+      "fonte": "sinasc-tab-de43d0c99630",
+      "membro": "Arquivos Auxiliares para Tabulação a partir de 1996/NASCIDO.def",
+      "sha256": "488e0a5a00091ad56788165481278a380afd0231e9ca5956a4e84e6c1da434d5"
+    },
+    "sinasc/ORIGEM.CNV": {
+      "fonte": "sinasc-tab-de43d0c99630",
+      "membro": "Arquivos Auxiliares para Tabulação a partir de 1996/ORIGEM.CNV",
+      "sha256": "0241652f7fb56fff10511efcb93f20e91a5591011fb005c12e690b1ef8e2cd55"
+    },
+    "sinasc/PARAPRE.CNV": {
+      "fonte": "sinasc-tab-de43d0c99630",
+      "membro": "Arquivos Auxiliares para Tabulação a partir de 1996/PARAPRE.CNV",
+      "sha256": "f31f03e66401b3abced983cb4be05eddb18bc23928732d4df0f99aa0a73dd9eb"
+    },
+    "sinasc/PARTO.CNV": {
+      "fonte": "sinasc-tab-de43d0c99630",
+      "membro": "Arquivos Auxiliares para Tabulação a partir de 1996/PARTO.CNV",
+      "sha256": "1b9f7b49b39c152c0e6a12021bc24e2867d215b8148a4f9601b5149a15ead0ac"
+    },
+    "sinasc/RACA.CNV": {
+      "fonte": "sinasc-tab-de43d0c99630",
+      "membro": "Arquivos Auxiliares para Tabulação a partir de 1996/RACA.CNV",
+      "sha256": "17ce55700fd1eef66887495197e3fb6d83b63457b057f36534ed6242ecf616df"
+    },
+    "sinasc/ROBSON.CNV": {
+      "fonte": "sinasc-tab-de43d0c99630",
+      "membro": "Arquivos Auxiliares para Tabulação a partir de 1996/ROBSON.CNV",
+      "sha256": "aad138b03d3a4ede752408d95939139feca22fdeea60d577af5e01a24707c5a2"
+    },
+    "sinasc/SEMANAS.CNV": {
+      "fonte": "sinasc-tab-de43d0c99630",
+      "membro": "Arquivos Auxiliares para Tabulação a partir de 1996/SEMANAS.CNV",
+      "sha256": "0ac7331a18d3a1c54fe82cf3805d4a6bb49633a286bf7b70e3b9fe8446100474"
+    },
+    "sinasc/SEXO.CNV": {
+      "fonte": "sinasc-tab-de43d0c99630",
+      "membro": "Arquivos Auxiliares para Tabulação a partir de 1996/SEXO.CNV",
+      "sha256": "3f1999e18a941268a8d675ec5b93516f1501c189ba3513fc97a321404f0b338f"
+    },
+    "sinasc/STPARTO.CNV": {
+      "fonte": "sinasc-tab-de43d0c99630",
+      "membro": "Arquivos Auxiliares para Tabulação a partir de 1996/STPARTO.CNV",
+      "sha256": "87f09293db88ccefca5f97b64a76914cd10016144f91a5c86fcff7850c8710bf"
+    },
+    "sinasc/TPASSIST.CNV": {
+      "fonte": "sinasc-tab-de43d0c99630",
+      "membro": "Arquivos Auxiliares para Tabulação a partir de 1996/TPASSIST.CNV",
+      "sha256": "6fa9e3b067c6046d5d0cd9846db16fe7bd8f769b59814aa70217cb6ee2183939"
+    },
+    "sinasc/TPFUNC.CNV": {
+      "fonte": "sinasc-tab-de43d0c99630",
+      "membro": "Arquivos Auxiliares para Tabulação a partir de 1996/TPFUNC.CNV",
+      "sha256": "767363aa236bf50e3c1bfd2b340a24691f853e48ee1fceb64b694f606823c116"
+    },
+    "sinasc/TPMETODO.CNV": {
+      "fonte": "sinasc-tab-de43d0c99630",
+      "membro": "Arquivos Auxiliares para Tabulação a partir de 1996/TPMETODO.CNV",
+      "sha256": "0bf34c2911ffa6aab42a3981409934e3b4de95d597b52beec848a6316b7daecd"
+    },
+    "sinasc/idanomal.cnv": {
+      "fonte": "sinasc-tab-de43d0c99630",
+      "membro": "Arquivos Auxiliares para Tabulação a partir de 1996/idanomal.cnv",
+      "sha256": "983e76f848ddc24885b6b01d48d0bd0602ebe35ad9862bbd7b5fca32d1e538e1"
+    }
+  },
+  "datasets": {
+    "sih_aih_reduzida": {
+      "def": "sih/RD2008.DEF",
+      "campos": {
+        "car_int": "sih/CNV/CARATEND.CNV",
+        "cobranca": "sih/CNV/SAIDAPERM.CNV",
+        "complex": "sih/CNV/COMPLEX2.CNV",
+        "espec": "sih/CNV/LEITOS.CNV",
+        "financ": "sih/CNV/FINANC.CNV",
+        "gestao": "sih/CNV/GESTAO.CNV",
+        "gestrisco": "sih/CNV/SIMNAO.CNV",
+        "ident": "sih/CNV/IDENT.CNV",
+        "ind_vdrl": "sih/CNV/SIMNAO.CNV",
+        "infehosp": "sih/CNV/SIMNAO.CNV",
+        "instru": "sih/CNV/INSTRU.CNV",
+        "marca_uci": "sih/CNV/MARCAUCI.cnv",
+        "marca_uti": "sih/CNV/MARCAUTI.CNV",
+        "morte": "sih/CNV/MORTES.CNV",
+        "natureza": "sih/CNV/NATUREZA.CNV",
+        "raca_cor": "sih/CNV/RACACOR.CNV",
+        "sexo": "sih/CNV/SEXO.CNV",
+        "vincprev": "sih/CNV/VINCPREV.CNV"
+      },
+      "sem_cnv": {
+        "cod_idade": "IDADEBAS, IDADEPUB, IDADE18 e IDADEDET.CNV comparam 3 caracteres a partir de COD_IDADE, que tem 1."
+      }
+    },
+    "cnes_estabelecimentos": {
+      "def": "cnes/Estabelecimento.def",
+      "campos": {
+        "tp_unid": "cnes/CNV/TP_ESTAB.CNV",
+        "turno_at": "cnes/CNV/TurnosAt.CNV"
+      }
+    },
+    "sia_apac_cirurgia_bariatrica": {
+      "def": "sia/APAC_Pos_Cirurgia_Bariatica.def",
+      "campos": {
+        "ap_alta": "sia/CNV/ALTA.CNV",
+        "ap_encerr": "sia/CNV/ENCERRAM.CNV",
+        "ap_mndif": "sia/CNV/Invasao.CNV",
+        "ap_obito": "sia/CNV/OBITO.CNV",
+        "ap_perman": "sia/CNV/PERMANEN.CNV",
+        "ap_racacor": "sia/CNV/RACA_COR.CNV",
+        "ap_sexo": "sia/CNV/SEXO.CNV",
+        "ap_tpapac": "sia/CNV/TP_APAC.CNV",
+        "ap_transf": "sia/CNV/TRANSFER.CNV",
+        "ap_ufdif": "sia/CNV/Invasao.CNV"
+      },
+      "sem_cnv": {
+        "ap_coidade": "IDADEDET e IDADE18.CNV comparam 3 caracteres a partir de AP_COIDADE, que tem 1."
+      }
+    },
+    "sia_apac_laudos_diversos": {
+      "def": "sia/APAC_Laudos_Diversos.DEF",
+      "campos": {
+        "ap_alta": "sia/CNV/ALTA.CNV",
+        "ap_encerr": "sia/CNV/ENCERRAM.CNV",
+        "ap_mndif": "sia/CNV/Invasao.CNV",
+        "ap_obito": "sia/CNV/OBITO.CNV",
+        "ap_perman": "sia/CNV/PERMANEN.CNV",
+        "ap_racacor": "sia/CNV/RACA_COR.CNV",
+        "ap_sexo": "sia/CNV/SEXO.CNV",
+        "ap_tpapac": "sia/CNV/TP_APAC.CNV",
+        "ap_transf": "sia/CNV/TRANSFER.CNV",
+        "ap_ufdif": "sia/CNV/Invasao.CNV"
+      },
+      "sem_cnv": {
+        "ap_coidade": "IDADEDET e IDADE18.CNV comparam 3 caracteres a partir de AP_COIDADE, que tem 1."
+      }
+    },
+    "sia_apac_medicamentos": {
+      "def": "sia/APAC_Medicamentos.DEF",
+      "campos": {
+        "ap_alta": "sia/CNV/ALTA.CNV",
+        "ap_encerr": "sia/CNV/ENCERRAM.CNV",
+        "ap_mndif": "sia/CNV/Invasao.CNV",
+        "ap_obito": "sia/CNV/OBITO.CNV",
+        "ap_perman": "sia/CNV/PERMANEN.CNV",
+        "ap_racacor": "sia/CNV/RACA_COR.CNV",
+        "ap_sexo": "sia/CNV/SEXO.CNV",
+        "ap_tpapac": "sia/CNV/TP_APAC.CNV",
+        "ap_transf": "sia/CNV/TRANSFER.CNV",
+        "ap_ufdif": "sia/CNV/Invasao.CNV",
+        "am_gestant": "sia/CNV/GESTANTE.CNV",
+        "am_transpl": "sia/CNV/TRANSPL.CNV"
+      },
+      "sem_cnv": {
+        "ap_coidade": "IDADEDET e IDADE18.CNV comparam 3 caracteres a partir de AP_COIDADE, que tem 1."
+      }
+    },
+    "sia_apac_quimioterapia": {
+      "def": "sia/APAC_Quimioterapia.DEF",
+      "campos": {
+        "ap_alta": "sia/CNV/ALTA.CNV",
+        "ap_encerr": "sia/CNV/ENCERRAM.CNV",
+        "ap_mndif": "sia/CNV/Invasao.CNV",
+        "ap_obito": "sia/CNV/OBITO.CNV",
+        "ap_perman": "sia/CNV/PERMANEN.CNV",
+        "ap_racacor": "sia/CNV/RACA_COR.CNV",
+        "ap_sexo": "sia/CNV/SEXO.CNV",
+        "ap_tpapac": "sia/CNV/TP_APAC.CNV",
+        "ap_transf": "sia/CNV/TRANSFER.CNV",
+        "ap_ufdif": "sia/CNV/Invasao.CNV"
+      },
+      "sem_cnv": {
+        "ap_coidade": "IDADEDET e IDADE18.CNV comparam 3 caracteres a partir de AP_COIDADE, que tem 1."
+      }
+    },
+    "sia_apac_tratamento_dialitico": {
+      "def": "sia/APAC_Tratamento_Dialitico.DEF",
+      "campos": {
+        "ap_alta": "sia/CNV/ALTA.CNV",
+        "ap_encerr": "sia/CNV/ENCERRAM.CNV",
+        "ap_mndif": "sia/CNV/Invasao.CNV",
+        "ap_obito": "sia/CNV/OBITO.CNV",
+        "ap_perman": "sia/CNV/PERMANEN.CNV",
+        "ap_racacor": "sia/CNV/RACA_COR.CNV",
+        "ap_sexo": "sia/CNV/SEXO.CNV",
+        "ap_tpapac": "sia/CNV/TP_APAC.CNV",
+        "ap_transf": "sia/CNV/TRANSFER.CNV",
+        "ap_ufdif": "sia/CNV/Invasao.CNV"
+      },
+      "sem_cnv": {
+        "ap_coidade": "IDADEDET e IDADE18.CNV comparam 3 caracteres a partir de AP_COIDADE, que tem 1."
+      }
+    },
+    "sia_psicossocial": {
+      "def": "sia/RAAS_Psicossocial.def",
+      "campos": {
+        "cob_esf": "sia/CNV/COBERTURA.CNV",
+        "loc_realiz": "sia/CNV/LOC_REALIZ.CNV",
+        "racacor": "sia/CNV/RACA_COR.CNV",
+        "sexopac": "sia/CNV/SEXO.CNV",
+        "sit_rua": "sia/CNV/SIT_RUA.CNV"
+      },
+      "sem_cnv": {
+        "tp_droga": "TP_DROGA.CNV lista códigos posicionais ('  O', ' CO', 'A O'); PSRR2401 traz 'O', 'CO' e 'AO'."
+      }
+    },
+    "sim_obitos": {
+      "def": "sim/Obito_1996_CID10.def",
+      "campos": {
+        "acidtrab": "sim/ACIDTRAB.CNV",
+        "atestante": "sim/ATESTANT.CNV",
+        "circobito": "sim/TIPOVIOL.CNV",
+        "cirurgia": "sim/CIRURGIA.CNV",
+        "esc": "sim/INSTRUC.CNV",
+        "escfalagr1": "sim/ESCAGR1.CNV",
+        "escmae": "sim/INSTRUC.CNV",
+        "escmaeagr1": "sim/ESCAGR1.CNV",
+        "estciv": "sim/ESTCIV.CNV",
+        "exame": "sim/EXAME.CNV",
+        "fonte": "sim/FONTINFO.CNV",
+        "fonteinv": "sim/FONTEINV.CNV",
+        "gestacao": "sim/SEMANAS.CNV",
+        "gravidez": "sim/GRAVIDEZ.CNV",
+        "lococor": "sim/LOCOCOR.CNV",
+        "necropsia": "sim/NECROPS.CNV",
+        "obitograv": "sim/obitogra.cnv",
+        "obitoparto": "sim/oparto.cnv",
+        "obitopuerp": "sim/obitoPUE.cnv",
+        "parto": "sim/PARTO.CNV",
+        "racacor": "sim/RACACOR.CNV",
+        "stcodifica": "sim/CODIFICA1.cnv",
+        "stdoepidem": "sim/DONOVA.CNV",
+        "stdonova": "sim/DONOVA.CNV",
+        "tipobito": "sim/TIPOBITO.CNV",
+        "tpmorteoco": "sim/OMUFER.CNV",
+        "tppos": "sim/INVESTIG.CNV"
+      },
+      "sem_cnv": {
+        "sexo": "Códigos verificados na Estrutura do SIM 2025, p. 2 (claim verified_in_source); SEXO.CNV rotula só M, F e I.",
+        "tpobitocor": "Obito_1996_CID10.def cita invest_mod_SN.CNV, ausente de OBITOS_CID10_TAB.zip. Códigos verificados na Estrutura do SIM 2025, p. 7 (claim verified_in_source).",
+        "esc2010": "Obito_1996_CID10.def cita ESCCICLO.CNV, ausente de OBITOS_CID10_TAB.zip.",
+        "escmae2010": "Obito_1996_CID10.def cita ESCCICLO.CNV, ausente de OBITOS_CID10_TAB.zip.",
+        "codificado": "Obito_1996_CID10.def cita CODIFICADO.CNV, ausente de OBITOS_CID10_TAB.zip."
+      }
+    },
+    "sinan_chagas": {
+      "def": "sinan/ChagasNET.def",
+      "campos": {},
+      "sem_cnv": {
+        "classi_fin": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "criterio": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "cs_escol_n": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "cs_gestant": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "cs_raca": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "cs_sexo": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "doenca_tra": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "evolucao": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas"
+      }
+    },
+    "sinan_hanseniase": {
+      "def": "sinan/HansNET.def",
+      "campos": {
+        "aval_atu_n": "sinan/AvaliaN.cnv",
+        "avalia_n": "sinan/AvaliaN.cnv",
+        "epis_racio": "sinan/reacional.cnv",
+        "tpalta_n": "sinan/SAIDAhans.cnv"
+      },
+      "sem_cnv": {
+        "cs_escol_n": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "cs_gestant": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "cs_raca": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "cs_sexo": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "migrado_w": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas"
+      }
+    },
+    "sinasc_nascidos_vivos": {
+      "def": "sinasc/NASCIDO.def",
+      "campos": {
+        "consultas": "sinasc/CONSULT.CNV",
+        "escmae": "sinasc/INSTRUC.CNV",
+        "escmae2010": "sinasc/ESC2010.CNV",
+        "escmaeagr1": "sinasc/ESCAGR1.CNV",
+        "estcivmae": "sinasc/ESTCIV.CNV",
+        "gestacao": "sinasc/SEMANAS.CNV",
+        "gravidez": "sinasc/GRAVIDEZ.CNV",
+        "idanomal": "sinasc/idanomal.cnv",
+        "kotelchuck": "sinasc/KOTELCHUCK.CNV",
+        "locnasc": "sinasc/LOCOCOR.CNV",
+        "origem": "sinasc/ORIGEM.CNV",
+        "parto": "sinasc/PARTO.CNV",
+        "racacor": "sinasc/RACA.CNV",
+        "racacormae": "sinasc/RACA.CNV",
+        "sexo": "sinasc/SEXO.CNV",
+        "stcesparto": "sinasc/STPARTO.CNV",
+        "sttrabpart": "sinasc/ANOMAL.CNV",
+        "tpapresent": "sinasc/PARAPRE.CNV",
+        "tpfuncresp": "sinasc/TPFUNC.CNV",
+        "tpmetestim": "sinasc/TPMETODO.CNV",
+        "tpnascassi": "sinasc/TPASSIST.CNV",
+        "tprobson": "sinasc/ROBSON.CNV"
+      },
+      "sem_cnv": {
+        "stdnepidem": "DNNOVA.CNV escreve o código na coluna 60, fora do layout do manual TabWin (códigos a partir da coluna 61)."
+      }
+    },
+    "sinan_tuberculose": {
+      "def": "sinan/TuberculNET5_0.def",
+      "campos": {},
+      "sem_cnv": {
+        "agravaids": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "agravalcoo": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "agravdiabe": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "agravdoenc": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "agravdroga": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "agravoutra": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "agravtabac": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "ant_retro": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "bac_apos_6": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "bacilosc_1": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "bacilosc_2": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "bacilosc_3": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "bacilosc_4": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "bacilosc_5": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "bacilosc_6": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "bacilosc_e": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "benef_gov": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "cs_escol_n": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "cs_gestant": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "cs_raca": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "cs_sexo": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "cultura_es": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "extrapu1_n": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "forma": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "histopatol": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "hiv": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "migrado_w": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "pop_imig": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "pop_liber": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "pop_rua": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "pop_saude": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "raiox_tora": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "situa_ence": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "test_molec": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "test_sensi": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "transf": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "tratamento": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas",
+        "tratsup_at": "mapa do bloco SINAN (scripts/metadados/sinan_bloco_comum.yaml), lido das páginas"
+      }
+    },
+    "sia_producao_ambulatorial": {
+      "def": "sia/Producao_Ambulatorial.DEF",
+      "campos": {
+        "pa_alta": "sia/CNV/ALTA.CNV",
+        "pa_catend": "sia/CNV/CARAT_AT.CNV",
+        "pa_condic": "sia/CNV/TP_GESTAO.CNV",
+        "pa_encerr": "sia/CNV/ENCERRAM.CNV",
+        "pa_flidade": "sia/CNV/FL_IDADE.CNV",
+        "pa_indica": "sia/CNV/INDICA.cnv",
+        "pa_mn_ind": "sia/CNV/MANT_IND.CNV",
+        "pa_motsai": "sia/CNV/MOTSAIPE.CNV",
+        "pa_nivcpl": "sia/CNV/COMPLEX.CNV",
+        "pa_obito": "sia/CNV/OBITO.CNV",
+        "pa_perman": "sia/CNV/PERMANEN.CNV",
+        "pa_racacor": "sia/CNV/RACA_COR.CNV",
+        "pa_regct": "sia/CNV/REGRA_C.cnv",
+        "pa_sexo": "sia/CNV/SEXO.CNV",
+        "pa_tpfin": "sia/CNV/FINANC.CNV",
+        "pa_tpups": "sia/CNV/TP_ESTAB.CNV",
+        "pa_transf": "sia/CNV/TRANSFER.CNV"
+      }
+    },
+    "sih_aih_rejeitada": {
+      "def": "sih/RJ2008.DEF",
+      "campos": {
+        "car_int": "sih/CNV/CARATEND.CNV",
+        "cobranca": "sih/CNV/SAIDAPERM.CNV",
+        "complex": "sih/CNV/COMPLEX2.CNV",
+        "espec": "sih/CNV/LEITOS.CNV",
+        "financ": "sih/CNV/FINANC.CNV",
+        "gestao": "sih/CNV/GESTAO.CNV",
+        "gestrisco": "sih/CNV/SIMNAO.CNV",
+        "ident": "sih/CNV/IDENT.CNV",
+        "ind_vdrl": "sih/CNV/SIMNAO.CNV",
+        "infehosp": "sih/CNV/SIMNAO.CNV",
+        "instru": "sih/CNV/INSTRU.CNV",
+        "marca_uti": "sih/CNV/MARCAUTI.CNV",
+        "morte": "sih/CNV/MORTES.CNV",
+        "natureza": "sih/CNV/NATUREZA.CNV",
+        "raca_cor": "sih/CNV/RACACOR.CNV",
+        "regct": "sih/CNV/REGCT.cnv",
+        "sexo": "sih/CNV/SEXO.CNV",
+        "st_bloq": "sih/CNV/sitbloqueio.cnv",
+        "st_situac": "sih/CNV/sitrejeicao.cnv",
+        "vincprev": "sih/CNV/VINCPREV.CNV"
+      }
+    },
+    "sih_servicos_profissionais": {
+      "def": "sih/SP2008.DEF",
+      "campos": {
+        "in_tp_val": "sih/CNV/TP_VAL.CNV"
+      }
+    },
+    "cnes_dados_complementares": {
+      "def": "cnes/DadosComplementares.def",
+      "campos": {
+        "atividad": "cnes/CNV/Ativ_Ens.CNV",
+        "clientel": "cnes/CNV/Flux_Cli.CNV",
+        "niv_dep": "cnes/CNV/NIVELDEP.CNV",
+        "tp_unid": "cnes/CNV/TP_ESTAB.CNV",
+        "tpgestao": "cnes/CNV/TPGESTAO.CNV",
+        "turno_at": "cnes/CNV/TurnosAt.CNV",
+        "vinc_sus": "cnes/CNV/Vinc_SUS.cnv"
+      }
+    },
+    "cnes_equipamentos": {
+      "def": "cnes/Equipamento.def",
+      "campos": {
+        "atividad": "cnes/CNV/Ativ_Ens.CNV",
+        "ind_sus": "cnes/CNV/IND_SUS.CNV",
+        "niv_dep": "cnes/CNV/NIVELDEP.CNV",
+        "tp_unid": "cnes/CNV/TP_ESTAB.CNV",
+        "tpgestao": "cnes/CNV/TPGESTAO.CNV"
+      }
+    },
+    "cnes_equipes": {
+      "def": "cnes/Equipes.def",
+      "campos": {
+        "atividad": "cnes/CNV/Ativ_Ens.CNV",
+        "motdesat": "cnes/CNV/motdesat.cnv",
+        "niv_dep": "cnes/CNV/NIVELDEP.CNV",
+        "tipo_eqp": "cnes/CNV/tipoeqpC.cnv",
+        "tiposegm": "cnes/CNV/tiposegm.cnv",
+        "tp_desat": "cnes/CNV/TP_DESAT.CNV",
+        "tp_unid": "cnes/CNV/TP_ESTAB.CNV",
+        "tpgestao": "cnes/CNV/TPGESTAO.CNV",
+        "turno_at": "cnes/CNV/TurnosAt.CNV"
+      }
+    },
+    "cnes_estabelecimentos_ensino": {
+      "def": "cnes/Estabel_Ensino.def",
+      "campos": {
+        "atividad": "cnes/CNV/Ativ_Ens.CNV",
+        "niv_dep": "cnes/CNV/NIVELDEP.CNV",
+        "sgruphab": "cnes/CNV/ESTABENS.CNV",
+        "tp_unid": "cnes/CNV/TP_ESTAB.CNV",
+        "tpgestao": "cnes/CNV/TPGESTAO.CNV",
+        "turno_at": "cnes/CNV/TurnosAt.CNV",
+        "vinc_sus": "cnes/CNV/Vinc_SUS.cnv"
+      }
+    },
+    "cnes_estabelecimentos_filantropicos": {
+      "def": "cnes/Estabel_Filantropico.def",
+      "campos": {
+        "atividad": "cnes/CNV/Ativ_Ens.CNV",
+        "niv_dep": "cnes/CNV/NIVELDEP.CNV",
+        "sgruphab": "cnes/CNV/ESTABFIL.CNV",
+        "tp_unid": "cnes/CNV/TP_ESTAB.CNV",
+        "tpgestao": "cnes/CNV/TPGESTAO.CNV",
+        "turno_at": "cnes/CNV/TurnosAt.CNV",
+        "vinc_sus": "cnes/CNV/Vinc_SUS.cnv"
+      }
+    },
+    "cnes_gestao_metas": {
+      "def": "cnes/Gestao_de_Metas.def",
+      "campos": {
+        "atividad": "cnes/CNV/Ativ_Ens.CNV",
+        "niv_dep": "cnes/CNV/NIVELDEP.CNV",
+        "tp_unid": "cnes/CNV/TP_ESTAB.CNV",
+        "tpgestao": "cnes/CNV/TPGESTAO.CNV",
+        "turno_at": "cnes/CNV/TurnosAt.CNV",
+        "vinc_sus": "cnes/CNV/Vinc_SUS.cnv"
+      }
+    },
+    "cnes_habilitacoes": {
+      "def": "cnes/Habilitacao.def",
+      "campos": {
+        "atividad": "cnes/CNV/Ativ_Ens.CNV",
+        "niv_dep": "cnes/CNV/NIVELDEP.CNV",
+        "tp_unid": "cnes/CNV/TP_ESTAB.CNV",
+        "tpgestao": "cnes/CNV/TPGESTAO.CNV",
+        "turno_at": "cnes/CNV/TurnosAt.CNV",
+        "vinc_sus": "cnes/CNV/Vinc_SUS.cnv"
+      }
+    },
+    "cnes_incentivos": {
+      "def": "cnes/Incentivos.def",
+      "campos": {
+        "atividad": "cnes/CNV/Ativ_Ens.CNV",
+        "niv_dep": "cnes/CNV/NIVELDEP.CNV",
+        "tp_unid": "cnes/CNV/TP_ESTAB.CNV",
+        "tpgestao": "cnes/CNV/TPGESTAO.CNV",
+        "turno_at": "cnes/CNV/TurnosAt.CNV",
+        "vinc_sus": "cnes/CNV/Vinc_SUS.cnv"
+      }
+    },
+    "cnes_leitos": {
+      "def": "cnes/Leitos_Especialidade.def",
+      "campos": {
+        "atividad": "cnes/CNV/Ativ_Ens.CNV",
+        "codleito": "cnes/CNV/Esp_leit.CNV",
+        "niv_dep": "cnes/CNV/NIVELDEP.CNV",
+        "tp_leito": "cnes/CNV/tip1leit.cnv",
+        "tp_unid": "cnes/CNV/TP_ESTAB.CNV",
+        "tpgestao": "cnes/CNV/TPGESTAO.CNV"
+      }
+    },
+    "cnes_regras_contratuais": {
+      "def": "cnes/Regras_Contratuais.def",
+      "campos": {
+        "atividad": "cnes/CNV/Ativ_Ens.CNV",
+        "tp_unid": "cnes/CNV/TP_ESTAB.CNV",
+        "turno_at": "cnes/CNV/TurnosAt.CNV",
+        "vinc_sus": "cnes/CNV/Vinc_SUS.cnv"
+      }
+    },
+    "cnes_servicos_especializados": {
+      "def": "cnes/Servico_Especializado_200803_.def",
+      "campos": {
+        "atividad": "cnes/CNV/Ativ_Ens.CNV",
+        "caracter": "cnes/CNV/Srv_Caract.CNV",
+        "niv_dep": "cnes/CNV/NIVELDEP.CNV",
+        "tp_unid": "cnes/CNV/TP_ESTAB.CNV",
+        "tpgestao": "cnes/CNV/TPGESTAO.CNV"
+      }
+    },
+    "sim_obitos_fetais": {
+      "def": "sim/Obito_1996_CID10.def",
+      "campos": {
+        "atestante": "sim/ATESTANT.CNV",
+        "escmae": "sim/INSTRUC.CNV",
+        "escmaeagr1": "sim/ESCAGR1.CNV",
+        "estciv": "sim/ESTCIV.CNV",
+        "fonteinv": "sim/FONTEINV.CNV",
+        "gestacao": "sim/SEMANAS.CNV",
+        "gravidez": "sim/GRAVIDEZ.CNV",
+        "lococor": "sim/LOCOCOR.CNV",
+        "necropsia": "sim/NECROPS.CNV",
+        "obitoparto": "sim/oparto.cnv",
+        "parto": "sim/PARTO.CNV",
+        "seriescmae": "sim/SERIEFAL.CNV",
+        "stcodifica": "sim/CODIFICA1.cnv",
+        "stdoepidem": "sim/DONOVA.CNV",
+        "stdonova": "sim/DONOVA.CNV",
+        "tipobito": "sim/TIPOBITO.CNV",
+        "tppos": "sim/INVESTIG.CNV",
+        "versaoscb": "sim/VERSCB.CNV"
+      },
+      "sem_cnv": {
+        "sexo": "SEXO.CNV rotula só com as letras M, F e I; sim_obitos também não usa este CNV."
+      }
+    },
+    "sim_obitos_cid9": {
+      "def": "sim/Obito_1979_95_CID-09.DEF",
+      "campos": {
+        "assistmed": "sim/ASSMEDIC.CNV",
+        "estcivil": "sim/ESTCIV.CNV",
+        "obitofe1": "sim/OBITOFE1.CNV",
+        "obitofe2": "sim/OBITOFE2.CNV",
+        "tipoacid": "sim/TIPOACID.CNV",
+        "tipobito": "sim/TIPOBITO.CNV"
+      },
+      "sem_cnv": {
+        "sexo": "SEXO.CNV rotula só com as letras M, F e I; sim_obitos também não usa este CNV."
+      }
+    },
+    "sia_apac_acompanhamento_bariatrica": {
+      "def": "sia/APAC_Cirurgia_Bariatica.DEF",
+      "campos": {
+        "ap_alta": "sia/CNV/ALTA.CNV",
+        "ap_catend": "sia/CNV/CARAT_AT.CNV",
+        "ap_condic": "sia/CNV/TP_GESTAO.CNV",
+        "ap_encerr": "sia/CNV/ENCERRAM.CNV",
+        "ap_mn_ind": "sia/CNV/MANT_IND.CNV",
+        "ap_mndif": "sia/CNV/Invasao.CNV",
+        "ap_motsai": "sia/CNV/MOTSAIPE.CNV",
+        "ap_obito": "sia/CNV/OBITO.CNV",
+        "ap_perman": "sia/CNV/PERMANEN.CNV",
+        "ap_racacor": "sia/CNV/RACA_COR.CNV",
+        "ap_sexo": "sia/CNV/SEXO.CNV",
+        "ap_tpapac": "sia/CNV/TP_APAC.CNV",
+        "ap_tpups": "sia/CNV/TP_ESTAB.CNV",
+        "ap_transf": "sia/CNV/TRANSFER.CNV",
+        "ap_ufdif": "sia/CNV/Invasao.CNV"
+      }
+    },
+    "sia_apac_fistula_arteriovenosa": {
+      "def": "sia/APAC_Confeccao_de_Fistula.DEF",
+      "campos": {
+        "ap_alta": "sia/CNV/ALTA.CNV",
+        "ap_catend": "sia/CNV/CARAT_AT.CNV",
+        "ap_condic": "sia/CNV/TP_GESTAO.CNV",
+        "ap_encerr": "sia/CNV/ENCERRAM.CNV",
+        "ap_mn_ind": "sia/CNV/MANT_IND.CNV",
+        "ap_mndif": "sia/CNV/Invasao.CNV",
+        "ap_motsai": "sia/CNV/MOTSAIPE.CNV",
+        "ap_obito": "sia/CNV/OBITO.CNV",
+        "ap_perman": "sia/CNV/PERMANEN.CNV",
+        "ap_racacor": "sia/CNV/RACA_COR.CNV",
+        "ap_sexo": "sia/CNV/SEXO.CNV",
+        "ap_tpapac": "sia/CNV/TP_APAC.CNV",
+        "ap_tpups": "sia/CNV/TP_ESTAB.CNV",
+        "ap_transf": "sia/CNV/TRANSFER.CNV",
+        "ap_ufdif": "sia/CNV/Invasao.CNV"
+      },
+      "sem_cnv": {
+        "ap_coidade": "IDADEDET e IDADE18.CNV comparam 3 caracteres a partir de AP_COIDADE, que tem 1."
+      }
+    },
+    "sia_apac_nefrologia": {
+      "def": "sia/APAC_Nefrologia.DEF",
+      "campos": {
+        "an_acevas": "sia/CNV/ACES_VASC.CNV",
+        "an_cncdo": "sia/CNV/CNCDO.CNV",
+        "an_hbsag": "sia/CNV/HBSAG.CNV",
+        "an_hcv": "sia/CNV/HCV.CNV",
+        "an_hiv": "sia/CNV/HIV.CNV",
+        "an_ulsoab": "sia/CNV/ULTRA_AB.CNV",
+        "ap_alta": "sia/CNV/ALTA.CNV",
+        "ap_catend": "sia/CNV/CARAT_AT.CNV",
+        "ap_condic": "sia/CNV/TP_GESTAO.CNV",
+        "ap_encerr": "sia/CNV/ENCERRAM.CNV",
+        "ap_mn_ind": "sia/CNV/MANT_IND.CNV",
+        "ap_mndif": "sia/CNV/Invasao.CNV",
+        "ap_motsai": "sia/CNV/MOTSAIPE.CNV",
+        "ap_obito": "sia/CNV/OBITO.CNV",
+        "ap_perman": "sia/CNV/PERMANEN.CNV",
+        "ap_racacor": "sia/CNV/RACA_COR.CNV",
+        "ap_sexo": "sia/CNV/SEXO.CNV",
+        "ap_tpapac": "sia/CNV/TP_APAC.CNV",
+        "ap_tpaten": "sia/CNV/TP_ATEND.CNV",
+        "ap_tpups": "sia/CNV/TP_ESTAB.CNV",
+        "ap_transf": "sia/CNV/TRANSFER.CNV",
+        "ap_ufdif": "sia/CNV/Invasao.CNV"
+      }
+    },
+    "sia_apac_radioterapia": {
+      "def": "sia/APAC_Radioterapia.DEF",
+      "campos": {
+        "ap_alta": "sia/CNV/ALTA.CNV",
+        "ap_catend": "sia/CNV/CARAT_AT.CNV",
+        "ap_condic": "sia/CNV/TP_GESTAO.CNV",
+        "ap_encerr": "sia/CNV/ENCERRAM.CNV",
+        "ap_mn_ind": "sia/CNV/MANT_IND.CNV",
+        "ap_mndif": "sia/CNV/Invasao.CNV",
+        "ap_motsai": "sia/CNV/MOTSAIPE.CNV",
+        "ap_obito": "sia/CNV/OBITO.CNV",
+        "ap_perman": "sia/CNV/PERMANEN.CNV",
+        "ap_racacor": "sia/CNV/RACA_COR.CNV",
+        "ap_sexo": "sia/CNV/SEXO.CNV",
+        "ap_tpaten": "sia/CNV/TP_ATEND.CNV",
+        "ap_transf": "sia/CNV/TRANSFER.CNV",
+        "ap_ufdif": "sia/CNV/Invasao.CNV",
+        "ar_conttr": "sia/CNV/CONT_TRAT.CNV",
+        "ar_estadi": "sia/CNV/ESTADIO.CNV",
+        "ar_finali": "sia/CNV/FINALID.CNV",
+        "ar_linfin": "sia/CNV/LINF_INV.CNV"
+      },
+      "sem_cnv": {
+        "ap_coidade": "IDADEDET e IDADE18.CNV comparam 3 caracteres a partir de AP_COIDADE, que tem 1."
+      }
+    },
+    "sia_atencao_domiciliar": {
+      "def": "sia/Atencao_Domiciliar.def",
+      "campos": {
+        "catend": "sia/CNV/CARAT_AT.CNV",
+        "cob_esf": "sia/CNV/COBERTURA.CNV",
+        "condic": "sia/CNV/TP_GESTAO.CNV",
+        "destinopac": "sia/CNV/destino.cnv",
+        "mn_ind": "sia/CNV/MANT_IND.CNV",
+        "mot_cob": "sia/CNV/MOTSAIPE.CNV",
+        "origem_pac": "sia/CNV/origem.cnv",
+        "racacor": "sia/CNV/RACA_COR.CNV",
+        "sexopac": "sia/CNV/SEXO.CNV"
+      }
+    },
+    "sih_aih_rejeitada_erro": {
+      "def": "sih/Motivo_de_Erro.DEF",
+      "campos": {
+        "co_erro": "sih/DBF/MOTERRO.dbf"
+      },
+      "largura": {
+        "co_erro": 6
+      }
+    }
+  },
+  "linhas_fora_do_layout": [
+    {
+      "membro": "sia/APAC_Quimioterapia.DEF",
+      "linha": 343,
+      "texto": "SMicro IBGE Atendimento   AP_UFMUN        , 1,  CNV/BR_MICIBGE.CNV",
+      "motivo": "comma missing between description and field; L/C forms on lines 329 and 336 are well formed; ap_ufmun has no x-decode"
+    },
+    {
+      "membro": "cnes/Servico_Especializado_200803_.def",
+      "linha": 56,
+      "texto": "LRegião/Unidade da Federação  CODUFMUN,1 , CNV\\br_regiaouf.cnv",
+      "motivo": "vírgula faltando entre descrição e campo; codufmun não tem x-decode"
+    },
+    {
+      "membro": "cnes/Servico_Especializado_200803_.def",
+      "linha": 81,
+      "texto": "SMunicípio de extrema pobreza CODUFMUN,1 , CNV\\br_extrpobrez.cnv",
+      "motivo": "vírgula faltando entre descrição e campo; codufmun não tem x-decode"
+    },
+    {
+      "membro": "sia/APAC_Radioterapia.DEF",
+      "linha": 330,
+      "texto": "CDivisão Admistrativa Atend.       AP_UFMUN , 1,  CNV/BR_DIVADM.CNV",
+      "motivo": "vírgula faltando entre descrição e campo; as linhas L e S de AP_UFMUN estão bem formadas; ap_ufmun não tem x-decode"
+    }
+  ]
+}

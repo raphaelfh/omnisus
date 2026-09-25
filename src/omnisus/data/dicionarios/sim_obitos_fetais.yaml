@@ -1,0 +1,603 @@
+name: sim_obitos_fetais
+title: SIM — Óbitos fetais (DOFET), nacional
+profile: tabular-data-resource
+encoding: latin-1
+x-version: 1.1.0
+x-source-format: dbc
+x-partitions:
+- _source_ano
+x-evidence:
+  physical_schema: sim_dofet_br_2023_excerpt.dbc, 98 fields; observed 2026-09-22
+  semantic_status: Physical inventory. Category maps only where a TabWin CNV binds the
+    field and decodes every non-blank value of the fixture (vinculos.json); no inferred
+    mappings.
+  dictionary_url: ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID10/DOCS/Estrutura_do_SIM_2025.pdf
+  source_url: ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID10/DOFET/DOFET23.dbc
+schema:
+  fields:
+  - name: origem
+    type: string
+  - name: codmuncart
+    type: string
+  - name: numregcart
+    type: string
+  - name: codcart
+    type: string
+  - name: dtregcart
+    type: string
+  - name: tipobito
+    type: string
+    x-decode:
+      '1': Fetal
+      '2': Não Fetal
+      '9': Ignorado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 0a34ad70ca563c98dfbbbd5784ba66e4958a2deae30440a18c75e01d873867dc
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XTipo Obito, TIPOBITO, 1, TIPOBITO.CNV; OBITOS_CID10_TAB/tabdo/TIPOBITO.CNV'
+        note: Mapa do CNV.
+  - name: dtobito
+    type: string
+  - name: horaobito
+    type: string
+  - name: natural
+    type: string
+  - name: codmunnatu
+    type: string
+  - name: dtnasc
+    type: string
+  - name: idade
+    type: string
+  - name: sexo
+    type: string
+  - name: racacor
+    type: string
+  - name: estciv
+    type: string
+    x-decode:
+      ? ''
+      : N Inf
+      '0': Ignorado
+      '1': Solteiro
+      '2': Casado
+      '3': Viúvo
+      '4': Separado jud
+      '5': U.Estável
+      '9': Ignorado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 977f42fcdf08afe550ad2cb50cedc5847acd6c7e5fe72279c2409a09c1e310e1
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XEstado Civil, ESTCIV, 1, ESTCIV.CNV; OBITOS_CID10_TAB/tabdo/ESTCIV.CNV'
+        note: Mapa do CNV.
+  - name: esc
+    type: string
+  - name: esc2010
+    type: string
+  - name: seriescfal
+    type: string
+  - name: ocup
+    type: string
+  - name: codmunres
+    type: string
+  - name: lococor
+    type: string
+    x-decode:
+      '1': Hospital
+      '2': Outro Estab de Saúde
+      '3': Domicílio
+      '4': Via Pública
+      '5': Outros
+      '6': Aldeia Indigena
+      '9': Ignorado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 387a0a528d9538faf842e42b27f75f71a5d247fee547e1e35788e6117ca9fa25
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XLocal Ocorrencia, LOCOCOR, 1, LOCOCOR.CNV; OBITOS_CID10_TAB/tabdo/LOCOCOR.CNV'
+        note: Mapa do CNV.
+  - name: codestab
+    type: string
+  - name: estabdescr
+    type: string
+  - name: codmunocor
+    type: string
+  - name: idademae
+    type: string
+  - name: escmae
+    type: string
+    x-decode:
+      ? ''
+      : N Inf
+      '1': Nenhuma
+      '2': 01-03
+      '3': 04-07
+      '4': 08-11
+      '5': 12 e+
+      '9': Ign
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: acba34ba09e47d5d844c3c7d85380abb208dfa74204bdc30d7e9f2176f8f6ed1
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XEscolMãe anos concl, ESCMAE, 1, INSTRUC.CNV; OBITOS_CID10_TAB/tabdo/INSTRUC.CNV'
+        note: Mapa do CNV.
+  - name: escmae2010
+    type: string
+  - name: seriescmae
+    type: string
+    x-decode:
+      ? ''
+      : N Inf
+      '0': '0'
+      '1': '1'
+      '2': '2'
+      '3': '3'
+      '4': '4'
+      '5': '5'
+      '6': '6'
+      '7': '7'
+      '8': '8'
+      '9': Ign
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 62a5b87bc4d463a6999baec054a01461a2cf54690b04b9526adbf733c49ba7ab
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: x*Escol Mãe SERIE, SERIESCMAE, 1, SERIEFAL.CNV; OBITOS_CID10_TAB/tabdo/SERIEFAL.CNV'
+        note: Mapa do CNV.
+  - name: ocupmae
+    type: string
+  - name: qtdfilvivo
+    type: string
+  - name: qtdfilmort
+    type: string
+  - name: gravidez
+    type: string
+    x-decode:
+      ? ''
+      : N inf
+      '1': Única
+      '2': Dupla
+      '3': Tripla e+
+      '9': Ignorado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: c70e873b64e2a6b025381a1483c3f1266d0df97662a771790428407ce5a78419
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XGravidez, GRAVIDEZ, 1, GRAVIDEZ.CNV; OBITOS_CID10_TAB/tabdo/GRAVIDEZ.CNV'
+        note: Mapa do CNV.
+  - name: semagestac
+    type: string
+  - name: gestacao
+    type: string
+    x-decode:
+      ? ''
+      : N inf
+      '1': Menos 22
+      '2': 22 a 27
+      '3': 28 a 31
+      '4': 32 a 36
+      '5': 37 a 41
+      '6': 42 e +
+      '9': Ignorado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 85cefa976e0b1748ed782d80be7a883f28bf50c61b620953f033e8331e0668be
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XSemanas Gestação, GESTACAO, 1, SEMANAS.CNV; OBITOS_CID10_TAB/tabdo/SEMANAS.CNV'
+        note: Mapa do CNV.
+  - name: parto
+    type: string
+    x-decode:
+      ? ''
+      : Não informado
+      '1': Vaginal
+      '2': Cesário
+      '9': Ignorado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 93a3463f457b45046a105fedb410e0e43fecb989384dfaf5468c64c7a2fb2052
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XTipo Parto, PARTO, 1, PARTO.CNV; OBITOS_CID10_TAB/tabdo/PARTO.CNV'
+        note: Mapa do CNV.
+  - name: obitoparto
+    type: string
+    x-decode:
+      ? ''
+      : N Inf
+      '1': Antes
+      '2': Durante
+      '3': Depois
+      '9': Ign
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 1e5854c1fe045835acd54fa3ad7fa81f128d0810f945d95cff7f3c435c2493fc
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XObito Parto, OBITOPARTO, 1, OPARTO.CNV; OBITOS_CID10_TAB/tabdo/oparto.cnv'
+        note: Mapa do CNV.
+  - name: peso
+    type: string
+  - name: tpmorteoco
+    type: string
+  - name: obitograv
+    type: string
+  - name: obitopuerp
+    type: string
+  - name: assistmed
+    type: string
+  - name: exame
+    type: string
+  - name: cirurgia
+    type: string
+  - name: necropsia
+    type: string
+    x-decode:
+      ? ''
+      : N Inf
+      '1': Sim
+      '2': Não
+      '9': Ign
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 3422606b95b81313902f1103a41cfa99757b2781f730bca8f24722d56acc3807
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XNecropsia, NECROPSIA, 1, NECROPS.CNV; OBITOS_CID10_TAB/tabdo/NECROPS.CNV'
+        note: Mapa do CNV.
+  - name: linhaa
+    type: string
+  - name: linhab
+    type: string
+  - name: linhac
+    type: string
+  - name: linhad
+    type: string
+  - name: linhaii
+    type: string
+  - name: causabas
+    type: string
+  - name: cb_pre
+    type: string
+  - name: medico
+    type: string
+  - name: comunsvoim
+    type: string
+  - name: dtatestado
+    type: string
+  - name: circobito
+    type: string
+  - name: acidtrab
+    type: string
+  - name: fonte
+    type: string
+  - name: numerolote
+    type: string
+  - name: tppos
+    type: string
+    x-decode:
+      ? ''
+      : N Informado
+      N: Nao Investigado
+      S: Investigado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: f352632d7d1acf143d91f8c0952e362267a947a6856fc485d1f4d43818d50b2d
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XObito investigado, TPPOS, 1, INVESTIG.CNV; OBITOS_CID10_TAB/tabdo/INVESTIG.CNV'
+        note: Mapa do CNV.
+  - name: dtinvestig
+    type: string
+  - name: linhaa_o
+    type: string
+  - name: linhab_o
+    type: string
+  - name: linhac_o
+    type: string
+  - name: linhad_o
+    type: string
+  - name: linhaii_o
+    type: string
+  - name: causabas_o
+    type: string
+  - name: dtcadastro
+    type: string
+  - name: atestante
+    type: string
+    x-decode:
+      ? ''
+      : N Inf
+      '1': Sim
+      '2': Substituto
+      '3': IML
+      '4': SVO
+      '5': Outro
+      '9': Ign
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 84428dba1e8943e5c653d365dad765579149b2146711067f716692a438f77d51
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XMedico Atest, ATESTANTE, 1, ATESTANT.CNV; OBITOS_CID10_TAB/tabdo/ATESTANT.CNV'
+        note: Mapa do CNV.
+  - name: stcodifica
+    type: string
+    x-decode:
+      ? ''
+      : N Inf
+      N: Sem SCB ou "não codificadora"
+      S: Com SCB ou "codificadora"
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: d4ad5b77f67a58e430a04744d41964acde289f98d6e2ce09c7a5ad1ba44e8c7c
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XTp instal SCB, STCODIFICA, 1, CODIFICA1.CNV; OBITOS_CID10_TAB/tabdo/CODIFICA1.cnv'
+        note: Mapa do CNV.
+  - name: codificado
+    type: string
+  - name: versaosist
+    type: string
+  - name: versaoscb
+    type: string
+    x-decode:
+      ? ''
+      : CD sem Patch
+      '1.1': Versao SCB 1.1
+      '1.2': Versao SCB 1.2
+      '1.3': Versao SCB 1.3
+      '1.4': Versao SCB 1.4
+      '1.5': Versao SCB 1.5
+      '1.6': Versao SCB 1.6
+      '1.7': Versao SCB 1.7
+      '1.8': Versao SCB 1.8
+      '1.9': Versao SCB 1.9
+      '2.0': Versao SCB 2.0
+      '2.1': Versao SCB 2.1
+      '2.2': Versao SCB 2.2
+      '2.3': Versao SCB 2.3
+      '2.4': Versao SCB 2.4
+      '2.5': Versao SCB 2.5
+      '3.2': Versao SCB 3.2
+      '3.3': Versao SCB 3.3
+      '3.4': Versao SCB 3.4
+      '4.1': Versao SCB 4.1
+      '4.3': Versao SCB 4.3
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: f9ca61ff089ee5ac6557cfe84eb3f301b57840b09ab92d63264ed4ef801d03a5
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XVersao SCB, VERSAOSCB, 1, VERSCB.CNV; OBITOS_CID10_TAB/tabdo/VERSCB.CNV'
+        note: Mapa do CNV.
+  - name: fonteinv
+    type: string
+    x-decode:
+      ? ''
+      : N Inf
+      '1': Comitê de Morte Materna e/ou Infantil
+      '2': Visita domiciliar / Entrevista familia
+      '3': Estab Saude / Prontuario
+      '4': Relacion com outros bancos de dados
+      '5': S V O
+      '6': I M L
+      '7': Outra  fonte
+      '8': Multiplas fontes
+      '9': Ignorado
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: f50994393e73134e1e846df6e5ac60dc13af9c0a195439739b1a35002a36a904
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: XFonte Investig, FONTEINV, 1, FONTEINV.CNV; OBITOS_CID10_TAB/tabdo/FONTEINV.CNV'
+        note: Mapa do CNV.
+  - name: dtrecebim
+    type: string
+  - name: atestado
+    type: string
+  - name: dtrecorig
+    type: string
+  - name: dtrecoriga
+    type: string
+  - name: causamat
+    type: string
+  - name: escmaeagr1
+    type: string
+    x-decode:
+      ? ''
+      : N Inf
+      '00': Sem Escolaridade
+      '01': Fundamental I Incompleto
+      '02': Fundamental I Completo
+      '03': Fundamental II Incompleto
+      '04': Fundamental II Completo
+      '05': Ensino Medio Incompleto
+      '06': Ensino Medio Completo
+      '07': Superior Incompleto
+      '08': Superior Completo
+      '09': Ignorado
+      '10': Fundamental I Incompleto ou Inespecif
+      '11': Fundamental II Incompleto ou Inespecif
+      '12': Ensino Medio Incompleto ou Inespecif
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: cb374381c2a0998d2a13d45c5ec91812ce49542794b6bfdf9ab1ba238dbf8a84
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: X*EscMãe1CICLO/SERIE, ESCMAEAGR1, 1, ESCAGR1.CNV; OBITOS_CID10_TAB/tabdo/ESCAGR1.CNV'
+        note: Mapa do CNV.
+  - name: escfalagr1
+    type: string
+  - name: stdoepidem
+    type: string
+    x-decode:
+      '0': Não
+      '1': Sim
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 46544b8609bf9423688dea275b19781ac716ede9102e3fe953299269e93fd2d2
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: X*DO epidemiologica, STDOEPIDEM, 1, DONOVA.CNV; OBITOS_CID10_TAB/tabdo/DONOVA.CNV'
+        note: Mapa do CNV.
+  - name: stdonova
+    type: string
+    x-decode:
+      '0': Não
+      '1': Sim
+    x-metadata:
+      claims:
+      - target: /field/codes
+        value_sha256: 46544b8609bf9423688dea275b19781ac716ede9102e3fe953299269e93fd2d2
+        status: verified_in_source
+        checked_at: '2026-09-21'
+        method: cnv-parse
+        reviewer: scripts/metadados/gerar_decode_cnv.py
+        evidence:
+        - source_id: sim-tab-bb1c9f02668e
+          pages: []
+          locator: 'Obito_1996_CID10.def: X*DO novo modelo, STDONOVA, 1, DONOVA.CNV; OBITOS_CID10_TAB/tabdo/DONOVA.CNV'
+        note: Mapa do CNV.
+  - name: difdata
+    type: string
+  - name: nudiasobco
+    type: string
+  - name: nudiasobin
+    type: string
+  - name: dtcadinv
+    type: string
+  - name: tpobitocor
+    type: string
+  - name: dtconinv
+    type: string
+  - name: fontes
+    type: string
+  - name: tpresginfo
+    type: string
+  - name: tpnivelinv
+    type: string
+  - name: nudiasinf
+    type: string
+  - name: dtcadinf
+    type: string
+  - name: morteparto
+    type: string
+  - name: dtconcaso
+    type: string
+  - name: fontesinf
+    type: string
+  - name: altcausa
+    type: string
+  - name: contador
+    type: string

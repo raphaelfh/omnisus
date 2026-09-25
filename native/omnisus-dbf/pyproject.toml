@@ -1,0 +1,32 @@
+[build-system]
+requires = ["maturin==1.12.6"]
+build-backend = "maturin"
+
+[project]
+name = "omnisus-dbf"
+dynamic = ["version"]
+requires-python = ">=3.12"
+description = "Optional DBF to Arrow reader and DBC decompressor for omnisus"
+readme = "README.md"
+license = {file = "LICENSE"}
+dependencies = ["pyarrow>=25.0.1"]
+classifiers = [
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Rust",
+]
+
+[tool.maturin]
+python-source = "python"
+module-name = "omnisus_dbf._native"
+features = ["extension-module"]
+include = [
+    {path = "rust-toolchain.toml", format = "sdist"},
+    {path = "tests/**", format = "sdist"},
+    {path = "fuzz/Cargo.toml", format = "sdist"},
+    {path = "fuzz/Cargo.lock", format = "sdist"},
+    {path = "fuzz/fuzz_targets/*.rs", format = "sdist"},
+    {path = "fuzz/README.md", format = "sdist"},
+]
+exclude = ["fuzz/target/**", "fuzz/artifacts/**", "fuzz/corpus/**"]

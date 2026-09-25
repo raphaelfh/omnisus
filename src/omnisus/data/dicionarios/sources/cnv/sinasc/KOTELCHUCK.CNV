@@ -1,0 +1,7 @@
+6 1
+      1  Não fez pré-natal (Campo33=0)                      1
+      2  Inadequado (Campo34>3 ou Campo34<=3 e Campo33<3)   2
+      3  Intermediário (Campo34<=3 e Campo33 entre 3 e 5)   3
+      4  Adequado (Campo34<=3 e Campo33=6)                  4
+      5  Mais que adequado (Campo34<=3 e Campo33>=7)        5
+      6  Não Classificados (campos 33 ou 34, Nulo ou Ign)   9

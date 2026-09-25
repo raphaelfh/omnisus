@@ -1,0 +1,228 @@
+[
+  {
+    "dataset": "sim_obitos",
+    "field": "dtobito",
+    "source_id": "sim-b4195ac8e0f8",
+    "pages": [
+      1
+    ],
+    "locator": "Linha DTOBITO, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa",
+    "physical_type": {
+      "type": "string",
+      "length": 8
+    },
+    "format": "ddMMyyyy",
+    "review_status": "confirmed"
+  },
+  {
+    "dataset": "sim_obitos",
+    "field": "dtnasc",
+    "source_id": "sim-b4195ac8e0f8",
+    "pages": [
+      1
+    ],
+    "locator": "Linha DTNASC, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa",
+    "physical_type": {
+      "type": "string",
+      "length": 8
+    },
+    "format": "ddMMyyyy",
+    "review_status": "confirmed"
+  },
+  {
+    "dataset": "sim_obitos",
+    "field": "dtatestado",
+    "source_id": "sim-b4195ac8e0f8",
+    "pages": [
+      5
+    ],
+    "locator": "Linha DTATESTADO, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa",
+    "physical_type": {
+      "type": "string",
+      "length": 8
+    },
+    "format": "ddMMyyyy",
+    "review_status": "confirmed"
+  },
+  {
+    "dataset": "sim_obitos",
+    "field": "dtinvestig",
+    "source_id": "sim-b4195ac8e0f8",
+    "pages": [
+      6
+    ],
+    "locator": "Linha DTINVESTIG, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa",
+    "physical_type": {
+      "type": "string",
+      "length": 8
+    },
+    "format": "ddMMyyyy",
+    "review_status": "confirmed"
+  },
+  {
+    "dataset": "sim_obitos",
+    "field": "dtcadastro",
+    "source_id": "sim-b4195ac8e0f8",
+    "pages": [
+      6
+    ],
+    "locator": "Linha DTCADASTRO, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa",
+    "physical_type": {
+      "type": "string",
+      "length": 8
+    },
+    "format": "ddMMyyyy",
+    "review_status": "confirmed"
+  },
+  {
+    "dataset": "sim_obitos",
+    "field": "dtrecebim",
+    "source_id": "sim-b4195ac8e0f8",
+    "pages": [
+      6
+    ],
+    "locator": "Linha DTRECEBIM, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa",
+    "physical_type": {
+      "type": "string",
+      "length": 8
+    },
+    "format": "ddMMyyyy",
+    "review_status": "confirmed"
+  },
+  {
+    "dataset": "sim_obitos",
+    "field": "dtrecoriga",
+    "source_id": "sim-b4195ac8e0f8",
+    "pages": [
+      6
+    ],
+    "locator": "Linha DTRECORIGA, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa",
+    "physical_type": {
+      "type": "string"
+    },
+    "format": "ddMMyyyy",
+    "review_status": "confirmed",
+    "notes": "O documento declara Caracter sem comprimento; não atribuir length8 como evidência documental."
+  },
+  {
+    "dataset": "sim_obitos",
+    "field": "dtcadinv",
+    "source_id": "sim-b4195ac8e0f8",
+    "pages": [
+      7
+    ],
+    "locator": "Linha DTCADINV, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa",
+    "physical_type": {
+      "type": "string",
+      "length": 8
+    },
+    "format": "ddMMyyyy",
+    "review_status": "confirmed"
+  },
+  {
+    "dataset": "sim_obitos",
+    "field": "dtconinv",
+    "source_id": "sim-b4195ac8e0f8",
+    "pages": [
+      7
+    ],
+    "locator": "Linha DTCONINV, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa",
+    "physical_type": {
+      "type": "string",
+      "length": 8
+    },
+    "format": "ddMMyyyy",
+    "review_status": "confirmed"
+  },
+  {
+    "dataset": "sim_obitos",
+    "field": "dtcadinf",
+    "source_id": "sim-b4195ac8e0f8",
+    "pages": [
+      8
+    ],
+    "locator": "Linha DTCADINF, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa",
+    "physical_type": {
+      "type": "string",
+      "length": 8
+    },
+    "format": "ddMMyyyy",
+    "review_status": "confirmed"
+  },
+  {
+    "dataset": "sim_obitos",
+    "field": "dtconcaso",
+    "source_id": "sim-b4195ac8e0f8",
+    "pages": [
+      8
+    ],
+    "locator": "Linha DTCONCASO, colunas Tipo/Tamanho e Valores: Data no padrão ddmmaaaa",
+    "physical_type": {
+      "type": "string",
+      "length": 8
+    },
+    "format": "ddMMyyyy",
+    "review_status": "confirmed"
+  },
+  {
+    "dataset": "sih_aih_reduzida",
+    "field": "nasc",
+    "source_id": "sihsus-1e89d5f2cc41",
+    "pages": [
+      1
+    ],
+    "locator": "Layout RD, linha NASC, char(8), descrição da data",
+    "physical_type": {
+      "type": "string",
+      "length": 8
+    },
+    "format": "yyyyMMdd",
+    "review_status": "confirmed"
+  },
+  {
+    "dataset": "sih_aih_reduzida",
+    "field": "dt_inter",
+    "source_id": "sihsus-1e89d5f2cc41",
+    "pages": [
+      2
+    ],
+    "locator": "Layout RD, linha DI_INTER, char(8), descrição da data",
+    "physical_type": {
+      "type": "string",
+      "length": 8
+    },
+    "format": "yyyyMMdd",
+    "review_status": "qualified",
+    "notes": "Fonte grafa DI_INTER e aaammdd (3 letras a), apesar de char(8). Formato yyyyMMdd e nome DT_INTER confirmados no recorte, mas são normalização inferida da inconsistência documental; manter questão explícita."
+  },
+  {
+    "dataset": "sih_aih_reduzida",
+    "field": "dt_saida",
+    "source_id": "sihsus-1e89d5f2cc41",
+    "pages": [
+      2
+    ],
+    "locator": "Layout RD, linha DT_SAIDA, char(8), descrição da data",
+    "physical_type": {
+      "type": "string",
+      "length": 8
+    },
+    "format": "yyyyMMdd",
+    "review_status": "confirmed"
+  },
+  {
+    "dataset": "sih_aih_reduzida",
+    "field": "gestor_dt",
+    "source_id": "sihsus-1e89d5f2cc41",
+    "pages": [
+      3
+    ],
+    "locator": "Layout RD, linha GESTOR_DT, char(8), descrição da data",
+    "physical_type": {
+      "type": "string",
+      "length": 8
+    },
+    "format": "yyyyMMdd",
+    "review_status": "confirmed"
+  }
+]
