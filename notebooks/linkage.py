@@ -7,7 +7,7 @@
 # ]
 #
 # [tool.uv.sources]
-# omnisus = { git = "https://github.com/raphaelfh/omnisus.git", rev = "ee5ff47a4a2649e1e3baf34c8736ead2580bfabc" }
+# omnisus = { git = "https://github.com/raphaelfh/omnisus.git", rev = "6df1890e81cbb250306d5d98294b49b73c391a7a" }
 # ///
 
 """Tutorial 6 · Colunas com o decoder e linkage determinístico entre SIM, SINASC, SIH, SIA, SINAN e CNES."""
