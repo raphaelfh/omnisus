@@ -1279,6 +1279,40 @@ schema:
     - name: regct
       type: string
       label: Regra contratual
+      x-decode:
+        '0000': SEM CONTRATO
+        '7010': ESTABELECIMENTO SEM GERAÇÃO DE CREDITO no  grupo 1
+        '7100': TABELA DE NAO GERACAO DE CREDITO POR PRODUCAO NA I
+        '7101': ESTABELECIMENTO DE SAUDE SEM GERACAO DE CREDITO NA
+        '7102': ESTABELECIMENTO DE SAUDE SEM GERACAO DE CREDITO NA
+        '7103': ESTABELECIMENTO DE SAUDE SEM GERACAO DE CREDITO NA
+        '7104': ESTABELECIMENTO DE SAUDE SEM GERACAO DE CREDITO NA
+        '7105': ESTABELECIMENTO DE SAUDE SEM GERACAO DE CREDITO PA
+        '7106': ESTABELECIMENTO SEM GERAÇÃO DE CREDITO TOTAL - INC
+        '7107': ESTABELECIMENTO SEM GERACAO DE CREDITO NAS ACOES E
+        '7108': ESTABELECIMENTO SEM GERACAO DE CREDITO(INCENTIVO A
+        '7109': ESTABELECIMENTO SEM GERACAO DE CREDITO TOTAL-MEC
+        '7110': ESTABELECIMENTO DE SAUDE DA ESTRUTURA DO MINISTERI
+        '7111': ESTABELECIMENTO DE SAUDE SEM GERACAO DE CREDITO -
+        '7112': ESTABELECIMENTO SEM GERAÇÃO DE CREDITO TOTAL - INC
+        '7113': ESTABELECIMENTO SEM GERAÇÃO DE CREDITO TOTAL - INC
+        '7114': ESTABELECIMENTO DE SAÚDE SEM GERAÇÃO DE CRÉDITO TO
+        '7115': ESTABELECIMENTO DE SAÚDE SEM GERAÇÃO DE CRÉDITO NA
+        '7116': ESTABELECIMENTO DE SAÚDE SEM GERAÇÃO DE CRÉDITO NA
+        '7117': ESTABELECIMENTO DE SAÚDE SEM GERAÇÃO DE CRÉDITO NA
+      x-metadata:
+        claims:
+        - target: /field/codes
+          value_sha256: db5d6d2946bb6dbdb9fbb509768bbee7f30206b93eb25fa16287f4873b6d7018
+          status: verified_in_source
+          checked_at: '2026-09-21'
+          method: cnv-parse
+          reviewer: scripts/metadados/gerar_decode_cnv.py
+          evidence:
+          - source_id: sih-tab-f05b32f32908
+            pages: []
+            locator: 'RD2008.DEF: LRegra Contratual, REGCT, 1, CNV\REGCT.CNV; CNV/REGCT.cnv'
+          note: Mapa do CNV.
     - name: rubrica
       type: string
       label: Rubrica orçamentária
@@ -1598,7 +1632,7 @@ x-source-format: dbc
 x-source-family: datasus_ftp
 x-source-prefix: RD
 x-partitions: [ano, uf, mes]
-x-version: "2.6.0"
+x-version: "2.7.0"
 
 x-analytics:
   version: 1.2.0
