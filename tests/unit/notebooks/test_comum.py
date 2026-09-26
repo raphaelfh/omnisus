@@ -149,7 +149,7 @@ def test_provenance_names_what_a_citation_needs(tmp_path):
         queries=queries,
     )
 
-    saved = json.loads((tmp_path / "proveniencia.json").read_text(encoding="utf-8"))
+    saved = json.loads((tmp_path / "procedencia.json").read_text(encoding="utf-8"))
     assert saved == json.loads(json.dumps(record, default=str))
     assert saved["plan"] == plan
     assert saved["publications"][0]["scope"] == str(RR_2022)

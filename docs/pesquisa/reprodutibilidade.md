@@ -168,7 +168,7 @@ notebook da população consulta esse manifesto e não importa uma edição que 
 ## Como citar
 
 Use `odb.cite` no lake que você leu. O texto segue o modelo abaixo; os notebooks
-gravam o mesmo parágrafo em `proveniencia.json` (`citacao`).
+gravam o mesmo parágrafo em `procedencia.json` (`citacao`).
 
 ```python
 with odb.LakeReader(alvo) as leitor:
@@ -192,7 +192,7 @@ Onde encontrar cada valor:
 - `<versão>`: `odb.__version__`.
 - `<snapshot_id>`: o snapshot em que você leu os dados.
 
-Nos notebooks, `proveniencia.json` junta o plano (com o `run_id` e a versão), as
+Nos notebooks, `procedencia.json` junta o plano (com o `run_id` e a versão), as
 publicações, o `snapshot_id` e as consultas (`omnisus._notebooks.record_provenance`).
 
 Para a população do IBGE, sugestão deste guia: troque o arquivo pelo `url`, o
