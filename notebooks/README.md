@@ -20,6 +20,10 @@ Abrir um notebook não baixa nem grava nada. Rede e escrita ficam atrás de
 | [medicamentos.py](medicamentos.py) | [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/medicamentos.py) | SIA-AM, estoque Hórus | RR, jan/2024 |
 | [linkage.py](linkage.py) | [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/linkage.py) | todas as bases de uma UF e ano: colunas com o decoder e linkage determinístico | RR, 2022 |
 
+Para começar sem instalar nada, o [notebook do Colab](colab.ipynb)
+[![Abrir no Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/raphaelfh/omnisus/blob/main/notebooks/colab.ipynb)
+faz o caminho inteiro com o SIM de Roraima: instalar, baixar, rotular, conferir e citar.
+
 ## Como abrir
 
 No navegador, sem instalar nada: a badge **Open in molab** de cada notebook.

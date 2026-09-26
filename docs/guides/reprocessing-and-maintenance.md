@@ -93,6 +93,18 @@ since nothing shows they match the server.
 
 ## Inspect an interrupted run
 
+```python
+import omnisus as odb
+
+try:
+    report = odb.import_dataset(
+        "sim_obitos", scopes=[odb.ScopeKey(uf="RR", ano=2023)], run_id="sim-rr-2023-review-01"
+    )
+except odb.ImportAbortedError as exc:
+    print(exc.report.rows, exc.unresolved)  # determined outcomes; positions to inspect
+    raise
+```
+
 Choose and retain `run_id` before starting an import. A failed COMMIT can have
 succeeded in the catalog despite the missing acknowledgement. After closing the
 unusable handle, reopen the lake and inspect the durable manifest:
