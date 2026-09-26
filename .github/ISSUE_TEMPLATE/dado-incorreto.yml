@@ -1,0 +1,37 @@
+name: Rótulo ou dado incorreto
+description: Um código com rótulo errado, uma contagem que não bate ou uma coluna mal lida.
+labels: ["needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado. Não cole dados pessoais nem linhas inteiras de microdados: o repositório é público.
+  - type: input
+    id: base
+    attributes:
+      label: Base e coluna
+      placeholder: "sim_obitos, coluna racacor"
+    validations:
+      required: true
+  - type: input
+    id: recorte
+    attributes:
+      label: Arquivo e recorte
+      description: Nome do arquivo no FTP e UF, ano e mês.
+      placeholder: "DORR2023.dbc, RR, 2023"
+    validations:
+      required: true
+  - type: textarea
+    id: omnisus
+    attributes:
+      label: O que o omnisus mostra
+      description: O código, o rótulo ou a contagem, e a versão (`odb.__version__`).
+    validations:
+      required: true
+  - type: textarea
+    id: fonte
+    attributes:
+      label: O que a fonte oficial diz
+      description: Link do documento (PDF, TabWin, TabNet) e página ou trecho.
+    validations:
+      required: true
