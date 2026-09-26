@@ -6,7 +6,7 @@ from pathlib import Path
 import duckdb
 import pytest
 
-import omnisus as odb
+import omnisus as sus
 from omnisus._notebooks import (
     reconcile,
     record_import,
@@ -15,7 +15,7 @@ from omnisus._notebooks import (
     save_plan,
 )
 
-RR_2022 = odb.ScopeKey(uf="RR", ano=2022)
+RR_2022 = sus.ScopeKey(uf="RR", ano=2022)
 
 
 @pytest.mark.parametrize(
@@ -42,7 +42,7 @@ def test_fixing_a_plan_writes_only_the_plan(monkeypatch, tmp_path):
     assert json.loads((folder / "plano.json").read_text(encoding="utf-8")) == plan
     assert plan["dataset"] == "sim_obitos"
     assert plan["target"] == "ducklake:x"
-    assert plan["omnisus"] == odb.__version__
+    assert plan["omnisus"] == sus.__version__
     assert plan["created_at_utc"]
 
 
@@ -52,15 +52,15 @@ def test_two_plans_never_share_a_folder(monkeypatch, tmp_path):
 
 
 def test_import_record_keeps_every_outcome_and_unresolved_scope(tmp_path):
-    already = odb.ScopeKey(uf="RR", ano=2021)
-    report = odb.ImportReport(
+    already = sus.ScopeKey(uf="RR", ano=2021)
+    report = sus.ImportReport(
         outcomes=(
-            odb.ScopeOutcome(
+            sus.ScopeOutcome(
                 scope=RR_2022,
                 status="ok",
-                result=odb.ImportResult(rows=7, bytes_written=0, duration_seconds=0.1),
+                result=sus.ImportResult(rows=7, bytes_written=0, duration_seconds=0.1),
             ),
-            odb.ScopeOutcome(
+            sus.ScopeOutcome(
                 scope=already,
                 status="skipped",
                 reason="same source and parser version already published",
@@ -68,7 +68,7 @@ def test_import_record_keeps_every_outcome_and_unresolved_scope(tmp_path):
         ),
         run_id="r1",
     )
-    missing = odb.ScopeKey(uf="RR", ano=2020)
+    missing = sus.ScopeKey(uf="RR", ano=2020)
 
     rows = record_import(tmp_path, report, [(2, missing)])
 
@@ -115,7 +115,7 @@ def test_reconciliation_counts_only_active_publications_of_the_dataset():
         {"dataset": "sim_obitos", "active": False, "scope": RR_2022, "rows": 5},
         {"dataset": "sinasc_nascidos_vivos", "active": True, "scope": RR_2022, "rows": 9},
     ]
-    missing = odb.ScopeKey(uf="RR", ano=2020)
+    missing = sus.ScopeKey(uf="RR", ano=2020)
 
     comparison, actives = reconcile(_Reader(publications), "sim_obitos", [RR_2022, missing])
 
@@ -160,7 +160,7 @@ def test_provenance_names_what_a_citation_needs(tmp_path):
     assert saved["queries"] == {
         "obitos_por_mes": {"sql": "SELECT 1 WHERE uf = ?", "parameters": ["RR"]}
     }
-    assert saved["omnisus"] == odb.__version__
+    assert saved["omnisus"] == sus.__version__
     assert saved["generated_at_utc"]
 
 
@@ -176,8 +176,8 @@ def test_provenance_rejects_a_query_without_its_parameters(tmp_path):
 
 
 def test_helpers_are_not_on_the_public_import_surface():
-    assert "notebooks" not in odb.__all__
-    assert "_notebooks" not in odb.__all__
+    assert "notebooks" not in sus.__all__
+    assert "_notebooks" not in sus.__all__
 
 
 _BASES = Path(__file__).resolve().parents[3] / "notebooks"
@@ -195,13 +195,13 @@ _FTP_NOTEBOOKS = (
 @pytest.mark.parametrize("nome", _FTP_NOTEBOOKS)
 def test_ftp_research_notebooks_import_without_append(nome):
     texto = (_BASES / nome).read_text(encoding="utf-8")
-    assert "odb.import_research" in texto
-    assert "odb.import_dataset," not in texto
-    assert "odb.latest_snapshot_id" in texto
+    assert "sus.import_research" in texto
+    assert "sus.import_dataset," not in texto
+    assert "sus.latest_snapshot_id" in texto
 
 
 def test_ibge_notebook_joins_municipality_with_the_public_helper():
     texto = (_BASES / "ibge_populacao.py").read_text(encoding="utf-8")
-    assert "odb.municipality_join_key_sql" in texto
-    assert "odb.latest_snapshot_id" in texto
+    assert "sus.municipality_join_key_sql" in texto
+    assert "sus.latest_snapshot_id" in texto
     assert "left(trim(CAST(codmunres AS VARCHAR)), 6)" not in texto

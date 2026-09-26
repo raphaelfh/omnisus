@@ -8,13 +8,13 @@ source. To install, follow the [installation guide](guides/getting-started.md).
 Four calls cover an analysis from download to citation:
 
 ```python
-import omnisus as odb
+import omnisus as sus
 
-dados = odb.load("sim_obitos", years=[2023], ufs=["RR"])        # rows, codes as published
-dados = odb.label("sim_obitos", dados, columns=["sexo", "racacor"])  # + sexo_rotulo, racacor_rotulo
-odb.check_columns("sim_obitos", dados)                           # can I trust each column?
-with odb.LakeReader() as lake:
-    print(odb.cite(lake, dataset="sim_obitos").text)             # files, SHA-256, snapshot
+dados = sus.load("sim_obitos", years=[2023], ufs=["RR"])        # rows, codes as published
+dados = sus.label("sim_obitos", dados, columns=["sexo", "racacor"])  # + sexo_rotulo, racacor_rotulo
+sus.check_columns("sim_obitos", dados)                           # can I trust each column?
+with sus.LakeReader() as lake:
+    print(sus.cite(lake, dataset="sim_obitos").text)             # files, SHA-256, snapshot
 ```
 
 - `load` downloads what DATASUS publishes into the lake ([where it
@@ -142,21 +142,21 @@ alongside an import. Pass `snapshot_id` to pin the session; without it every
 statement reads the latest committed snapshot.
 
 ```python
-import omnisus as odb
+import omnisus as sus
 
-with odb.LakeReader() as reader:
+with sus.LakeReader() as reader:
     latest = reader.snapshots()[-1]["snapshot_id"]
     rows = reader.connect().execute("SELECT count(*) FROM lake.sim_obitos").fetchone()
 
-with odb.LakeReader(snapshot_id=latest) as reader:
+with sus.LakeReader(snapshot_id=latest) as reader:
     ...  # every statement here sees exactly that snapshot
 ```
 
 ```python
-import omnisus as odb
+import omnisus as sus
 import polars as pl
 
-with odb.Lake.local() as lake:
+with sus.Lake.local() as lake:
     with lake.transaction() as receipt:
         result = lake.ingest("example", pl.DataFrame({"id": [1]}).lazy())
         assert result.snapshot_id is None

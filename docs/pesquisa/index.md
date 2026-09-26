@@ -63,33 +63,33 @@ na exportação.
 biblioteca, sem rede.
 
 **2 · Descobrir.** Pergunta ao FTP do DATASUS o que existe agora:
-`odb.available_releases(dataset, ufs=[...], refresh=True)` diz se cada ano está no
-diretório final ou no preliminar, e `odb.available(...)` devolve os escopos que podem
+`sus.available_releases(dataset, ufs=[...], refresh=True)` diz se cada ano está no
+diretório final ou no preliminar, e `sus.available(...)` devolve os escopos que podem
 ser importados. A população do IBGE não tem inventário: o notebook mostra as edições que
 a biblioteca aceita.
 
 **3 · Planejar e importar.** Gravar o plano cria `plano.json` com um `run_id` antes de
 qualquer download. A importação usa esse `run_id` e
-`odb.import_research`, que usa `policy="skip_same"`, para que repetir a etapa não
+`sus.import_research`, que usa `policy="skip_same"`, para que repetir a etapa não
 duplique linhas. A população usa
-`odb.import_ibge_populacao`. Nos notebooks com download por FTP, esta etapa limita o
+`sus.import_ibge_populacao`. Nos notebooks com download por FTP, esta etapa limita o
 arquivo comprimido a 25 MiB (`MAX_DOWNLOAD_BYTES` no próprio notebook); um arquivo
 maior (por exemplo outra UF) termina como `failed`, e pode ser importado subindo esse
-limite ou com a chamada direta `odb.import_dataset` no perfil da base ("Como usar"). A
+limite ou com a chamada direta `sus.import_dataset` no perfil da base ("Como usar"). A
 população do IBGE não baixa pelo FTP, então esse limite não se aplica a ela.
 
 **4 · Conferir.** Lê o manifesto com `LakeReader.publications(run_id=...)`, compara as
 linhas no lake com as linhas publicadas e anota o `snapshot_id` mais recente.
-`odb.outdated(dataset, lake=...)` é usado quando a base tem diretório preliminar (SIM,
+`sus.outdated(dataset, lake=...)` é usado quando a base tem diretório preliminar (SIM,
 SINASC, SINAN); as demais bases do DATASUS são publicadas num único diretório, e o
 notebook não chama `outdated` para elas.
 
 **5 · Analisar.** Roda as consultas SQL num leitor preso a esse snapshot,
-`LakeReader(alvo, snapshot_id=odb.latest_snapshot_id(...))`, para que o resultado
+`LakeReader(alvo, snapshot_id=sus.latest_snapshot_id(...))`, para que o resultado
 não mude se outra importação acontecer depois.
 
 **6 · Guardar.** Grava os resultados em CSV e um `proveniencia.json` com o plano, as
-publicações, o `snapshot_id`, o parágrafo de `odb.cite`, as consultas e a versão da
+publicações, o `snapshot_id`, o parágrafo de `sus.cite`, as consultas e a versão da
 biblioteca. Veja [Reprodutibilidade](reprodutibilidade.md).
 
 ## O lake de pesquisa
@@ -116,7 +116,7 @@ lê `sim_obitos` e `ibge_populacao` na mesma consulta
   Armadilhas de cada perfil, por exemplo as do
   [SINAN Chagas](../sources/sinan_chagas.md#armadilhas) e as do
   [SINAN hanseníase](../sources/sinan_hanseniase.md#armadilhas).
-- **Uma data que passa no formato pode ser impossível.** `odb.check_columns` mostra
+- **Uma data que passa no formato pode ser impossível.** `sus.check_columns` mostra
   `date_min` e `date_max` de cada campo de data; `*_data_status = 'valid'` só diz que o
   texto é uma data. Nos arquivos de RR e SP de 2022 lidos pelo notebook de linkage há
   autorizações de APAC em 9202, nascimentos em 1366 (RAAS) e mães nascidas em 0980

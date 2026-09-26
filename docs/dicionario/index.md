@@ -17,6 +17,6 @@ rótulo sem essa evidência não é tratado como conferido.
 | [JSON Schema](schemas/column-metadata.schema.json) | Contrato `1.0.0` dos metadados de coluna |
 | [Exemplo SIM / DO / SEXO](exemplos/sim_obitos.sexo.json) | Um campo com evidência oficial localizada |
 
-Pela biblioteca: `odb.describe_dataset`, `odb.label` e `odb.display_row` leem estes
-metadados; `odb.analytical_projection` aplica as regras auditadas de SIM, SIH, SINASC, SINAN e SIA.
+Pela biblioteca: `sus.describe_dataset`, `sus.label` e `sus.display_row` leem estes
+metadados; `sus.analytical_projection` aplica as regras auditadas de SIM, SIH, SINASC, SINAN e SIA.
 Veja [Consumo e integração](consumo.md).

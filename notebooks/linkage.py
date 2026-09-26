@@ -24,7 +24,7 @@ def _():
     import marimo as mo
     import polars as pl
 
-    import omnisus as odb
+    import omnisus as sus
     from omnisus._notebooks import run_without_buttons
     from omnisus.lake.catalog import resolve_target
     from omnisus.transforms.dictionaries import decode_coverage, load_dicionario
@@ -35,7 +35,7 @@ def _():
         duckdb,
         load_dicionario,
         mo,
-        odb,
+        sus,
         pl,
         run_without_buttons,
     )
@@ -99,7 +99,7 @@ def _(mo):
     mo.md(r"""
     ## 1 · O que o DATASUS publica, e baixar
 
-    Antes de baixar, a lista do servidor (`odb.available`): quais meses de cada
+    Antes de baixar, a lista do servidor (`sus.available`): quais meses de cada
     base existem para a UF e o ano dos parâmetros. Uma base que não aparece na
     lista não é baixada, e a tabela diz isso. SIH e SIA são mensais; o CNES é
     uma foto mensal do cadastro, e basta dezembro.
@@ -114,7 +114,7 @@ def _(mo):
 
 
 @app.cell
-def _(ANO, LAGO, PULAR, UF, executar, mo, odb):
+def _(ANO, LAGO, PULAR, UF, executar, mo, sus):
     mo.stop(not executar, mo.md("Defina `EXECUTAR = True` na célula de parâmetros."))
     SUBCONJUNTOS_SIM = [
         "sim_obitos_fetais",
@@ -152,13 +152,13 @@ def _(ANO, LAGO, PULAR, UF, executar, mo, odb):
 
     def publicado(base, ano):
         """Escopos que o servidor lista agora para a UF (ou o Brasil) e o ano."""
-        return odb.available(base, years=[ano], ufs=None if base in NACIONAIS else [UF])
+        return sus.available(base, years=[ano], ufs=None if base in NACIONAIS else [UF])
 
     def carregar(base, escopos):
         meses = sorted({escopo.mes for escopo in escopos if escopo.mes is not None})
         if base == "cnes_estabelecimentos":
             meses = [12]  # uma foto do cadastro basta
-        return odb.load(
+        return sus.load(
             base,
             years=sorted({escopo.ano for escopo in escopos}),
             ufs=None if base in NACIONAIS else [UF],
@@ -226,7 +226,7 @@ def _(mo):
     | --- | --- |
     | `decoder` | a regra do dicionário, ou `fora do dicionário` |
     | `% vazio` | nulo ou só espaços |
-    | `exemplo bruto` → `exemplo decodificado` | o primeiro valor preenchido, antes e depois de `odb.display_row` |
+    | `exemplo bruto` → `exemplo decodificado` | o primeiro valor preenchido, antes e depois de `sus.display_row` |
     | `códigos sem rótulo` | valores que o `x-decode` não conhece (até cinco) e em quantas linhas aparecem |
     | `% datas inválidas` | entre as preenchidas, as que não são uma data no formato declarado |
     | `datas (mín. a máx.)` | a menor e a maior data: um ano impossível aparece aqui |
@@ -235,7 +235,7 @@ def _(mo):
 
 
 @app.cell
-def _(decode_coverage, duckdb, load_dicionario, odb, pl):
+def _(decode_coverage, duckdb, load_dicionario, sus, pl):
     FORMATOS_DE_DATA = {"ddMMyyyy": "%d%m%Y", "yyyyMMdd": "%Y%m%d"}
 
     def regra_do_decoder(campo):
@@ -283,7 +283,7 @@ def _(decode_coverage, duckdb, load_dicionario, odb, pl):
                     "valores distintos": preenchidos[coluna].n_unique(),
                     "exemplo bruto": str(exemplo.get(coluna, "")),
                     "exemplo decodificado": (
-                        str(odb.display_row(base, exemplo)[coluna]) if exemplo else ""
+                        str(sus.display_row(base, exemplo)[coluna]) if exemplo else ""
                     ),
                     "códigos sem rótulo": ", ".join(u.value for u in sem_rotulo[:5]),
                     "linhas sem rótulo": sum(u.rows for u in sem_rotulo),
@@ -1187,11 +1187,11 @@ def _(mo):
 
 
 @app.cell
-def _(LAGO, executar, mo, odb, pl):
+def _(LAGO, executar, mo, sus, pl):
     mo.stop(not executar)
-    with odb.Lake.local(LAGO) as lake:
+    with sus.Lake.local(LAGO) as lake:
         lake.bootstrap_auxiliares()
-    with odb.LakeReader(LAGO) as leitor:
+    with sus.LakeReader(LAGO) as leitor:
         cid10 = (
             leitor.connect()
             .sql(f"SELECT codigo, descricao, capitulo FROM {leitor.alias}.aux_cid10")
@@ -1826,7 +1826,7 @@ def _(
     comparar,
     mo,
     nao_executado,
-    odb,
+    sus,
     pares_por_chave,
     pct,
     pl,
@@ -1880,7 +1880,7 @@ def _(
             _erros = bases["sih_aih_rejeitada_erro"]
             _partes += [
                 mo.md(
-                    "O ER, erro por erro. `odb.label` põe o motivo ao lado do código"
+                    "O ER, erro por erro. `sus.label` põe o motivo ao lado do código"
                     " (tabela MOTERRO do TabWin do SIH)."
                 ),
                 pl.DataFrame(
@@ -1897,7 +1897,7 @@ def _(
                         }
                     ]
                 ),
-                odb.label(
+                sus.label(
                     "sih_aih_rejeitada_erro",
                     _erros.group_by("co_erro")
                     .agg(

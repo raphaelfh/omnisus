@@ -26,7 +26,7 @@ def _():
     import marimo as mo
     import polars as pl
 
-    import omnisus as odb
+    import omnisus as sus
     from omnisus._notebooks import (
         reconcile,
         record_import,
@@ -54,7 +54,7 @@ def _():
         resolve_target,
         load_dicionario,
         mo,
-        odb,
+        sus,
         pl,
         reconcile,
         record_import,
@@ -131,7 +131,7 @@ def _(mo):
 
 
 @app.cell
-async def _(TABELA, asyncio, executar, mo, odb, pl):
+async def _(TABELA, asyncio, executar, mo, sus, pl):
     mo.stop(
         not executar,
         mo.md(
@@ -139,7 +139,7 @@ async def _(TABELA, asyncio, executar, mo, odb, pl):
             "ou rode com `-- --executar true`."
         ),
     )
-    _publicados = await asyncio.to_thread(odb.available, TABELA, ufs=["RR"], refresh=True)
+    _publicados = await asyncio.to_thread(sus.available, TABELA, ufs=["RR"], refresh=True)
     publicados = pl.DataFrame(
         [
             {"uf": e.uf, "ano": e.ano, "mes": e.mes}
@@ -172,7 +172,7 @@ def _(
     asdict,
     executar,
     mo,
-    odb,
+    sus,
     save_plan,
     target,
 ):
@@ -180,7 +180,7 @@ def _(
         not executar,
         mo.md("Defina `EXECUTAR = True` para gravar o plano e importar."),
     )
-    escopos = odb.scopes_for(TABELA, years=[int(ANO)], ufs=[UF], months=[int(MES)])
+    escopos = sus.scopes_for(TABELA, years=[int(ANO)], ufs=[UF], months=[int(MES)])
     plano, pasta = save_plan(
         target,
         dataset=TABELA,
@@ -199,7 +199,7 @@ async def _(
     escopos,
     executar,
     mo,
-    odb,
+    sus,
     pasta,
     pl,
     plano,
@@ -208,7 +208,7 @@ async def _(
     mo.stop(not executar, mo.md("A importação segue `EXECUTAR` na célula de parâmetros."))
     try:
         relatorio = await asyncio.to_thread(
-            odb.import_research,
+            sus.import_research,
             plano["dataset"],
             scopes=escopos,
             target=plano["target"],
@@ -218,7 +218,7 @@ async def _(
             max_inflight_bytes=MAX_DOWNLOAD_BYTES,
         )
         _nao_resolvidos = ()
-    except odb.ImportAbortedError as _erro:
+    except sus.ImportAbortedError as _erro:
         relatorio, _nao_resolvidos = _erro.report, _erro.unresolved
     desfechos = pl.DataFrame(record_import(pasta, relatorio, _nao_resolvidos))
     if executar and (relatorio.failed or _nao_resolvidos):
@@ -248,8 +248,8 @@ def _(mo):
 
 
 @app.cell
-def _(escopos, mo, odb, plano, reconcile, relatorio):
-    with odb.LakeReader(plano["target"]) as _leitor:
+def _(escopos, mo, sus, plano, reconcile, relatorio):
+    with sus.LakeReader(plano["target"]) as _leitor:
         mo.stop(
             plano["dataset"] not in _leitor.tables(),
             mo.md("Nenhuma tabela publicada; veja os desfechos acima."),
@@ -262,7 +262,7 @@ def _(escopos, mo, odb, plano, reconcile, relatorio):
                 "Nenhuma publicação ativa para os escopos deste plano; veja os desfechos acima."
             ),
         )
-        snapshot_id = odb.latest_snapshot_id(_leitor)
+        snapshot_id = sus.latest_snapshot_id(_leitor)
     {
         "linhas_novas": relatorio.rows,
         "publications": desta_execucao,
@@ -284,7 +284,7 @@ def _(mo):
 
 
 @app.cell
-def _(escopos, odb, plano, snapshot_id):
+def _(escopos, sus, plano, snapshot_id):
     _tabela = plano["dataset"]
     _recorte = "WHERE uf = ? AND ano = ? AND mes = ?"
     _analises = {
@@ -324,7 +324,7 @@ def _(escopos, odb, plano, snapshot_id):
     consultas = {
         nome: {"sql": sql, "parameters": _parametros} for nome, sql in _sql_por_nome.items()
     }
-    with odb.LakeReader(plano["target"], snapshot_id=snapshot_id) as _leitor:
+    with sus.LakeReader(plano["target"], snapshot_id=snapshot_id) as _leitor:
         resultados = {
             nome: _leitor.connect().execute(consulta["sql"], consulta["parameters"]).pl()
             for nome, consulta in consultas.items()

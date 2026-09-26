@@ -27,7 +27,7 @@ Brings Brazilian public health data (DATASUS, IBGE, CNES) into a local
 | Look up a function | [API reference](api.md) |
 
 ```python
-import omnisus as odb
+import omnisus as sus
 
-dados = odb.load("sim_obitos", years=[2023], ufs=["RR"])
+dados = sus.load("sim_obitos", years=[2023], ufs=["RR"])
 ```

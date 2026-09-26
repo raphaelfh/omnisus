@@ -26,7 +26,7 @@ def _():
     import marimo as mo
     import polars as pl
 
-    import omnisus as odb
+    import omnisus as sus
     from omnisus._notebooks import (
         record_provenance,
         run_without_buttons,
@@ -45,7 +45,7 @@ def _():
         resolve_target,
         load_dicionario,
         mo,
-        odb,
+        sus,
         pl,
         record_provenance,
         run_without_buttons,
@@ -167,26 +167,26 @@ def _(ANO, CODIGO_UF, PRODUTO, executar, mo, save_plan, target):
 
 
 @app.cell
-async def _(asdict, asyncio, executar, mo, odb, pasta, pl, plano, write_json):
+async def _(asdict, asyncio, executar, mo, sus, pasta, pl, plano, write_json):
     mo.stop(not executar, mo.md("A importação segue `EXECUTAR` na célula de parâmetros."))
     _sql = (
         "SELECT publication_id, product, ano, sha256, url, collected_at "
         "FROM lake.ibge_population_manifest WHERE product = ? AND ano = ?"
     )
     try:
-        with odb.LakeReader(plano["target"]) as _leitor:
+        with sus.LakeReader(plano["target"]) as _leitor:
             existentes = (
                 _leitor.connect().execute(_sql, [plano["product"], plano["ano"]]).pl().to_dicts()
                 if "ibge_population_manifest" in _leitor.tables()
                 else []
             )
-    except odb.CatalogAttachError:
+    except sus.CatalogAttachError:
         existentes = []
     if existentes:
         importadas = []
     else:
         importadas = await asyncio.to_thread(
-            odb.import_ibge_populacao,
+            sus.import_ibge_populacao,
             years=[plano["ano"]],
             census=plano["product"] == "census",
             target=plano["target"],
@@ -211,8 +211,8 @@ def _(mo):
 
 
 @app.cell
-def _(importadas, odb, plano):
-    with odb.LakeReader(plano["target"]) as _leitor:
+def _(importadas, sus, plano):
+    with sus.LakeReader(plano["target"]) as _leitor:
         publicacoes = (
             _leitor.connect()
             .execute(
@@ -232,7 +232,7 @@ def _(importadas, odb, plano):
             )
             .pl()
         )
-        snapshot_id = odb.latest_snapshot_id(_leitor)
+        snapshot_id = sus.latest_snapshot_id(_leitor)
     {
         "edicoes_importadas_nesta_execucao": len(importadas),
         "manifesto": publicacoes,
@@ -255,10 +255,10 @@ def _(mo):
 
 
 @app.cell
-def _(odb, plano, snapshot_id):
+def _(sus, plano, snapshot_id):
     _ano, _uf = plano["ano"], plano["codigo_uf"]
-    _mun_obito = odb.municipality_join_key_sql("codmunres")
-    _mun_pop = odb.municipality_join_key_sql("codigo_ibge")
+    _mun_obito = sus.municipality_join_key_sql("codmunres")
+    _mun_pop = sus.municipality_join_key_sql("codigo_ibge")
     _consultas = {
         "populacao_por_municipio": (
             "SELECT codigo_ibge, populacao FROM lake.ibge_populacao "
@@ -271,7 +271,7 @@ def _(odb, plano, snapshot_id):
             [_ano],
         ),
     }
-    with odb.LakeReader(plano["target"], snapshot_id=snapshot_id) as _leitor:
+    with sus.LakeReader(plano["target"], snapshot_id=snapshot_id) as _leitor:
         _tem_sim = "sim_obitos" in _leitor.tables()
         if _tem_sim:
             _consultas["digitos_codmunres_sim"] = (
