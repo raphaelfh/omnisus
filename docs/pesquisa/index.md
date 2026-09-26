@@ -2,8 +2,9 @@
 
 ## O que é
 
-O omnisus importa bases abertas do DATASUS e do IBGE para um lake local, uma base de
-dados em arquivos no seu computador. Cada importação fica registrada num manifesto, com
+O omnisus importa bases abertas do DATASUS e do IBGE para um lake, uma base de
+dados em arquivos que pode ficar no seu computador, no Google Drive (útil no Colab) ou na
+nuvem, com o catálogo num PostgreSQL e os arquivos num S3. Cada importação fica registrada num manifesto, com
 o arquivo de origem, o SHA-256 dele e a execução que o publicou; é isso que permite
 dizer de onde veio cada linha.
 
@@ -119,7 +120,7 @@ notebook não chama `outdated` para elas.
 `LakeReader(alvo, snapshot_id=odb.latest_snapshot_id(...))`, para que o resultado
 não mude se outra importação acontecer depois.
 
-**6 · Guardar.** Grava os resultados em CSV e um `proveniencia.json` com o plano, as
+**6 · Guardar.** Grava os resultados em CSV e um `procedencia.json` com o plano, as
 publicações, o `snapshot_id`, o parágrafo de `odb.cite`, as consultas e a versão da
 biblioteca. Veja [Reprodutibilidade](reprodutibilidade.md).
 
@@ -127,7 +128,7 @@ biblioteca. Veja [Reprodutibilidade](reprodutibilidade.md).
 
 Os notebooks gravam no mesmo lake, `data/raw/omnisus.ducklake`, e cada execução
 ganha uma pasta própria em `data/raw/execucoes/<run_id>/`, com `plano.json`,
-`resultado.json`, os CSVs e `proveniencia.json`
+`resultado.json`, os CSVs e `procedencia.json`
 (`omnisus.lake.catalog.data_dir` e `save_plan`). A variável de ambiente
 `OMNISUS_DATA_DIR` troca essa pasta.
 

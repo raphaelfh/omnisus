@@ -77,7 +77,7 @@ def _(mo):
       [guia do pesquisador](https://raphaelfh.github.io/omnisus/pesquisa/) com
       **Roraima, janeiro de 2024**, no lake de pesquisa compartilhado.
     - **B · Estoque BNAFAR/Hórus** — uma página da API pública de posição de estoque,
-      guardada com proveniência, sem publicar no lake.
+      guardada com procedência, sem publicar no lake.
     - **C · O que não existe publicamente** — eventos de dispensação.
 
     **Abrir este notebook não baixa nem grava nada.** Ponha `EXECUTAR = True` (ou
@@ -361,7 +361,7 @@ async def _(
     pasta_estoque = data_dir() / "estoque" / uuid4().hex
     pasta_estoque.mkdir(parents=True)
     (pasta_estoque / "resposta.json").write_bytes(pagina.raw)
-    write_json(pasta_estoque / "proveniencia.json", pagina.provenance())
+    write_json(pasta_estoque / "procedencia.json", pagina.provenance())
     {
         "pasta": str(pasta_estoque),
         "sha256": pagina.sha256,
