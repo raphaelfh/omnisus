@@ -20,7 +20,7 @@ def record_provenance(
     snapshot_id: int,
     queries: Mapping[str, Mapping[str, Any]],
 ) -> dict[str, Any]:
-    """Write `proveniencia.json`: enough to cite and replay the result.
+    """Write `procedencia.json`: enough to cite and replay the result.
 
     Each query is `{"sql": str, "parameters": list}`: the exact statement and
     positional parameters of that execution, so the query can be replayed
@@ -46,5 +46,5 @@ def record_provenance(
         "omnisus": __version__,
         "generated_at_utc": datetime.now(UTC).isoformat(),
     }
-    write_json(folder / "proveniencia.json", record)
+    write_json(folder / "procedencia.json", record)
     return record

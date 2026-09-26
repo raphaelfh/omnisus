@@ -346,7 +346,7 @@ def _(mo):
     mo.md(r"""
     ## 6 · Guardar
 
-    Resultados e `proveniencia.json` na pasta da execução. Para citar: arquivo e
+    Resultados e `procedencia.json` na pasta da execução. Para citar: arquivo e
     SHA-256 de cada publicação, `snapshot_id`, versão do omnisus e data de
     acesso — veja
     [Reprodutibilidade](https://raphaelfh.github.io/omnisus/pesquisa/reprodutibilidade/).

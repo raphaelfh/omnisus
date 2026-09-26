@@ -361,7 +361,7 @@ async def _(
     pasta_estoque = data_dir() / "estoque" / uuid4().hex
     pasta_estoque.mkdir(parents=True)
     (pasta_estoque / "resposta.json").write_bytes(pagina.raw)
-    write_json(pasta_estoque / "proveniencia.json", pagina.provenance())
+    write_json(pasta_estoque / "procedencia.json", pagina.provenance())
     {
         "pasta": str(pasta_estoque),
         "sha256": pagina.sha256,

@@ -232,7 +232,7 @@ from pathlib import Path
 import json
 
 Path("estoque-resposta.json").write_bytes(pagina.raw)
-Path("estoque-proveniencia.json").write_text(json.dumps(pagina.provenance(), indent=2))
+Path("estoque-procedencia.json").write_text(json.dumps(pagina.provenance(), indent=2))
 ```
 
 Não se presume que o servidor aplicou corretamente cada filtro sem validação posterior.

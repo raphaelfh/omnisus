@@ -120,7 +120,7 @@ notebook não chama `outdated` para elas.
 `LakeReader(alvo, snapshot_id=odb.latest_snapshot_id(...))`, para que o resultado
 não mude se outra importação acontecer depois.
 
-**6 · Guardar.** Grava os resultados em CSV e um `proveniencia.json` com o plano, as
+**6 · Guardar.** Grava os resultados em CSV e um `procedencia.json` com o plano, as
 publicações, o `snapshot_id`, o parágrafo de `odb.cite`, as consultas e a versão da
 biblioteca. Veja [Reprodutibilidade](reprodutibilidade.md).
 
@@ -128,7 +128,7 @@ biblioteca. Veja [Reprodutibilidade](reprodutibilidade.md).
 
 Os notebooks gravam no mesmo lake, `data/raw/omnisus.ducklake`, e cada execução
 ganha uma pasta própria em `data/raw/execucoes/<run_id>/`, com `plano.json`,
-`resultado.json`, os CSVs e `proveniencia.json`
+`resultado.json`, os CSVs e `procedencia.json`
 (`omnisus.lake.catalog.data_dir` e `save_plan`). A variável de ambiente
 `OMNISUS_DATA_DIR` troca essa pasta.
 
