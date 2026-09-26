@@ -1,40 +1,14 @@
 # AGENTS.md
 
-omnisus brings Brazilian public health data (DATASUS, IBGE, CNES) into a local
-DuckLake lake, with the provenance a researcher needs to cite each result. This file
-is the contract for every change, by a person or an agent. `CONTRIBUTING.md` says the
-same to contributors in Portuguese; when they disagree, this file wins.
-
-Read it in order: the pillars say what omnisus promises, the policy says how a change
-keeps those promises, and the rest says how to work here.
-
-## Pillars
-
-What a researcher can rely on. A change that breaks one of these is a bug, however
-small the diff.
-
-1. **Citable.** Every imported row traces back to the server file it came from: a
-   *publication* records the scope, the server path and the SHA-256, and `odb.cite`
-   turns a snapshot into a citation. An importer that writes a scope without its
-   publication breaks this promise.
-2. **Never guessed.** Codes stay as DATASUS published them. A label comes only from
-   the dictionary; a code the dictionary does not know has no label. Each code map
-   carries a claim with its status (`verified_in_source`, `conflicting`,
-   `unreviewed`) and evidence. Harmonised categories exist only for validated
-   sources (ADR 0003).
-3. **Verifiable.** Whoever doubts a fact can check it: the documents behind the
-   dictionaries are registered with URL and SHA-256, audits live in `evidence/`, and
-   `odb.check_columns` shows empty values, unknown codes and date ranges.
-4. **Simple.** One mechanism for each job, no dead code, code and docs a newcomer
-   reads once. A curated dataset and a user-built `Dataset` take the same path
-   (ADR 0002).
-5. **Public.** The repository, its history and its fixtures are public; nothing about
-   a person or a contributor's machine enters them.
+omnisus imports Brazilian public health data (DATASUS, IBGE, CNES) into a local
+DuckLake lake, with the provenance a researcher needs to cite each result. Every
+change keeps each result citable, never guesses a fact, and stays simple. Why these
+pillars exist, for people: `CONTRIBUTING.md`, section "Princípios". On a conflict,
+this file wins.
 
 ## Zero-assumption policy
 
-These rules apply to every change in this repository. Code and tests cite them by
-number ("AGENTS.md rule 2"); keep the numbering.
+Code and tests cite these rules by number ("AGENTS.md rule 2"); keep the numbering.
 
 1. **Facts come from the server or from a hashed artifact.** A directory,
    filename shape, code list, layout or label enters code or docs only after it
@@ -55,15 +29,54 @@ number ("AGENTS.md rule 2"); keep the numbering.
    code and docs to be read once by someone who did not write them. If a rule
    needs a diagram to be understood, simplify the rule.
 
-When a rule and a deadline conflict, the rule wins: leave the gap open in an issue
-rather than fill it with a guess.
+When a rule and a deadline conflict, the rule wins: open an issue for the gap
+instead of filling it with a guess.
 
-## This repository is public
+## Invariants
 
-Everything committed here is published: code, docs, fixtures, evidence, commit
-messages and pull request text. Git history keeps a file after it is deleted, so
-check `git diff --cached` before every commit. Never commit:
+A change that breaks one of these is a bug, however small the diff.
 
+- An importer writes a scope together with its publication (server path, SHA-256).
+- Codes stay as published. A label comes only from the dictionary; an unknown code
+  has no label.
+- Harmonised categories exist only for validated sources (ADR 0003).
+- A user-built `Dataset` takes the same code path as a registry row (ADR 0002).
+
+## Commands
+
+```bash
+uv sync --locked --all-extras
+uv run ruff check .
+uv run ruff format --check .
+uv run mypy src
+uv run marimo check --strict --ignore-scripts notebooks
+uv run python scripts/gen_datasets_doc.py --check
+uv run pytest -m "not e2e and not perf" -n auto
+uv run mkdocs build --strict
+```
+
+These are the CI checks. Tests marked `integration` and `e2e` reach the DATASUS
+server and are not in pull request CI; run them when a change depends on what the
+server lists today.
+
+## Boundaries
+
+**Always**
+- Use the terms of `CONTEXT.md` in code, tests and issues.
+- Cite a new fact's evidence: a row in `tests/fixtures/FIXTURES.md`, a document in
+  `src/omnisus/data/dicionarios/sources/registry.json`, or a file in `evidence/` that
+  records the SHA-256 of what it read and that something cites.
+- Regenerate generated files instead of editing them: `docs/datasets.md`
+  (`scripts/gen_datasets_doc.py`), CNV code maps and SINAN/SIM-subset dictionaries
+  (`scripts/metadados/`).
+- Write researcher pages (`docs/pesquisa/`, `docs/sources/`, `docs/dicionario/`) in
+  Portuguese; technical guides and the API reference in English.
+
+**Ask first**
+- A change that contradicts an ADR in `docs/decisions/`; name the ADR.
+
+**Never commit** (this repository and its history are public; check
+`git diff --cached` before every commit):
 - credentials, tokens, or connection strings with a password (tests use obvious
   placeholders such as `user:dummy`);
 - absolute local paths (`/Users/...`, `/home/...`), machine names, or anything else
@@ -73,59 +86,18 @@ check `git diff --cached` before every commit. Never commit:
   identifiers; a dataset that names people (CPF, CNS, name), such as CNES `PF`, is
   out of scope;
 - agent working files: plans, specs, progress notes, handoffs, review transcripts,
-  test or lint logs. Plans and decisions live in GitHub Issues and pull requests;
-  a skill that writes a plan or spec to a file writes it to an issue instead.
+  test or lint logs. Plans and decisions go to GitHub Issues and pull requests; a
+  skill that writes a plan or spec to a file writes it to an issue instead.
 
-Evidence enters `evidence/` only when code, a dictionary, a test or a doc cites it,
-and it records the SHA-256 of what it read. If something private reaches a pushed
-commit, deleting it in a new commit does not remove it: stop and tell the maintainer.
-
-## Where things live
-
-| What | Where |
-| --- | --- |
-| Glossary: use its terms in code, tests and issues | `CONTEXT.md` |
-| Decisions (ADRs); say so when a change contradicts one | `docs/decisions/` |
-| Dataset registry | `src/omnisus/sources/datasus_ftp/datasets.py` |
-| Dictionaries: fields, codes, labels, claims | `src/omnisus/data/dicionarios/<dataset>.yaml` |
-| Official documents cited by the dictionaries | `src/omnisus/data/dicionarios/sources/registry.json` |
-| Test fixtures and their provenance | `tests/fixtures/`, `tests/fixtures/FIXTURES.md` |
-| Audits that code, dictionaries, tests or docs cite | `evidence/` |
-| Dictionary maintenance, step by step | `docs/dicionario/manutencao.md` |
-
-Generated files are regenerated, never edited by hand: `docs/datasets.md`
-(`scripts/gen_datasets_doc.py`), the CNV code maps and the SINAN and SIM subset
-dictionaries (`scripts/metadados/`). Researcher pages (`docs/pesquisa/`,
-`docs/sources/`, `docs/dicionario/`) are in Portuguese; technical guides and the API
-reference are in English.
-
-## Commands
-
-```bash
-uv sync --locked --all-extras        # set up
-uv run ruff check .                  # the same checks as CI, in CI order
-uv run ruff format --check .
-uv run mypy src
-uv run marimo check --strict --ignore-scripts notebooks
-uv run python scripts/gen_datasets_doc.py --check
-uv run pytest -m "not e2e and not perf" -n auto
-uv run mkdocs build --strict
-```
-
-Tests marked `integration` and `e2e` reach the DATASUS server and stay out of pull
-request CI; run them when a change depends on what the server lists today.
+If something private reaches a pushed commit, deleting it in a new commit does not
+remove it: stop and tell the maintainer.
 
 ## Definition of done
 
-A change is ready for review when:
-
-- the red run of its new test is recorded in the pull request (rule 3);
-- every new fixture has a row in `FIXTURES.md` and every new fact cites the server or
-  a hashed artifact (rules 1 and 2);
-- the pull request lists what it deleted, or says it deleted nothing (rule 4);
-- the checks under [Commands](#commands) pass, and generated files are current;
-- a contradicted ADR is named, and `CONTEXT.md` is updated when a term changes;
-- `git diff --cached` shows nothing from the public-repository list above.
+- The pull request records the red run (rule 3) and lists its deletions, or says
+  there are none (rule 4).
+- Every command under [Commands](#commands) passes.
+- `CONTEXT.md` is updated when a term changes.
 
 ## Agent workflow
 

@@ -35,7 +35,7 @@ divergirem, vale o `AGENTS.md`.
 **O repositório é público.** Nada de credenciais, caminhos do seu computador, dados
 pessoais ou arquivos de trabalho (planos, logs, transcrições) em commits, issues ou
 PRs; a lista completa está em
-[`AGENTS.md`](https://github.com/raphaelfh/omnisus/blob/main/AGENTS.md#this-repository-is-public).
+[`AGENTS.md`](https://github.com/raphaelfh/omnisus/blob/main/AGENTS.md#boundaries).
 Planos e discussões vão para as issues, não para arquivos no repositório.
 
 ## Relatar um problema
