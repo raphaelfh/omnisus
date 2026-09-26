@@ -1,10 +1,7 @@
 # AGENTS.md
 
-omnisus imports Brazilian public health data (DATASUS, IBGE, CNES) into a DuckLake
-lake on a computer, on Google Drive or in the cloud, with the provenance a researcher needs to cite each result. Every
-change keeps each result citable, never guesses a fact, and stays simple. Why these
-pillars exist, for people: `CONTRIBUTING.md`, section "Princípios". On a conflict,
-this file wins.
+omnisus imports DATASUS, IBGE and CNES data into a DuckLake lake whose every row
+can be cited; the why is in `CONTRIBUTING.md`, which this file overrides.
 
 ## Zero-assumption policy
 
@@ -92,15 +89,8 @@ server lists today.
 If something private reaches a pushed commit, deleting it in a new commit does not
 remove it: stop and tell the maintainer.
 
-## Definition of done
-
-- The pull request records the red run (rule 3) and lists its deletions, or says
-  there are none (rule 4).
-- Every command under [Commands](#commands) passes.
-- `CONTEXT.md` is updated when a term changes.
-
 ## Agent workflow
 
 Issues and plans live in GitHub Issues (`docs/agents/issue-tracker.md`, labels in
-`docs/agents/triage-labels.md`). The maintainer's skill routing is optional:
-`docs/agents/skill-routing.md`.
+`docs/agents/triage-labels.md`). Use any workflow or skills you like, as long as
+the result follows this file.
