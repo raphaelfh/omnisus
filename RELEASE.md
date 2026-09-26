@@ -42,7 +42,8 @@ uv build --wheel --sdist --out-dir dist
 ```
 
 The version has one home, `src/omnisus/_version.py`. Update the changelog and
-lockfile with it. Validate the candidate wheel outside the checkout, including
+lockfile with it, and the tag that `notebooks/colab.ipynb` installs (a test checks
+it). The docs site reads the version at build time. Validate the candidate wheel outside the checkout, including
 public metadata, packaged evidence and analytical projections, before release.
 
 After the release is authorized, tag that reviewed commit with `v<version>` and

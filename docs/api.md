@@ -1,7 +1,11 @@
 # API reference
 
-The public import, discovery and lake interfaces below are rendered from the
-source. To install, follow the [installation guide](guides/getting-started.md).
+Every signature, parameter table and accepted value below is rendered from the
+docstrings of the version named in the header, so it changes with the code. In
+Python, `help(odb.load)` shows the same text for the version you have installed.
+Which `years`, `ufs` and `months` each dataset takes is in
+[Bases e argumentos](datasets.md). To install, follow the
+[installation guide](guides/getting-started.md).
 
 ## For researchers
 

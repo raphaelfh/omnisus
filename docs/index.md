@@ -1,33 +1,41 @@
 # omnisus
 
-Brings Brazilian public health data (DATASUS, IBGE, CNES) into a local
-[DuckLake](https://ducklake.select) lake, with the provenance a researcher needs to cite it.
+Importa bases públicas de saúde do Brasil (DATASUS, IBGE, CNES) para um lake
+[DuckLake](https://ducklake.select) local, com a proveniência necessária para citar
+cada resultado.
 
-## What it does
-
-- **Fetches** DBC files from the DATASUS FTP server, population tables from IBGE and
-  establishment names from the CNES API.
-- **Decodes** DBC and DBF in batches spooled to disk, in Rust when the optional
-  decoder is installed and in Python otherwise.
-- **Stores** Parquet under a DuckLake catalog (SQLite or PostgreSQL). Each imported
-  scope is recorded with its source files and their SHA-256.
-- **Labels** codes and checks columns against dictionaries whose every claim cites an
-  official document.
-- **Inventories** the FTP server, so an import plans from what is published.
-
-## Where to start
-
-| You want to | Read |
-| --- | --- |
-| Answer a research question with one base | [Guia do pesquisador](pesquisa/index.md) and its notebooks |
-| Install and run a first import | [Getting Started](guides/getting-started.md) |
-| See every dataset the package imports | [Datasets](datasets.md) |
-| Know what a column means and where that comes from | [Dicionário de dados](dicionario/index.md) |
-| Recover from failures, reprocess, maintain a lake | [Reprocessing and maintenance](guides/reprocessing-and-maintenance.md) |
-| Look up a function | [API reference](api.md) |
+!!! warning "Trabalho em construção (v0.1)"
+    A API ainda pode mudar entre versões menores, e nem todo dicionário foi conferido
+    contra o documento oficial. Antes de publicar um número, confira as contagens com o
+    DATASUS e os rótulos com a fonte ([como conferir](dicionario/index.md)). Um rótulo
+    errado é um bug: [abra uma issue](https://github.com/raphaelfh/omnisus/issues/new/choose).
 
 ```python
 import omnisus as odb
 
-dados = odb.load("sim_obitos", years=[2023], ufs=["RR"])
+dados = odb.load("sim_obitos", years=[2023], ufs=["RR"])             # baixa e devolve as linhas
+dados = odb.label("sim_obitos", dados, columns=["sexo", "racacor"])  # + sexo_rotulo, racacor_rotulo
+odb.check_columns("sim_obitos", dados)                               # vazios, códigos sem rótulo, datas
 ```
+
+## O que faz
+
+- **Baixa** os arquivos DBC do FTP do DATASUS, a população do IBGE e os nomes de
+  estabelecimentos da API do CNES.
+- **Decodifica** DBC e DBF em lotes gravados em disco, em Rust quando o decodificador
+  opcional está instalado e em Python nos outros casos.
+- **Guarda** Parquet num catálogo DuckLake (SQLite ou PostgreSQL). Cada recorte importado
+  fica registrado com os arquivos de origem e o SHA-256 de cada um.
+- **Rotula** códigos e confere colunas com dicionários em que cada afirmação cita um
+  documento oficial.
+
+## Por onde começar
+
+| Você quer | Leia |
+| --- | --- |
+| Responder uma pergunta de pesquisa com uma base | [Comece aqui](pesquisa/index.md) e os notebooks |
+| Saber de onde vem um rótulo e como conferi-lo | [De onde vem cada rótulo](dicionario/index.md) |
+| Instalar e fazer a primeira importação | [Getting Started](guides/getting-started.md) |
+| Saber quais bases existem e o que passar em `years`, `ufs` e `months` | [Bases e argumentos](datasets.md) |
+| Consultar uma função | [API](api.md) |
+| Corrigir um rótulo ou acrescentar uma base | [Como contribuir](contributing.md) |

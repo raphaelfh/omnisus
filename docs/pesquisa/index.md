@@ -7,33 +7,64 @@ dados em arquivos no seu computador. Cada importação fica registrada num manif
 o arquivo de origem, o SHA-256 dele e a execução que o publicou; é isso que permite
 dizer de onde veio cada linha.
 
-## Preparar
+## Começar em cinco minutos
 
-A partir de uma cópia do repositório:
+Escolha onde rodar. Os três caminhos usam a mesma biblioteca e chegam à mesma tabela.
 
-```bash
-git clone https://github.com/raphaelfh/omnisus.git
-cd omnisus
-uv sync --locked --extra notebooks
-uv run --locked --extra notebooks marimo edit notebooks/sim_obitos.py
-```
+=== "Google Colab"
 
-Sem clonar, o notebook instala `omnisus` do GitHub (cabeçalho PEP 723):
+    Nada para instalar no seu computador. Abra o notebook, rode as células em ordem e,
+    se quiser que os dados fiquem guardados, monte o Google Drive na segunda célula.
 
-```bash
-uvx marimo edit --sandbox notebooks/sim_obitos.py
-```
+    [![Abrir no Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/raphaelfh/omnisus/blob/main/notebooks/colab.ipynb)
 
-`--sandbox` e o molab instalam `omnisus` do GitHub no **commit pinado** no
-cabeçalho PEP 723 do notebook, não o checkout local. Abra os notebooks a partir
-da raiz do repositório (ou defina `OMNISUS_DATA_DIR`) para SIM e IBGE
-gravarem no mesmo lake. Use a prévia em **servidor**, não WebAssembly. Para
-desenvolver a biblioteca, use `uv sync --locked --extra notebooks`.
+    O notebook instala o omnisus, baixa os óbitos de Roraima em 2023, põe rótulos,
+    confere as colunas e imprime a citação. Para outra base, troque o nome e o recorte
+    (veja [Bases e argumentos](../datasets.md)).
 
-No [molab](https://molab.marimo.io) o mesmo notebook abre no navegador, sem
-instalar o ambiente local:
+=== "marimo no navegador (molab)"
 
-[![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/sim_obitos.py)
+    Os notebooks de cada base abrem no [molab](https://molab.marimo.io), o serviço do
+    marimo, sem instalar nada. Cada um segue as seis etapas abaixo.
+
+    [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/sim_obitos.py)
+
+    Use a execução em **servidor**, não em WebAssembly: DuckDB e o FTP do DATASUS não
+    rodam no navegador.
+
+=== "marimo no seu computador"
+
+    Com o [uv](https://docs.astral.sh/uv/) instalado, um comando abre o notebook num
+    ambiente isolado, com a versão do omnisus fixada no próprio arquivo:
+
+    ```bash
+    git clone https://github.com/raphaelfh/omnisus.git
+    cd omnisus
+    uvx marimo edit --sandbox notebooks/sim_obitos.py
+    ```
+
+    Rode a partir da raiz do repositório (ou defina `OMNISUS_DATA_DIR`) para todos os
+    notebooks usarem o mesmo lake. Para usar o código do checkout em vez da versão
+    fixada: `uv sync --locked --extra notebooks` e
+    `uv run --locked --extra notebooks marimo edit notebooks/sim_obitos.py`.
+
+=== "Python ou Jupyter"
+
+    ```bash
+    pip install "omnisus @ git+https://github.com/raphaelfh/omnisus"
+    ```
+
+    ```python
+    import omnisus as odb
+
+    dados = odb.load("sim_obitos", years=[2023], ufs=["RR"])
+    dados = odb.label("sim_obitos", dados, columns=["sexo", "racacor"])
+    odb.check_columns("sim_obitos", dados)
+    ```
+
+Abrir um notebook marimo não baixa nem grava nada: rede e escrita ficam atrás de
+`EXECUTAR = False` até você mudar a constante. No Colab, cada célula roda quando você
+a executa.
 
 ## Qual base responde minha pergunta?
 
@@ -107,6 +138,10 @@ lê `sim_obitos` e `ibge_populacao` na mesma consulta
 
 ## Cuidados gerais
 
+- **Confira os rótulos e as contagens.** Nem todo mapa de códigos foi conferido contra o
+  documento oficial, e um código que o dicionário não conhece fica sem rótulo. Veja o
+  status de cada mapa em [De onde vem cada rótulo](../dicionario/index.md) e compare os
+  totais com o que o DATASUS publica antes de analisar.
 - **Arquivos preliminares mudam.** O DATASUS publica anos preliminares que depois são
   revistos; para o SINAN Chagas, veja a nota citada no
   [perfil](../sources/sinan_chagas.md#armadilhas). Guarde o SHA-256 do arquivo e o

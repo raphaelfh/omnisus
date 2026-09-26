@@ -1,31 +1,55 @@
 site_name: omnisus
-site_description: Brazilian public health database ingestion library
-site_url: https://raphaelfh.github.io/omnisus
+site_description: Dados públicos de saúde do Brasil (DATASUS, IBGE, CNES) num lake local, com proveniência para citar
+site_url: https://raphaelfh.github.io/omnisus/
 repo_url: https://github.com/raphaelfh/omnisus
 repo_name: raphaelfh/omnisus
-copyright: "(c) 2026 Raphael Federicci"
+edit_uri: edit/main/docs/
+copyright: "(c) 2026 Raphael Federicci · MIT"
+hooks:
+  - scripts/mkdocs_hooks.py
 
 # Contributor-only pages: read in the repository, not published on the site.
 exclude_docs: |
   agents/
 
-
 theme:
   name: material
+  language: pt-BR
+  icon:
+    repo: fontawesome/brands/github
   features:
     - navigation.tabs
     - navigation.sections
-    - content.code.copy
+    - navigation.top
+    - navigation.footer
+    - navigation.instant
+    - navigation.tracking
+    - toc.follow
     - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.action.edit
   palette:
-    - scheme: default
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
       primary: teal
       accent: amber
+      toggle:
+        icon: material/weather-night
+        name: Modo escuro
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: Modo claro
 
 nav:
-  - Home: index.md
-  - Guia do pesquisador:
+  - Início: index.md
+  - Pesquisa:
       - Comece aqui: pesquisa/index.md
+      - De onde vem cada rótulo: dicionario/index.md
       - Bases:
           - SIM · óbitos: sources/sim_obitos.md
           - SINASC · nascidos vivos: sources/sinasc_nascidos_vivos.md
@@ -40,33 +64,43 @@ nav:
           - Vocabulários e SIGTAP: sources/vocabularios.md
       - Indicadores: pesquisa/indicadores.md
       - Reprodutibilidade: pesquisa/reprodutibilidade.md
-  - Guides:
+  - Guias:
       - Getting Started: guides/getting-started.md
       - Knowing what exists: guides/inventory.md
       - Reprocessing and maintenance: guides/reprocessing-and-maintenance.md
-  - Datasets: datasets.md
-  - Dicionário de dados:
-      - Visão geral: dicionario/index.md
+  - Referência:
+      - Bases e argumentos: datasets.md
+      - API: api.md
       - Contrato por coluna: dicionario/contrato.md
-      - Manutenção: dicionario/manutencao.md
-      - Consumo e integração: dicionario/consumo.md
-  - API reference: api.md
-  - Architecture: architecture.md
-  - Decisions:
-      - 0001 Rust DBF: decisions/0001-rust-dbf.md
-      - 0002 Registry as Catalog: decisions/0002-registry-as-catalog.md
-      - 0003 Harmonised Categories: decisions/0003-harmonised-categories-only-for-validated-sources.md
+      - Consumo dos metadados: dicionario/consumo.md
+  - Contribuir:
+      - Como contribuir: contributing.md
+      - Manutenção dos dicionários: dicionario/manutencao.md
+      - Architecture: architecture.md
+      - Decisões:
+          - 0001 Rust DBF: decisions/0001-rust-dbf.md
+          - 0002 Registry as catalog: decisions/0002-registry-as-catalog.md
+          - 0003 Harmonised categories: decisions/0003-harmonised-categories-only-for-validated-sources.md
 
 markdown_extensions:
   - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
   - pymdownx.highlight
   - pymdownx.superfences
-  - pymdownx.tabbed
-  - pymdownx.details
-  - tables
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.snippets:
+      base_path: ["."]
+      check_paths: true
 
 plugins:
-  - search
+  - search:
+      lang: [pt, en]
   - mkdocstrings:
       handlers:
         python:

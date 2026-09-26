@@ -122,56 +122,9 @@ can also produce a non-zero exit status.
 
 ## Transactions and interrupted imports
 
-Local `Lake` handles acquire a cooperative lock before opening the catalog; a
-second handle or process fails immediately. Close the first handle before
-opening another. External SQL clients, network filesystems and cloud writers
-still require external coordination.
-
-A completed import returns one outcome for every requested input position.
-Repeated scopes remain append operations with the default policy. `ok` means
-committed; `failed` means unsuccessful; `skipped` means a documented absence or
-the same managed publication under `skip_same`. A skip relying on a write in the
-active batch is confirmed only when that batch commits. Use explicit
-[reprocessing policies](reprocessing-and-maintenance.md) to change replay behavior.
-
-If transaction initialization, commit acknowledgement or rollback fails, or a
-producer stops unexpectedly, the FTP runner raises
-`ImportAbortedError`. Its `report` contains determined outcomes and its
-`unresolved` contains `(input_index, scope)` pairs that need inspection or were
-not processed. Do not retry the whole import automatically: an unacknowledged
-commit may already have written data.
-
-Pass `run_id` before starting, then query `Lake.publications(run_id=...)` on a
-new handle to reconcile durable publications. `Lake.attempts(run_id=...)` lists
-known failed attempts recorded separately after rollback for completed runs.
-An interrupted process may not have persisted that failure log.
-
-```python
-import omnisus as odb
-
-try:
-    report = odb.import_dataset(
-        "sim_obitos", scopes=[odb.ScopeKey(uf="RR", ano=2023)]
-    )
-except odb.ImportAbortedError as exc:
-    print(exc.report.rows, exc.unresolved)
-    raise
-```
-
-For lower-level writes, use `Lake.transaction()`. An `ImportResult` created
-inside that context has `snapshot_id=None` until commit. Direct `Lake.ingest`
-commits before returning. If snapshot metadata cannot be read after a successful
-commit, the write remains successful and its snapshot stays `None`.
-
-Managed transactions cannot be nested. The FTP runner also rejects an existing
-managed transaction before starting producers. Cancellation rolls back the active
-batch and preserves prior commits; control-flow interruptions propagate, including
-when they first occur during cleanup.
-
-Do not combine managed transactions with raw SQL `BEGIN` or `COMMIT` on
-`Lake.connect()`. After a transaction-state failure, close the handle and inspect
-the catalog before starting a new write.
-
-CNES Master refresh validates records before changing stored values and commits
-the table update and view refresh together. Repeated explicit CNES codes are
-fetched once; progress counts unique codes.
+An import commits in batches of scopes. If a transaction fails in a way that leaves
+its outcome unknown, the runner raises `ImportAbortedError` with the outcomes it could
+determine; do not retry the whole import. What to do next is in
+[Inspect an interrupted run](reprocessing-and-maintenance.md#inspect-an-interrupted-run),
+and the transaction model in
+[Architecture](../architecture.md#transaction-boundaries-and-recovery).
