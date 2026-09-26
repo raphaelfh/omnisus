@@ -47,7 +47,7 @@ jobs:
         with:
           python-version: "3.12"
           architecture: x64
-      - uses: dtolnay/rust-toolchain@1.98.1
+      - uses: dtolnay/rust-toolchain@1.120.0
         with:
           components: rustfmt, clippy
       - run: cargo fmt --all --check
@@ -89,7 +89,7 @@ jobs:
           python-version: "3.12"
           architecture: ${{ matrix.platform.architecture }}
       - uses: astral-sh/setup-uv@v7
-      - uses: dtolnay/rust-toolchain@1.98.1
+      - uses: dtolnay/rust-toolchain@1.120.0
         with:
           targets: ${{ matrix.platform.target }}
       - name: Build the locked native wheel
@@ -164,7 +164,7 @@ jobs:
           python-version: "3.12"
           architecture: x64
       - uses: astral-sh/setup-uv@v7
-      - uses: dtolnay/rust-toolchain@1.98.1
+      - uses: dtolnay/rust-toolchain@1.120.0
       - name: Build the sdist with the pinned backend
         run: uv build native/omnisus-dbf --sdist --out-dir dist/sdist
       - name: Check source distribution contents
