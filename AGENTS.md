@@ -101,31 +101,6 @@ remove it: stop and tell the maintainer.
 
 ## Agent workflow
 
-Issues live in GitHub Issues; use the `gh` CLI. See `docs/agents/issue-tracker.md`.
-Triage labels: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`,
-`wontfix` (`docs/agents/triage-labels.md`).
-
-<!-- curated-engineering:start -->
-### Engineering skill routing
-
-Use the personal curated engineering selection documented in `docs/agents/skill-routing.md`.
-Superpowers (`sp-*`) owns the development workflow. Matt Pocock (`mp-*`) provides
-specialized domain/interface guidance and narrowly scoped utilities.
-
-- Select one owner per stage; state the owner briefly when overlap is possible.
-- Reuse decisions, approvals, plans, test results and reviews that remain valid.
-- Use `sp-executing-plans` for inline execution by default. Use
-  `sp-subagent-driven-development` only when delegated execution is selected and permitted.
-  Tool availability alone does not change execution mode.
-- Use `sp-test-driven-development` as the only TDD procedure (red-green-refactor)
-  and `sp-systematic-debugging` as the only diagnosis procedure.
-- `mp-domain-modeling` and `mp-codebase-design` return findings to the active workflow;
-  they do not begin another interview or plan.
-- `mp-research` handles external research, not routine repository reading.
-- `mp-grilling` and `mp-wizard` require explicit invocation. A grilling interview replaces
-  other interviews for the same decisions.
-- Review-only, research-only and plan-only requests end with their requested deliverables.
-- Follow explicit user choices over defaults. Do not activate a second equivalent workflow
-  to satisfy the same stage. If a chosen skill is unavailable, report it instead of loading
-  a disabled plugin from its cache.
-<!-- curated-engineering:end -->
+Issues and plans live in GitHub Issues (`docs/agents/issue-tracker.md`, labels in
+`docs/agents/triage-labels.md`). The maintainer's skill routing is optional:
+`docs/agents/skill-routing.md`.

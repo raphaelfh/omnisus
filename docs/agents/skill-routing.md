@@ -31,3 +31,22 @@ skills follow `AGENTS.md` and the zero-assumption policy directly.
 stage. Domain and interface specialists return to the caller. A standalone review,
 research request, or plan request ends with its own deliverable. Existing project
 conventions for issues/specs and domain documentation still apply.
+
+## Rules
+
+- Select one owner per stage; state the owner briefly when overlap is possible.
+- Reuse decisions, approvals, plans, test results and reviews that remain valid.
+- Use `sp-executing-plans` for inline execution by default. Use
+  `sp-subagent-driven-development` only when delegated execution is selected and permitted.
+  Tool availability alone does not change execution mode.
+- Use `sp-test-driven-development` as the only TDD procedure (red-green-refactor)
+  and `sp-systematic-debugging` as the only diagnosis procedure.
+- `mp-domain-modeling` and `mp-codebase-design` return findings to the active workflow;
+  they do not begin another interview or plan.
+- `mp-research` handles external research, not routine repository reading.
+- `mp-grilling` and `mp-wizard` require explicit invocation. A grilling interview replaces
+  other interviews for the same decisions.
+- Review-only, research-only and plan-only requests end with their requested deliverables.
+- Follow explicit user choices over defaults. Do not activate a second equivalent workflow
+  to satisfy the same stage. If a chosen skill is unavailable, report it instead of loading
+  a disabled plugin from its cache.
