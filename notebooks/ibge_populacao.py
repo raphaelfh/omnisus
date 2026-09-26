@@ -10,7 +10,7 @@
 # omnisus = { git = "https://github.com/raphaelfh/omnisus.git", rev = "6df1890e81cbb250306d5d98294b49b73c391a7a" }
 # ///
 
-"""IBGE · população: a edição que serve de denominador, com proveniência."""
+"""IBGE · população: a edição que serve de denominador, com procedência."""
 
 import marimo
 
