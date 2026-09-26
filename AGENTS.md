@@ -1,7 +1,7 @@
 # AGENTS.md
 
-omnisus imports Brazilian public health data (DATASUS, IBGE, CNES) into a local
-DuckLake lake, with the provenance a researcher needs to cite each result. Every
+omnisus imports Brazilian public health data (DATASUS, IBGE, CNES) into a DuckLake
+lake on a computer, on Google Drive or in the cloud, with the provenance a researcher needs to cite each result. Every
 change keeps each result citable, never guesses a fact, and stays simple. Why these
 pillars exist, for people: `CONTRIBUTING.md`, section "Princípios". On a conflict,
 this file wins.
