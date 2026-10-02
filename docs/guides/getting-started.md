@@ -26,7 +26,8 @@ On Linux x86_64, macOS (arm64, x86_64) and Windows x86_64, `omnisus` installs
 DBF decoding and DBC decompression default to `auto`: Rust when installed, otherwise
 Python. `OMNISUS_DBF_BACKEND` and `OMNISUS_DBC_BACKEND` take `rust`, `python` or
 `auto`. `auto` falls back only for an absent extension or unsupported DBF metadata;
-corrupt files always fail.
+corrupt files always fail. `omnisus doctor` prints the installed `omnisus-dbf` and the
+backend each setting resolves to.
 
 ### From a checkout
 
