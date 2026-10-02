@@ -382,6 +382,8 @@ def lake_update_aux_cmd(
 @app.command()
 def doctor() -> None:
     """Print diagnostic info (versions, env)."""
+    import sys
+
     import duckdb
     import polars as pl
     import pyarrow as pa
@@ -395,7 +397,8 @@ def doctor() -> None:
     console.print(f"PyArrow:    {pa.__version__}")
 
     # The decoders a load would use now, resolved as dbf_batches and dbc resolve them.
-    # In auto, DBF metadata the Rust reader refuses still falls back to Python per file.
+    # The Rust DBF reader reads C/N fields only (native/omnisus-dbf/README.md): in
+    # auto, a DBF with other field types falls back to Python file by file.
     try:
         native = load_native("auto")
         dbf = (
@@ -404,16 +407,27 @@ def doctor() -> None:
             else f"{native.__version__} (API {native.API_VERSION})"
         )
     except ImportError as exc:
+        found = sys.modules.get("omnisus_dbf")
         dbf = str(exc)
-    console.print(f"omnisus-dbf: {dbf}")
+        if found is not None:
+            installed = f"{getattr(found, '__version__', '?')}"
+            dbf = f"{installed} (API {getattr(found, 'API_VERSION', '?')}): {dbf}"
+    console.print(f"omnisus-dbf: {dbf}", soft_wrap=True)
     for label, variable in (("DBF", "OMNISUS_DBF_BACKEND"), ("DBC", "OMNISUS_DBC_BACKEND")):
         try:
             requested = requested_backend(None, variable=variable, label=label)
             effective = "rust" if load_native(requested) is not None else "python"
             line = f"{effective} ({variable}={requested})"
+            if label == "DBF" and effective == "rust":
+                scope = (
+                    "rust for C/N fields, python for other field types"
+                    if requested == "auto"
+                    else "rust, C/N fields only; other field types fail"
+                )
+                line = f"{scope} ({variable}={requested})"
         except (ValueError, ImportError) as exc:
             line = str(exc)
-        console.print(f"{label} backend: {line}")
+        console.print(f"{label} backend: {line}", soft_wrap=True)
 
     try:
         con = duckdb.connect()

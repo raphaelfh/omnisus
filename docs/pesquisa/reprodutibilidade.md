@@ -196,8 +196,10 @@ uv pip freeze > requisitos.txt
 ```
 
 `uv pip install -r requisitos.txt` refaz o ambiente. `omnisus doctor` mostra a versão do
-`omnisus-dbf` e se cada leitura de DBF e DBC usa Rust ou Python
-(`src/omnisus/cli/main.py`, `doctor`). Um checkout do repositório roda
+`omnisus-dbf` e o decodificador que cada configuração escolhe
+(`src/omnisus/cli/main.py`, `doctor`). Com `auto`, DBC é sempre Rust quando o
+`omnisus-dbf` está instalado; DBF é Rust só com campos C e N, e um arquivo com outros
+tipos de campo é lido em Python (`native/omnisus-dbf/README.md`). Um checkout do repositório roda
 código ainda não publicado que se identifica como a última versão: cite resultados de
 uma versão instalada do PyPI.
 

@@ -116,7 +116,8 @@ def test_doctor_reports_environment() -> None:
 
 @pytest.mark.rust_dbf
 def test_doctor_reports_the_installed_decoder_and_backends(monkeypatch) -> None:
-    """auto with omnisus-dbf installed decodes DBF and DBC in Rust (issue #45)."""
+    """auto with omnisus-dbf installed decodes DBC in Rust and DBF in Rust only for C/N
+    fields (native/omnisus-dbf/README.md); other DBF files fall back to Python (#45)."""
     import omnisus_dbf
 
     monkeypatch.delenv("OMNISUS_DBF_BACKEND", raising=False)
@@ -127,8 +128,41 @@ def test_doctor_reports_the_installed_decoder_and_backends(monkeypatch) -> None:
     assert (
         f"omnisus-dbf: {omnisus_dbf.__version__} (API {omnisus_dbf.API_VERSION})" in result.stdout
     )
-    assert "DBF backend: rust (OMNISUS_DBF_BACKEND=auto)" in result.stdout
+    assert (
+        "DBF backend: rust for C/N fields, python for other field types "
+        "(OMNISUS_DBF_BACKEND=auto)" in result.stdout
+    )
     assert "DBC backend: rust (OMNISUS_DBC_BACKEND=auto)" in result.stdout
+
+
+@pytest.mark.rust_dbf
+def test_doctor_says_forced_rust_reads_only_c_n_fields(monkeypatch) -> None:
+    monkeypatch.setenv("OMNISUS_DBF_BACKEND", "rust")
+    result = runner.invoke(app, ["doctor"])
+
+    assert result.exit_code == 0, result.stdout
+    assert (
+        "DBF backend: rust, C/N fields only; other field types fail "
+        "(OMNISUS_DBF_BACKEND=rust)" in result.stdout
+    )
+
+
+def test_doctor_shows_an_incompatible_omnisus_dbf(monkeypatch) -> None:
+    """A stale wheel with another API: doctor names its version and API, not only the error."""
+    import sys
+    from types import SimpleNamespace
+
+    monkeypatch.setitem(
+        sys.modules, "omnisus_dbf", SimpleNamespace(__version__="0.1.9", API_VERSION=1)
+    )
+    monkeypatch.delenv("OMNISUS_DBF_BACKEND", raising=False)
+    result = runner.invoke(app, ["doctor"])
+
+    assert result.exit_code == 0, result.stdout
+    assert (
+        "omnisus-dbf: 0.1.9 (API 1): Incompatible omnisus-dbf API; expected API_VERSION=2"
+        in result.stdout
+    )
 
 
 def test_doctor_reports_python_when_the_environment_asks_for_it(monkeypatch) -> None:

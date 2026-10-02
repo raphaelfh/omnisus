@@ -4,9 +4,10 @@
 
 ### CLI
 
-- `omnisus doctor` prints the installed `omnisus-dbf` (version and API) and whether DBF
-  and DBC decoding resolve to Rust or Python under `OMNISUS_DBF_BACKEND` and
-  `OMNISUS_DBC_BACKEND`, or names an invalid setting (#45).
+- `omnisus doctor` prints the installed `omnisus-dbf` (version and API, also when the API
+  is incompatible) and the backend `OMNISUS_DBF_BACKEND` and `OMNISUS_DBC_BACKEND`
+  resolve to. For DBF it says that Rust reads C/N fields only, so under `auto` a file
+  with other field types is read in Python. An invalid setting is named (#45).
 
 ### omnisus-dbf 0.2.1
 
