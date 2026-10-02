@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### CLI
+
+- `omnisus doctor` prints the installed `omnisus-dbf` (version and API) and whether DBF
+  and DBC decoding resolve to Rust or Python under `OMNISUS_DBF_BACKEND` and
+  `OMNISUS_DBC_BACKEND`, or names an invalid setting (#45).
+
 ### omnisus-dbf 0.2.1
 
 - Metadata only, same code and `API_VERSION` 2 as 0.2.0: its PyPI page gets the SPDX

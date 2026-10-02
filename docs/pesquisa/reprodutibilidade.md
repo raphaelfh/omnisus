@@ -195,7 +195,9 @@ lista ao lado da citação:
 uv pip freeze > requisitos.txt
 ```
 
-`uv pip install -r requisitos.txt` refaz o ambiente. Um checkout do repositório roda
+`uv pip install -r requisitos.txt` refaz o ambiente. `omnisus doctor` mostra a versão do
+`omnisus-dbf` e se cada leitura de DBF e DBC usa Rust ou Python
+(`src/omnisus/cli/main.py`, `doctor`). Um checkout do repositório roda
 código ainda não publicado que se identifica como a última versão: cite resultados de
 uma versão instalada do PyPI.
 

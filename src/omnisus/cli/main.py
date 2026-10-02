@@ -387,11 +387,33 @@ def doctor() -> None:
     import pyarrow as pa
 
     from omnisus._version import __version__ as v
+    from omnisus.sources.datasus_ftp.native import load_native, requested_backend
 
     console.print(f"omnisus: {v}")
     console.print(f"DuckDB:     {duckdb.__version__}")
     console.print(f"Polars:     {pl.__version__}")
     console.print(f"PyArrow:    {pa.__version__}")
+
+    # The decoders a load would use now, resolved as dbf_batches and dbc resolve them.
+    # In auto, DBF metadata the Rust reader refuses still falls back to Python per file.
+    try:
+        native = load_native("auto")
+        dbf = (
+            "not installed"
+            if native is None
+            else f"{native.__version__} (API {native.API_VERSION})"
+        )
+    except ImportError as exc:
+        dbf = str(exc)
+    console.print(f"omnisus-dbf: {dbf}")
+    for label, variable in (("DBF", "OMNISUS_DBF_BACKEND"), ("DBC", "OMNISUS_DBC_BACKEND")):
+        try:
+            requested = requested_backend(None, variable=variable, label=label)
+            effective = "rust" if load_native(requested) is not None else "python"
+            line = f"{effective} ({variable}={requested})"
+        except (ValueError, ImportError) as exc:
+            line = str(exc)
+        console.print(f"{label} backend: {line}")
 
     try:
         con = duckdb.connect()
