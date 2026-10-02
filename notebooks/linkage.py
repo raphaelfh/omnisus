@@ -55,7 +55,8 @@ def _(mo):
 
     Num estado grande, algumas bases não cabem na memória de um computador
     comum (o relatório diz quais). `PULAR` lista as que ficam de fora; as
-    seções que dependem delas dizem isso em vez de calcular.
+    seções que dependem delas dizem isso em vez de calcular. SIM, SINASC e SIH RD
+    não podem ficar de fora: sem uma delas, o notebook para e diz qual falta.
     """)
     return
 
@@ -69,7 +70,8 @@ def _(mo):
     EXECUTAR = False
     # Bases a pular: as que não cabem na memória num estado grande. Na execução
     # de SP do relatório: {"sia_bpa_individualizado", "sih_servicos_profissionais",
-    # "sia_apac_medicamentos"}.
+    # "sia_apac_medicamentos"}. sim_obitos, sinasc_nascidos_vivos e sih_aih_reduzida
+    # não podem ser puladas.
     PULAR = set()
     executar = EXECUTAR or bool(mo.cli_args().get("executar"))
     return ANO, PULAR, UF, executar
@@ -148,6 +150,22 @@ def _(ANO, PULAR, UF, executar, mo, sus):
 
     RD_SEGUINTE = "sih_aih_reduzida (ano seguinte)"
     publicados = {base: publicado(base, ANO) for base in POR_UF + NACIONAIS}
+    # O linkage cruza SIM, SINASC e SIH RD: sem uma delas, as seções abaixo não têm o
+    # que calcular. Confere antes de baixar qualquer coisa.
+    faltam = [
+        base
+        for base in ("sim_obitos", "sinasc_nascidos_vivos", "sih_aih_reduzida")
+        if not publicados[base] or base in PULAR
+    ]
+    mo.stop(
+        bool(faltam),
+        mo.md(
+            f"Este notebook precisa de SIM, SINASC e SIH RD de {UF} {ANO}. Faltam: "
+            + ", ".join(f"`{base}`" for base in faltam)
+            + ". Tire-as de `PULAR`, ou escolha uma UF e um ano em que o DATASUS"
+            " publique as três."
+        ),
+    )
     bases = {
         base: carregar(base, escopos)
         for base, escopos in publicados.items()
