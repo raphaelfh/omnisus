@@ -9,6 +9,12 @@
   resolve to. For DBF it says that Rust reads C/N fields only, so under `auto` a file
   with other field types is read in Python. An invalid setting is named (#45).
 
+### Notebooks
+
+- `linkage.py` checks that SIM, SINASC and SIH RD are published for the chosen UF and
+  year, and not in `PULAR`, before downloading anything; if one is missing it names it
+  and stops instead of failing later with `KeyError` or an empty `pl.concat` (#44).
+
 ### omnisus-dbf 0.2.1
 
 - Metadata only, same code and `API_VERSION` 2 as 0.2.0: its PyPI page gets the SPDX
