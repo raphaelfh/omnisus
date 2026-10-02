@@ -114,6 +114,92 @@ def test_doctor_reports_environment() -> None:
     assert "Polars" in result.stdout
 
 
+@pytest.mark.rust_dbf
+def test_doctor_reports_the_installed_decoder_and_backends(monkeypatch) -> None:
+    """auto with omnisus-dbf installed decodes DBC in Rust and DBF in Rust only for C/N
+    fields (native/omnisus-dbf/README.md); other DBF files fall back to Python (#45)."""
+    import omnisus_dbf
+
+    monkeypatch.delenv("OMNISUS_DBF_BACKEND", raising=False)
+    monkeypatch.delenv("OMNISUS_DBC_BACKEND", raising=False)
+    result = runner.invoke(app, ["doctor"])
+
+    assert result.exit_code == 0, result.stdout
+    assert (
+        f"omnisus-dbf: {omnisus_dbf.__version__} (API {omnisus_dbf.API_VERSION})" in result.stdout
+    )
+    assert (
+        "DBF backend: rust for C/N fields, python for other field types "
+        "(OMNISUS_DBF_BACKEND=auto)" in result.stdout
+    )
+    assert "DBC backend: rust (OMNISUS_DBC_BACKEND=auto)" in result.stdout
+
+
+@pytest.mark.rust_dbf
+def test_doctor_says_forced_rust_reads_only_c_n_fields(monkeypatch) -> None:
+    monkeypatch.setenv("OMNISUS_DBF_BACKEND", "rust")
+    result = runner.invoke(app, ["doctor"])
+
+    assert result.exit_code == 0, result.stdout
+    assert (
+        "DBF backend: rust, C/N fields only; other field types fail "
+        "(OMNISUS_DBF_BACKEND=rust)" in result.stdout
+    )
+
+
+def test_doctor_shows_an_incompatible_omnisus_dbf(monkeypatch) -> None:
+    """A stale wheel with another API: doctor names its version and API, not only the error."""
+    import sys
+    from types import SimpleNamespace
+
+    monkeypatch.setitem(
+        sys.modules, "omnisus_dbf", SimpleNamespace(__version__="0.1.9", API_VERSION=1)
+    )
+    monkeypatch.delenv("OMNISUS_DBF_BACKEND", raising=False)
+    result = runner.invoke(app, ["doctor"])
+
+    assert result.exit_code == 0, result.stdout
+    assert (
+        "omnisus-dbf: 0.1.9 (API 1): Incompatible omnisus-dbf API; expected API_VERSION=2"
+        in result.stdout
+    )
+
+
+def test_doctor_reports_python_when_the_environment_asks_for_it(monkeypatch) -> None:
+    monkeypatch.setenv("OMNISUS_DBF_BACKEND", "python")
+    monkeypatch.setenv("OMNISUS_DBC_BACKEND", "python")
+    result = runner.invoke(app, ["doctor"])
+
+    assert result.exit_code == 0, result.stdout
+    assert "DBF backend: python (OMNISUS_DBF_BACKEND=python)" in result.stdout
+    assert "DBC backend: python (OMNISUS_DBC_BACKEND=python)" in result.stdout
+
+
+def test_doctor_reports_python_when_omnisus_dbf_is_absent(monkeypatch) -> None:
+    """Simulates an install without the wheel (other platforms) by failing the import."""
+
+    def absent(name: str):
+        raise ModuleNotFoundError(f"No module named {name!r}", name=name)
+
+    monkeypatch.setattr("omnisus.sources.datasus_ftp.native.import_module", absent)
+    monkeypatch.delenv("OMNISUS_DBF_BACKEND", raising=False)
+    monkeypatch.delenv("OMNISUS_DBC_BACKEND", raising=False)
+    result = runner.invoke(app, ["doctor"])
+
+    assert result.exit_code == 0, result.stdout
+    assert "omnisus-dbf: not installed" in result.stdout
+    assert "DBF backend: python (OMNISUS_DBF_BACKEND=auto)" in result.stdout
+    assert "DBC backend: python (OMNISUS_DBC_BACKEND=auto)" in result.stdout
+
+
+def test_doctor_names_an_invalid_backend_setting(monkeypatch) -> None:
+    monkeypatch.setenv("OMNISUS_DBC_BACKEND", "fortran")
+    result = runner.invoke(app, ["doctor"])
+
+    assert result.exit_code == 0, result.stdout
+    assert "DBC backend: DBC backend must be python, rust or auto" in result.stdout
+
+
 def test_lake_describe_shows_columns(tmp_path: Path) -> None:
     target = f"ducklake:{tmp_path}/d.ducklake"
     runner.invoke(app, ["init", "--target", target])

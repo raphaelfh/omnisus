@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### CLI
+
+- `omnisus doctor` prints the installed `omnisus-dbf` (version and API, also when the API
+  is incompatible) and the backend `OMNISUS_DBF_BACKEND` and `OMNISUS_DBC_BACKEND`
+  resolve to. For DBF it says that Rust reads C/N fields only, so under `auto` a file
+  with other field types is read in Python. An invalid setting is named (#45).
+
 ### Notebooks
 
 - `linkage.py` checks that SIM, SINASC and SIH RD are published for the chosen UF and
