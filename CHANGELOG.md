@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+### omnisus-dbf 0.2.1
+
+- Metadata only, same code and `API_VERSION` 2 as 0.2.0: its PyPI page gets the SPDX
+  license `MIT`, project URLs, author and the updated README (#43). `omnisus` accepts it
+  through `omnisus-dbf>=0.2.0,<0.3`.
+
 ## v0.2.1 — 2026-10-02
 
 **Upgrading from 0.2.0:** no parser version changed, so a 0.2.0 lake keeps every
