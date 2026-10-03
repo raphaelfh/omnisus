@@ -44,10 +44,10 @@ def _(mo):
     seguinte e ponha `EXECUTAR = True` (ou exporte com `-- --executar true`) para
     consultar a rede e gravar no lake (`data/raw/`, ou `$OMNISUS_DATA_DIR`).
 
-    Uma notificação não é um caso confirmado nem uma pessoa única. Leia os perfis de
-    [Chagas](https://raphaelfh.github.io/omnisus/sources/sinan_chagas/),
-    [hanseníase](https://raphaelfh.github.io/omnisus/sources/sinan_hanseniase/) e
-    [tuberculose](https://raphaelfh.github.io/omnisus/sources/sinan_tuberculose/).
+    Antes de contar, leia as Armadilhas do perfil do agravo:
+    [Chagas](https://raphaelfh.github.io/omnisus/sources/sinan_chagas/#armadilhas),
+    [hanseníase](https://raphaelfh.github.io/omnisus/sources/sinan_hanseniase/#armadilhas) e
+    [tuberculose](https://raphaelfh.github.io/omnisus/sources/sinan_tuberculose/#armadilhas).
     """)
     return
 
