@@ -69,7 +69,7 @@ relatorio = sus.import_dataset(
 )
 ```
 
-Passo a passo com os agravos do SINAN:
+Passo a passo com Chagas, hanseníase e tuberculose, análise e procedência:
 [notebooks/sinan.py](https://github.com/raphaelfh/omnisus/blob/main/notebooks/sinan.py)
 [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/sinan.py).
 
