@@ -2,16 +2,24 @@
 
 from __future__ import annotations
 
+import importlib.util
+import json
+from collections import Counter
 from functools import cache
 from importlib.resources import files
 from pathlib import Path
+from types import ModuleType
 
 import duckdb
 import polars as pl
 import pytest
 
 from omnisus.sources.datasus_ftp.parse import dbc_bytes_to_lazyframe
+from omnisus.transforms.cnv import parse_cnv, range_keys
 from omnisus.transforms.dictionaries import Uncovered, decode_coverage, load_dicionario
+
+CNV = files("omnisus.data.dicionarios") / "sources" / "cnv"
+VINCULOS = json.loads((CNV / "vinculos.json").read_text(encoding="utf-8"))
 
 # (dataset, fixture) -> every (field, value, rows) that no x-decode key matches exactly.
 # Counted on 2026-09-21 after gerar_decode_cnv.py. What remains are fields no CNV binds
@@ -182,6 +190,39 @@ REMAINING = {
 }
 
 
+# (dataset, fixture) -> every (field, value, rows) whose label comes only from a range of
+# the field's CNV in vinculos.json (issue #31). REMAINING counts these values as covered,
+# but a range such as 0-9 labels every code of its width, known or not.
+RANGE_ONLY = {
+    # tiposegm.cnv: "TIPO DO SEGMENTO INVÁLIDO ,0,3-9".
+    ("cnes_equipes", "cnes_ep_rr_2024_01_mini"): [("tiposegm", "9", 13)],
+    # TAB_SIH: INSTRU and VINCPREV 0-9, NATUREZA 00-99 "Ignorado", CONTRAC 00-99
+    # "Ignorado/não se aplica", motbloqueio 00-99 "NÃO ESPECIFICADO".
+    ("sih_aih_reduzida", "sih_rr_2024_01_mini"): [
+        ("contracep1", "00", 3665),
+        ("contracep2", "00", 3665),
+        ("instru", "0", 3665),
+        ("natureza", "00", 3714),
+        ("vincprev", "0", 3714),
+    ],
+    ("sih_aih_rejeitada", "sih_rj_rr_2024_01_mini"): [
+        ("contracep1", "00", 30),
+        ("contracep2", "00", 30),
+        ("instru", "0", 30),
+        ("natureza", "00", 30),
+        ("st_mot_blo", "00", 20),
+        ("vincprev", "0", 30),
+    ],
+    # RD 1992-2007: INSTRU.CNV 0-9 "Ignorado/não se aplica", VINCPREV.CNV 0-9 "Não
+    # classificado". RDRR9412 and RDRR9709 hold only codes a CNV line names.
+    ("sih_aih_reduzida_1992_2007", "sih_rd_rr_2004_07_excerpt"): [("instru", "0", 90)],
+    ("sih_aih_reduzida_1992_2007", "sih_rd_rr_2007_12_mini"): [
+        ("instru", "0", 1488),
+        ("vincprev", "0", 1496),
+    ],
+}
+
+
 @cache
 def _read(dataset: str, path: Path) -> pl.DataFrame:
     """Each (dataset, fixture) is read once per process: many cases share a fixture.
@@ -201,6 +242,68 @@ def _uncovered(dbc_fixture, dataset: str, fixture: str) -> list[Uncovered]:
 def test_every_mini_fixture_has_only_the_recorded_gaps(dbc_fixture, dataset, fixture):
     found = [(u.field, u.value, u.rows) for u in _uncovered(dbc_fixture, dataset, fixture)]
     assert sorted(found) == sorted(REMAINING[(dataset, fixture)])
+
+
+@cache
+def _gerar_decode_cnv() -> ModuleType:
+    """The generator, loaded as tests/unit/scripts load it, for its ``read_member``."""
+    script = Path(__file__).resolve().parents[3] / "scripts/metadados/gerar_decode_cnv.py"
+    spec = importlib.util.spec_from_file_location("gerar_decode_cnv", script)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _range_keys(dataset: str) -> dict[str, frozenset[str]]:
+    """Field -> the codes its CNV (vinculos.json) labels only through a range.
+
+    Each CNV is read as gerar_decode_cnv.py reads it: a `mesmo_que` member from the copy
+    it names, and only if the bytes hash to the member's own sha256. DOINF, DOMAT and
+    DOEXT are not in vinculos.json: gerar_subconjuntos_sim.py gives each of their fields
+    the sim_obitos definition, CNV map included, so they take sim_obitos' CNVs.
+    """
+    if dataset in ("sim_obitos_infantis", "sim_obitos_maternos", "sim_obitos_externos"):
+        dataset = "sim_obitos"
+    campos = VINCULOS["datasets"].get(dataset, {}).get("campos", {})
+    read_member = _gerar_decode_cnv().read_member
+    return {
+        field: range_keys(parse_cnv(read_member(member, VINCULOS["membros"])))
+        for field, member in campos.items()
+        if not member.lower().endswith(".dbf")
+    }
+
+
+@pytest.mark.parametrize("dataset", sorted({dataset for dataset, _ in REMAINING}))
+def test_range_keys_reads_the_cnv_of_every_field_mapped_from_one(dataset):
+    """A field whose x-decode has a `cnv-parse` claim has its CNV read by `_range_keys`,
+    or the test below could not see the values only a range of that CNV labels."""
+    parsed = {
+        field["name"]
+        for field in load_dicionario(dataset).fields
+        for claim in field.get("x-metadata", {}).get("claims", [])
+        if claim["method"] == "cnv-parse"
+    }
+    assert parsed <= _range_keys(dataset).keys()
+
+
+@pytest.mark.parametrize(("dataset", "fixture"), sorted(REMAINING))
+def test_values_labelled_only_by_a_range_are_recorded(dbc_fixture, dataset, fixture):
+    """Values are compared as text, as decode_coverage compares them: `morte` is Int64."""
+    frame = _read(dataset, dbc_fixture(fixture))
+    found = [
+        (field, value, rows)
+        for field, keys in _range_keys(dataset).items()
+        if field in frame.columns
+        for value, rows in Counter(frame[field].cast(pl.String).to_list()).items()
+        if value in keys
+    ]
+    assert sorted(found) == sorted(RANGE_ONLY.get((dataset, fixture), []))
+
+
+def test_range_only_names_only_fixtures_of_remaining():
+    """The test above runs over REMAINING, so an entry for any other key is never checked."""
+    assert RANGE_ONLY.keys() - REMAINING.keys() == set()
 
 
 def test_every_x_decode_key_is_a_string():
@@ -312,10 +415,7 @@ def test_the_comparison_report_gaps_are_closed(dbc_fixture, dataset, fixture, fi
         # same CNV bytes (evidence/2026-09-29-tab-sih-rd-eras/). RDRR9709
         # (TAB_SIH_199201-199712.zip) has no gestao, instru or vincprev, so those are
         # asserted on RDRR0712 (TAB_SIH_200308-200712.zip); instru 0 and vincprev 0 are
-        # labelled by the reserve range 0-9. IDENT, SEXO, INSTRU, VINCPREV (0-9),
-        # NATUREZA (00-99) and GESTAO (0, 1, 2, 3-9) label every digit, so the empty
-        # REMAINING entries of these fixtures say nothing about unknown codes; only
-        # MORTES.CNV has no reserve range.
+        # labelled by the reserve range 0-9, and RANGE_ONLY records them.
         (
             "sih_aih_reduzida_1992_2007",
             "sih_rd_rr_1997_09_mini",
