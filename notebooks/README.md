@@ -18,7 +18,7 @@ Abrir um notebook não baixa nem grava nada. Rede e escrita ficam atrás de
 | [sia.py](sia.py) | [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/sia.py) | SIA · sete tabelas | RR, jan/2024 |
 | [cnes_estabelecimentos.py](cnes_estabelecimentos.py) | [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/cnes_estabelecimentos.py) | CNES · estabelecimentos | RR, jan/2024 |
 | [ibge_populacao.py](ibge_populacao.py) | [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/ibge_populacao.py) | IBGE · população | censo 2022 |
-| [sinan.py](sinan.py) | [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/sinan.py) | SINAN · Chagas aguda e hanseníase | nacional, 2023 |
+| [sinan.py](sinan.py) | [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/sinan.py) | SINAN · Chagas aguda, hanseníase e tuberculose | nacional, 2023 |
 | [medicamentos.py](medicamentos.py) | [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/medicamentos.py) | SIA-AM, estoque Hórus | RR, jan/2024 |
 | [linkage.py](linkage.py) | [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/linkage.py) | todas as bases de uma UF e ano: colunas com o decoder e linkage determinístico | RR, 2022 |
 
