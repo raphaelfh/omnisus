@@ -7,12 +7,12 @@
 # ]
 # ///
 
-"""SINAN · notificações nacionais de Chagas aguda e hanseníase, em seis etapas."""
+"""SINAN · notificações nacionais de Chagas aguda, hanseníase e tuberculose, em seis etapas."""
 
 import marimo
 
 __generated_with = "0.23.16"
-app = marimo.App(width="medium", app_title="SINAN · Chagas e hanseníase")
+app = marimo.App(width="medium", app_title="SINAN · Chagas, hanseníase e tuberculose")
 
 
 @app.cell
@@ -30,7 +30,7 @@ def _():
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    # SINAN · Chagas aguda e hanseníase
+    # SINAN · Chagas aguda, hanseníase e tuberculose
 
     [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/sinan.py)
 
@@ -38,22 +38,23 @@ def _(mo):
     publicadas pelo DATASUS em **um arquivo nacional por ano**, com diretório final e
     preliminar. Este notebook percorre as seis etapas do
     [guia do pesquisador](https://raphaelfh.github.io/omnisus/pesquisa/) com
-    **Chagas aguda, 2023** (troque `BASE` para `sinan_hanseniase`).
+    **Chagas aguda, 2023** (troque `BASE` para `sinan_hanseniase` ou `sinan_tuberculose`).
 
     **Abrir este notebook não baixa nem grava nada.** Edite os parâmetros na célula
     seguinte e ponha `EXECUTAR = True` (ou exporte com `-- --executar true`) para
     consultar a rede e gravar no lake (`data/raw/`, ou `$OMNISUS_DATA_DIR`).
 
-    Uma notificação não é um caso confirmado nem uma pessoa única. Leia os perfis de
-    [Chagas](https://raphaelfh.github.io/omnisus/sources/sinan_chagas/) e
-    [hanseníase](https://raphaelfh.github.io/omnisus/sources/sinan_hanseniase/).
+    Antes de contar, leia as Armadilhas do perfil do agravo:
+    [Chagas](https://raphaelfh.github.io/omnisus/sources/sinan_chagas/#armadilhas),
+    [hanseníase](https://raphaelfh.github.io/omnisus/sources/sinan_hanseniase/#armadilhas) e
+    [tuberculose](https://raphaelfh.github.io/omnisus/sources/sinan_tuberculose/#armadilhas).
     """)
     return
 
 
 @app.cell
 def _(mo):
-    # Parâmetros: edite e reexecute. BASE é sinan_chagas ou sinan_hanseniase.
+    # Parâmetros: edite e reexecute. BASE é sinan_chagas, sinan_hanseniase ou sinan_tuberculose.
     BASE = "sinan_chagas"
     ANO = 2023
     EXECUTAR = False
@@ -180,12 +181,19 @@ def _(BASE, dados, sus, pl):
             .len("notificacoes")
             .sort("classi_fin", "evolucao")
         )
-    else:
+    elif BASE == "sinan_hanseniase":
         tabelas["modo_de_entrada_e_alta"] = (
             sus.label(BASE, dados, columns=["tpalta_n"])
             .group_by("modoentr", "tpalta_n", "tpalta_n_rotulo")
             .len("notificacoes")
             .sort("modoentr", "tpalta_n")
+        )
+    elif BASE == "sinan_tuberculose":
+        tabelas["tipo_de_entrada_e_encerramento"] = (
+            sus.label(BASE, dados, columns=["tratamento", "situa_ence"])
+            .group_by("tratamento", "tratamento_rotulo", "situa_ence", "situa_ence_rotulo")
+            .len("notificacoes")
+            .sort("tratamento", "situa_ence")
         )
     tabelas
     return (tabelas,)

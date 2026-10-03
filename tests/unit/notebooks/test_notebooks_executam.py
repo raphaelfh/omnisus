@@ -1,8 +1,9 @@
 """Each base notebook runs every step, with `EXECUTAR` on, over a real DATASUS file.
 
 The fake server in `tests/support/fake_datasus.py` lists and serves one committed
-file (`tests/fixtures/FIXTURES.md`) for the notebook's own cut, so discovery,
+file (`tests/fixtures/FIXTURES.md`) for the scope the notebook reads, so discovery,
 `sus.load`, `sus.check_columns`, the analysis and `sus.cite` all see real rows.
+`sinan.py` also runs on each other agravo it offers.
 
 Left out: `ibge_populacao.py` reads the IBGE API and `medicamentos.py` the Hórus
 stock API, which have no committed response; `linkage.py` needs about thirty
@@ -23,42 +24,65 @@ from omnisus.sources._base import ScopeKey
 
 NOTEBOOKS = Path(__file__).resolve().parents[3] / "notebooks"
 
-# notebook -> (dataset, the notebook's cut, fixture of that exact server file)
+# (notebook, dataset) -> (scope the notebook reads, fixture of that server file or of an
+# excerpt of it, directory, a table that step 5 writes for that dataset)
 CASOS = {
-    "sim_obitos.py": ("sim_obitos", ScopeKey(uf="RR", ano=2022), "sim_rr_2022_mini", "final"),
-    "sinasc_nascidos_vivos.py": (
-        "sinasc_nascidos_vivos",
+    ("sim_obitos.py", "sim_obitos"): (
+        ScopeKey(uf="RR", ano=2022),
+        "sim_rr_2022_mini",
+        "final",
+        "obitos_por_sexo_e_causa",
+    ),
+    ("sinasc_nascidos_vivos.py", "sinasc_nascidos_vivos"): (
         ScopeKey(uf="RR", ano=2022),
         "sinasc_rr_2022_mini",
         "final",
+        "tipo_de_parto",
     ),
-    "sih_aih_reduzida.py": (
-        "sih_aih_reduzida",
+    ("sih_aih_reduzida.py", "sih_aih_reduzida"): (
         ScopeKey(uf="RR", ano=2024, mes=1),
         "sih_rr_2024_01_mini",
         "final",
+        "campo_morte",
     ),
-    "sia.py": (
-        "sia_bpa_individualizado",
+    ("sia.py", "sia_bpa_individualizado"): (
         ScopeKey(uf="RR", ano=2024, mes=1),
         "sia_bi_rr_2024_01_mini",
         "final",
+        "quantidade_por_procedimento",
     ),
-    "cnes_estabelecimentos.py": (
-        "cnes_estabelecimentos",
+    ("cnes_estabelecimentos.py", "cnes_estabelecimentos"): (
         ScopeKey(uf="RR", ano=2024, mes=1),
         "cnes_rr_2024_01_mini",
         "final",
+        "estabelecimentos_por_tipo",
     ),
-    "sinan.py": ("sinan_chagas", ScopeKey(uf=None, ano=2023), "sinan_chagas_br_2023", "prelim"),
+    ("sinan.py", "sinan_chagas"): (
+        ScopeKey(uf=None, ano=2023),
+        "sinan_chagas_br_2023",
+        "prelim",
+        "classificacao_e_evolucao",
+    ),
+    ("sinan.py", "sinan_hanseniase"): (
+        ScopeKey(uf=None, ano=2026),
+        "sinan_hanseniase_br_2026",
+        "prelim",
+        "modo_de_entrada_e_alta",
+    ),
+    ("sinan.py", "sinan_tuberculose"): (
+        ScopeKey(uf=None, ano=2020),
+        "sinan_tuberculose_br_2020_excerpt",
+        "prelim",
+        "tipo_de_entrada_e_encerramento",
+    ),
 }
 
 
-@pytest.mark.parametrize("nome", sorted(CASOS))
-def test_notebook_runs_every_step_on_real_rows(nome, monkeypatch, tmp_path, dbc_fixture):
-    dataset, recorte, fixture, release = CASOS[nome]
+@pytest.mark.parametrize(("nome", "dataset"), sorted(CASOS))
+def test_notebook_runs_every_step_on_real_rows(nome, dataset, monkeypatch, tmp_path, dbc_fixture):
+    escopo, fixture, release, tabela = CASOS[nome, dataset]
     servido = dbc_fixture(fixture).read_bytes()
-    fake_datasus.serve(monkeypatch, dataset, {recorte: servido}, release=release)
+    fake_datasus.serve(monkeypatch, dataset, {escopo: servido}, release=release)
     listagem = sys.modules["omnisus.sources.datasus_ftp._runner"].list_sources
     monkeypatch.setattr("omnisus.sources.datasus_ftp.inventory.list_sources", listagem)
     monkeypatch.setattr("omnisus.list_sources", listagem)
@@ -70,9 +94,15 @@ def test_notebook_runs_every_step_on_real_rows(nome, monkeypatch, tmp_path, dbc_
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
 
-    module.app.run()
+    # sinan.py opens on sinan_chagas. For another agravo the test replaces the parameter
+    # cell; marimo replaces a cell only whole, so it gives all four definitions.
+    if nome == "sinan.py" and dataset != "sinan_chagas":
+        parametros = {"BASE": dataset, "ANO": escopo.ano, "EXECUTAR": True, "executar": True}
+        module.app.run(defs=parametros)
+    else:
+        module.app.run()
 
     pasta = tmp_path / "resultados" / dataset
     citacao = (pasta / "citacao.txt").read_text(encoding="utf-8")
     assert hashlib.sha256(servido).hexdigest() in citacao
-    assert list(pasta.glob("*.csv")), "the analysis wrote no table"
+    assert (pasta / f"{tabela}.csv").exists(), sorted(f.name for f in pasta.glob("*.csv"))
