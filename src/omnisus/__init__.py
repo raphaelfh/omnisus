@@ -15,7 +15,7 @@ from omnisus.lake.catalog import set_lake_dir
 from omnisus.lake.publication import DeletionResult, ImportPolicy, scope_filter
 from omnisus.lake.sql import qualified, quote_identifier
 from omnisus.metadata import describe_dataset
-from omnisus.products import Product, datasets, products
+from omnisus.products import Product, datasets, describe_datasets, products
 from omnisus.research import (
     Citation,
     citation_from_publications,
@@ -270,9 +270,11 @@ def load(
 
     Args:
         dataset: DATASUS FTP dataset name, e.g. ``"sim_obitos"``,
-            ``"sih_aih_reduzida"``; see :func:`datasets`. IBGE population, SIGTAP and
-            CNES names have their own functions (:func:`import_ibge_populacao`,
-            :func:`import_sigtap`, :func:`import_cnes_master`).
+            ``"sih_aih_reduzida"``; :func:`describe_datasets` lists every one with its
+            coverage, ``geography`` (``ufs``) and ``cadence`` (``months``). IBGE
+            population, SIGTAP and CNES names have their own functions
+            (:func:`import_ibge_populacao`, :func:`import_sigtap`,
+            :func:`import_cnes_master`).
         years: Years, e.g. ``[2023]`` or ``range(2020, 2024)``.
         ufs: UF abbreviations, e.g. ``["RR"]``. Required for datasets published per
             UF; pass :data:`ALL_UFS` for all of Brazil. National datasets (SINAN,
@@ -623,6 +625,7 @@ __all__ = [
     "cite",
     "datasets",
     "describe_dataset",
+    "describe_datasets",
     "display_row",
     "import_cnes_master",
     "import_dataset",

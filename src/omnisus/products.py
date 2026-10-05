@@ -10,8 +10,13 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Literal
 
+import polars as pl
+
 from omnisus.lake.publication import POLICIES
-from omnisus.sources.datasus_ftp.datasets import REGISTRY, Dataset
+from omnisus.metadata import category
+from omnisus.sources._base import ScopeKey
+from omnisus.sources.datasus_ftp.datasets import REGISTRY, YM, Dataset
+from omnisus.transforms.dictionaries import load_dicionario
 
 ReconcileBy = Literal["run_id", "publication_id", "rerun"]
 
@@ -47,7 +52,8 @@ def datasets() -> tuple[Dataset, ...]:
 
     Returns:
         :class:`~omnisus.Dataset` values; ``.name`` is what :func:`~omnisus.load`
-        and the other functions accept.
+        and the other functions accept. :func:`~omnisus.describe_datasets` gives the
+        same datasets as a table, with titles and coverage.
 
     Examples:
         >>> import omnisus as sus
@@ -55,6 +61,84 @@ def datasets() -> tuple[Dataset, ...]:
         True
     """
     return tuple(REGISTRY.values())
+
+
+_TABLE = pl.Schema(
+    {
+        "name": pl.String(),
+        "category": pl.String(),
+        "title": pl.String(),
+        "geography": pl.String(),
+        "cadence": pl.String(),
+        "coverage_start": pl.String(),
+        "coverage_end": pl.String(),
+        "prefix": pl.String(),
+        "ftp_dir": pl.String(),
+        "prelim_dir": pl.String(),
+        "fields": pl.Int64(),
+        "labelled_fields": pl.Int64(),
+        "validated_scopes": pl.List(pl.String()),
+    }
+)
+
+
+def _period(ym: YM, d: Dataset) -> str:
+    return f"{ym[0]}-{ym[1]:02d}" if d.monthly else str(ym[0])
+
+
+def describe_datasets() -> pl.DataFrame:
+    """Every DATASUS FTP dataset as one table: what it is, how it is published, since when.
+
+    Works offline: it reads only the registry and the packaged dictionaries. Coverage is
+    the window the registry declares, not what the server lists today; ask
+    :func:`~omnisus.available` for that.
+
+    Returns:
+        One row per :func:`~omnisus.datasets` entry, sorted by ``name``, with columns
+        ``name``, ``category`` (the system: ``SIM``, ``SIA``...; the same value as
+        ``describe_dataset(name)["fields"][i]["dataset"]["category"]``), ``title``,
+        ``geography`` (``state`` or ``national``), ``cadence`` (``yearly`` or
+        ``monthly``), ``coverage_start`` and ``coverage_end`` (``"1996"`` for yearly
+        datasets, ``"2014-08"`` for monthly ones; ``coverage_end`` is ``None`` when
+        no end is declared), ``prefix``, ``ftp_dir``, ``prelim_dir`` (``None`` when
+        DATASUS publishes no preliminary files), ``fields`` (columns in the
+        dictionary), ``labelled_fields`` (those :func:`~omnisus.label` can label)
+        and ``validated_scopes``: the scopes, such as ``RR_2023``, whose file is a
+        validated source and so gets the harmonised categories (empty for most
+        datasets).
+
+    Examples:
+        >>> import omnisus as sus
+        >>> bases = sus.describe_datasets()
+        >>> atd = bases.filter(name="sia_apac_tratamento_dialitico")
+        >>> atd.select("category", "coverage_start", "coverage_end").row(0)
+        ('SIA', '2014-08', None)
+    """
+    rows = []
+    for d in sorted(datasets(), key=lambda d: d.name):
+        dictionary = load_dicionario(d.dictionary if d.dictionary is not None else d.name)
+        first, last = d.coverage
+        validated = (dictionary.raw.get("x-analytics") or {}).get("validated_sources", [])
+        rows.append(
+            {
+                "name": d.name,
+                "category": category(d.name),
+                "title": dictionary.title,
+                "geography": d.geography,
+                "cadence": d.cadence,
+                "coverage_start": _period(first, d),
+                "coverage_end": None if last is None else _period(last, d),
+                "prefix": d.prefix,
+                "ftp_dir": d.ftp_dir,
+                "prelim_dir": d.prelim_dir,
+                "fields": len(dictionary.fields),
+                "labelled_fields": sum(1 for f in dictionary.fields if f.get("x-decode")),
+                "validated_scopes": [
+                    str(ScopeKey(s.get("uf"), s["ano"], s.get("mes"))) for s in validated
+                ],
+            }
+        )
+    return pl.DataFrame(rows, schema=_TABLE)
 
 
 def products() -> tuple[Product, ...]:
