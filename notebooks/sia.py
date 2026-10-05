@@ -7,7 +7,7 @@
 # ]
 # ///
 
-"""SIA · produção ambulatorial: sete tabelas do DATASUS, em seis etapas."""
+"""SIA · produção ambulatorial: qualquer tabela que o omnisus importa, em seis etapas."""
 
 import marimo
 
@@ -35,8 +35,10 @@ def _(mo):
     [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/sia.py)
 
     O Sistema de Informações Ambulatoriais do SUS (SIA/SUS) é publicado pelo DATASUS
-    em várias tabelas, por UF e mês; este notebook trata sete. Escolha uma em `BASE`
-    na célula de parâmetros e siga as seis etapas do
+    em várias tabelas, por UF e mês. Este notebook roda com qualquer uma das que o
+    omnisus importa (as linhas do SIA em `sus.describe_datasets()`); três têm análise
+    própria na etapa 5. Escolha uma em `BASE` na célula de parâmetros e siga as seis
+    etapas do
     [guia do pesquisador](https://raphaelfh.github.io/omnisus/pesquisa/)
     com um recorte pequeno: **Roraima, janeiro de 2024**.
 

@@ -15,7 +15,8 @@
 - The Colab notebook shows every dataset right after the install, in a section of its
   own (#55).
 - `sia.py` and `sinan.py` point to `describe_datasets()` and `bases.py` instead of
-  listing the `BASE` values by hand (#55).
+  listing the `BASE` values by hand; `sia.py` says it runs on any SIA table the
+  package imports (#55).
 
 ## v0.2.2 — 2026-10-06
 
