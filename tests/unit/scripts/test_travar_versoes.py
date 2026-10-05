@@ -38,8 +38,26 @@ def _copy(tmp_path: Path) -> tuple[Path, Path]:
     return dicionarios, lock
 
 
+def _assert_current(module: ModuleType, dicionarios: Path, lock: Path) -> None:
+    committed = lock.read_text(encoding="utf-8")
+    current = module.generate(dicionarios, lock)
+    locked = module.load_lock(committed)
+    stale = sorted(n for n, v in module.load_lock(current).items() if locked.get(n) != v)
+    assert current == committed, f"{lock.name} is stale for {stale}; run {module.RUN}"
+
+
 def test_committed_lock_is_current(monkeypatch):
-    assert _load(monkeypatch).generate() == LOCK.read_text(encoding="utf-8")
+    _assert_current(_load(monkeypatch), DICIONARIOS, LOCK)
+
+
+def test_a_stale_lock_names_the_command_that_updates_it(monkeypatch, tmp_path):
+    """Issue #50: a new x-version left out of the lock fails with the command to run."""
+    module = _load(monkeypatch)
+    dicionarios, lock = _copy(tmp_path)
+    _edit(dicionarios / "sih_aih_reduzida.yaml", "10.0.0")
+    with pytest.raises(AssertionError, match="sih_aih_reduzida") as failure:
+        _assert_current(module, dicionarios, lock)
+    assert "uv run python scripts/metadados/travar_versoes.py" in str(failure.value)
 
 
 def _edit(path: Path, version: str | None = None, changed: bool = True) -> None:
