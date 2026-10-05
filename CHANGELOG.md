@@ -12,6 +12,8 @@
   opens on `cnes_leitos`, RR, January 2024 (#55).
 - The Colab notebook shows every dataset right after the install, in a section of its
   own (#55).
+- `sia.py` and `sinan.py` point to `describe_datasets()` and `bases.py` instead of
+  listing the `BASE` values by hand (#55).
 
 ## v0.2.2 — 2026-10-06
 

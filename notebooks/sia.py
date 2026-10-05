@@ -52,10 +52,8 @@ def _(mo):
 
 @app.cell
 def _(mo):
-    # Parâmetros: edite e reexecute. BASE é uma de:
-    # sia_bpa_individualizado (BPA individualizado), sia_apac_medicamentos,
-    # sia_apac_quimioterapia, sia_apac_tratamento_dialitico, sia_apac_laudos_diversos,
-    # sia_apac_cirurgia_bariatrica (APAC) e sia_psicossocial (RAAS).
+    # Parâmetros: edite e reexecute. BASE é o `name` de uma linha do SIA em
+    # `sus.describe_datasets()`; veja bases.py.
     BASE = "sia_bpa_individualizado"
     UF = "RR"
     ANO = 2024
