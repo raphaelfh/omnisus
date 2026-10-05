@@ -28,6 +28,7 @@ TODOS = sorted(
 )
 
 ESPERADOS = {
+    "bases.py",
     "cnes_estabelecimentos.py",
     "ibge_populacao.py",
     "linkage.py",

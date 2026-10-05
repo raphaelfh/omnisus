@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+### Notebooks
+
+- New `bases.py` lists every DATASUS FTP dataset with `describe_datasets()`, offline,
+  with a count per system, and takes any of them to the citation: it shows the exact
+  `load` call for `BASE` (no `ufs` for a national dataset, `months` only for a monthly
+  one), the dictionary fields and the link to the system's section of "Bases e
+  argumentos", then `available`, `load`, `check_columns`, the row count and `cite`. It
+  opens on `cnes_leitos`, RR, January 2024 (#55).
+
 ## v0.2.2 — 2026-10-06
 
 **Upgrading from 0.2.1:** no parser version or dictionary changed, so a 0.2.1 lake

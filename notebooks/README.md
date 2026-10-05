@@ -1,11 +1,13 @@
 # Notebooks
 
-Um notebook [marimo](https://marimo.io) por base, para pesquisa. Todos seguem as
-mesmas seis etapas com as mesmas funções da biblioteca: o que a base registra
-(`sus.describe_dataset`), descobrir (`sus.available`), baixar e ler (`sus.load`),
-conferir (`sus.check_columns`), analisar (`sus.label` e polars) e citar (`sus.cite`).
-Troque `BASE`, `UF` e `ANO` na célula de parâmetros para outra base ou recorte. Comece
-pelo [guia do pesquisador](https://raphaelfh.github.io/omnisus/pesquisa/).
+Um notebook [marimo](https://marimo.io) por sistema, e `bases.py` para qualquer base,
+para pesquisa. Todos seguem as mesmas seis etapas com as mesmas funções da biblioteca:
+o que a base registra (`sus.describe_dataset`), descobrir (`sus.available`), baixar e
+ler (`sus.load`), conferir (`sus.check_columns`), analisar (`sus.label` e polars) e
+citar (`sus.cite`). Troque `BASE`, `UF`, `ANO` (e `MES`) na célula de parâmetros para
+outra base ou recorte. `bases.py` lista todas as bases (`sus.describe_datasets()`) e
+leva qualquer uma até a citação, sem análise própria. Comece pelo
+[guia do pesquisador](https://raphaelfh.github.io/omnisus/pesquisa/).
 
 Abrir um notebook não baixa nem grava nada. Rede e escrita ficam atrás de
 `EXECUTAR = False` até você mudar a constante (ou passar `-- --executar true`).
@@ -20,6 +22,7 @@ Abrir um notebook não baixa nem grava nada. Rede e escrita ficam atrás de
 | [ibge_populacao.py](ibge_populacao.py) | [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/ibge_populacao.py) | IBGE · população | censo 2022 |
 | [sinan.py](sinan.py) | [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/sinan.py) | SINAN · Chagas aguda, hanseníase e tuberculose | nacional, 2023 |
 | [medicamentos.py](medicamentos.py) | [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/medicamentos.py) | SIA-AM, estoque Hórus | RR, jan/2024 |
+| [bases.py](bases.py) | [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/bases.py) | todas as bases do FTP: a lista e qualquer uma até a citação | `cnes_leitos`, RR, jan/2024 |
 | [linkage.py](linkage.py) | [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/linkage.py) | todas as bases de uma UF e ano: colunas com o decoder e linkage determinístico | RR, 2022 |
 
 Para começar sem instalar nada, o [notebook do Colab](colab.ipynb)

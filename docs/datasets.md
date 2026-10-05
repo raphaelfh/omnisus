@@ -5,7 +5,10 @@
 Cada linha é uma base do FTP do DATASUS que o omnisus importa: o que é, como é
 publicada, desde quando e quantas colunas têm rótulo. O servidor publica outras, que o
 pacote não importa. A página é gerada de `sus.describe_datasets()` na versão
-0.2.2; a mesma chamada devolve a tabela da versão instalada.
+0.2.2; a mesma chamada devolve a tabela da versão instalada. O notebook
+[bases.py](https://github.com/raphaelfh/omnisus/blob/main/notebooks/bases.py)
+([molab](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/bases.py))
+mostra essa tabela e leva qualquer base até a citação.
 
 ```python
 import omnisus as sus
