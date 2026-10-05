@@ -31,6 +31,7 @@ from omnisus.metadata import canonical_json
 ROOT = Path(__file__).resolve().parents[2]
 DICIONARIOS = ROOT / "src/omnisus/data/dicionarios"
 LOCK = DICIONARIOS / "versoes.json"
+RUN = "uv run python scripts/metadados/travar_versoes.py"
 
 
 def digest(raw: dict[str, Any]) -> str:
@@ -99,9 +100,7 @@ def main() -> int:
     changed = LOCK.read_text(encoding="utf-8") != text
     if args.check:
         if changed:
-            print(
-                f"desatualizado: {LOCK.relative_to(ROOT)}; rodar uv run python scripts/metadados/travar_versoes.py"
-            )
+            print(f"desatualizado: {LOCK.relative_to(ROOT)}; rodar {RUN}")
         return 1 if changed else 0
     if changed:
         LOCK.write_text(text, encoding="utf-8")
