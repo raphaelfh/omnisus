@@ -13,6 +13,8 @@ import re
 from functools import cache
 from pathlib import Path
 
+import polars as pl
+
 import omnisus as sus
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -47,8 +49,13 @@ def _row(section: str, dataset: str) -> dict[str, str]:
     return dict(zip(_cells(header), _cells(row), strict=True))
 
 
+@cache
+def _table() -> pl.DataFrame:
+    return sus.describe_datasets()
+
+
 def _dataset(name: str) -> dict:
-    return sus.describe_datasets().filter(name=name).row(0, named=True)
+    return _table().filter(name=name).row(0, named=True)
 
 
 def _system_row(name: str) -> dict[str, str]:
@@ -57,7 +64,7 @@ def _system_row(name: str) -> dict[str, str]:
 
 def test_every_dataset_sits_under_the_section_of_its_system():
     sections = _sections(_render())
-    for name, system in sus.describe_datasets().select("name", "category").iter_rows():
+    for name, system in _table().select("name", "category").iter_rows():
         assert f"| `{name}` |" in sections[system], (name, system)
 
 
@@ -73,14 +80,27 @@ def test_national_yearly_dataset_says_brasil_anual():
     assert _system_row("sim_obitos_cid9")["Cobertura"] == "1979 a 1995"
 
 
+def test_state_yearly_dataset_says_por_uf_anual():
+    assert _system_row("sim_obitos")["Publicação"] == "por UF, anual"
+
+
 def test_sim_obitos_shows_the_preliminary_directory_and_its_validated_scopes():
     sim = _system_row("sim_obitos")
     assert sim["Cobertura"] == "1996 em diante + preliminar"
-    scopes = _dataset("sim_obitos")["validated_scopes"]
-    assert "SP_2024" in scopes
-    assert sim["Categorias harmonizadas"] == ", ".join(f"`{s}`" for s in scopes)
+    scopes = ", ".join(f"`{s}`" for s in _dataset("sim_obitos")["validated_scopes"])
+    assert sim["Categorias harmonizadas"] == f"idade, sexo e datas em {scopes}"
     assert _system_row("sia_apac_nefrologia")["Categorias harmonizadas"] == "—"
 
+
+def test_harmonised_categories_name_only_the_rules_the_dictionary_defines():
+    """sinan_chagas has only the age rule; sinasc_nascidos_vivos lists no date (ADR 0003)."""
+    assert _system_row("sinan_chagas")["Categorias harmonizadas"] == "idade em `national_2023`"
+    assert _system_row("sinasc_nascidos_vivos")["Categorias harmonizadas"] == "idade em `RR_2023`"
+    sih = _system_row("sih_aih_reduzida")["Categorias harmonizadas"]
+    assert sih.startswith("idade, sexo e datas em `RR_2023_01`, `SP_2024_01`")
+
+
+def test_sim_obitos_lists_its_server_directories():
     server = _row(_sections(_render())["Onde fica no servidor"], "sim_obitos")
     assert server["Prefixo"] == "`DO`"
     assert server["Diretório"] == "`SIM/CID10/DORES`"
@@ -98,13 +118,18 @@ def test_labelled_columns_link_the_dictionary_of_this_release():
 
 def test_every_system_links_profiles_that_cite_each_of_its_datasets():
     sections = _sections(_render())
-    table = sus.describe_datasets()
+    table = _table()
     for system in table["category"].unique():
         profiles = re.findall(r"\]\((sources/[^)#]+\.md)\)", sections[system])
         assert profiles, system
         texts = [(DOCS / path).read_text(encoding="utf-8") for path in profiles]
         for name in table.filter(category=system)["name"]:
             assert any(f"`{name}`" in text for text in texts), (system, name)
+
+
+def test_a_profile_is_linked_under_the_system_its_title_names():
+    """medicamentos.md is titled after `sia_apac_medicamentos`, so SIA links it."""
+    assert "](sources/medicamentos.md)" in _sections(_render())["SIA"]
 
 
 def test_the_generator_reads_only_the_public_api():

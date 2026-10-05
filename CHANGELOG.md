@@ -4,11 +4,12 @@
 
 ### API
 
-- `describe_datasets()` returns every FTP dataset as one polars table, offline: name,
-  `category` (the system, as `describe_dataset` reports it), title, geography, cadence,
-  declared coverage with the month for monthly datasets (`"2014-08"`), prefix, final
-  and preliminary directories, columns, labelled columns and the validated scopes that
-  get harmonised categories (#54).
+- `describe_datasets()` returns every DATASUS FTP dataset the package curates as one
+  polars table, offline: name, `category` (the system, as `describe_dataset` reports
+  it), title, geography, cadence, declared coverage with the month for monthly datasets
+  (`"2014-08"`), prefix, final and preliminary directories, columns, labelled columns
+  and the scopes whose audited file is a validated source of the harmonised categories
+  (#54).
 
 ### Docs site
 
@@ -16,9 +17,10 @@
   `describe_datasets()`: one section per system (CNES, SIA, SIH, SIM, SINAN, SINASC)
   linking its profiles, coverage with the month for monthly datasets ("2014-08 em
   diante", not "2014 em diante") and "+ preliminar", how each dataset is published
-  ("por UF, mensal", "Brasil, anual"), the validated scopes that get harmonised
-  categories, and the server directories in a section of their own. Dictionary links
-  point at the release tag. The build fails on a link to a missing heading (#54).
+  ("por UF, mensal", "Brasil, anual"), the harmonised categories each dictionary defines
+  (age, sex, dates) with the scopes validated for them, and the server directories in a
+  section of their own. Dictionary links point at the release tag. The build fails on a
+  link to a missing heading (#54).
 
 ### CLI
 
