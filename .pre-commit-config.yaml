@@ -32,5 +32,5 @@ repos:
         name: docs/datasets.md is current
         entry: uv run python scripts/gen_datasets_doc.py --check
         language: system
-        files: ^(src/omnisus/sources/datasus_ftp/datasets\.py|docs/datasets\.md|scripts/gen_datasets_doc\.py)$
+        files: ^(src/omnisus/sources/datasus_ftp/datasets\.py|src/omnisus/_version\.py|src/omnisus/data/dicionarios/[^/]+\.yaml|docs/sources/[^/]+\.md|docs/datasets\.md|scripts/gen_datasets_doc\.py)$
         pass_filenames: false

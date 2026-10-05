@@ -10,6 +10,16 @@
   and preliminary directories, columns, labelled columns and the validated scopes that
   get harmonised categories (#54).
 
+### Docs site
+
+- "Bases e argumentos" moves to Pesquisa, right after "Comece aqui", and is rendered from
+  `describe_datasets()`: one section per system (CNES, SIA, SIH, SIM, SINAN, SINASC)
+  linking its profiles, coverage with the month for monthly datasets ("2014-08 em
+  diante", not "2014 em diante") and "+ preliminar", how each dataset is published
+  ("por UF, mensal", "Brasil, anual"), the validated scopes that get harmonised
+  categories, and the server directories in a section of their own. Dictionary links
+  point at the release tag. The build fails on a link to a missing heading (#54).
+
 ### CLI
 
 - `omnisus doctor` prints the installed `omnisus-dbf` (version and API, also when the API

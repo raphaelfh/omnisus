@@ -12,6 +12,10 @@ hooks:
 exclude_docs: |
   agents/
 
+# A link to a heading that does not exist fails `mkdocs build --strict`.
+validation:
+  anchors: warn
+
 theme:
   name: material
   language: pt-BR
@@ -49,6 +53,7 @@ nav:
   - Início: index.md
   - Pesquisa:
       - Comece aqui: pesquisa/index.md
+      - Bases e argumentos: datasets.md
       - De onde vem cada rótulo: dicionario/index.md
       - Bases:
           - SIM · óbitos: sources/sim_obitos.md
@@ -69,7 +74,6 @@ nav:
       - Knowing what exists: guides/inventory.md
       - Reprocessing and maintenance: guides/reprocessing-and-maintenance.md
   - Referência:
-      - Bases e argumentos: datasets.md
       - API: api.md
       - Contrato por coluna: dicionario/contrato.md
       - Consumo dos metadados: dicionario/consumo.md
