@@ -4,8 +4,8 @@ Every signature, parameter table and accepted value below is rendered from the
 docstrings of the version named in the header, so it changes with the code. In
 Python, `help(sus.load)` shows the same text for the version you have installed.
 Which `years`, `ufs` and `months` each dataset takes is in
-[Bases e argumentos](datasets.md). To install, follow the
-[installation guide](guides/getting-started.md).
+[Bases e argumentos](datasets.md), rendered from `describe_datasets()`. To install,
+follow the [installation guide](guides/getting-started.md).
 
 ## For researchers
 
@@ -206,7 +206,9 @@ digits; they do not pad and they do not rewrite stored columns.
 
 ## Registry
 
-`datasets()` lists every curated FTP dataset; `products()` covers every importer
+`datasets()` lists every curated FTP dataset; `describe_datasets()` gives the same
+datasets as one table, offline, with title, system, coverage and labelled columns.
+`products()` covers every importer
 family except SIGTAP: the FTP datasets and the two families outside the registry
 (`ibge_populacao`, `cnes_master`). It states, per family, the scope fields, accepted
 policies, how an interrupted run is reconciled and whether `available()` applies. Year rules for IBGE remain in
@@ -216,6 +218,7 @@ an estimate is importable only as its latest edition, so there is no floor year.
 ::: omnisus.Dataset
 ::: omnisus.resolve
 ::: omnisus.datasets
+::: omnisus.describe_datasets
 ::: omnisus.products
 ::: omnisus.Product
 
