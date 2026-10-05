@@ -10,7 +10,6 @@ import polars as pl
 import pytest
 
 import omnisus as sus
-from omnisus.sources._base import ScopeKey
 from omnisus.sources.datasus_ftp.datasets import REGISTRY
 from omnisus.transforms.dictionaries import load_dicionario
 
@@ -86,12 +85,33 @@ def test_fields_and_labelled_fields_count_the_dictionary(table: pl.DataFrame) ->
 
 
 def test_validated_scopes_list_the_validated_sources(table: pl.DataFrame) -> None:
-    """A list of scopes, never a yes/no: the categories exist only there (ADR 0003)."""
-    sources = load_dicionario("sim_obitos").raw["x-analytics"]["validated_sources"]
-    expected = [str(ScopeKey(s.get("uf"), s["ano"], s.get("mes"))) for s in sources]
-    assert _row(table, "sim_obitos")["validated_scopes"] == expected
-    assert "SP_2024" in expected
+    """A list of scopes, never a yes/no: the categories exist only there (ADR 0003).
+
+    The literals are the ``x-analytics.validated_sources`` of the packaged dictionaries.
+    """
+    assert _row(table, "sim_obitos")["validated_scopes"] == [
+        "RR_2021",
+        "RR_2022",
+        "RR_2023",
+        "RR_2024",
+        "SP_2024",
+    ]
+    assert _row(table, "sih_aih_reduzida")["validated_scopes"][:2] == ["RR_2023_01", "SP_2024_01"]
+    assert _row(table, "sinan_chagas")["validated_scopes"] == ["national_2023"]
     assert _row(table, "sia_apac_nefrologia")["validated_scopes"] == []
+
+
+def test_no_rule_overrides_the_validated_sources(table: pl.DataFrame) -> None:
+    """``analytical_projection`` lets a rule carry its own ``validated_sources``; no
+    packaged dictionary does, so one list per dataset is what every rule checks."""
+    for name in table["name"]:
+        rules = sus.describe_dataset(name)["analytics"] or {}
+        overriding = [
+            rule
+            for rule, value in rules.items()
+            if isinstance(value, dict) and "validated_sources" in value
+        ]
+        assert overriding == [], name
 
 
 def test_category_is_what_describe_dataset_reports(table: pl.DataFrame) -> None:

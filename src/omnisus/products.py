@@ -13,10 +13,9 @@ from typing import Literal
 import polars as pl
 
 from omnisus.lake.publication import POLICIES
-from omnisus.metadata import category
+from omnisus.metadata import category, describe_dataset
 from omnisus.sources._base import ScopeKey
 from omnisus.sources.datasus_ftp.datasets import REGISTRY, YM, Dataset
-from omnisus.transforms.dictionaries import load_dicionario
 
 ReconcileBy = Literal["run_id", "publication_id", "rerun"]
 
@@ -87,11 +86,12 @@ def _period(ym: YM, d: Dataset) -> str:
 
 
 def describe_datasets() -> pl.DataFrame:
-    """Every DATASUS FTP dataset as one table: what it is, how it is published, since when.
+    """Every DATASUS FTP dataset the package curates, as one table.
 
-    Works offline: it reads only the registry and the packaged dictionaries. Coverage is
-    the window the registry declares, not what the server lists today; ask
-    :func:`~omnisus.available` for that.
+    What each dataset is, how it is published and since when. DATASUS publishes other
+    datasets that the package does not import. Works offline: it reads only the
+    registry and :func:`~omnisus.describe_dataset`. Coverage is the window the registry
+    declares, not what the server lists today; ask :func:`~omnisus.available` for that.
 
     Returns:
         One row per :func:`~omnisus.datasets` entry, sorted by ``name``, with columns
@@ -103,9 +103,14 @@ def describe_datasets() -> pl.DataFrame:
         no end is declared), ``prefix``, ``ftp_dir``, ``prelim_dir`` (``None`` when
         DATASUS publishes no preliminary files), ``fields`` (columns in the
         dictionary), ``labelled_fields`` (those :func:`~omnisus.label` can label)
-        and ``validated_scopes``: the scopes, such as ``RR_2023``, whose file is a
-        validated source and so gets the harmonised categories (empty for most
-        datasets).
+        and ``validated_scopes``: the scopes, such as ``RR_2023``, whose audited file
+        (release and SHA-256) is listed in
+        ``describe_dataset(name)["analytics"]["validated_sources"]`` (empty for most
+        datasets). :func:`~omnisus.load` adds the harmonised categories the
+        dictionary defines only when every scope it returns is that same file
+        (ADR 0003). Coverage columns are strings, not dates; ``fields`` and
+        ``labelled_fields`` are ``Int64``; ``validated_scopes`` is
+        ``List(String)``; only ``coverage_end`` and ``prelim_dir`` are nullable.
 
     Examples:
         >>> import omnisus as sus
@@ -116,14 +121,15 @@ def describe_datasets() -> pl.DataFrame:
     """
     rows = []
     for d in sorted(datasets(), key=lambda d: d.name):
-        dictionary = load_dicionario(d.dictionary if d.dictionary is not None else d.name)
+        metadata = describe_dataset(d.name)
+        fields = metadata["schema"]["fields"]
         first, last = d.coverage
-        validated = (dictionary.raw.get("x-analytics") or {}).get("validated_sources", [])
+        validated = (metadata["analytics"] or {}).get("validated_sources", [])
         rows.append(
             {
                 "name": d.name,
                 "category": category(d.name),
-                "title": dictionary.title,
+                "title": metadata["title"],
                 "geography": d.geography,
                 "cadence": d.cadence,
                 "coverage_start": _period(first, d),
@@ -131,8 +137,8 @@ def describe_datasets() -> pl.DataFrame:
                 "prefix": d.prefix,
                 "ftp_dir": d.ftp_dir,
                 "prelim_dir": d.prelim_dir,
-                "fields": len(dictionary.fields),
-                "labelled_fields": sum(1 for f in dictionary.fields if f.get("x-decode")),
+                "fields": len(fields),
+                "labelled_fields": sum(1 for f in fields if f.get("x-decode")),
                 "validated_scopes": [
                     str(ScopeKey(s.get("uf"), s["ano"], s.get("mes"))) for s in validated
                 ],
