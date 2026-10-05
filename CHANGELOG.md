@@ -1,6 +1,9 @@
 # Changelog
 
-## Unreleased
+## v0.2.2 — 2026-10-05
+
+**Upgrading from 0.2.1:** no parser version or dictionary changed, so a 0.2.1 lake
+keeps every scope; `load` downloads nothing again.
 
 ### API
 
