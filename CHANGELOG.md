@@ -7,9 +7,11 @@
 - New `bases.py` lists every DATASUS FTP dataset with `describe_datasets()`, offline,
   with a count per system, and takes any of them to the citation: it shows the exact
   `load` call for `BASE` (no `ufs` for a national dataset, `months` only for a monthly
-  one), the dictionary fields and the link to the system's section of "Bases e
-  argumentos", then `available`, `load`, `check_columns`, the row count and `cite`. It
-  opens on `cnes_leitos`, RR, January 2024 (#55).
+  one), says when the scope is outside the declared coverage, and shows the dictionary
+  fields and the link to the system's section of "Bases e argumentos". Then
+  `available_releases` (it stops there when the server does not list the scope),
+  `load`, `check_columns`, the row count and `cite`. It opens on `cnes_leitos`, RR,
+  January 2024 (#55).
 - The Colab notebook shows every dataset right after the install, in a section of its
   own (#55).
 - `sia.py` and `sinan.py` point to `describe_datasets()` and `bases.py` instead of
