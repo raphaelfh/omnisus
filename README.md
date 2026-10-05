@@ -64,10 +64,10 @@ Para ir além:
   navegador pelo molab.
 - [Getting Started](https://raphaelfh.github.io/omnisus/guides/getting-started/):
   onde fica o lake, Colab, linha de comando e lakes na nuvem.
-- [Bases e argumentos](https://raphaelfh.github.io/omnisus/datasets/): cada base, com o
-  que passar em `years`, `ufs` e `months` e quais colunas têm rótulo. É gerada do
-  código a cada versão, como a [API](https://raphaelfh.github.io/omnisus/api/);
-  `help(sus.load)` mostra o mesmo na versão instalada.
+- [Bases e argumentos](https://raphaelfh.github.io/omnisus/datasets/): cada base, por
+  sistema, com cobertura, o que passar em `ufs` e `months` e quais colunas têm rótulo.
+  É gerada do código a cada versão, como a [API](https://raphaelfh.github.io/omnisus/api/);
+  `sus.describe_datasets()` devolve a mesma tabela na versão instalada.
 
 ## Confira antes de usar
 
