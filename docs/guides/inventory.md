@@ -24,7 +24,7 @@ sus.available("sih_aih_reduzida", years=[2024], ufs=["SP"], months=[1, 2])
 `sinan_chagas` has neither and raises if you pass them.
 
 Names belonging to other datasets in the same directory are skipped, not raised
-on — `SIASUS/200801_/Dados` holds 14 of our 44 datasets side by side.
+on — `SIASUS/200801_/Dados` holds 14 datasets side by side.
 
 ## `browse` — what is actually there?
 

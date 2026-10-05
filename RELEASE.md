@@ -61,7 +61,10 @@ The notebooks pin a version that must already be on PyPI when `main` gets it,
 so the tag comes before the merge:
 
 1. Open the release PR: `_version.py`, the CHANGELOG (`## Unreleased` becomes
-   `## v<version> — <date>`), the notebooks' pins and `uv.lock`.
+   `## v<version> — <date>`), the notebooks' pins and `uv.lock`. Regenerate
+   `docs/datasets.md` (`uv run python scripts/gen_datasets_doc.py`): it names the
+   version and links the dictionaries at the `v<version>` tag, so its `--check` fails
+   until you do.
 2. When its CI is green and the release is authorized, tag the PR's head commit
    and push only the tag:
 

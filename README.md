@@ -64,10 +64,10 @@ Para ir além:
   navegador pelo molab.
 - [Getting Started](https://raphaelfh.github.io/omnisus/guides/getting-started/):
   onde fica o lake, Colab, linha de comando e lakes na nuvem.
-- [Bases e argumentos](https://raphaelfh.github.io/omnisus/datasets/): cada base, com o
-  que passar em `years`, `ufs` e `months` e quais colunas têm rótulo. É gerada do
-  código a cada versão, como a [API](https://raphaelfh.github.io/omnisus/api/);
-  `help(sus.load)` mostra o mesmo na versão instalada.
+- [Bases e argumentos](https://raphaelfh.github.io/omnisus/datasets/): cada base, por
+  sistema, com cobertura, o que passar em `ufs` e `months` e quais colunas têm rótulo.
+  É gerada do código a cada versão, como a [API](https://raphaelfh.github.io/omnisus/api/);
+  `sus.describe_datasets()` devolve a mesma tabela na versão instalada.
 
 ## Confira antes de usar
 
@@ -95,7 +95,7 @@ Para ir além:
 | O que | Onde |
 | --- | --- |
 | Arquivo de origem de cada linha importada | `reader.publications()` e `sus.cite(reader)` num `sus.LakeReader()`: caminho no servidor, SHA-256, `snapshot_id` |
-| Diretório do FTP de cada base | [Bases e argumentos](https://raphaelfh.github.io/omnisus/datasets/) |
+| Diretório do FTP de cada base | [Bases e argumentos](https://raphaelfh.github.io/omnisus/datasets/#onde-fica-no-servidor) |
 | Dicionários (de-para de códigos, descrições, tipos) | [`src/omnisus/data/dicionarios/<base>.yaml`](https://github.com/raphaelfh/omnisus/tree/main/src/omnisus/data/dicionarios), campo `x-decode` |
 | Documentos oficiais citados (PDF, TabWin), com URL e SHA-256 | [`src/omnisus/data/dicionarios/sources/registry.json`](https://github.com/raphaelfh/omnisus/blob/main/src/omnisus/data/dicionarios/sources/registry.json) |
 | Tabelas CNV do TabWin de onde saem muitos rótulos | [`src/omnisus/data/dicionarios/sources/cnv/`](https://github.com/raphaelfh/omnisus/tree/main/src/omnisus/data/dicionarios/sources/cnv) |
