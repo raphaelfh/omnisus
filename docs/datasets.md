@@ -2,8 +2,9 @@
 
 # Bases e argumentos
 
-Cada linha é uma base do FTP do DATASUS: o que é, como é publicada, desde quando e
-quantas colunas têm rótulo. A página é gerada de `sus.describe_datasets()` na versão
+Cada linha é uma base do FTP do DATASUS que o omnisus importa: o que é, como é
+publicada, desde quando e quantas colunas têm rótulo. O servidor publica outras, que o
+pacote não importa. A página é gerada de `sus.describe_datasets()` na versão
 0.2.1; a mesma chamada devolve a tabela da versão instalada.
 
 ```python
@@ -17,23 +18,29 @@ sus.load("sih_aih_reduzida", years=[2024], ufs=["RR"], months=[1, 2])  # por UF,
 
 ## Como ler
 
-- **Publicação** diz o que passar para `sus.load` e `sus.available`. "por UF" pede
-  `ufs` (siglas; `sus.ALL_UFS` para todas); "Brasil" é um arquivo nacional, que aceita
-  só `ufs=None`. "mensal" aceita `months` de 1 a 12 (`None` quer dizer todos); "anual"
-  não tem mês.
-- **Cobertura** é a janela declarada no registro, com o mês nas bases mensais. Ela não
-  é o que o servidor publica hoje: "em diante" quer dizer que não há fim declarado,
-  não que todo período exista, e `sus.available(base)` lista o que existe.
-  "+ preliminar" quer dizer que o DATASUS publica também arquivos preliminares, num
-  diretório à parte ([Onde fica no servidor](#onde-fica-no-servidor)).
+- **Publicação** diz o que passar para `sus.load`. "por UF" pede `ufs` (siglas;
+  `sus.ALL_UFS` para todas; em `sus.available` é um filtro opcional); "Brasil" é um
+  arquivo nacional, que aceita só `ufs=None`. "mensal" aceita `months` de 1 a 12
+  (`None` quer dizer todos); "anual" não tem mês.
+- **Cobertura** é a janela declarada no registro, com o mês nas bases mensais: um ano
+  ou mês de `sus.load` fora dela é pulado (`outside_coverage`) sem consulta ao
+  servidor. Ela não é o que o servidor publica hoje: "em diante" quer dizer que não há
+  fim declarado, não que todo período exista, e `sus.available(base)` lista o que
+  existe. "+ preliminar" quer dizer que o DATASUS publica também arquivos preliminares,
+  num diretório à parte ([Onde fica no servidor](#onde-fica-no-servidor)). `sus.load`
+  lê os dois: cada linha diz `final` ou `prelim` em `_source_release`, e
+  `sus.available_releases(base)` mostra qual vale para cada escopo.
 - **Colunas com rótulo** são as que `sus.label` rotula, pelo mapa `x-decode` do
   dicionário; o link abre o dicionário desta versão.
-- **Categorias harmonizadas** lista os escopos (`UF_ANO`, `UF_ANO_MES` ou
-  `national_ANO`) cujo arquivo foi auditado. `sus.load` só acrescenta `sexo_categoria`,
-  `idade_anos_completos` e as datas `*_data` quando todos os escopos que devolve estão
-  nesta lista. A validação vale para o arquivo, pelo SHA-256: se o DATASUS republicar
-  o escopo, as categorias somem até uma nova validação. "—" quer dizer nenhum escopo
-  validado; os rótulos valem em todos.
+- **Categorias harmonizadas** diz quais categorias o dicionário da base define (idade
+  em `idade_anos_completos`, sexo em `sexo_categoria`, datas em `*_data`) e em quais
+  escopos (`UF_ANO`, `UF_ANO_MES` ou `national_ANO`) o arquivo foi auditado. `sus.load`
+  só as acrescenta quando todos os escopos que devolve estão nesta lista. A validação
+  vale para o arquivo: escopo, diretório (final ou preliminar) e SHA-256, que
+  `sus.describe_dataset(base)["analytics"]["validated_sources"]` mostra. Se o DATASUS
+  republicar o arquivo ou passá-lo do preliminar para o final, as categorias somem até
+  uma nova validação. "—" quer dizer nenhum escopo validado; os rótulos valem em
+  todos.
 
 Um workflow semanal (`tests/integration/test_registry_probe.py`) confere diretórios,
 prefixos, primeiros arquivos e publicações recentes contra o servidor, fora do CI de
@@ -60,7 +67,7 @@ Perfil: [CNES · estabelecimentos (`cnes_estabelecimentos`)](sources/cnes_estabe
 
 ## SIA
 
-Perfil: [SIA · produção ambulatorial (`sia_*`)](sources/sia.md)
+Perfis: [Medicamentos · APAC, estoque e o que falta (`sia_apac_medicamentos`)](sources/medicamentos.md) · [SIA · produção ambulatorial (`sia_*`)](sources/sia.md)
 
 | Base | O que é | Publicação | Cobertura | Colunas com rótulo | Categorias harmonizadas |
 | --- | --- | --- | --- | ---: | --- |
@@ -74,11 +81,11 @@ Perfil: [SIA · produção ambulatorial (`sia_*`)](sources/sia.md)
 | `sia_apac_quimioterapia` | SIASUS — APAC de Quimioterapia (AQ) | por UF, mensal | 2008-01 em diante | [11](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sia_apac_quimioterapia.yaml) | — |
 | `sia_apac_radioterapia` | SIASUS — APAC de Radioterapia (AR) | por UF, mensal | 2008-01 em diante | [19](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sia_apac_radioterapia.yaml) | — |
 | `sia_apac_tratamento_dialitico` | SIASUS — APAC de Tratamento Dialítico (ATD) | por UF, mensal | 2014-08 em diante | [11](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sia_apac_tratamento_dialitico.yaml) | — |
-| `sia_atencao_domiciliar` | SIASUS — RAAS Atenção Domiciliar (SAD) | por UF, mensal | 2012-04 a 2018-10 | [9](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sia_atencao_domiciliar.yaml) | `MA_2018_10` |
-| `sia_bpa_individualizado` | SIASUS — BPA Individualizado (BI) | por UF, mensal | 2008-01 em diante | [9](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sia_bpa_individualizado.yaml) | `RR_2022_01`, `RR_2024_01` |
+| `sia_atencao_domiciliar` | SIASUS — RAAS Atenção Domiciliar (SAD) | por UF, mensal | 2012-04 a 2018-10 | [9](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sia_atencao_domiciliar.yaml) | idade em `MA_2018_10` |
+| `sia_bpa_individualizado` | SIASUS — BPA Individualizado (BI) | por UF, mensal | 2008-01 em diante | [9](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sia_bpa_individualizado.yaml) | idade em `RR_2022_01`, `RR_2024_01` |
 | `sia_producao_ambulatorial` | SIASUS — Produção ambulatorial (PA) | por UF, mensal | 2008-01 em diante | [17](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sia_producao_ambulatorial.yaml) | — |
 | `sia_producao_ambulatorial_1994_2007` | SIASUS — Produção ambulatorial (PA), 1994-07 a 2007-12 | por UF, mensal | 1994-07 a 2007-12 | [0](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sia_producao_ambulatorial_1994_2007.yaml) | — |
-| `sia_psicossocial` | SIASUS — RAAS Psicossocial (PS) | por UF, mensal | 2012-11 em diante | [6](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sia_psicossocial.yaml) | `RR_2024_01` |
+| `sia_psicossocial` | SIASUS — RAAS Psicossocial (PS) | por UF, mensal | 2012-11 em diante | [6](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sia_psicossocial.yaml) | idade em `RR_2024_01` |
 
 ## SIH
 
@@ -86,7 +93,7 @@ Perfil: [SIH · AIH reduzida (`sih_aih_reduzida`)](sources/sih_aih_reduzida.md)
 
 | Base | O que é | Publicação | Cobertura | Colunas com rótulo | Categorias harmonizadas |
 | --- | --- | --- | --- | ---: | --- |
-| `sih_aih_reduzida` | SIHSUS — AIH Reduzida (RD) | por UF, mensal | 2008-01 em diante | [35](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sih_aih_reduzida.yaml) | `RR_2023_01`, `SP_2024_01`, `SP_2024_02`, `SP_2024_03`, `SP_2024_04`, `SP_2024_05`, `SP_2025_01`, `SP_2025_02` |
+| `sih_aih_reduzida` | SIHSUS — AIH Reduzida (RD) | por UF, mensal | 2008-01 em diante | [35](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sih_aih_reduzida.yaml) | idade, sexo e datas em `RR_2023_01`, `SP_2024_01`, `SP_2024_02`, `SP_2024_03`, `SP_2024_04`, `SP_2024_05`, `SP_2025_01`, `SP_2025_02` |
 | `sih_aih_reduzida_1992_2007` | SIHSUS — AIH reduzida (RD), 1992-01 a 2007-12 | por UF, mensal | 1992-01 a 2007-12 | [8](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sih_aih_reduzida_1992_2007.yaml) | — |
 | `sih_aih_rejeitada` | SIHSUS — AIH rejeitada (RJ) | por UF, mensal | 2008-01 em diante | [24](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sih_aih_rejeitada.yaml) | — |
 | `sih_aih_rejeitada_erro` | SIHSUS — AIH rejeitada com código de erro (ER) | por UF, mensal | 2011-01 em diante | [1](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sih_aih_rejeitada_erro.yaml) | — |
@@ -98,7 +105,7 @@ Perfil: [SIM · óbitos (`sim_obitos`)](sources/sim_obitos.md)
 
 | Base | O que é | Publicação | Cobertura | Colunas com rótulo | Categorias harmonizadas |
 | --- | --- | --- | --- | ---: | --- |
-| `sim_obitos` | SIM — Declarações de Óbito | por UF, anual | 1996 em diante + preliminar | [40](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sim_obitos.yaml) | `RR_2021`, `RR_2022`, `RR_2023`, `RR_2024`, `SP_2024` |
+| `sim_obitos` | SIM — Declarações de Óbito | por UF, anual | 1996 em diante + preliminar | [40](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sim_obitos.yaml) | idade, sexo e datas em `RR_2021`, `RR_2022`, `RR_2023`, `RR_2024`, `SP_2024` |
 | `sim_obitos_cid9` | SIM — Óbitos por residência, CID-9 (DOR), 1979 a 1995 | por UF, anual | 1979 a 1995 | [6](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sim_obitos_cid9.yaml) | — |
 | `sim_obitos_externos` | SIM — Óbitos por causas externas (DOEXT), nacional | Brasil, anual | 1996 em diante | [38](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sim_obitos_externos.yaml) | — |
 | `sim_obitos_fetais` | SIM — Óbitos fetais (DOFET), nacional | Brasil, anual | 1996 em diante | [18](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sim_obitos_fetais.yaml) | — |
@@ -111,9 +118,9 @@ Perfis: [SINAN · doença de Chagas aguda (`sinan_chagas`)](sources/sinan_chagas
 
 | Base | O que é | Publicação | Cobertura | Colunas com rótulo | Categorias harmonizadas |
 | --- | --- | --- | --- | ---: | --- |
-| `sinan_chagas` | SINAN — Doença de Chagas aguda, notificações preliminares nacionais | Brasil, anual | 2000 em diante + preliminar | [11](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sinan_chagas.yaml) | `national_2023` |
-| `sinan_hanseniase` | SINAN — Hanseníase, notificações nacionais | Brasil, anual | 2001 em diante + preliminar | [13](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sinan_hanseniase.yaml) | `national_2026` |
-| `sinan_tuberculose` | SINAN — Tuberculose, notificações nacionais | Brasil, anual | 2001 em diante + preliminar | [42](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sinan_tuberculose.yaml) | `national_2020` |
+| `sinan_chagas` | SINAN — Doença de Chagas aguda, notificações preliminares nacionais | Brasil, anual | 2000 em diante + preliminar | [11](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sinan_chagas.yaml) | idade em `national_2023` |
+| `sinan_hanseniase` | SINAN — Hanseníase, notificações nacionais | Brasil, anual | 2001 em diante + preliminar | [13](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sinan_hanseniase.yaml) | idade em `national_2026` |
+| `sinan_tuberculose` | SINAN — Tuberculose, notificações nacionais | Brasil, anual | 2001 em diante + preliminar | [42](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sinan_tuberculose.yaml) | idade em `national_2020` |
 
 ## SINASC
 
@@ -122,7 +129,7 @@ Perfil: [SINASC · nascidos vivos (`sinasc_nascidos_vivos`)](sources/sinasc_nasc
 | Base | O que é | Publicação | Cobertura | Colunas com rótulo | Categorias harmonizadas |
 | --- | --- | --- | --- | ---: | --- |
 | `sinasc_1994_1995` | SINASC — Nascidos vivos por residência (DNR), 1994 e 1995 | por UF, anual | 1994 a 1995 | [0](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sinasc_1994_1995.yaml) | — |
-| `sinasc_nascidos_vivos` | SINASC — Declarações de Nascidos Vivos | por UF, anual | 1996 em diante + preliminar | [26](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sinasc_nascidos_vivos.yaml) | `RR_2023` |
+| `sinasc_nascidos_vivos` | SINASC — Declarações de Nascidos Vivos | por UF, anual | 1996 em diante + preliminar | [26](https://github.com/raphaelfh/omnisus/blob/v0.2.1/src/omnisus/data/dicionarios/sinasc_nascidos_vivos.yaml) | idade em `RR_2023` |
 
 ## Onde fica no servidor
 
@@ -177,13 +184,14 @@ nome de cada arquivo; bases que dividem um diretório se distinguem por ele.
 
 ## Outras fontes
 
-Estas fontes não passam por `sus.load` e têm funções próprias:
+Estas fontes não passam por `sus.load`:
 
 - População municipal do IBGE: `sus.import_ibge_populacao`
   ([IBGE](sources/ibge_populacao.md)).
-- Municípios, CID-10, ocupações e países (`aux_*`), que vêm prontos no pacote, e os
-  procedimentos do SIGTAP por competência, por `sus.import_sigtap`
-  ([vocabulários e SIGTAP](sources/vocabularios.md)).
+- UFs, municípios, CID-10, ocupações e países (`aux_*`), que `omnisus init` carrega
+  do pacote ([vocabulários](sources/vocabularios.md)).
+- Procedimentos do SIGTAP por competência: `sus.import_sigtap`
+  ([SIGTAP](sources/vocabularios.md#sigtap-por-competencia)).
 - Nomes dos estabelecimentos, pela API pública do CNES: `sus.import_cnes_master`
   ([nomes do CNES](sources/cnes_estabelecimentos.md#establishment-names)).
 - Posição de estoque BNAFAR/Hórus, uma página por consulta de `fetch_stock_page`, sem

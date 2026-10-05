@@ -74,9 +74,9 @@ a executa.
 
 ## Qual base responde minha pergunta?
 
-Todas as bases do FTP do DATASUS, agrupadas por sistema, com cobertura, forma de
-publicação e colunas com rótulo, estão em [Bases e argumentos](../datasets.md). A tabela
-abaixo cobre as que têm perfil e notebook.
+As bases do FTP do DATASUS que o omnisus importa, agrupadas por sistema, com cobertura,
+forma de publicação e colunas com rótulo, estão em [Bases e argumentos](../datasets.md).
+A tabela abaixo leva às bases que têm perfil e notebook, inclusive a população do IBGE.
 
 | Pergunta | Base | Perfil | Notebook |
 | --- | --- | --- | --- |
