@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### API
+
+- `describe_datasets()` returns every FTP dataset as one polars table, offline: name,
+  `category` (the system, as `describe_dataset` reports it), title, geography, cadence,
+  declared coverage with the month for monthly datasets (`"2014-08"`), prefix, final
+  and preliminary directories, columns, labelled columns and the validated scopes that
+  get harmonised categories (#54).
+
 ### CLI
 
 - `omnisus doctor` prints the installed `omnisus-dbf` (version and API, also when the API

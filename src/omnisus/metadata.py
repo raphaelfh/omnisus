@@ -33,6 +33,15 @@ def sources_registry() -> dict[str, Any]:
     return registry
 
 
+def category(dataset: str) -> str:
+    """The system a dataset belongs to, e.g. ``SIA`` for ``sia_apac_tratamento_dialitico``.
+
+    Names are ``<sistema>_<conteúdo>`` (ADR 0002, amendment 2026-09-12), so the system
+    is the first word of the name.
+    """
+    return dataset.split("_")[0].upper()
+
+
 def resolved_codes(definition: dict[str, Any]) -> list[dict[str, str]]:
     """``field.codes`` of a dictionary field: its ``x-decode`` with the authored missing kinds."""
     missing = definition.get("x-metadata", {}).get("missing_codes", {})
@@ -131,7 +140,7 @@ def _column(
         "dictionary_version": version,
         "dataset": {
             "id": dataset,
-            "category": dataset.split("_")[0].upper(),
+            "category": category(dataset),
             "subtype": "unknown",
             "product": dataset,
         },
