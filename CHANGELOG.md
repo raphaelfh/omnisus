@@ -10,6 +10,8 @@
   one), the dictionary fields and the link to the system's section of "Bases e
   argumentos", then `available`, `load`, `check_columns`, the row count and `cite`. It
   opens on `cnes_leitos`, RR, January 2024 (#55).
+- The Colab notebook shows every dataset right after the install, in a section of its
+  own (#55).
 
 ## v0.2.2 — 2026-10-06
 

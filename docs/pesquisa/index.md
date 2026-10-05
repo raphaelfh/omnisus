@@ -15,7 +15,7 @@ Escolha onde rodar. Os três caminhos usam a mesma biblioteca e chegam à mesma 
 === "Google Colab"
 
     Nada para instalar no seu computador. Abra o notebook, rode as células em ordem e,
-    se quiser que os dados fiquem guardados, monte o Google Drive na segunda célula.
+    se quiser que os dados fiquem guardados, monte o Google Drive na seção 3.
 
     [![Abrir no Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/raphaelfh/omnisus/blob/main/notebooks/colab.ipynb)
 
