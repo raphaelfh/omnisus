@@ -4,8 +4,8 @@ Every signature, parameter table and accepted value below is rendered from the
 docstrings of the version named in the header, so it changes with the code. In
 Python, `help(sus.load)` shows the same text for the version you have installed.
 Which `years`, `ufs` and `months` each dataset takes is in
-[Bases e argumentos](datasets.md). To install, follow the
-[installation guide](guides/getting-started.md).
+[Bases e argumentos](datasets.md), rendered from `describe_datasets()`. To install,
+follow the [installation guide](guides/getting-started.md).
 
 ## For researchers
 

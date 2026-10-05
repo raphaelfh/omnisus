@@ -74,6 +74,10 @@ a executa.
 
 ## Qual base responde minha pergunta?
 
+Todas as bases do FTP do DATASUS, agrupadas por sistema, com cobertura, forma de
+publicação e colunas com rótulo, estão em [Bases e argumentos](../datasets.md). A tabela
+abaixo cobre as que têm perfil e notebook.
+
 | Pergunta | Base | Perfil | Notebook |
 | --- | --- | --- | --- |
 | Quantas pessoas morreram, de quê, onde moravam? | SIM · óbitos | [perfil](../sources/sim_obitos.md) | [sim_obitos.py](https://github.com/raphaelfh/omnisus/blob/main/notebooks/sim_obitos.py) [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/sim_obitos.py) |
