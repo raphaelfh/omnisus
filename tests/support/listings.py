@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import ftplib
 import gzip
+from collections.abc import Callable
 from datetime import datetime
 from pathlib import Path
 
@@ -11,7 +12,13 @@ import pytest
 
 from omnisus.sources._base import ScopeKey
 from omnisus.sources.datasus_ftp.datasets import Dataset
-from omnisus.sources.datasus_ftp.inventory import FtpEntry
+from omnisus.sources.datasus_ftp.inventory import (
+    FtpEntry,
+    FtpPathNotFound,
+    FtpUnavailable,
+    Listing,
+    list_dir,
+)
 from tests.support.datasus_names import filename_for
 
 LISTINGS = Path(__file__).resolve().parents[1] / "fixtures" / "listings"
@@ -35,6 +42,28 @@ def serve_listings(monkeypatch: pytest.MonkeyPatch, by_directory: dict[str, str]
         return listing_lines(by_directory[path])
 
     monkeypatch.setattr("omnisus.sources.datasus_ftp.inventory._blocking_list", fake)
+
+
+def listing_per_directory(timeout_seconds: float) -> Callable[[str], Listing]:
+    """``list_dir`` once per directory, on first use: the live registry probe's cache.
+
+    A directory that fails keeps its error and raises it again for every later
+    check, so it fails only the checks that read it; the others still run.
+    """
+    found: dict[str, Listing | FtpUnavailable | FtpPathNotFound] = {}
+
+    def listing(directory: str) -> Listing:
+        if directory not in found:
+            try:
+                found[directory] = list_dir(directory, timeout_seconds=timeout_seconds)
+            except (FtpUnavailable, FtpPathNotFound) as exc:
+                found[directory] = exc
+        result = found[directory]
+        if isinstance(result, Exception):
+            raise result
+        return result
+
+    return listing
 
 
 def fixture_entry(
