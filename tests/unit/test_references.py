@@ -16,6 +16,8 @@ import polars as pl
 import pytest
 
 import omnisus as sus
+from omnisus.sources.datasus_ftp.dbc import decompress_bytes
+from omnisus.sources.datasus_ftp.dbf_contract import _read_field_descriptors
 from omnisus.sources.datasus_ftp.parse import dbc_bytes_to_lazyframe
 from omnisus.transforms.dictionaries import load_dicionario
 
@@ -86,13 +88,40 @@ def test_declared_references_resolve_on_real_fixtures(con, dbc_fixture, dataset,
     assert found == UNRESOLVED[(dataset, fixture, ano)]
 
 
+@pytest.mark.parametrize(("dataset", "fixture", "ano"), sorted(UNRESOLVED))
+def test_a_declared_reference_fits_the_published_field(con, dbc_fixture, dataset, fixture, ano):
+    """A field narrower than every key of its reference never joins, filled or not (#67).
+
+    The width is the DBF header's, so the check holds even where the fixture leaves the
+    field blank in every row."""
+    dbf = decompress_bytes(dbc_fixture(fixture).read_bytes())
+    widths = {f.name.strip().lower(): f.width for f in _read_field_descriptors(dbf)}
+    narrow = []
+    for field in referenced_fields(dataset):
+        if field not in widths:  # declared for other years of the layout
+            continue
+        fk = next(iter((load_dicionario(dataset).field_def(field) or {})["foreignKeys"]))
+        table, key = fk["reference"]["resource"], fk["reference"]["fields"]
+        (shortest,) = con.execute(f'SELECT min(length("{key}")) FROM lake.{table}').fetchone()
+        if widths[field] < shortest:
+            narrow.append((field, widths[field], f"{table}.{key}", shortest))
+    assert narrow == []
+
+
 def test_secondary_diagnoses_declare_the_cid10_reference(con, dbc_fixture):
     """RD2008.DEF, lines 389-406, relates DIAGSEC1-9 to DBF/CID10.DBF (IT_SIHSUS_1603, p. 4:
-    "Diagnóstico secundário N"). Each declares aux_cid10 and every filled code of RDRR2401
-    finds its row. The UNRESOLVED list above cannot see a lost reference: a field without
-    foreignKeys is skipped there, so this test counts the joins itself."""
-    fields = [f"diagsec{n}" for n in range(1, 10)]
+    "Diagnóstico secundário N"). DIAGSEC1-8 declare aux_cid10 and every filled code of
+    RDRR2401 finds its row. DIAGSEC9 is C(1) in the 157 RD files read from 2014-01 to
+    2026-07 (evidence/2026-10-06-rd-2008-layouts), too narrow for any CID-10 code, so it declares
+    no reference and says why (#67). The UNRESOLVED list above cannot see a lost
+    reference: a field without foreignKeys is skipped there, so this test counts the joins
+    itself."""
+    fields = [f"diagsec{n}" for n in range(1, 9)]
     assert set(fields) <= set(referenced_fields("sih_aih_reduzida"))
+    diagsec9 = load_dicionario("sih_aih_reduzida").field_def("diagsec9")
+    assert "foreignKeys" not in diagsec9
+    (issue,) = [i for i in diagsec9["x-metadata"]["issues"] if i["id"] == "diagsec9-c1"]
+    assert issue["status"] == "open"
     frame = dbc_bytes_to_lazyframe(
         dbc_fixture("sih_rr_2024_01_mini").read_bytes(),
         dataset="sih_aih_reduzida",
@@ -109,9 +138,9 @@ def test_secondary_diagnoses_declare_the_cid10_reference(con, dbc_fixture):
             f"FROM d {join}"
         ).fetchone()
     con.unregister("d")
-    # (filled, resolved); diagsec3-9 are blank in every row of the file.
+    # (filled, resolved); diagsec3-8 are blank in every row of the file.
     assert counted == {"diagsec1": (622, 622), "diagsec2": (15, 15)} | {
-        f"diagsec{n}": (0, 0) for n in range(3, 10)
+        f"diagsec{n}": (0, 0) for n in range(3, 9)
     }
 
 

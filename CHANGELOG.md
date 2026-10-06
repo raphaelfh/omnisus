@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+### Dictionaries
+
+- `sih_aih_reduzida.diagsec9` no longer references `aux_cid10`: the 157 RD files read
+  from 2014-01 to 2026-07 (one RR or AP file a month, plus SP and MG at each layout
+  change) publish `DIAGSEC9` as C(1), so no row could join. Its
+  `physical_type` claim is `conflicting` (IT_SIHSUS_1603, p. 4, says `char (4)`) and the
+  field carries the issue `diagsec9-c1`. `reference_join_sql("sih_aih_reduzida",
+  "diagsec9")` now raises. Lakes keep their scopes: the parser version does not read
+  references (#67).
+
 ### Notebooks
 
 - New `bases.py` lists every DATASUS FTP dataset with `describe_datasets()`, offline,

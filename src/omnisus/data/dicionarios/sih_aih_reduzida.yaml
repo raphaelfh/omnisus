@@ -2401,8 +2401,39 @@ schema:
     - name: diagsec9
       type: string
       label: Diagnóstico secundário 9
-      foreignKeys:
-        - { fields: diagsec9, reference: { resource: aux_cid10, fields: codigo } }
+      x-metadata:
+        physical_name: DIAGSEC9
+        physical_type:
+          type: string
+          length: 1
+        claims:
+        - target: /field/physical_type
+          value_sha256: 848e3f778dde84f2e0e943a8a871c439e45d31d3688547d85fcdb5b3987d2266
+          status: conflicting
+          checked_at: '2026-10-06'
+          method: Official PDF field/page inspection and comparison with the DBF headers of
+            the RD files.
+          reviewer: fabianofilho
+          evidence:
+          - source_id: sihsus-1e89d5f2cc41
+            pages:
+            - 4
+            locator: Layout RD, linha 104, DIAGSEC9, char (4), Diagnóstico secundário 9
+          note: O layout oficial dá char (4), como DIAGSEC1 a DIAGSEC8. O cabeçalho DBF
+            declara DIAGSEC9 C(1) e DIAGSEC8 C(4) nos 157 arquivos RD lidos que têm o
+            campo (evidence/2026-10-06-rd-2008-layouts; RR, ou AP, em cada mês de 2014-01 a
+            2026-07, mais SP e MG nos meses de troca de layout) e nas fixtures RDSP2201 e
+            RDSP2308; nos meses lidos de 2008 a 2013 o campo não existe.
+        issues:
+        - id: diagsec9-c1
+          status: open
+          description: 'Sem referência a aux_cid10: o DBF publica DIAGSEC9 com 1 caractere
+            (C(1)) nos 157 arquivos RD lidos de 2014-01 a 2026-07 (um de RR ou AP por mês,
+            mais SP e MG nos meses de troca de layout), e um código da CID-10 tem 3 ou 4,
+            então nenhuma linha juntaria. O IT_SIHSUS_1603, p. 4, dá char (4), e o
+            RD2008.DEF, linhas 397 e 406, relaciona DIAGSEC9 a DBF/CID10.DBF, como os
+            demais diagnósticos secundários. Vazio nas fixtures RDRR2401, RDSP2201 e
+            RDSP2308. A referência volta se o DATASUS publicar o campo com 4 caracteres.'
     - name: tpdisec9
       type: string
       label: Tipo de diagnóstico secundário 9
@@ -2433,7 +2464,7 @@ x-source-format: dbc
 x-source-family: datasus_ftp
 x-source-prefix: RD
 x-partitions: [ano, uf, mes]
-x-version: "2.10.0"
+x-version: "2.11.0"
 
 x-analytics:
   version: 1.2.0
