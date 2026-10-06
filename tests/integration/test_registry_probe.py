@@ -21,6 +21,7 @@ reason to loosen an assertion.
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from datetime import date
 
 import pytest
@@ -28,7 +29,8 @@ import pytest
 from omnisus.sources._base import ScopeKey
 from omnisus.sources.datasus_ftp.datasets import REGISTRY, Dataset
 from omnisus.sources.datasus_ftp.filenames import national_variant, parse_name
-from omnisus.sources.datasus_ftp.inventory import Listing, list_dir, sources_for
+from omnisus.sources.datasus_ftp.inventory import Listing, sources_for
+from tests.support.listings import listing_per_directory
 
 pytestmark = [pytest.mark.integration, pytest.mark.e2e]
 
@@ -36,64 +38,61 @@ ROWS = [pytest.param(d, id=name) for name, d in sorted(REGISTRY.items())]
 
 
 @pytest.fixture(scope="module")
-def listings() -> dict[str, Listing]:
-    """One live LIST per distinct directory — rows share directories (SIA) and
-    a row may have two (final + preliminary)."""
-    cache: dict[str, Listing] = {}
-    for d in REGISTRY.values():
-        for directory in d.directories().values():
-            if directory not in cache:
-                cache[directory] = list_dir(directory, timeout_seconds=120.0)
-    return cache
+def listing() -> Callable[[str], Listing]:
+    """One live LIST per distinct directory, on first use — rows share directories
+    (SIA) and a row may have two (final + preliminary). A directory the server
+    fails to list fails only the checks that read it; the run of 2026-10-05 lost
+    all 307 checks to a timeout on the first directory listed."""
+    return listing_per_directory(timeout_seconds=120.0)
 
 
-def _scopes(d: Dataset, listings: dict[str, Listing]) -> list[ScopeKey]:
-    by_release = {release: listings[directory] for release, directory in d.directories().items()}
+def _scopes(d: Dataset, listing: Callable[[str], Listing]) -> list[ScopeKey]:
+    by_release = {release: listing(directory) for release, directory in d.directories().items()}
     return list(sources_for(d, by_release))
 
 
 @pytest.mark.parametrize("d", ROWS)
 def test_every_directory_exists_and_parses_cleanly(
-    d: Dataset, listings: dict[str, Listing]
+    d: Dataset, listing: Callable[[str], Listing]
 ) -> None:
     for release, directory in d.directories().items():
-        listing = listings[directory]
-        assert listing.entries, f"{d.name}: {release} directory {directory} listed empty"
-        assert listing.skipped == 0, (
-            f"{d.name}: {listing.skipped} unparseable LIST lines in {directory}"
+        found = listing(directory)
+        assert found.entries, f"{d.name}: {release} directory {directory} listed empty"
+        assert found.skipped == 0, (
+            f"{d.name}: {found.skipped} unparseable LIST lines in {directory}"
         )
 
 
 @pytest.mark.parametrize("d", ROWS)
 def test_some_directory_holds_files_with_this_prefix(
-    d: Dataset, listings: dict[str, Listing]
+    d: Dataset, listing: Callable[[str], Listing]
 ) -> None:
-    assert _scopes(d, listings), (
+    assert _scopes(d, listing), (
         f"{d.name}: no file in {list(d.directories().values())} decodes to this row"
     )
 
 
 @pytest.mark.parametrize("d", ROWS)
 def test_no_scope_is_published_in_two_directories(
-    d: Dataset, listings: dict[str, Listing]
+    d: Dataset, listing: Callable[[str], Listing]
 ) -> None:
     """``sources_for`` raises when a scope is listed in both the final and the
     preliminary directory — the real check is letting that exception surface,
     not deduplicating keys of a dict it already built without duplicates."""
-    by_release = {release: listings[directory] for release, directory in d.directories().items()}
+    by_release = {release: listing(directory) for release, directory in d.directories().items()}
     sources_for(d, by_release)
 
 
 @pytest.mark.parametrize("d", ROWS)
 def test_coverage_matches_the_earliest_published_file(
-    d: Dataset, listings: dict[str, Listing]
+    d: Dataset, listing: Callable[[str], Listing]
 ) -> None:
     """coverage[0] must be what the server actually publishes first.
 
     If this fails, fix the row (or investigate a DATASUS reorganisation) —
     do not widen the assertion.
     """
-    scopes = _scopes(d, listings)
+    scopes = _scopes(d, listing)
     assert scopes, f"{d.name}: nothing decoded"
     earliest = min((s.ano, s.mes or 1) for s in scopes)
     assert earliest == d.coverage[0], (
@@ -112,7 +111,7 @@ _ONGOING_GRACE_MONTHS = {"monthly": 18, "yearly": 48}
 
 
 @pytest.mark.parametrize("d", ROWS)
-def test_coverage_end_is_not_a_stale_claim(d: Dataset, listings: dict[str, Listing]) -> None:
+def test_coverage_end_is_not_a_stale_claim(d: Dataset, listing: Callable[[str], Listing]) -> None:
     """coverage[1] is a claim too; a row must not lie.
 
     A closed window must not be contradicted by newer files on the server. An
@@ -123,7 +122,7 @@ def test_coverage_end_is_not_a_stale_claim(d: Dataset, listings: dict[str, Listi
     where a false alarm costs a notification rather than a blocked pull
     request.
     """
-    scopes = _scopes(d, listings)
+    scopes = _scopes(d, listing)
     assert scopes, f"{d.name}: nothing decoded"
     latest = max((s.ano, s.mes or 12) for s in scopes)
 
@@ -146,13 +145,13 @@ def test_coverage_end_is_not_a_stale_claim(d: Dataset, listings: dict[str, Listi
 
 
 @pytest.mark.parametrize("d", [p for p in ROWS if p.values[0].prelim_dir is not None])
-def test_final_and_prelim_leave_no_year_gap(d: Dataset, listings: dict[str, Listing]) -> None:
+def test_final_and_prelim_leave_no_year_gap(d: Dataset, listing: Callable[[str], Listing]) -> None:
     """A final directory that stops early (SINASC NOV/DNRES stopped at 2022) leaves
     a gap before the first preliminary year. The gap is the finding."""
     years = {
         release: {
             p.scope.ano
-            for e in listings[directory].files
+            for e in listing(directory).files
             if (p := parse_name(d, e.name)) is not None
         }
         for release, directory in d.directories().items()
@@ -165,11 +164,11 @@ def test_final_and_prelim_leave_no_year_gap(d: Dataset, listings: dict[str, List
 
 @pytest.mark.parametrize("d", ROWS)
 def test_parts_are_newer_than_the_whole_file_they_replace(
-    d: Dataset, listings: dict[str, Listing]
+    d: Dataset, listing: Callable[[str], Listing]
 ) -> None:
     """Parts supersede the whole file, which holds only while parts are the later revision."""
     for directory in d.directories().values():
-        named = [(parse_name(d, e.name), e) for e in listings[directory].files]
+        named = [(parse_name(d, e.name), e) for e in listing(directory).files]
         wholes = {p.scope: e for p, e in named if p is not None and p.part is None}
         for p, e in named:
             if p is not None and p.part is not None and p.scope in wholes:
@@ -195,13 +194,13 @@ KNOWN_UNMODELLED = {
 
 @pytest.mark.parametrize("d", ROWS)
 def test_every_name_with_this_prefix_is_understood(
-    d: Dataset, listings: dict[str, Listing]
+    d: Dataset, listing: Callable[[str], Listing]
 ) -> None:
     """Only ``.dbc`` names are checked: the codec reads only DBC, so a stray
     non-DBC file such as ``RDAC2017.zip`` is not something any row could claim."""
     others = [r for r in REGISTRY.values() if r is not d]
     for directory in d.directories().values():
-        for e in listings[directory].files:
+        for e in listing(directory).files:
             if not e.name.lower().endswith(".dbc"):
                 continue
             if not e.name.upper().startswith(d.prefix.upper()):
@@ -213,11 +212,12 @@ def test_every_name_with_this_prefix_is_understood(
             assert any(parse_name(r, e.name) for r in others), f"{d.name}: {e.name}"
 
 
-def test_known_unmodelled_families_are_still_there(listings: dict[str, Listing]) -> None:
+def test_known_unmodelled_families_are_still_there(listing: Callable[[str], Listing]) -> None:
     """A ``KNOWN_UNMODELLED`` entry documents server noise the probe is told to
     ignore; if the family stopped publishing, the entry is stale and must be
     removed or updated, not left to silently mask a future, different file."""
-    files = [e for listing in listings.values() for e in listing.files]
+    directories = {path for d in REGISTRY.values() for path in d.directories().values()}
+    files = [e for directory in sorted(directories) for e in listing(directory).files]
     for family in KNOWN_UNMODELLED:
         assert any(
             e.name.upper().startswith(family) and e.name.lower().endswith(".dbc") for e in files
