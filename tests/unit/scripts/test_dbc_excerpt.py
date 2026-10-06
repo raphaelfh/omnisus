@@ -5,7 +5,14 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-from scripts.dbc_excerpt import dbc_from_dbf, excerpt_dbc, excerpt_dbf, implode_literals
+from scripts.dbc_excerpt import (
+    _columns,
+    blank_dbf,
+    dbc_from_dbf,
+    excerpt_dbc,
+    excerpt_dbf,
+    implode,
+)
 
 from omnisus.sources.datasus_ftp.dbc import _python_decompress, decompress_bytes
 
@@ -21,15 +28,23 @@ def _geometry(dbf: bytes) -> tuple[int, int, int]:
     )
 
 
-def test_literal_stream_round_trips_through_our_decoder() -> None:
-    """Synthetic bytes on purpose: every byte value 0-255 must survive the
-    literal-only implode stream, which no real DBF guarantees to contain."""
-    payload = bytes(range(256)) * 3
-    stream = implode_literals(payload)
-    assert stream[:2] == b"\x00\x04"
+def test_implode_round_trips_every_byte_value_through_our_decoder() -> None:
+    """Synthetic bytes on purpose: every byte value 0-255, alone and repeated, must
+    survive the implode stream, which no real DBF guarantees to contain."""
+    payload = bytes(range(256)) * 3 + bytes(600)
+    stream = implode(payload)
+    assert stream[:2] == b"\x00\x06"
     header = b"\x03" + b"\x00" * 7 + (33).to_bytes(2, "little") + b"\x00" * 22 + b"\x0d"
     dbc = header + b"\x00\x00\x00\x00" + stream
     assert _python_decompress(dbc) == header + payload
+
+
+def test_a_rewrapped_real_file_stays_near_the_datasus_size() -> None:
+    raw = REAL.read_bytes()
+    original = decompress_bytes(raw)
+    wrapped = dbc_from_dbf(original)
+    assert decompress_bytes(wrapped) == original
+    assert len(wrapped) < 1.2 * len(raw)
 
 
 def test_excerpt_keeps_the_first_records_of_a_real_file() -> None:
@@ -83,3 +98,38 @@ def test_dbc_from_dbf_keeps_the_header_uncompressed() -> None:
 def test_rust_decoder_reads_the_excerpt_identically() -> None:
     raw = excerpt_dbc(REAL.read_bytes(), records=30)
     assert decompress_bytes(raw, backend="rust") == decompress_bytes(raw, backend="python")
+
+
+def _cells(dbf: bytes, column: str) -> list[bytes]:
+    offset, width = _columns(dbf)[column]
+    header_length = int.from_bytes(dbf[8:10], "little")
+    record_length = int.from_bytes(dbf[10:12], "little")
+    records = int.from_bytes(dbf[4:8], "little")
+    return [
+        dbf[start + offset : start + offset + width]
+        for start in range(header_length, header_length + records * record_length, record_length)
+    ]
+
+
+def test_blank_fills_only_the_named_column() -> None:
+    original = decompress_bytes(REAL.read_bytes())
+    blanked = blank_dbf(original, ["CODMUNRES"])
+    assert len(blanked) == len(original)
+    assert all(cell.strip() == b"" for cell in _cells(blanked, "CODMUNRES"))
+    assert any(cell.strip() for cell in _cells(original, "CODMUNRES"))
+    for column in _columns(original):
+        if column != "CODMUNRES":
+            assert _cells(blanked, column) == _cells(original, column), column
+
+
+def test_blank_with_a_condition_keeps_the_other_records() -> None:
+    original = decompress_bytes(REAL.read_bytes())
+    blanked = blank_dbf(original, ["CODMUNRES:SEXO=1"])
+    pairs = zip(
+        _cells(original, "SEXO"),
+        _cells(original, "CODMUNRES"),
+        _cells(blanked, "CODMUNRES"),
+        strict=True,
+    )
+    for sexo, before, after in pairs:
+        assert after == (b" " * len(before) if sexo.strip() == b"1" else before)

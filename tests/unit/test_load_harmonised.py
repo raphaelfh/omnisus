@@ -8,6 +8,7 @@ Real data, read back through `sus.load`:
 
 from __future__ import annotations
 
+import hashlib
 import warnings
 
 import polars as pl
@@ -16,7 +17,7 @@ import pytest
 from omnisus.sources._base import ScopeKey
 from omnisus.transforms.age import decode_age
 from omnisus.transforms.dictionaries import load_dicionario
-from tests.support.lake_rows import load_fixture
+from tests.support.lake_rows import DBC, load_fixture
 
 HARMONISED = ["idade_anos_completos", "idade_status", "sexo_categoria", "sexo_status"]
 
@@ -40,10 +41,20 @@ def test_validated_sim_gets_age_sex_and_dates(tmp_path) -> None:
     assert dados["dtobito_data"].equals(parsed, check_names=False)
 
 
-def test_validated_sia_age_reads_tpidadepac_and_idadepac(tmp_path) -> None:
+def test_validated_sia_age_reads_tpidadepac_and_idadepac(tmp_path, monkeypatch) -> None:
+    """The fixture is BIRR2201 with CNSPROF blanked (FIXTURES.md), so its digest is not
+    the validated server file's; the test lets it stand in, since the age rule reads
+    TPIDADEPAC and IDADEPAC only."""
     scope = ScopeKey(uf="RR", ano=2022, mes=1)
+    analytics = load_dicionario("sia_bpa_individualizado").raw["x-analytics"]
+    fixture = DBC / "sia_bi_rr_2022_01_mini.dbc"
+    stand_in = {"uf": "RR", "ano": 2022, "mes": 1, "release": "final"}
+    stand_in["source_sha256"] = hashlib.sha256(fixture.read_bytes()).hexdigest()
+    monkeypatch.setitem(
+        analytics, "validated_sources", [*analytics["validated_sources"], stand_in]
+    )
     dados = _quiet_load("sia_bpa_individualizado", "sia_bi_rr_2022_01_mini", scope, tmp_path)
-    rule = load_dicionario("sia_bpa_individualizado").raw["x-analytics"]["age"]
+    rule = analytics["age"]
 
     pairs = dados.select("tpidadepac", "idadepac", "idade_anos_completos").unique().rows()
     assert ("5", "29", 129) in pairs  # born 1892, IDADEDET "1xx anos"
