@@ -1,6 +1,9 @@
 # Changelog
 
-## Unreleased
+## v0.2.2 — 2026-10-06
+
+**Upgrading from 0.2.1:** no parser version or dictionary changed, so a 0.2.1 lake
+keeps every scope; `load` downloads nothing again.
 
 ### API
 
@@ -34,10 +37,11 @@
 - `linkage.py` checks that SIM, SINASC and SIH RD are published for the chosen UF and
   year, and not in `PULAR`, before downloading anything; if one is missing it names it
   and stops instead of failing later with `KeyError` or an empty `pl.concat` (#44).
-- `sinan.py` runs with `BASE = "sinan_tuberculose"`, where the researcher guide and the
-  tuberculose profile send readers: step 5 counts notifications by type of entry
-  (`tratamento`) and closing status (`situa_ence`), with dictionary labels, instead of
-  stopping with `ValueError` in the branch written for hanseníase (#53).
+- `sinan.py` also runs with `BASE = "sinan_tuberculose"`, where the researcher guide and
+  the tuberculose profile send readers; the default stays `sinan_chagas`. Step 5 counts
+  notifications by type of entry (`tratamento`) and closing status (`situa_ence`), with
+  dictionary labels, instead of stopping with `ValueError` in the branch written for
+  hanseníase (#53).
 
 ### omnisus-dbf 0.2.1
 
