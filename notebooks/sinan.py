@@ -54,7 +54,8 @@ def _(mo):
 
 @app.cell
 def _(mo):
-    # Parâmetros: edite e reexecute. BASE é sinan_chagas, sinan_hanseniase ou sinan_tuberculose.
+    # Parâmetros: edite e reexecute. BASE é o `name` de uma linha do SINAN em
+    # `sus.describe_datasets()`; veja bases.py.
     BASE = "sinan_chagas"
     ANO = 2023
     EXECUTAR = False

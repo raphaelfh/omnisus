@@ -64,7 +64,7 @@ def test_sources_section_cites_a_document(perfil):
 def test_every_bases_notebook_has_a_profile():
     notebooks = {
         p.stem for p in (ROOT / "notebooks").glob("*.py") if not p.name.startswith("_")
-    } - {"linkage"}
+    } - {"linkage", "bases"}
     assert set(PERFIS.values()) == notebooks
 
 

@@ -15,7 +15,7 @@ Escolha onde rodar. Os três caminhos usam a mesma biblioteca e chegam à mesma 
 === "Google Colab"
 
     Nada para instalar no seu computador. Abra o notebook, rode as células em ordem e,
-    se quiser que os dados fiquem guardados, monte o Google Drive na segunda célula.
+    se quiser que os dados fiquem guardados, monte o Google Drive na seção 3.
 
     [![Abrir no Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/raphaelfh/omnisus/blob/main/notebooks/colab.ipynb)
 
@@ -76,7 +76,11 @@ a executa.
 
 As bases do FTP do DATASUS que o omnisus importa, agrupadas por sistema, com cobertura,
 forma de publicação e colunas com rótulo, estão em [Bases e argumentos](../datasets.md).
-A tabela abaixo leva às bases que têm perfil e notebook, inclusive a população do IBGE.
+O notebook
+[bases.py](https://github.com/raphaelfh/omnisus/blob/main/notebooks/bases.py)
+[![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/bases.py)
+mostra a mesma lista e leva qualquer uma delas até a citação. A tabela abaixo leva às
+bases que têm perfil e notebook, inclusive a população do IBGE.
 
 | Pergunta | Base | Perfil | Notebook |
 | --- | --- | --- | --- |
