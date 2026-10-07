@@ -1,10 +1,11 @@
 """`scripts/metadados/validar_fonte.py`: audit a batch of sources for the analytical rules.
 
 Real data: `sim_rr_2022_mini.dbc` and `sim_rr_2023_mini.dbc` are DORR2022.dbc and
-DORR2023.dbc, both in SIM `validated_sources`. `sih_rr_2024_01_mini.dbc` is RDRR2401.dbc
-with GESTOR_CPF blanked (SHA-256 5e6f0c99…), so it is not the validated source
-(37741f8b…). The fake server lists the same SIH bytes also as RR 2024-02, to accept
-two scopes in one edit.
+DORR2023.dbc, both in SIM `validated_sources`; DORR2023 is the SIM reference.
+`sinan_chagas_br_2023.dbc` is CHAGBR23.dbc, the validated national, preliminary source.
+`sih_rr_2024_01_mini.dbc` is RDRR2401.dbc with GESTOR_CPF blanked (SHA-256 5e6f0c99…), so
+it is not the validated source (37741f8b…). The fake server also lists the DORR2022 bytes
+as AC 2022 and AL 2022, to accept two new SHA-256 in one edit.
 """
 
 from __future__ import annotations
@@ -33,13 +34,16 @@ DICIONARIOS = ROOT / "src" / "omnisus" / "data" / "dicionarios"
 SIM_RR_2022 = ScopeKey(uf="RR", ano=2022)
 SIM_RR_2023 = ScopeKey(uf="RR", ano=2023)
 SIH_RR_2024_01 = ScopeKey(uf="RR", ano=2024, mes=1)
-SIH_RR_2024_02 = ScopeKey(uf="RR", ano=2024, mes=2)
+SINAN_2023 = ScopeKey(uf=None, ano=2023)
 SERVED = {
     ("sim_obitos", SIM_RR_2022): "sim_rr_2022_mini",
     ("sim_obitos", SIM_RR_2023): "sim_rr_2023_mini",
+    ("sim_obitos", ScopeKey(uf="AC", ano=2022)): "sim_rr_2022_mini",
+    ("sim_obitos", ScopeKey(uf="AL", ano=2022)): "sim_rr_2022_mini",
     ("sih_aih_reduzida", SIH_RR_2024_01): "sih_rr_2024_01_mini",
-    ("sih_aih_reduzida", SIH_RR_2024_02): "sih_rr_2024_01_mini",
+    ("sinan_chagas", SINAN_2023): "sinan_chagas_br_2023",
 }
+RELEASES = {"sinan_chagas": "prelim"}
 
 
 def load_script():
@@ -64,9 +68,10 @@ def workspace(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
             if dataset != d.name:
                 continue
             raw = (DBC / f"{fixture}.dbc").read_bytes()
-            entry = fixture_entry(d.directories()["final"], filename_for(d, scope, None), raw)
+            release = RELEASES.get(dataset, "final")
+            entry = fixture_entry(d.directories()[release], filename_for(d, scope, None), raw)
             contents[entry.path] = raw
-            sources[scope] = ResolvedSource(release="final", files=(entry,))
+            sources[scope] = ResolvedSource(release=release, files=(entry,))
         return sources
 
     async def fetch(entry, **_kw):
@@ -75,8 +80,6 @@ def workspace(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
 
     monkeypatch.setattr(module, "list_sources", list_sources)
     monkeypatch.setattr(module, "fetch_dbc_bytes", fetch)
-    # The hand-validated references (RR 2023-01) have no fixture; RDRR2401 stands in.
-    monkeypatch.setitem(module.REFERENCIAS, "sih_aih_reduzida", SIH_RR_2024_01)
     dictionaries = tmp_path / "dicionarios"
     shutil.copytree(DICIONARIOS, dictionaries)
     paths = {
@@ -158,11 +161,11 @@ def test_every_status_column_reconciles_with_the_rows_of_its_scope(workspace) ->
 
 def test_accept_appends_every_accepted_scope_in_one_edit(workspace) -> None:
     module, paths, _calls = workspace
-    yaml_path = paths["dictionaries"] / "sih_aih_reduzida.yaml"
+    yaml_path = paths["dictionaries"] / "sim_obitos.yaml"
     before = yaml.safe_load(yaml_path.read_text(encoding="utf-8"))
 
     code = module.main(
-        ["sih_aih_reduzida", "--ufs", "RR", "--inicio", "2024-01", "--fim", "2024-02", "--accept"],
+        ["sim_obitos", "--ufs", "AC,AL", "--inicio", "2022", "--fim", "2022", "--accept"],
         **paths,
     )
 
@@ -170,10 +173,10 @@ def test_accept_appends_every_accepted_scope_in_one_edit(workspace) -> None:
     after = yaml.safe_load(yaml_path.read_text(encoding="utf-8"))
     added = after["x-analytics"]["validated_sources"][-2:]
     del after["x-analytics"]["validated_sources"][-2:]
-    sha = _sha("sih_rr_2024_01_mini")
+    sha = _sha("sim_rr_2022_mini")
     assert added == [
-        {"uf": "RR", "ano": 2024, "mes": 1, "release": "final", "source_sha256": sha},
-        {"uf": "RR", "ano": 2024, "mes": 2, "release": "final", "source_sha256": sha},
+        {"uf": "AC", "ano": 2022, "release": "final", "source_sha256": sha},
+        {"uf": "AL", "ano": 2022, "release": "final", "source_sha256": sha},
     ]
     assert after == before
 
@@ -293,6 +296,22 @@ def test_an_unknown_sex_code_blocks(auditado) -> None:
     assert motivos == ["sexo não suportado em 2 linhas"]
 
 
+def test_an_undeclared_age_unit_blocks_and_an_out_of_range_age_does_not(auditado) -> None:
+    """On the real DORR2023 audit: SIM unit 6 is not declared by the rule (units 0 to 5,
+    9 ignored); 312 is the declared unit month above its bound of 11 months."""
+    module = load_script()
+    regra = sus.describe_dataset("sim_obitos")["analytics"]["age"]
+
+    def com(valor: str) -> dict:
+        linha = {"value": valor, "unit": None, "status": "unsupported", "n": 1}
+        return {**auditado, "uninterpreted_age_codes": [linha]}
+
+    assert module.bloqueios(com("610"), auditado, regra) == [
+        "idade '610' com unidade não declarada (1)"
+    ]
+    assert module.bloqueios(com("312"), auditado, regra) == []
+
+
 def test_only_an_undeclared_age_unit_blocks() -> None:
     """The documented SIH codes (x-analytics.age notes: 230 and 312 unsupported, 000 and
     999 invalid composites) are reported; a unit the rule does not declare blocks."""
@@ -347,8 +366,8 @@ def test_a_scope_split_into_several_files_is_blocked_without_download(
 
 def test_a_failing_reference_stops_before_any_decision(workspace, monkeypatch) -> None:
     """A download cut short (the first 512 bytes of the real DORR2023, a malformed-input
-    case of the decoder) fails the reference audit; without it no scope is compared."""
-    module, paths, _calls = workspace
+    case of the decoder) fails the reference audit; the batch stops before downloading more."""
+    module, paths, calls = workspace
     real_fetch = module.fetch_dbc_bytes
 
     async def truncated(entry, **kw):
@@ -362,13 +381,93 @@ def test_a_failing_reference_stops_before_any_decision(workspace, monkeypatch) -
     )
 
     assert code == 1
+    assert calls["fetch"] == ["DORR2023.dbc"]
     assert not paths["evidence"].exists()
     assert _validated(paths["dictionaries"], "sim_obitos") == _validated(DICIONARIOS, "sim_obitos")
 
 
 def test_a_file_republished_between_runs_is_audited_again(workspace, monkeypatch) -> None:
-    """The first run stops after the reference; then the server lists RR 2023 with other
-    bytes (the real DORR2022), so the resumed run downloads it again."""
+    """The first run stops after AC 2022; then the server lists AC 2022 with other bytes
+    (the real DORR2023), so the resumed run downloads it again and keeps the reference."""
+    module, paths, calls = workspace
+    real_fetch = module.fetch_dbc_bytes
+
+    async def fails_on_the_third(entry, **kw):
+        if len(calls["fetch"]) == 2:
+            raise ConnectionError("530 too many connections")
+        return await real_fetch(entry, **kw)
+
+    monkeypatch.setattr(module, "fetch_dbc_bytes", fails_on_the_third)
+    argv = ["sim_obitos", "--ufs", "AC,AL", "--inicio", "2022", "--fim", "2022"]
+    with pytest.raises(ConnectionError):
+        module.main(argv, **paths)
+    assert calls["fetch"] == ["DORR2023.dbc", "DOAC2022.dbc"]
+
+    monkeypatch.setattr(module, "fetch_dbc_bytes", real_fetch)
+    monkeypatch.setitem(SERVED, ("sim_obitos", ScopeKey(uf="AC", ano=2022)), "sim_rr_2023_mini")
+    assert module.main(argv, **paths) == 0
+
+    assert calls["fetch"] == ["DORR2023.dbc", "DOAC2022.dbc", "DOAC2022.dbc", "DOAL2022.dbc"]
+
+
+def test_a_new_file_for_a_validated_scope_is_added_next_to_the_old_one(
+    workspace, monkeypatch
+) -> None:
+    """SIM RR 2022 is validated with DORR2022 (6643344f…); served with other real bytes, the
+    new SHA-256 is appended and the old one stays, for lakes that imported it."""
+    module, paths, _calls = workspace
+    monkeypatch.setitem(SERVED, ("sim_obitos", SIM_RR_2022), "sim_rr_2023_mini")
+    before = _validated(paths["dictionaries"], "sim_obitos")
+
+    code = module.main(
+        ["sim_obitos", "--ufs", "RR", "--inicio", "2022", "--fim", "2022", "--accept"], **paths
+    )
+
+    assert code == 0
+    after = _validated(paths["dictionaries"], "sim_obitos")
+    assert after[: len(before)] == before
+    assert after[len(before) :] == [
+        {"uf": "RR", "ano": 2022, "release": "final", "source_sha256": _sha("sim_rr_2023_mini")}
+    ]
+
+
+def test_a_republished_reference_stops_the_batch(workspace, monkeypatch) -> None:
+    """The reference RR 2023 served with other real bytes (DORR2022) is not the file
+    validated by hand: nothing is compared against it."""
+    module, paths, calls = workspace
+    monkeypatch.setitem(SERVED, ("sim_obitos", SIM_RR_2023), "sim_rr_2022_mini")
+
+    code = module.main(
+        ["sim_obitos", "--ufs", "RR", "--inicio", "2022", "--fim", "2023", "--accept"], **paths
+    )
+
+    assert code == 1
+    assert calls["fetch"] == ["DORR2023.dbc"]
+    assert not paths["evidence"].exists()
+    assert _validated(paths["dictionaries"], "sim_obitos") == _validated(DICIONARIOS, "sim_obitos")
+
+
+def test_a_failed_audit_is_retried_on_the_next_run(workspace, monkeypatch) -> None:
+    """A download cut short fails the reference; the next run downloads it again instead of
+    reusing the cached failure."""
+    module, paths, calls = workspace
+    real_fetch = module.fetch_dbc_bytes
+
+    async def truncated(entry, **kw):
+        return (await real_fetch(entry, **kw))[:512]
+
+    argv = ["sim_obitos", "--ufs", "RR", "--inicio", "2022", "--fim", "2023"]
+    monkeypatch.setattr(module, "fetch_dbc_bytes", truncated)
+    assert module.main(argv, **paths) == 1
+    monkeypatch.setattr(module, "fetch_dbc_bytes", real_fetch)
+
+    assert module.main(argv, **paths) == 0
+    assert calls["fetch"] == ["DORR2023.dbc", "DORR2023.dbc", "DORR2022.dbc"]
+
+
+def test_a_cached_audit_under_another_dictionary_is_done_again(workspace, monkeypatch) -> None:
+    """The run stops after the reference; the cached audit then carries another
+    metadata_hash (a dictionary changed in between), so the resumed run audits it again."""
     module, paths, calls = workspace
     real_fetch = module.fetch_dbc_bytes
 
@@ -381,30 +480,82 @@ def test_a_file_republished_between_runs_is_audited_again(workspace, monkeypatch
     argv = ["sim_obitos", "--ufs", "RR", "--inicio", "2022", "--fim", "2023"]
     with pytest.raises(ConnectionError):
         module.main(argv, **paths)
+    (parcial,) = paths["downloads"].glob("parcial-*.jsonl")
+    registro = json.loads(parcial.read_text(encoding="utf-8"))
+    registro["resultado"]["metadata_hash"] = "outro dicionário"
+    parcial.write_text(json.dumps(registro) + "\n", encoding="utf-8")
 
     monkeypatch.setattr(module, "fetch_dbc_bytes", real_fetch)
-    monkeypatch.setitem(SERVED, ("sim_obitos", SIM_RR_2023), "sim_rr_2022_mini")
     assert module.main(argv, **paths) == 0
-
     assert calls["fetch"] == ["DORR2023.dbc", "DORR2023.dbc", "DORR2022.dbc"]
 
 
-def test_a_new_file_for_a_validated_scope_is_added_next_to_the_old_one(
-    workspace, monkeypatch
-) -> None:
-    """SIM RR 2023 is validated with DORR2023 (15b52035…); served with other real bytes,
-    the new SHA-256 is appended and the old one stays, for lakes that imported it."""
-    module, paths, _calls = workspace
-    monkeypatch.setitem(SERVED, ("sim_obitos", SIM_RR_2023), "sim_rr_2022_mini")
-    before = _validated(paths["dictionaries"], "sim_obitos")
+def test_a_second_run_does_not_overwrite_the_evidence_of_the_first(workspace) -> None:
+    """Same day and window, other UFs: the folder name is the same, so the second run stops
+    before listing the server instead of replacing the first run's evidence."""
+    module, paths, calls = workspace
+    assert (
+        module.main(["sim_obitos", "--ufs", "AC,AL", "--inicio", "2022", "--fim", "2022"], **paths)
+        == 0
+    )
+    folder = _folder(paths["evidence"], "sim_obitos-2022-2022")
+    manifest = (folder / "manifest.json").read_bytes()
+
+    code = module.main(["sim_obitos", "--ufs", "RR", "--inicio", "2022", "--fim", "2022"], **paths)
+
+    assert code == 1
+    assert (folder / "manifest.json").read_bytes() == manifest
+    assert calls["list"] == 1
+    assert len(calls["fetch"]) == 3
+
+
+def test_a_dataset_without_a_known_reference_asks_for_one(workspace, capsys) -> None:
+    module, paths, calls = workspace
 
     code = module.main(
-        ["sim_obitos", "--ufs", "RR", "--inicio", "2023", "--fim", "2023", "--accept"], **paths
+        ["sinasc_nascidos_vivos", "--ufs", "RR", "--inicio", "2023", "--fim", "2023"], **paths
+    )
+
+    assert code == 1
+    assert "--referencia" in capsys.readouterr().err
+    assert calls["list"] == 0
+
+
+def test_a_national_dataset_runs_without_ufs_against_its_reference(workspace) -> None:
+    """SINAN Chagas 2023 is national and preliminary; its validated entry records `uf: null`,
+    so accepting the same file again adds nothing."""
+    module, paths, _calls = workspace
+    before = _validated(paths["dictionaries"], "sinan_chagas")
+
+    code = module.main(
+        [
+            "sinan_chagas",
+            "--inicio",
+            "2023",
+            "--fim",
+            "2023",
+            "--referencia",
+            "national_2023",
+            "--accept",
+        ],
+        **paths,
     )
 
     assert code == 0
-    after = _validated(paths["dictionaries"], "sim_obitos")
-    assert after[: len(before)] == before
-    assert after[len(before) :] == [
-        {"uf": "RR", "ano": 2023, "release": "final", "source_sha256": _sha("sim_rr_2022_mini")}
+    folder = _folder(paths["evidence"], "sinan_chagas-2023-2023")
+    assert [(r["escopo"], r["decisao"]) for r in _rows(folder / "escopos.csv")] == [
+        ("national_2023", "aceito")
     ]
+    assert _validated(paths["dictionaries"], "sinan_chagas") == before
+
+
+def test_ufs_are_refused_for_a_national_dataset(workspace, capsys) -> None:
+    module, paths, calls = workspace
+
+    code = module.main(
+        ["sinan_chagas", "--ufs", "RR", "--inicio", "2023", "--fim", "2023"], **paths
+    )
+
+    assert code == 1
+    assert "nacional" in capsys.readouterr().err
+    assert calls["list"] == 0

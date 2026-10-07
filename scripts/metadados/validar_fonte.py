@@ -3,19 +3,25 @@
     uv run python scripts/metadados/validar_fonte.py sim_obitos --ufs ALL --inicio 2020 --fim 2024
     uv run python scripts/metadados/validar_fonte.py sih_aih_reduzida --ufs ALL \
         --inicio 2020-01 --fim 2025-02 --accept
+    uv run python scripts/metadados/validar_fonte.py sinan_chagas --inicio 2023 --fim 2023 \
+        --referencia national_2023
 
-The server is listed once. The reference scope of the dataset (``REFERENCIAS``) is
-audited first, then every scope of the window: the file the server lists is
+The server is listed once. The reference scope (``--referencia``, or ``REFERENCIAS``
+for SIM and SIH) is audited first and must be the file validated by hand: its scope,
+release and SHA-256 are in ``x-analytics.validated_sources``. Then every scope of the
+window (``--ufs`` only for a dataset published per UF): the file the server lists is
 downloaded, hashed, run through the candidate audit of ``auditar_arquivos.py`` (every
 rule applied, SQL checked against the scalar decoder) and deleted. A run that stops
-resumes from ``<downloads>/parcial-*.jsonl`` without downloading again what it audited.
+resumes from ``<downloads>/parcial-*.jsonl`` without downloading again what it audited;
+a failed audit, or one made under another dictionary version, is done again.
 
 The evidence goes to ``evidence/<date>-validacao-<dataset>-<inicio>-<fim>/``:
 ``manifest.json`` (url, SHA-256, size and server time of every file), ``escopos.csv``
 (decision and reasons per scope), ``estados.csv`` (each status column), ``idades.csv``
 (age codes the rule leaves uninterpreted, and why), ``datas.csv`` (age against dates,
 not an authority) and ``referencia.json`` (schema, expressions and queries of the
-reference, and the run's provenance). No local path is recorded.
+reference, and the run's provenance). No local path is recorded, and a run never
+replaces an existing folder.
 
 The acceptance rule (ADR 0003, Consequences) blocks a scope whose audit raised, whose
 schema differs from the reference's, with a sex code the rule does not know, or with an
@@ -25,7 +31,8 @@ are reported, not blocked: the rule already keeps them null.
 
 ``--accept`` appends every accepted scope to ``x-analytics.validated_sources`` in one
 edit. Exit code: 0 when no scope is blocked, 2 when some are, 1 when nothing could be
-audited (a scope not listed, or the reference failing).
+audited (a scope not listed, no reference, the reference failing or not the validated
+file, or the evidence folder already there).
 """
 
 from __future__ import annotations
@@ -73,6 +80,23 @@ def _entry_lines(entry: dict) -> list[str]:
     return [line + "\n" for line in lines]
 
 
+def _identidade(entry: Mapping) -> tuple:
+    """Scope, release and SHA-256 of a ``validated_sources`` entry; ``uf: null`` = no uf."""
+    return (
+        entry.get("uf"),
+        entry["ano"],
+        entry.get("mes"),
+        entry["release"],
+        entry["source_sha256"],
+    )
+
+
+def _entrada(fonte: Mapping) -> dict:
+    """The ``validated_sources`` entry of one audited file of the manifest."""
+    entry = {k: v for k, v in fonte["scope"].items() if v is not None}
+    return entry | {"release": fonte["release"], "source_sha256": fonte["sha256"]}
+
+
 def append_validated_sources(yaml_path: Path, entries: Sequence[dict]) -> int:
     """Append the new ``entries`` to ``x-analytics.validated_sources``; how many were new.
 
@@ -82,7 +106,12 @@ def append_validated_sources(yaml_path: Path, entries: Sequence[dict]) -> int:
     text = yaml_path.read_text(encoding="utf-8")
     before = yaml.safe_load(text)
     known = before["x-analytics"]["validated_sources"]
-    new = [entry for entry in entries if entry not in known]
+    vistas = {_identidade(entry) for entry in known}
+    new = []
+    for entry in entries:
+        if _identidade(entry) not in vistas:
+            vistas.add(_identidade(entry))
+            new.append(entry)
     if not new:
         return 0
     lines = text.splitlines(keepends=True)
@@ -111,14 +140,27 @@ def _periodo(text: str) -> tuple[int, int | None]:
     return int(ano), int(mes) if mes else None
 
 
+def _escopo(text: str) -> ScopeKey:
+    """``"RR_2023"``, ``"RR_2023_01"`` or ``"national_2023"`` as a scope."""
+    uf, ano, *mes = text.split("_")
+    return ScopeKey(
+        uf=None if uf == "national" else uf, ano=int(ano), mes=int(mes[0]) if mes else None
+    )
+
+
 def janela(
-    d: Dataset, ufs: Sequence[str], inicio: tuple[int, int | None], fim: tuple[int, int | None]
+    d: Dataset,
+    ufs: Sequence[str] | None,
+    inicio: tuple[int, int | None],
+    fim: tuple[int, int | None],
 ) -> list[ScopeKey]:
-    """Every scope of ``ufs`` from ``inicio`` to ``fim``, both included."""
+    """Every scope of ``ufs`` (``None`` for a national dataset) from ``inicio`` to ``fim``."""
     mensal = d.cadence == "monthly"
     if mensal != (inicio[1] is not None) or mensal != (fim[1] is not None):
         raise ValueError(f"{d.name}: use {'AAAA-MM' if mensal else 'AAAA'} em --inicio e --fim")
-    escopos = sus.scopes_for(d, years=range(inicio[0], fim[0] + 1), ufs=list(ufs))
+    escopos = sus.scopes_for(
+        d, years=range(inicio[0], fim[0] + 1), ufs=None if ufs is None else list(ufs)
+    )
     return [
         s
         for s in escopos
@@ -294,53 +336,98 @@ def main(
 ) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("dataset")
-    parser.add_argument("--ufs", required=True, help="ALL, ou siglas separadas por vírgula")
+    parser.add_argument(
+        "--ufs", help="ALL, ou siglas separadas por vírgula; não numa base nacional"
+    )
     parser.add_argument("--inicio", required=True, help="AAAA (anual) ou AAAA-MM (mensal)")
     parser.add_argument("--fim", required=True, help="AAAA (anual) ou AAAA-MM (mensal)")
+    parser.add_argument(
+        "--referencia", help="escopo validado à mão (RR_2023, RR_2023_01, national_2023)"
+    )
     parser.add_argument("--accept", action="store_true", help="record the accepted sources")
     args = parser.parse_args(argv)
 
     d = resolve(args.dataset)
-    ufs = list(sus.ALL_UFS) if args.ufs == "ALL" else args.ufs.split(",")
+    if d.geography == "national" and args.ufs:
+        print(f"{d.name}: base nacional, sem --ufs", file=sys.stderr)
+        return 1
+    if d.geography != "national" and not args.ufs:
+        print(f"{d.name}: --ufs é obrigatório (ALL ou siglas)", file=sys.stderr)
+        return 1
+    ufs = None
+    if args.ufs:
+        ufs = list(sus.ALL_UFS) if args.ufs == "ALL" else [u.strip() for u in args.ufs.split(",")]
+    referencia = _escopo(args.referencia) if args.referencia else REFERENCIAS.get(d.name)
+    if referencia is None:
+        print(
+            f"{d.name}: no reference scope; pass --referencia with a scope validated by hand",
+            file=sys.stderr,
+        )
+        return 1
     escopos = janela(d, ufs, _periodo(args.inicio), _periodo(args.fim))
-    referencia = REFERENCIAS[d.name]
+    hoje = datetime.now(UTC)
+    pasta = evidence / f"{hoje:%Y-%m-%d}-validacao-{d.name}-{args.inicio}-{args.fim}"
+    if pasta.exists():
+        print(f"{d.name}: {pasta} already exists; move it before another run", file=sys.stderr)
+        return 1
     listing = list_sources(d, refresh=True)
     faltam = [str(s) for s in [referencia, *escopos] if s not in listing]
     if faltam:
         print(f"{d.name}: the server lists no file for {', '.join(faltam)}", file=sys.stderr)
         return 1
 
+    yaml_path = dictionaries / f"{d.name}.yaml"
+    validadas = {
+        _identidade(entry)
+        for entry in yaml.safe_load(yaml_path.read_text(encoding="utf-8"))["x-analytics"][
+            "validated_sources"
+        ]
+    }
+    metadata_hash = sus.describe_dataset(d.name)["metadata_hash"]
     downloads.mkdir(parents=True, exist_ok=True)
     parcial = downloads / f"parcial-{d.name}-{args.inicio}-{args.fim}.jsonl"
     feitos = _ler_parcial(parcial)
     registros = {}
     for i, scope in enumerate(dict.fromkeys([referencia, *escopos]), start=1):
         listed = listing[scope]
+        feito = feitos.get(str(scope))
         if len(listed.files) != 1:
-            registros[str(scope)] = {
+            registro = {
                 "escopo": str(scope),
                 "fonte": None,
                 "resultado": None,
                 "erro": f"dividido em {len(listed.files)} arquivos; audite à mão",
             }
-            continue
-        feito = feitos.get(str(scope))
-        if feito and feito["chave"] == _chave(listed.files[0]):
-            registros[str(scope)] = feito
-            continue
-        registro = _auditar(d, scope, listed, downloads)
-        (downloads / listed.files[0].name).unlink()
-        with parcial.open("a", encoding="utf-8") as f:
-            f.write(json.dumps(registro, ensure_ascii=False, default=str) + "\n")
+        elif (
+            feito
+            and feito["erro"] is None
+            and feito["chave"] == _chave(listed.files[0])
+            and feito["resultado"]["metadata_hash"] == metadata_hash
+        ):
+            registro = feito
+        else:
+            registro = _auditar(d, scope, listed, downloads)
+            (downloads / listed.files[0].name).unlink()
+            with parcial.open("a", encoding="utf-8") as f:
+                f.write(json.dumps(registro, ensure_ascii=False, default=str) + "\n")
+            linhas = registro["erro"] or f"{registro['resultado']['rows']} linhas"
+            print(f"[{i}] {scope}: {linhas}")
         registros[str(scope)] = registro
-        print(
-            f"[{i}] {scope}: {registro['erro'] or str(registro['resultado']['rows']) + ' linhas'}"
-        )
+        if scope != referencia:
+            continue
+        if registro["erro"]:
+            print(f"{d.name}: the reference {scope} failed: {registro['erro']}", file=sys.stderr)
+            return 1
+        if _identidade(_entrada(registro["fonte"])) not in validadas:
+            print(
+                f"{d.name}: the reference {scope} on the server "
+                f"({registro['fonte']['sha256'][:12]}…) is not the source validated by hand; "
+                "validate it by hand first (ADR 0003)",
+                file=sys.stderr,
+            )
+            return 1
 
     ref = {**registros[str(referencia)], "dataset": d.name}
-    if ref["resultado"] is None:
-        print(f"{d.name}: the reference {referencia} failed: {ref['erro']}", file=sys.stderr)
-        return 1
     regra_idade = sus.describe_dataset(d.name)["analytics"]["age"]
     decisoes = {
         str(s): [registros[str(s)]["erro"]]
@@ -348,8 +435,6 @@ def main(
         else bloqueios(registros[str(s)]["resultado"], ref["resultado"], regra_idade)
         for s in escopos
     }
-    hoje = datetime.now(UTC)
-    pasta = evidence / f"{hoje:%Y-%m-%d}-validacao-{d.name}-{args.inicio}-{args.fim}"
     _escrever(pasta, registros, decisoes, ref)
     parcial.unlink(missing_ok=True)
     bloqueados = [s for s, motivos in decisoes.items() if motivos]
@@ -360,14 +445,7 @@ def main(
         print(f"  {s}: {'; '.join(decisoes[s])}")
 
     if args.accept:
-        aceitos = []
-        for s in escopos:
-            if decisoes[str(s)]:
-                continue
-            fonte = registros[str(s)]["fonte"]
-            entry = {k: v for k, v in fonte["scope"].items() if v is not None}
-            aceitos.append(entry | {"release": fonte["release"], "source_sha256": fonte["sha256"]})
-        yaml_path = dictionaries / f"{d.name}.yaml"
+        aceitos = [_entrada(registros[str(s)]["fonte"]) for s in escopos if not decisoes[str(s)]]
         print(f"{append_validated_sources(yaml_path, aceitos)} new sources in {yaml_path.name}")
     return 2 if bloqueados else 0
 
