@@ -23,9 +23,11 @@ with sus.LakeReader() as lake:
 
 - `load` downloads what DATASUS publishes into the lake ([where it
   lives](guides/getting-started.md#2-where-the-lake-lives)) and returns the rows. A second call
-  downloads nothing. When the files are validated sources it also adds harmonised
-  categories (`idade_anos_completos`, `sexo_categoria`, `<date>_data`); otherwise it
-  warns which were left out (see [ADR 0003](decisions/0003-harmonised-categories-only-for-validated-sources.md)).
+  downloads nothing. When the files are validated sources it also adds the harmonised
+  categories the dataset's dictionary defines: age (`idade_anos_completos`), sex
+  (`sexo_categoria`) and dates (`<date>_data`), or only some of them, as
+  [Bases e argumentos](datasets.md) shows per dataset; otherwise it warns which were
+  left out (see [ADR 0003](decisions/0003-harmonised-categories-only-for-validated-sources.md)).
 - `label` puts the dictionary's label next to each code; a code the dictionary does
   not know gets no label.
 - `check_columns` reports, per column, empties, unlabelled codes and date ranges.
