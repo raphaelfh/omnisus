@@ -122,7 +122,7 @@ Os dicionários dessas linhas partem do inventário físico do descritor DBF de 
   (Informe CNES 2017-06, p. 11).
 - As quantidades de leitos tipo 1 (cirúrgico), 2 (clínico) e 3 (complementar) estão em
   `qtleitp1` a `qtleitp3` (Informe CNES 2017-06, p. 5); o arquivo de leitos é o LT
-  (p. 2), que a biblioteca não importa ([catálogo](../datasets.md)).
+  (p. 2), que a biblioteca importa como `cnes_leitos` ([catálogo](../datasets.md)).
 - O nome do estabelecimento não está no ST (Informe CNES 2017-06, p. 3–11):
   `sus.import_cnes_master` busca os nomes na API pública e os junta a `aux_cnes`
   (`src/omnisus/__init__.py`, docstring de `import_cnes_master`).
