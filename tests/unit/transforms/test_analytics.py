@@ -1,5 +1,6 @@
 import hashlib
 import json
+import re
 from dataclasses import replace
 from pathlib import Path
 
@@ -221,6 +222,17 @@ def test_tuberculose_audited_source_matches_the_evidence_manifest():
     (entry,) = [m for m in manifest if m["dataset"] == "sinan_tuberculose"]
     (validated,) = contexts("sinan_tuberculose")
     assert validated.source_sha256 == entry["sha256"]
+
+
+def test_every_validated_sim_and_sih_source_was_read_by_a_committed_audit():
+    """AGENTS.md rule 1: each validated SHA-256 appears in a committed evidence file."""
+    recorded: set[str] = set()
+    for path in (ROOT / "evidence").rglob("*.json"):
+        text = path.read_text(encoding="utf-8")
+        recorded |= set(re.findall(r'"(?:source_)?sha256":\s*"([0-9a-f]{64})"', text))
+    for dataset in ["sim_obitos", "sih_aih_reduzida"]:
+        for source in sus.describe_dataset(dataset)["analytics"]["validated_sources"]:
+            assert source["source_sha256"] in recorded, (dataset, source)
 
 
 def test_sim_subyear_age_keeps_quantity_and_unit(dbc_fixture):

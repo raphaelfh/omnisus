@@ -1,0 +1,322 @@
+{
+  "audited_at": "2026-10-07T20:28:51.148467+00:00",
+  "library_version": "0.2.2",
+  "script_sha256": "bc388c5dd605a03027f2fbccc16072a6aa8ab0467ee8dc902e26faea130a461e",
+  "manifest_sha256": "968328337ad1611a21c9e275bd43b1e91d73aa7f7af28007f48dc31f88c8018f",
+  "backends": {
+    "OMNISUS_DBC_BACKEND": "auto",
+    "OMNISUS_DBF_BACKEND": "auto"
+  },
+  "referencia": "RR_2023",
+  "rule_version": "1.1.0",
+  "metadata_hash": "6e96834235188a885040d878395ecae3033c880a229ba644ab2d6d1a37e2ab37",
+  "schema": {
+    "origem": "VARCHAR",
+    "tipobito": "VARCHAR",
+    "dtobito": "VARCHAR",
+    "horaobito": "VARCHAR",
+    "natural": "VARCHAR",
+    "codmunnatu": "VARCHAR",
+    "dtnasc": "VARCHAR",
+    "idade": "VARCHAR",
+    "sexo": "VARCHAR",
+    "racacor": "VARCHAR",
+    "estciv": "VARCHAR",
+    "esc": "VARCHAR",
+    "esc2010": "VARCHAR",
+    "seriescfal": "VARCHAR",
+    "ocup": "VARCHAR",
+    "codmunres": "VARCHAR",
+    "lococor": "VARCHAR",
+    "codestab": "VARCHAR",
+    "estabdescr": "VARCHAR",
+    "codmunocor": "VARCHAR",
+    "idademae": "VARCHAR",
+    "escmae": "VARCHAR",
+    "escmae2010": "VARCHAR",
+    "seriescmae": "VARCHAR",
+    "ocupmae": "VARCHAR",
+    "qtdfilvivo": "VARCHAR",
+    "qtdfilmort": "VARCHAR",
+    "gravidez": "VARCHAR",
+    "semagestac": "VARCHAR",
+    "gestacao": "VARCHAR",
+    "parto": "VARCHAR",
+    "obitoparto": "VARCHAR",
+    "peso": "VARCHAR",
+    "tpmorteoco": "VARCHAR",
+    "obitograv": "VARCHAR",
+    "obitopuerp": "VARCHAR",
+    "assistmed": "VARCHAR",
+    "exame": "VARCHAR",
+    "cirurgia": "VARCHAR",
+    "necropsia": "VARCHAR",
+    "linhaa": "VARCHAR",
+    "linhab": "VARCHAR",
+    "linhac": "VARCHAR",
+    "linhad": "VARCHAR",
+    "linhaii": "VARCHAR",
+    "causabas": "VARCHAR",
+    "cb_pre": "VARCHAR",
+    "comunsvoim": "VARCHAR",
+    "dtatestado": "VARCHAR",
+    "circobito": "VARCHAR",
+    "acidtrab": "VARCHAR",
+    "fonte": "VARCHAR",
+    "numerolote": "VARCHAR",
+    "tppos": "VARCHAR",
+    "dtinvestig": "VARCHAR",
+    "causabas_o": "VARCHAR",
+    "dtcadastro": "VARCHAR",
+    "atestante": "VARCHAR",
+    "stcodifica": "VARCHAR",
+    "codificado": "VARCHAR",
+    "versaosist": "VARCHAR",
+    "versaoscb": "VARCHAR",
+    "fonteinv": "VARCHAR",
+    "dtrecebim": "VARCHAR",
+    "atestado": "VARCHAR",
+    "dtrecoriga": "VARCHAR",
+    "causamat": "VARCHAR",
+    "escmaeagr1": "VARCHAR",
+    "escfalagr1": "VARCHAR",
+    "stdoepidem": "VARCHAR",
+    "stdonova": "VARCHAR",
+    "difdata": "VARCHAR",
+    "nudiasobco": "VARCHAR",
+    "nudiasobin": "VARCHAR",
+    "dtcadinv": "VARCHAR",
+    "tpobitocor": "VARCHAR",
+    "dtconinv": "VARCHAR",
+    "fontes": "VARCHAR",
+    "tpresginfo": "VARCHAR",
+    "tpnivelinv": "VARCHAR",
+    "nudiasinf": "VARCHAR",
+    "dtcadinf": "VARCHAR",
+    "morteparto": "VARCHAR",
+    "dtconcaso": "VARCHAR",
+    "fontesinf": "VARCHAR",
+    "altcausa": "VARCHAR",
+    "contador": "VARCHAR",
+    "ano": "USMALLINT",
+    "uf": "VARCHAR",
+    "_source_release": "VARCHAR"
+  },
+  "unavailable": [],
+  "expressions": [
+    {
+      "name": "idade_anos_completos",
+      "sql_type": "INTEGER",
+      "expression": "CAST(CASE WHEN ((trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) IS NULL OR trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) = '')) OR (NOT regexp_full_match(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), '[0-9]{3}')) OR ((trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) IN ('000')) OR (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) IN ('9'))) THEN NULL WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '0' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN 0 WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '1' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN 0 WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '2' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN 0 WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '3' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 11) THEN (TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) // 12) WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '4' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN (TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) + 0) WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '5' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN (TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) + 100) ELSE NULL END AS INTEGER)"
+    },
+    {
+      "name": "idade_status",
+      "sql_type": "VARCHAR",
+      "expression": "CASE WHEN (trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) IS NULL OR trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) = '') THEN 'missing' WHEN NOT regexp_full_match(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), '[0-9]{3}') THEN 'invalid' WHEN (trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) IN ('000')) OR (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) IN ('9')) THEN 'ignored' WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '0' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN 'valid' WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '1' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN 'valid' WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '2' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN 'valid' WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '3' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 11) THEN 'valid' WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '4' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN 'valid' WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '5' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN 'valid' ELSE 'unsupported' END"
+    },
+    {
+      "name": "idade_quantidade",
+      "sql_type": "INTEGER",
+      "expression": "CAST(CASE WHEN ((trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) IS NULL OR trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) = '')) OR (NOT regexp_full_match(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), '[0-9]{3}')) OR ((trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) IN ('000')) OR (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) IN ('9'))) THEN NULL WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '0' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '1' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '2' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '3' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 11) THEN TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '4' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN (TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) + 0) WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '5' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN (TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) + 100) ELSE NULL END AS INTEGER)"
+    },
+    {
+      "name": "idade_unidade",
+      "sql_type": "VARCHAR",
+      "expression": "CAST(CASE WHEN ((trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) IS NULL OR trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) = '')) OR (NOT regexp_full_match(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), '[0-9]{3}')) OR ((trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))) IN ('000')) OR (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) IN ('9'))) THEN NULL WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '0' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN 'minute' WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '1' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN 'hour' WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '2' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN 'day' WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '3' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 11) THEN 'month' WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '4' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN 'year' WHEN (substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 1, 1) = '5' AND TRY_CAST(substring(trim(CAST((\"idade\") AS VARCHAR), (chr(32) || chr(9) || chr(10) || chr(13) || chr(11) || chr(12) || chr(28) || chr(29) || chr(30) || chr(31) || chr(133) || chr(160) || chr(5760) || chr(8192) || chr(8193) || chr(8194) || chr(8195) || chr(8196) || chr(8197) || chr(8198) || chr(8199) || chr(8200) || chr(8201) || chr(8202) || chr(8232) || chr(8233) || chr(8239) || chr(8287) || chr(12288))), 2, 2) AS BIGINT) BETWEEN 0 AND 99) THEN 'year' ELSE NULL END AS VARCHAR)"
+    },
+    {
+      "name": "sexo_categoria",
+      "sql_type": "VARCHAR",
+      "expression": "CASE WHEN trim(CAST(\"sexo\" AS VARCHAR)) = '1' THEN 'male' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = '2' THEN 'female' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = 'M' THEN 'male' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = 'F' THEN 'female' ELSE NULL END"
+    },
+    {
+      "name": "sexo_status",
+      "sql_type": "VARCHAR",
+      "expression": "CASE WHEN trim(CAST(\"sexo\" AS VARCHAR)) IS NULL OR trim(CAST(\"sexo\" AS VARCHAR)) = '' THEN 'missing' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = '1' THEN 'valid' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = '2' THEN 'valid' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = '0' THEN 'ignored' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = '9' THEN 'ignored' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = 'M' THEN 'valid' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = 'F' THEN 'valid' WHEN trim(CAST(\"sexo\" AS VARCHAR)) = 'I' THEN 'ignored' ELSE 'unsupported' END"
+    },
+    {
+      "name": "dtobito_data",
+      "sql_type": "DATE",
+      "expression": "CASE WHEN regexp_full_match(trim(CAST(\"dtobito\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtobito\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END"
+    },
+    {
+      "name": "dtobito_data_status",
+      "sql_type": "VARCHAR",
+      "expression": "CASE WHEN trim(CAST(\"dtobito\" AS VARCHAR)) IS NULL OR trim(CAST(\"dtobito\" AS VARCHAR)) = '' THEN 'missing' WHEN (CASE WHEN regexp_full_match(trim(CAST(\"dtobito\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtobito\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END) IS NULL THEN 'invalid' ELSE 'valid' END"
+    },
+    {
+      "name": "dtnasc_data",
+      "sql_type": "DATE",
+      "expression": "CASE WHEN regexp_full_match(trim(CAST(\"dtnasc\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtnasc\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END"
+    },
+    {
+      "name": "dtnasc_data_status",
+      "sql_type": "VARCHAR",
+      "expression": "CASE WHEN trim(CAST(\"dtnasc\" AS VARCHAR)) IS NULL OR trim(CAST(\"dtnasc\" AS VARCHAR)) = '' THEN 'missing' WHEN (CASE WHEN regexp_full_match(trim(CAST(\"dtnasc\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtnasc\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END) IS NULL THEN 'invalid' ELSE 'valid' END"
+    },
+    {
+      "name": "dtatestado_data",
+      "sql_type": "DATE",
+      "expression": "CASE WHEN regexp_full_match(trim(CAST(\"dtatestado\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtatestado\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END"
+    },
+    {
+      "name": "dtatestado_data_status",
+      "sql_type": "VARCHAR",
+      "expression": "CASE WHEN trim(CAST(\"dtatestado\" AS VARCHAR)) IS NULL OR trim(CAST(\"dtatestado\" AS VARCHAR)) = '' THEN 'missing' WHEN (CASE WHEN regexp_full_match(trim(CAST(\"dtatestado\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtatestado\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END) IS NULL THEN 'invalid' ELSE 'valid' END"
+    },
+    {
+      "name": "dtinvestig_data",
+      "sql_type": "DATE",
+      "expression": "CASE WHEN regexp_full_match(trim(CAST(\"dtinvestig\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtinvestig\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END"
+    },
+    {
+      "name": "dtinvestig_data_status",
+      "sql_type": "VARCHAR",
+      "expression": "CASE WHEN trim(CAST(\"dtinvestig\" AS VARCHAR)) IS NULL OR trim(CAST(\"dtinvestig\" AS VARCHAR)) = '' THEN 'missing' WHEN (CASE WHEN regexp_full_match(trim(CAST(\"dtinvestig\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtinvestig\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END) IS NULL THEN 'invalid' ELSE 'valid' END"
+    },
+    {
+      "name": "dtcadinv_data",
+      "sql_type": "DATE",
+      "expression": "CASE WHEN regexp_full_match(trim(CAST(\"dtcadinv\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtcadinv\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END"
+    },
+    {
+      "name": "dtcadinv_data_status",
+      "sql_type": "VARCHAR",
+      "expression": "CASE WHEN trim(CAST(\"dtcadinv\" AS VARCHAR)) IS NULL OR trim(CAST(\"dtcadinv\" AS VARCHAR)) = '' THEN 'missing' WHEN (CASE WHEN regexp_full_match(trim(CAST(\"dtcadinv\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtcadinv\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END) IS NULL THEN 'invalid' ELSE 'valid' END"
+    },
+    {
+      "name": "dtconinv_data",
+      "sql_type": "DATE",
+      "expression": "CASE WHEN regexp_full_match(trim(CAST(\"dtconinv\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtconinv\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END"
+    },
+    {
+      "name": "dtconinv_data_status",
+      "sql_type": "VARCHAR",
+      "expression": "CASE WHEN trim(CAST(\"dtconinv\" AS VARCHAR)) IS NULL OR trim(CAST(\"dtconinv\" AS VARCHAR)) = '' THEN 'missing' WHEN (CASE WHEN regexp_full_match(trim(CAST(\"dtconinv\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtconinv\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END) IS NULL THEN 'invalid' ELSE 'valid' END"
+    },
+    {
+      "name": "dtcadinf_data",
+      "sql_type": "DATE",
+      "expression": "CASE WHEN regexp_full_match(trim(CAST(\"dtcadinf\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtcadinf\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END"
+    },
+    {
+      "name": "dtcadinf_data_status",
+      "sql_type": "VARCHAR",
+      "expression": "CASE WHEN trim(CAST(\"dtcadinf\" AS VARCHAR)) IS NULL OR trim(CAST(\"dtcadinf\" AS VARCHAR)) = '' THEN 'missing' WHEN (CASE WHEN regexp_full_match(trim(CAST(\"dtcadinf\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtcadinf\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END) IS NULL THEN 'invalid' ELSE 'valid' END"
+    },
+    {
+      "name": "dtconcaso_data",
+      "sql_type": "DATE",
+      "expression": "CASE WHEN regexp_full_match(trim(CAST(\"dtconcaso\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtconcaso\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END"
+    },
+    {
+      "name": "dtconcaso_data_status",
+      "sql_type": "VARCHAR",
+      "expression": "CASE WHEN trim(CAST(\"dtconcaso\" AS VARCHAR)) IS NULL OR trim(CAST(\"dtconcaso\" AS VARCHAR)) = '' THEN 'missing' WHEN (CASE WHEN regexp_full_match(trim(CAST(\"dtconcaso\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtconcaso\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END) IS NULL THEN 'invalid' ELSE 'valid' END"
+    },
+    {
+      "name": "dtcadastro_data",
+      "sql_type": "DATE",
+      "expression": "CASE WHEN regexp_full_match(trim(CAST(\"dtcadastro\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtcadastro\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END"
+    },
+    {
+      "name": "dtcadastro_data_status",
+      "sql_type": "VARCHAR",
+      "expression": "CASE WHEN trim(CAST(\"dtcadastro\" AS VARCHAR)) IS NULL OR trim(CAST(\"dtcadastro\" AS VARCHAR)) = '' THEN 'missing' WHEN (CASE WHEN regexp_full_match(trim(CAST(\"dtcadastro\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtcadastro\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END) IS NULL THEN 'invalid' ELSE 'valid' END"
+    },
+    {
+      "name": "dtrecebim_data",
+      "sql_type": "DATE",
+      "expression": "CASE WHEN regexp_full_match(trim(CAST(\"dtrecebim\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtrecebim\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END"
+    },
+    {
+      "name": "dtrecebim_data_status",
+      "sql_type": "VARCHAR",
+      "expression": "CASE WHEN trim(CAST(\"dtrecebim\" AS VARCHAR)) IS NULL OR trim(CAST(\"dtrecebim\" AS VARCHAR)) = '' THEN 'missing' WHEN (CASE WHEN regexp_full_match(trim(CAST(\"dtrecebim\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtrecebim\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END) IS NULL THEN 'invalid' ELSE 'valid' END"
+    },
+    {
+      "name": "dtrecoriga_data",
+      "sql_type": "DATE",
+      "expression": "CASE WHEN regexp_full_match(trim(CAST(\"dtrecoriga\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtrecoriga\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END"
+    },
+    {
+      "name": "dtrecoriga_data_status",
+      "sql_type": "VARCHAR",
+      "expression": "CASE WHEN trim(CAST(\"dtrecoriga\" AS VARCHAR)) IS NULL OR trim(CAST(\"dtrecoriga\" AS VARCHAR)) = '' THEN 'missing' WHEN (CASE WHEN regexp_full_match(trim(CAST(\"dtrecoriga\" AS VARCHAR)), '[0-9]{8}') THEN TRY_STRPTIME(trim(CAST(\"dtrecoriga\" AS VARCHAR)), '%d%m%Y')::DATE ELSE NULL END) IS NULL THEN 'invalid' ELSE 'valid' END"
+    }
+  ],
+  "queries": [
+    {
+      "name": "rows",
+      "sql": "SELECT count(*) AS n FROM projected"
+    },
+    {
+      "name": "idade_status",
+      "sql": "SELECT \"idade_status\" AS status, count(*) AS n FROM projected GROUP BY ALL ORDER BY 1"
+    },
+    {
+      "name": "sexo_status",
+      "sql": "SELECT \"sexo_status\" AS status, count(*) AS n FROM projected GROUP BY ALL ORDER BY 1"
+    },
+    {
+      "name": "dtobito_data_status",
+      "sql": "SELECT \"dtobito_data_status\" AS status, count(*) AS n FROM projected GROUP BY ALL ORDER BY 1"
+    },
+    {
+      "name": "dtnasc_data_status",
+      "sql": "SELECT \"dtnasc_data_status\" AS status, count(*) AS n FROM projected GROUP BY ALL ORDER BY 1"
+    },
+    {
+      "name": "dtatestado_data_status",
+      "sql": "SELECT \"dtatestado_data_status\" AS status, count(*) AS n FROM projected GROUP BY ALL ORDER BY 1"
+    },
+    {
+      "name": "dtinvestig_data_status",
+      "sql": "SELECT \"dtinvestig_data_status\" AS status, count(*) AS n FROM projected GROUP BY ALL ORDER BY 1"
+    },
+    {
+      "name": "dtcadinv_data_status",
+      "sql": "SELECT \"dtcadinv_data_status\" AS status, count(*) AS n FROM projected GROUP BY ALL ORDER BY 1"
+    },
+    {
+      "name": "dtconinv_data_status",
+      "sql": "SELECT \"dtconinv_data_status\" AS status, count(*) AS n FROM projected GROUP BY ALL ORDER BY 1"
+    },
+    {
+      "name": "dtcadinf_data_status",
+      "sql": "SELECT \"dtcadinf_data_status\" AS status, count(*) AS n FROM projected GROUP BY ALL ORDER BY 1"
+    },
+    {
+      "name": "dtconcaso_data_status",
+      "sql": "SELECT \"dtconcaso_data_status\" AS status, count(*) AS n FROM projected GROUP BY ALL ORDER BY 1"
+    },
+    {
+      "name": "dtcadastro_data_status",
+      "sql": "SELECT \"dtcadastro_data_status\" AS status, count(*) AS n FROM projected GROUP BY ALL ORDER BY 1"
+    },
+    {
+      "name": "dtrecebim_data_status",
+      "sql": "SELECT \"dtrecebim_data_status\" AS status, count(*) AS n FROM projected GROUP BY ALL ORDER BY 1"
+    },
+    {
+      "name": "dtrecoriga_data_status",
+      "sql": "SELECT \"dtrecoriga_data_status\" AS status, count(*) AS n FROM projected GROUP BY ALL ORDER BY 1"
+    },
+    {
+      "name": "uninterpreted_age_codes",
+      "sql": "SELECT \"idade\" AS value, NULL AS unit, idade_status AS status, count(*) AS n FROM projected WHERE idade_status IN ('unsupported', 'invalid') GROUP BY ALL ORDER BY ALL"
+    },
+    {
+      "name": "age_groups",
+      "sql": "SELECT NULL AS unit, idade_status AS status, min(idade_anos_completos) AS minimum, max(idade_anos_completos) AS maximum, count(*) AS n FROM projected GROUP BY ALL ORDER BY ALL"
+    },
+    {
+      "name": "sex",
+      "sql": "SELECT sexo_categoria, sexo_status, count(*) AS n FROM projected GROUP BY ALL ORDER BY ALL"
+    },
+    {
+      "name": "date_consistency",
+      "sql": "WITH dates AS (SELECT idade_anos_completos AS age,\n                    CASE WHEN regexp_full_match(\"dtnasc\", '[0-9]{8}') THEN try_strptime(\"dtnasc\", '%d%m%Y')::DATE END AS birth,\n                    CASE WHEN regexp_full_match(\"dtobito\", '[0-9]{8}') THEN try_strptime(\"dtobito\", '%d%m%Y')::DATE END AS event FROM projected),\n                    compared AS (SELECT *, date_diff('year', birth, event) - (strftime(event,'%m%d') < strftime(birth,'%m%d'))::INTEGER AS calculated FROM dates)\n                    SELECT count(*) AS total, count(*) FILTER (WHERE age IS NOT NULL AND birth IS NOT NULL AND event >= birth) AS comparable,\n                    count(*) FILTER (WHERE event >= birth AND age = calculated) AS equal,\n                    count(*) FILTER (WHERE event >= birth AND age <> calculated) AS different FROM compared"
+    }
+  ]
+}

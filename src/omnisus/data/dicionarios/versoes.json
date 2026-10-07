@@ -103,7 +103,8 @@
   },
   "sih_aih_reduzida": {
     "2.10.0": "cd8d8b957f2d87e25aa005ced848345a9bb7c4d94b519939afe486a44101a91d",
-    "2.11.0": "3156f4894503da2aa44fed35b25a5cc89c8f734d5cbf8ae20c772d8e42a6588b"
+    "2.11.0": "3156f4894503da2aa44fed35b25a5cc89c8f734d5cbf8ae20c772d8e42a6588b",
+    "2.12.0": "097abd8d17da884d7e044967883b72e954a64ae9fbb5b616f5881b86b345ae4c"
   },
   "sih_aih_reduzida_1992_2007": {
     "1.1.0": "240c72f5e4d44279aaa6fe8a94a94984a4fc07de67fffce8912519c32573a7a8",
@@ -119,7 +120,8 @@
     "1.1.0": "34a007b44a6ff54f22aba6af29fba978608da15ccdcd362f88884725eaf41f7b"
   },
   "sim_obitos": {
-    "2.5.0": "f8a339e1ea76bb7f9999cc7d01a6f3b988d6c9c7d3f782c2da7e642902d6a967"
+    "2.5.0": "f8a339e1ea76bb7f9999cc7d01a6f3b988d6c9c7d3f782c2da7e642902d6a967",
+    "2.6.0": "a15525a09b42e81242ecb98a12ebcebf5afbb3d4eb87966e8409b5ea20a6bc7a"
   },
   "sim_obitos_cid9": {
     "1.1.0": "cb087fdf1419616c24a1e2a2c8cec2bdc9f3f531fa3c1015dfe36c450efa32d0"

@@ -87,18 +87,31 @@ def test_fields_and_labelled_fields_count_the_dictionary(table: pl.DataFrame) ->
 def test_validated_scopes_list_the_validated_sources(table: pl.DataFrame) -> None:
     """A list of scopes, never a yes/no: the categories exist only there (ADR 0003).
 
-    The literals are the ``x-analytics.validated_sources`` of the packaged dictionaries.
+    The literals are in the ``x-analytics.validated_sources`` of the packaged dictionaries;
+    SIM is checked as a subset, because #85 validated every UF from 2020.
     """
-    assert _row(table, "sim_obitos")["validated_scopes"] == [
-        "RR_2021",
-        "RR_2022",
-        "RR_2023",
-        "RR_2024",
-        "SP_2024",
-    ]
+    sim = _row(table, "sim_obitos")["validated_scopes"]
+    assert {"RR_2021", "RR_2022", "RR_2023", "RR_2024", "SP_2024", "AC_2020"} <= set(sim)
     assert _row(table, "sih_aih_reduzida")["validated_scopes"][:2] == ["RR_2023_01", "SP_2024_01"]
     assert _row(table, "sinan_chagas")["validated_scopes"] == ["national_2023"]
     assert _row(table, "sia_apac_nefrologia")["validated_scopes"] == []
+
+
+def test_sim_and_sih_are_validated_in_every_uf_from_2020(table: pl.DataFrame) -> None:
+    """#85: SIM 2020 to 2024 and SIH 2020-01 to 2025-02 in every UF (ADR 0003, Consequences).
+
+    A scope the acceptance rule blocked would be listed here with its issue.
+    """
+    sim = set(_row(table, "sim_obitos")["validated_scopes"])
+    esperados = sus.scopes_for("sim_obitos", years=range(2020, 2025), ufs=sus.ALL_UFS)
+    assert {str(s) for s in esperados} - sim == set()
+    sih = set(_row(table, "sih_aih_reduzida")["validated_scopes"])
+    esperados = [
+        s
+        for s in sus.scopes_for("sih_aih_reduzida", years=range(2020, 2026), ufs=sus.ALL_UFS)
+        if (s.ano, s.mes) <= (2025, 2)
+    ]
+    assert {str(s) for s in esperados} - sih == set()
 
 
 def test_no_rule_overrides_the_validated_sources(table: pl.DataFrame) -> None:

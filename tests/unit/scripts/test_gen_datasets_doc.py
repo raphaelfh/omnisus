@@ -87,7 +87,7 @@ def test_state_yearly_dataset_says_por_uf_anual():
 def test_sim_obitos_shows_the_preliminary_directory_and_its_validated_scopes():
     sim = _system_row("sim_obitos")
     assert sim["Cobertura"] == "1996 em diante + preliminar"
-    assert sim["Categorias harmonizadas"] == "idade, sexo e datas em RR, 2021 a 2024; SP, 2024"
+    assert sim["Categorias harmonizadas"] == "idade, sexo e datas em 27 UFs, 2020 a 2024"
     assert _system_row("sia_apac_nefrologia")["Categorias harmonizadas"] == "—"
 
 
@@ -96,7 +96,7 @@ def test_harmonised_categories_name_only_the_rules_the_dictionary_defines():
     assert _system_row("sinan_chagas")["Categorias harmonizadas"] == "idade em Brasil, 2023"
     assert _system_row("sinasc_nascidos_vivos")["Categorias harmonizadas"] == "idade em RR, 2023"
     assert _system_row("sih_aih_reduzida")["Categorias harmonizadas"] == (
-        "idade, sexo e datas em RR, 2023-01; SP, 2024-01 a 2024-05, 2025-01 a 2025-02"
+        "idade, sexo e datas em 27 UFs, 2020-01 a 2025-02"
     )
 
 
