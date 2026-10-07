@@ -10,12 +10,17 @@
   that ADR 0003 now records, and none was blocked (evidence in
   `evidence/2026-10-07-validacao-sim_obitos-2020-2024/` and
   `evidence/2026-10-07-validacao-sih_aih_reduzida-2020-01-2025-02/`). The formulas do not
-  change; a caller that passes the old `rule_version` now gets `ValueError`. SIH from
+  change; a caller that passes the old `rule_version` now gets `ValueError`. The fields'
+  `derivation.rule_version` follows, and so do the SIM subsets that copy them
+  (`sim_obitos_infantis`, `sim_obitos_maternos`, `sim_obitos_externos` 1.1.1). SIH from
   2025-03 (layout 6) waits for #86 (#85).
-- `scripts/metadados/validar_fonte.py` audits a batch (`--ufs`, `--inicio`, `--fim`) with
-  one server listing, resumes after a dropped connection and writes one evidence folder
-  per run, with no local path. Removed: `--uf`, `--year`, `--month`, the
-  `reports/evidence` default and the per-scope `acceptance.json` (#85).
+- `scripts/metadados/validar_fonte.py` audits a batch (`--ufs`, `--inicio`, `--fim`,
+  `--referencia`; no `--ufs` for a national dataset) with one server listing. The
+  reference must be the file validated by hand, and the batch stops as soon as it fails.
+  A dropped connection resumes without downloading again, except a failed audit or one
+  made under another dictionary version. Each run writes one evidence folder, with no
+  local path, and never replaces an existing one. Removed: `--uf`, `--year`, `--month`,
+  the `reports/evidence` default and the per-scope `acceptance.json` (#85).
 - `docs/datasets.md` shows the validated scopes as UFs and intervals
   ("27 UFs, 2020 a 2024") instead of one entry per scope (#85).
 - `sih_aih_reduzida.diagsec9` no longer references `aux_cid10`: the 157 RD files read

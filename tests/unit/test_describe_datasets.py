@@ -114,6 +114,22 @@ def test_sim_and_sih_are_validated_in_every_uf_from_2020(table: pl.DataFrame) ->
     assert {str(s) for s in esperados} - sih == set()
 
 
+def test_a_field_derivation_names_the_rules_edition_of_its_dataset(table: pl.DataFrame) -> None:
+    """``derivation.rule_version`` of a field is its dictionary's ``x-analytics.version``:
+    the edition ``analytical_projection(rule_version=...)`` accepts (#85 bumped both)."""
+    for name in table["name"]:
+        meta = sus.describe_dataset(name)
+        if not meta["analytics"]:
+            continue
+        for field in meta["fields"]:
+            derivation = field["field"].get("derivation") or {}
+            if "rule_version" in derivation:
+                assert derivation["rule_version"] == meta["analytics"]["version"], (
+                    name,
+                    field["field"]["name"],
+                )
+
+
 def test_no_rule_overrides_the_validated_sources(table: pl.DataFrame) -> None:
     """``analytical_projection`` lets a rule carry its own ``validated_sources``; no
     packaged dictionary does, so one list per dataset is what every rule checks."""
