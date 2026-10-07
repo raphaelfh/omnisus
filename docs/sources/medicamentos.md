@@ -86,8 +86,8 @@ Dispensação:
 ## Cobertura e modalidade
 
 - `sia_apac_medicamentos`: arquivos mensais por UF, de janeiro de 2008 em diante, no
-  diretório `/dissemin/publicos/SIASUS/200801_/Dados`, sem diretório preliminar; veja o
-  [catálogo de datasets](../datasets.md).
+  diretório `/dissemin/publicos/SIASUS/200801_/Dados`, sem diretório preliminar; veja
+  [Bases e argumentos](../datasets.md#onde-fica-no-servidor).
 - Estoque BNAFAR/Hórus: uma página HTTP por chamada, até 1.000 registros, guardada com
   bytes e procedência e nunca publicada no lake; não há importador histórico nem
   nacional.
@@ -191,7 +191,7 @@ Passo a passo com a APAC em seis etapas, a página de estoque e o que não é p�
 - Notícia da Conitec sobre a SABEIS:
   <https://www.gov.br/conitec/pt-br/assuntos/noticias/2026/fevereiro/sabeis-libera-acesso-publico-a-dados-do-sus/>
   — respondeu HTTP 401 em 2026-09-13; nenhuma afirmação desta página depende dela.
-- Catálogo gerado do registro da biblioteca: [Datasets](../datasets.md).
+- [Bases e argumentos](../datasets.md#sia), página gerada do registro da biblioteca.
 
 ## Detalhes técnicos
 

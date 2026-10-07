@@ -21,7 +21,8 @@ DATASUS, um por UF e ano.
 - O dicionário liga `causabas` à tabela CID-10 (`aux_cid10`, código sem ponto, como o
   arquivo grava; todos os códigos do exemplo de 2023 resolvem)
   (`src/omnisus/data/dicionarios/sim_obitos.yaml`), e o
-  diretório final é `/dissemin/publicos/SIM/CID10/DORES` ([catálogo](../datasets.md)).
+  diretório final é `/dissemin/publicos/SIM/CID10/DORES`
+  ([Bases e argumentos](../datasets.md#onde-fica-no-servidor)).
 - As linhas A a D e a Parte II guardam os CIDs informados em cada linha da DO
   (Estrutura do SIM 2025, p. 4–5).
 - A importação grava as colunas do arquivo com nomes em minúsculas e acrescenta
@@ -60,8 +61,8 @@ DATASUS, um por UF e ano.
 
 Arquivos anuais por UF, de 1996 em diante, no diretório final
 `/dissemin/publicos/SIM/CID10/DORES` e no preliminar
-`/dissemin/publicos/SIM/PRELIM/DORES`; veja o
-[catálogo de datasets](../datasets.md).
+`/dissemin/publicos/SIM/PRELIM/DORES`; veja
+[Bases e argumentos](../datasets.md#onde-fica-no-servidor).
 
 Um ano pode estar em só um dos dois diretórios. Para saber qual:
 
@@ -191,7 +192,7 @@ Passo a passo com análise e procedência:
   — consultado em 2026-09-10; SHA-256
   `b4195ac8e0f825a794cb487df93db41601a2f430a708172f494f1251b55eeeb1`, conferido de novo
   em 2026-09-13. Registro: `src/omnisus/data/dicionarios/sources/registry.json`.
-- Catálogo gerado do registro da biblioteca: [Datasets](../datasets.md).
+- [Bases e argumentos](../datasets.md#sim), página gerada do registro da biblioteca.
 - Exemplo auditado do campo `sexo`, com as questões abertas citadas acima:
   [sim_obitos.sexo.json](../dicionario/exemplos/sim_obitos.sexo.json).
 

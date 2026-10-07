@@ -44,8 +44,8 @@ Saúde e arquivos publicados pelo DATASUS, um por UF e ano.
 
 Arquivos anuais por UF, de 1996 em diante, no diretório final
 `/dissemin/publicos/SINASC/1996_/Dados/DNRES` e no preliminar
-`/dissemin/publicos/SINASC/PRELIM/DNRES`; veja o
-[catálogo de datasets](../datasets.md).
+`/dissemin/publicos/SINASC/PRELIM/DNRES`; veja
+[Bases e argumentos](../datasets.md#onde-fica-no-servidor).
 
 Um ano pode estar em só um dos dois diretórios. Para saber qual:
 
@@ -141,7 +141,7 @@ Passo a passo com análise e procedência:
   — consultado em 2026-09-10; SHA-256
   `24e0d4388ea1d5fbe58a328136f1cb464e461985d3ed737210e0ecda5000cb08`, conferido de novo
   em 2026-09-13. Registro: `src/omnisus/data/dicionarios/sources/registry.json`.
-- Catálogo gerado do registro da biblioteca: [Datasets](../datasets.md).
+- [Bases e argumentos](../datasets.md#sinasc), página gerada do registro da biblioteca.
 
 ## Detalhes técnicos
 

@@ -63,9 +63,10 @@ SUS (SIH/SUS), nos arquivos RD que o DATASUS publica um por UF e mês de process
 ## Cobertura e modalidade
 
 Arquivos mensais por UF, de janeiro de 2008 em diante, no diretório
-`/dissemin/publicos/SIHSUS/200801_/Dados`, sem diretório preliminar; veja o
-[catálogo de datasets](../datasets.md). Os arquivos `RJ`, `SP` e `ER`, que o mesmo documento
-descreve (Informe SIH 2016-03, p. 4–5), são linhas próprias; veja abaixo.
+`/dissemin/publicos/SIHSUS/200801_/Dados`, sem diretório preliminar; veja
+[Bases e argumentos](../datasets.md#onde-fica-no-servidor). Os arquivos `RJ`, `SP` e `ER`,
+que o mesmo documento descreve (Informe SIH 2016-03, p. 4–5), são linhas próprias; veja
+abaixo.
 
 ### Outras linhas do SIH
 
@@ -201,7 +202,7 @@ Passo a passo com análise e procedência:
   — consultado em 2026-09-10; SHA-256
   `1e89d5f2cc41420385d7e30ba5541a387912ab3a0efb167d39def74502076220`, conferido de novo
   em 2026-09-13. Registro: `src/omnisus/data/dicionarios/sources/registry.json`.
-- Catálogo gerado do registro da biblioteca: [Datasets](../datasets.md).
+- [Bases e argumentos](../datasets.md#sih), página gerada do registro da biblioteca.
 
 ## Detalhes técnicos
 
