@@ -74,9 +74,10 @@ REFERENCIAS = {
 
 
 def _entry_lines(entry: dict) -> list[str]:
+    values = {key: "null" if value is None else value for key, value in entry.items()}
     lines = [
         f"  - {key}: {value}" if i == 0 else f"    {key}: {value}"
-        for i, (key, value) in enumerate(entry.items())
+        for i, (key, value) in enumerate(values.items())
     ]
     return [line + "\n" for line in lines]
 
@@ -93,8 +94,9 @@ def _identidade(entry: Mapping) -> tuple:
 
 
 def _entrada(fonte: Mapping) -> dict:
-    """The ``validated_sources`` entry of one audited file of the manifest."""
-    entry = {k: v for k, v in fonte["scope"].items() if v is not None}
+    """The ``validated_sources`` entry of one audited file of the manifest: ``uf: null``
+    for a national scope, as the dictionaries write it; ``mes`` only for a monthly one."""
+    entry = {k: v for k, v in fonte["scope"].items() if k == "uf" or v is not None}
     return entry | {"release": fonte["release"], "source_sha256": fonte["sha256"]}
 
 

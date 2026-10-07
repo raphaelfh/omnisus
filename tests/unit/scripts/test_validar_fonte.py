@@ -5,7 +5,8 @@ DORR2023.dbc, both in SIM `validated_sources`; DORR2023 is the SIM reference.
 `sinan_chagas_br_2023.dbc` is CHAGBR23.dbc, the validated national, preliminary source.
 `sih_rr_2024_01_mini.dbc` is RDRR2401.dbc with GESTOR_CPF blanked (SHA-256 5e6f0c99…), so
 it is not the validated source (37741f8b…). The fake server also lists the DORR2022 bytes
-as AC 2022 and AL 2022, to accept two new SHA-256 in one edit.
+as AC 2022 and AL 2022, to accept two new SHA-256 in one edit, and the CHAGBR23 bytes as
+the national 2022 scope, to accept a new national source.
 """
 
 from __future__ import annotations
@@ -42,6 +43,7 @@ SERVED = {
     ("sim_obitos", ScopeKey(uf="AL", ano=2022)): "sim_rr_2022_mini",
     ("sih_aih_reduzida", SIH_RR_2024_01): "sih_rr_2024_01_mini",
     ("sinan_chagas", SINAN_2023): "sinan_chagas_br_2023",
+    ("sinan_chagas", ScopeKey(uf=None, ano=2022)): "sinan_chagas_br_2023",
 }
 RELEASES = {"sinan_chagas": "prelim"}
 
@@ -562,6 +564,23 @@ def test_a_national_dataset_runs_without_ufs_against_its_reference(workspace) ->
         ("national_2023", "aceito")
     ]
     assert _validated(paths["dictionaries"], "sinan_chagas") == before
+
+
+def test_a_new_national_source_is_recorded_with_a_null_uf(workspace) -> None:
+    """The national entries of the dictionaries carry ``uf: null``: the library reads
+    ``source["uf"]`` to match a scope (``analytics._confirmed``)."""
+    module, paths, _calls = workspace
+    argv = ["sinan_chagas", "--inicio", "2022", "--fim", "2023", "--referencia", "national_2023"]
+
+    code = module.main([*argv, "--accept"], **paths)
+
+    assert code == 0
+    assert _validated(paths["dictionaries"], "sinan_chagas")[-1] == {
+        "uf": None,
+        "ano": 2022,
+        "release": "prelim",
+        "source_sha256": _sha("sinan_chagas_br_2023"),
+    }
 
 
 def test_ufs_are_refused_for_a_national_dataset(workspace, capsys) -> None:
