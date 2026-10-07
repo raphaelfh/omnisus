@@ -4,6 +4,20 @@
 
 ### Dictionaries
 
+- `sim_obitos` (2.6.0, rule 1.2.0) and `sih_aih_reduzida` (2.12.0, rule 1.3.0) gain
+  harmonised categories in every UF for SIM 2020–2024 and SIH 2020-01 to 2025-02: the
+  135 DO and 1,674 RD files were audited in one batch under the written acceptance rule
+  that ADR 0003 now records, and none was blocked (evidence in
+  `evidence/2026-10-07-validacao-sim_obitos-2020-2024/` and
+  `evidence/2026-10-07-validacao-sih_aih_reduzida-2020-01-2025-02/`). The formulas do not
+  change; a caller that passes the old `rule_version` now gets `ValueError`. SIH from
+  2025-03 (layout 6) waits for #86 (#85).
+- `scripts/metadados/validar_fonte.py` audits a batch (`--ufs`, `--inicio`, `--fim`) with
+  one server listing, resumes after a dropped connection and writes one evidence folder
+  per run, with no local path. Removed: `--uf`, `--year`, `--month`, the
+  `reports/evidence` default and the per-scope `acceptance.json` (#85).
+- `docs/datasets.md` shows the validated scopes as UFs and intervals
+  ("27 UFs, 2020 a 2024") instead of one entry per scope (#85).
 - `sih_aih_reduzida.diagsec9` no longer references `aux_cid10`: the 157 RD files read
   from 2014-01 to 2026-07 (one RR or AP file a month, plus SP and MG at each layout
   change) publish `DIAGSEC9` as C(1), so no row could join. Its

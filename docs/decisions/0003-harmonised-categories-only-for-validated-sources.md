@@ -26,3 +26,14 @@ Most scopes have no harmonised categories until someone validates them (today SI
 2021–2024 and SP 2024, eight SIH scopes, one or two elsewhere; SINASC and SIA have no sex
 rule). `scripts/metadados/validar_fonte.py` keeps the cost of validating one more scope to one
 command and one PR.
+
+**2026-10-07, validation by batch (#85).** The maintainer decided that a batch of scopes
+may be validated by one written acceptance rule, applied the same way to every scope by
+`validar_fonte.py`. A scope is blocked when its audit raises, it is split into several
+files, its staged schema differs from the reference scope's, a sex code is unsupported, or
+an age carries a unit the rule does not declare. Those are the signs of a code whose
+meaning changed, the failure this ADR guards against. Ages outside a declared unit's
+bounds, invalid composites and malformed text stay null and are reported. The batch's
+evidence folder records each scope's decision; a blocked scope gets an issue. First used
+for SIM 2020–2024 and SIH 2020-01 to 2025-02 in every UF
+(`evidence/2026-10-07-validacao-*`).
