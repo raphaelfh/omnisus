@@ -12,6 +12,15 @@
   "diagsec9")` now raises. Lakes keep their scopes: the parser version does not read
   references (#67).
 
+### Docs site
+
+- The `load` docstring and the API page say that `load` adds the harmonised categories
+  the dataset's dictionary defines (`describe_dataset(base)["analytics"]`), not age, sex
+  and dates for every validated source: of the nine datasets with validated scopes,
+  `sim_obitos` and `sih_aih_reduzida` define all three and the other seven age only.
+  The docstring points to `describe_datasets()` and "Bases e argumentos", and says that
+  a dataset whose dictionary defines no category gets no warning (#65).
+
 ### Notebooks
 
 - New `bases.py` lists every DATASUS FTP dataset with `describe_datasets()`, offline,
