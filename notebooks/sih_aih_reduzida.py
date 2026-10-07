@@ -89,7 +89,8 @@ def _(mo):
     mo.md(r"""
     ## 2 · Descobrir
 
-    `sus.available` lista agora o FTP do DATASUS: um arquivo por UF e mês.
+    `sus.available` lista agora o FTP do DATASUS: um arquivo por UF e mês. Se não há
+    nenhum para a UF, o notebook para aqui.
     """)
     return
 
@@ -98,8 +99,15 @@ def _(mo):
 def _(BASE, UF, executar, mo, sus, pl):
     mo.stop(not executar, mo.md("Defina `EXECUTAR = True` na célula de parâmetros."))
     publicados = sus.available(BASE, ufs=[UF], refresh=True)
-    pl.DataFrame(publicados).sort("ano", "mes", descending=True)
-    return
+    (
+        pl.DataFrame(publicados).sort("ano", "mes", descending=True)
+        if publicados
+        else mo.md(
+            f"O DATASUS não lista `{BASE}` para `{UF}`. Troque `UF` na célula de"
+            f' parâmetros; `sus.available("{BASE}")` lista o que ele publica.'
+        )
+    )
+    return (publicados,)
 
 
 @app.cell(hide_code=True)
@@ -114,8 +122,8 @@ def _(mo):
 
 
 @app.cell
-def _(ANO, BASE, MES, UF, executar, mo, sus):
-    mo.stop(not executar, mo.md("Defina `EXECUTAR = True` na célula de parâmetros."))
+def _(ANO, BASE, MES, UF, mo, publicados, sus):
+    mo.stop(not publicados, mo.md("Nada a baixar: o servidor não lista o recorte."))
     dados = sus.load(BASE, years=[ANO], ufs=[UF], months=[MES])
     dados
     return (dados,)

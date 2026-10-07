@@ -90,7 +90,8 @@ def _(mo):
     ## 2 · Descobrir
 
     `sus.available_releases` lista agora os diretórios final e preliminar. Um ano
-    preliminar pode ser revisado e depois movido para o final com o mesmo nome.
+    preliminar pode ser revisado e depois movido para o final com o mesmo nome. Se não
+    há nenhum arquivo da base, o notebook para aqui.
     """)
     return
 
@@ -99,10 +100,17 @@ def _(mo):
 def _(BASE, executar, mo, sus, pl):
     mo.stop(not executar, mo.md("Defina `EXECUTAR = True` na célula de parâmetros."))
     publicados = sus.available_releases(BASE, refresh=True)
-    pl.DataFrame(
-        [{"ano": e.ano, "abrangencia": "nacional", "diretorio": d} for e, d in publicados.items()]
-    ).sort("ano", descending=True)
-    return
+    (
+        pl.DataFrame(
+            [
+                {"ano": e.ano, "abrangencia": "nacional", "diretorio": d}
+                for e, d in publicados.items()
+            ]
+        ).sort("ano", descending=True)
+        if publicados
+        else mo.md(f"O DATASUS não lista `{BASE}`. Troque `BASE` na célula de parâmetros.")
+    )
+    return (publicados,)
 
 
 @app.cell(hide_code=True)
@@ -118,8 +126,8 @@ def _(mo):
 
 
 @app.cell
-def _(ANO, BASE, executar, mo, sus):
-    mo.stop(not executar, mo.md("Defina `EXECUTAR = True` na célula de parâmetros."))
+def _(ANO, BASE, mo, publicados, sus):
+    mo.stop(not publicados, mo.md("Nada a baixar: o servidor não lista o recorte."))
     dados = sus.load(BASE, years=[ANO])
     dados
     return (dados,)

@@ -87,7 +87,8 @@ def _(mo):
     ## 2 · Descobrir
 
     `sus.available_releases` lista agora o FTP do DATASUS. A coluna `diretorio` diz
-    se cada ano está no diretório final ou no preliminar.
+    se cada ano está no diretório final ou no preliminar. Se não há nenhum arquivo para
+    a UF, o notebook para aqui.
     """)
     return
 
@@ -96,10 +97,17 @@ def _(mo):
 def _(BASE, UF, executar, mo, sus, pl):
     mo.stop(not executar, mo.md("Defina `EXECUTAR = True` na célula de parâmetros."))
     publicados = sus.available_releases(BASE, ufs=[UF], refresh=True)
-    pl.DataFrame([{"uf": e.uf, "ano": e.ano, "diretorio": d} for e, d in publicados.items()]).sort(
-        "ano", descending=True
+    (
+        pl.DataFrame(
+            [{"uf": e.uf, "ano": e.ano, "diretorio": d} for e, d in publicados.items()]
+        ).sort("ano", descending=True)
+        if publicados
+        else mo.md(
+            f"O DATASUS não lista `{BASE}` para `{UF}`. Troque `UF` na célula de"
+            f' parâmetros; `sus.available("{BASE}")` lista o que ele publica.'
+        )
     )
-    return
+    return (publicados,)
 
 
 @app.cell(hide_code=True)
@@ -114,8 +122,8 @@ def _(mo):
 
 
 @app.cell
-def _(ANO, BASE, UF, executar, mo, sus):
-    mo.stop(not executar, mo.md("Defina `EXECUTAR = True` na célula de parâmetros."))
+def _(ANO, BASE, UF, mo, publicados, sus):
+    mo.stop(not publicados, mo.md("Nada a baixar: o servidor não lista o recorte."))
     dados = sus.load(BASE, years=[ANO], ufs=[UF])
     dados
     return (dados,)

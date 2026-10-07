@@ -11,9 +11,13 @@ bytes under the other name. The test asserts the notebook downloads only its own
 file, so those bytes are never read, and a `sus.load` call that lost `months` or
 `ufs` fails here.
 
+When the server lists no file for the scope, each notebook says so at discovery and
+stops before `sus.load`.
+
 Left out: `ibge_populacao.py` reads the IBGE API and `medicamentos.py` the Hórus
 stock API, which have no committed response; `linkage.py` needs about thirty
-tables. `test_notebooks_abrem_offline.py` still opens all of them.
+tables. `medicamentos.py` runs only in the stop at discovery, with the Hórus cell
+stopped. `test_notebooks_abrem_offline.py` still opens all of them.
 """
 
 from __future__ import annotations
@@ -25,6 +29,7 @@ from dataclasses import replace
 from pathlib import Path
 from urllib.parse import urlparse
 
+import marimo as mo
 import polars as pl
 import pytest
 from tests.support import fake_datasus
@@ -120,6 +125,7 @@ CASOS = {
 ABRE_EM = {
     "bases.py": "cnes_leitos",
     "cnes_estabelecimentos.py": "cnes_estabelecimentos",
+    "medicamentos.py": "sia_apac_medicamentos",
     "sia.py": "sia_bpa_individualizado",
     "sih_aih_reduzida.py": "sih_aih_reduzida",
     "sim_obitos.py": "sim_obitos",
@@ -171,17 +177,22 @@ def test_notebook_runs_every_step_on_real_rows(nome, dataset, monkeypatch, tmp_p
         assert registros == int(FIXTURES[f"dbc/{fixture}.dbc"]["records"])
 
 
-def test_bases_stops_at_discovery_when_the_server_lists_no_file_for_the_scope(
-    monkeypatch, tmp_path, dbc_fixture
+@pytest.mark.parametrize("nome", sorted(ABRE_EM))
+def test_notebook_stops_at_discovery_when_the_server_lists_no_file_for_the_scope(
+    nome, monkeypatch, tmp_path, dbc_fixture
 ):
-    servido = dbc_fixture("cnes_lt_rr_2024_01_mini").read_bytes()
-    baixados = fake_datasus.serve(
-        monkeypatch, "cnes_leitos", {ScopeKey(uf="RR", ano=2024, mes=1): servido}
-    )
-    module = _abrir("bases.py", monkeypatch, tmp_path)
+    """The server lists the notebook's dataset for AC only (the notebooks open on RR),
+    or nothing for a national dataset (#79)."""
+    dataset = ABRE_EM[nome]
+    escopo, fixture, release = ARQUIVO[dataset]
+    servido = dbc_fixture(fixture).read_bytes()
+    listados = {} if escopo.uf is None else {replace(escopo, uf="AC"): servido}
+    baixados = fake_datasus.serve(monkeypatch, dataset, listados, release=release)
+    # medicamentos.py, part B: the Hórus API has no committed response, so its cell stops.
+    monkeypatch.setattr("omnisus.sources.medicamentos.fetch_stock_page", lambda **_: mo.stop(True))
+    module = _abrir(nome, monkeypatch, tmp_path)
 
-    parametros = {"BASE": "cnes_leitos", "UF": "AC", "ANO": 2024, "MES": 1}
-    saidas, definidos = module.app.run(defs=parametros | {"EXECUTAR": True, "executar": True})
+    saidas, definidos = module.app.run()
 
     assert baixados == []
     assert "dados" not in definidos
