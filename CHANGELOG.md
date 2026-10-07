@@ -14,6 +14,11 @@
 
 ### Docs site
 
+- The `sih_aih_reduzida` profile gives the `ident` labels the dictionary has, from
+  `TAB_SIH.zip`, `RD2008.DEF` → `IDENT.CNV`: 1 = "Normal", 5 = "Longa permanência" and
+  "Outras/ignorado" for any other code from 0 to 9, 3 included. It said 1 = AIH
+  principal, 3 = AIH de continuação and 5 = AIH de longa permanência, the map without a
+  source that the dictionary dropped on 2026-09-26.
 - The `load` docstring and the API page say that `load` adds the harmonised categories
   the dataset's dictionary defines (`describe_dataset(base)["analytics"]`), not age, sex
   and dates for every validated source: of the nine datasets with validated scopes,

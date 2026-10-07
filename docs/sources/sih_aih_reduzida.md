@@ -14,9 +14,11 @@ SUS (SIH/SUS), nos arquivos RD que o DATASUS publica um por UF e mês de process
   diante (Informe SIH 2016-03, p. 1).
 - Cada linha traz o número da AIH em `n_aih`, com 13 caracteres, e o tipo da AIH em
   `ident` (Informe SIH 2016-03, p. 1).
-- O documento não lista os códigos de `ident` (Informe SIH 2016-03, p. 1); o
-  dicionário os decodifica como 1 = AIH principal, 3 = AIH de continuação e 5 = AIH de
-  longa permanência (`src/omnisus/data/dicionarios/sih_aih_reduzida.yaml`).
+- O documento não lista os códigos de `ident` (Informe SIH 2016-03, p. 1); os rótulos
+  vêm do pacote oficial `TAB_SIH.zip`, `RD2008.DEF` → `IDENT.CNV`: 1 = Normal,
+  5 = Longa permanência, e a faixa `0-9` dá "Outras/ignorado" a qualquer outro código,
+  como o 3, que não tem rótulo próprio na tabela
+  (`src/omnisus/data/dicionarios/sources/cnv/vinculos.json`).
 - `seq_aih5` é o sequencial de longa permanência, da AIH tipo 5
   (Informe SIH 2016-03, p. 3).
 - O layout RD não traz o número do Cartão Nacional de Saúde do paciente
