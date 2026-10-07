@@ -27,7 +27,7 @@ Cada tabela vem de um instrumento ou laudo diferente:
 - `sia_apac_laudos_diversos` (prefixo `AD`): Laudos Diversos da APAC
   (Informe SIASUS 2019-07, p. 5), com o layout comum da APAC e nenhum campo próprio
   (p. 6).
-- `sia_apac_cirurgia_bariatrica` (prefixo `ABO` no catálogo): Laudo de Acompanhamento à
+- `sia_apac_cirurgia_bariatrica` (prefixo `ABO` na biblioteca): Laudo de Acompanhamento à
   Cirurgia Bariátrica da APAC (Informe SIASUS 2019-07, p. 5), com número da AIH, data
   da cirurgia e número de meses de acompanhamento (p. 12).
 - `sia_psicossocial` (prefixo `PS`): Registro das Ações Ambulatoriais de Saúde (RAAS) –
@@ -245,7 +245,7 @@ Produção ambulatorial, acima).
 | `sia_atencao_domiciliar` | `SAD` |
 
 Todos os arquivos que o informe técnico cita (Informe SIASUS 2019-07, p. 1 e p. 5) têm
-linha no catálogo.
+linha em [Bases e argumentos](../datasets.md#sia).
 
 ### Linha de comando
 
