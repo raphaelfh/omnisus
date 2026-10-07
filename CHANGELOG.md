@@ -41,6 +41,11 @@
 - `sia.py` and `sinan.py` point to `describe_datasets()` and `bases.py` instead of
   listing the `BASE` values by hand; `sia.py` says it runs on any SIA table the
   package imports (#55).
+- When the server lists no file of `BASE` for `UF`, `sia.py`, `sih_aih_reduzida.py`,
+  `cnes_estabelecimentos.py`, `medicamentos.py`, `sim_obitos.py` and
+  `sinasc_nascidos_vivos.py` say so at discovery, suggest another `UF` and stop before
+  `load`, as `bases.py` does; `sinan.py` does the same when the server lists no file of
+  `BASE`. Before, discovery failed with polars' `ColumnNotFoundError` (#79).
 
 ## v0.2.2 — 2026-10-06
 
