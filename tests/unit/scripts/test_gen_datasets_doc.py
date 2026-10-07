@@ -87,17 +87,23 @@ def test_state_yearly_dataset_says_por_uf_anual():
 def test_sim_obitos_shows_the_preliminary_directory_and_its_validated_scopes():
     sim = _system_row("sim_obitos")
     assert sim["Cobertura"] == "1996 em diante + preliminar"
-    scopes = ", ".join(f"`{s}`" for s in _dataset("sim_obitos")["validated_scopes"])
-    assert sim["Categorias harmonizadas"] == f"idade, sexo e datas em {scopes}"
+    assert sim["Categorias harmonizadas"] == "idade, sexo e datas em RR, 2021 a 2024; SP, 2024"
     assert _system_row("sia_apac_nefrologia")["Categorias harmonizadas"] == "—"
 
 
 def test_harmonised_categories_name_only_the_rules_the_dictionary_defines():
     """sinan_chagas has only the age rule; sinasc_nascidos_vivos lists no date (ADR 0003)."""
-    assert _system_row("sinan_chagas")["Categorias harmonizadas"] == "idade em `national_2023`"
-    assert _system_row("sinasc_nascidos_vivos")["Categorias harmonizadas"] == "idade em `RR_2023`"
-    sih = _system_row("sih_aih_reduzida")["Categorias harmonizadas"]
-    assert sih.startswith("idade, sexo e datas em `RR_2023_01`, `SP_2024_01`")
+    assert _system_row("sinan_chagas")["Categorias harmonizadas"] == "idade em Brasil, 2023"
+    assert _system_row("sinasc_nascidos_vivos")["Categorias harmonizadas"] == "idade em RR, 2023"
+    assert _system_row("sih_aih_reduzida")["Categorias harmonizadas"] == (
+        "idade, sexo e datas em RR, 2023-01; SP, 2024-01 a 2024-05, 2025-01 a 2025-02"
+    )
+
+
+def test_consecutive_scopes_become_one_interval_and_gaps_stay_visible():
+    """BPA-I is validated for RR 2022-01 and RR 2024-01, which are not consecutive."""
+    bpa = _system_row("sia_bpa_individualizado")["Categorias harmonizadas"]
+    assert bpa.endswith(" em RR, 2022-01, 2024-01")
 
 
 def test_sim_obitos_lists_its_server_directories():
