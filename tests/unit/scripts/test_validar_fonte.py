@@ -341,13 +341,16 @@ def test_a_reference_outside_the_window_is_audited_but_not_decided(workspace) ->
 def test_a_scope_split_into_several_files_is_blocked_without_download(
     workspace, monkeypatch
 ) -> None:
+    """The evidence names each part the server lists, with its size, for the audit by hand."""
     module, paths, calls = workspace
     served = module.list_sources
+    partes = []
 
     def split(d, **kw):
         sources = served(d, **kw)
         (entry,) = sources[SIM_RR_2022].files
-        sources[SIM_RR_2022] = ResolvedSource(release="final", files=(entry, entry))
+        partes[:] = [entry, entry]
+        sources[SIM_RR_2022] = ResolvedSource(release="final", files=tuple(partes))
         return sources
 
     monkeypatch.setattr(module, "list_sources", split)
@@ -361,7 +364,8 @@ def test_a_scope_split_into_several_files_is_blocked_without_download(
     folder = _folder(paths["evidence"], "sim_obitos-2022-2023")
     (bloqueado,) = [r for r in _rows(folder / "escopos.csv") if r["decisao"] == "bloqueado"]
     assert bloqueado["escopo"] == "RR_2022"
-    assert bloqueado["motivos"] == "dividido em 2 arquivos; audite à mão"
+    listadas = "; ".join(f"{p.path}, {p.size_bytes} bytes" for p in partes)
+    assert bloqueado["motivos"] == f"dividido em 2 arquivos ({listadas}); audite à mão"
 
 
 def test_a_failing_reference_stops_before_any_decision(workspace, monkeypatch) -> None:
@@ -507,6 +511,17 @@ def test_a_second_run_does_not_overwrite_the_evidence_of_the_first(workspace) ->
     assert (folder / "manifest.json").read_bytes() == manifest
     assert calls["list"] == 1
     assert len(calls["fetch"]) == 3
+
+
+def test_an_empty_window_stops_before_listing_the_server(workspace, capsys) -> None:
+    module, paths, calls = workspace
+
+    code = module.main(["sim_obitos", "--ufs", "RR", "--inicio", "2023", "--fim", "2022"], **paths)
+
+    assert code == 1
+    assert "nenhum escopo" in capsys.readouterr().err
+    assert calls["list"] == 0
+    assert not paths["evidence"].exists()
 
 
 def test_a_dataset_without_a_known_reference_asks_for_one(workspace, capsys) -> None:

@@ -31,8 +31,9 @@ are reported, not blocked: the rule already keeps them null.
 
 ``--accept`` appends every accepted scope to ``x-analytics.validated_sources`` in one
 edit. Exit code: 0 when no scope is blocked, 2 when some are, 1 when nothing could be
-audited (a scope not listed, no reference, the reference failing or not the validated
-file, or the evidence folder already there).
+audited (an empty window, a scope not listed, no reference, the reference failing or not
+the validated file, or the evidence folder already there). A scope the server splits into
+several files is blocked without download; its reason names each part and its size.
 """
 
 from __future__ import annotations
@@ -365,6 +366,9 @@ def main(
         )
         return 1
     escopos = janela(d, ufs, _periodo(args.inicio), _periodo(args.fim))
+    if not escopos:
+        print(f"{d.name}: nenhum escopo de {args.inicio} a {args.fim}", file=sys.stderr)
+        return 1
     hoje = datetime.now(UTC)
     pasta = evidence / f"{hoje:%Y-%m-%d}-validacao-{d.name}-{args.inicio}-{args.fim}"
     if pasta.exists():
@@ -392,11 +396,12 @@ def main(
         listed = listing[scope]
         feito = feitos.get(str(scope))
         if len(listed.files) != 1:
+            partes = "; ".join(f"{f.path}, {f.size_bytes} bytes" for f in listed.files)
             registro = {
                 "escopo": str(scope),
                 "fonte": None,
                 "resultado": None,
-                "erro": f"dividido em {len(listed.files)} arquivos; audite à mão",
+                "erro": f"dividido em {len(listed.files)} arquivos ({partes}); audite à mão",
             }
         elif (
             feito
