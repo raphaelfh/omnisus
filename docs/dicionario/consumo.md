@@ -83,8 +83,12 @@ No SINASC, `idade_anos_completos` interpreta `idademae` e se refere à mãe
 (`analytics.age.subject = "mother"`). A regra não disponibiliza sexo materno:
 `sexo` é do recém-nascido. A versão 1.0.0 cobre somente o DNRR2023 final auditado,
 com domínio 1–65 anos e estados explícitos para valores fora desse suporte.
-A regra do SIM 1.1.0 cobre RR/2021 a RR/2024 e SP/2024; a do SIH 1.2.0 cobre RR/2023-01,
-SP/2024-01 a SP/2024-05 e SP/2025-01 a SP/2025-02. As regras do SIA 1.0.0 cobrem o BPA-I
+A regra do SIM 1.2.0 cobre as 27 UFs de 2020 a 2024
+([evidência](https://github.com/raphaelfh/omnisus/blob/main/evidence/2026-10-07-validacao-sim_obitos-2020-2024/README.md));
+a do SIH 1.3.0 cobre as 27 UFs de 2020-01 a 2025-02
+([evidência](https://github.com/raphaelfh/omnisus/blob/main/evidence/2026-10-07-validacao-sih_aih_reduzida-2020-01-2025-02/README.md)).
+Os dois lotes foram validados por uma regra de aceite escrita (ADR 0003, Consequences); um
+escopo bloqueado por ela tem issue própria e fica de fora. As regras do SIA 1.0.0 cobrem o BPA-I
 de RR/2022-01 e RR/2024-01, a RAAS psicossocial de RR/2024-01 e a atenção domiciliar de
 MA/2018-10 (`x-analytics.validated_sources` de cada dicionário).
 [Evidência e limites](https://github.com/raphaelfh/omnisus/blob/main/evidence/2026-09-14-extensao-regras/README.md).

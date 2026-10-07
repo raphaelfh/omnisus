@@ -3,7 +3,8 @@
 Real data, read back through `sus.load`:
 - SIM RR 2023 (`sim_rr_2023_mini`, DORR2023.dbc): in SIM `validated_sources`;
 - SIA BPA-I RR 2022-01 (`sia_bi_rr_2022_01_mini`, BIRR2201.dbc): in SIA `validated_sources`;
-- SIH RR 2024-01 (`sih_rr_2024_01_mini`, RDRR2401.dbc): **not** validated.
+- SIH RR 2024-01 (`sih_rr_2024_01_mini`, RDRR2401.dbc with GESTOR_CPF blanked, SHA-256
+  5e6f0c99…): **not** a validated source; the server file (37741f8b…) is.
 """
 
 from __future__ import annotations

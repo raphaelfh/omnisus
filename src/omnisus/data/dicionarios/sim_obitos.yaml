@@ -179,7 +179,7 @@ schema:
           kind: coded_age
           inputs:
           - idade
-          rule_version: 1.1.0
+          rule_version: 1.2.0
           output:
           - idade_anos_completos
           - idade_quantidade
@@ -1868,10 +1868,10 @@ x-source-format: dbc
 x-source-family: datasus_ftp
 x-source-prefix: DO
 x-partitions: [ano, uf]
-x-version: "2.5.0"
+x-version: "2.6.0"
 
 x-analytics:
-  version: 1.1.0
+  version: 1.2.0
   applicability_policy: exact_audited_source_identity
   validated_sources:
   - uf: RR
@@ -1894,6 +1894,526 @@ x-analytics:
     uf: SP
     release: final
     source_sha256: fac57a15fe3d7efa3b0f2d797043a9335ef3d9dd6e824623031d71471533daf8
+  - uf: AC
+    ano: 2020
+    release: final
+    source_sha256: bd453d87a2619f09042cf470da9799804a387d0734d988e49042fa52426d6114
+  - uf: AL
+    ano: 2020
+    release: final
+    source_sha256: 4e3e7b71e23c8a9b65017d6f652489451769f0458905528de1a0f557780a503d
+  - uf: AP
+    ano: 2020
+    release: final
+    source_sha256: a17f6cd17bdcf4597e3f1933dc0e55e6a767011678c7729f7d2009f33a37cf1e
+  - uf: AM
+    ano: 2020
+    release: final
+    source_sha256: e217f3177f7d14f9df27fa30a53a71075b4ff8e9187a199146700e5ec51610f4
+  - uf: BA
+    ano: 2020
+    release: final
+    source_sha256: 4279c66dbe23e8d4407844b02b91e689b0da4bd68dcf0af299d8eff68718e85c
+  - uf: CE
+    ano: 2020
+    release: final
+    source_sha256: 3e7710e06b222c5aff66471272e938a99043b72bd4bf438544f8383670e1b96d
+  - uf: DF
+    ano: 2020
+    release: final
+    source_sha256: f36dce169309c6d3c80f3b28b7e6347ceb7ff484d8181b6dd25d33d354119970
+  - uf: ES
+    ano: 2020
+    release: final
+    source_sha256: 9042fcb96456225f109dcc40e5847c5351b5f2067b3d7b1fa270e3d478a9868d
+  - uf: GO
+    ano: 2020
+    release: final
+    source_sha256: d1dedf622caf6ef99740bc5c7dadf98c551260391272c2096358f67e13375dab
+  - uf: MA
+    ano: 2020
+    release: final
+    source_sha256: 0c6599da41944b6b8973b26c2842a45275c7d5938741ee680d4367e1b09437ee
+  - uf: MT
+    ano: 2020
+    release: final
+    source_sha256: 2dc7f252093e7b12315f2c80cc29d6992314c307a2e1a20fec34690fe2df699d
+  - uf: MS
+    ano: 2020
+    release: final
+    source_sha256: 4a7ec66950d5a5ed84d2f43c66d0e15eb3861497803fc5c2b8e5d996d1afc306
+  - uf: MG
+    ano: 2020
+    release: final
+    source_sha256: 8bf6ff29b9a69946e9049ec1d5edae1293af8f3cf6864bbd089cc5209d445478
+  - uf: PA
+    ano: 2020
+    release: final
+    source_sha256: da319e89a31c53ec5046e6f3152520cf1861c52893e6bf201655bccf54d80336
+  - uf: PB
+    ano: 2020
+    release: final
+    source_sha256: b3348b066164971d6bdc661781cca56c3bff812ed63a2bc1d663bcbb94e24437
+  - uf: PR
+    ano: 2020
+    release: final
+    source_sha256: 05484c71d32e9b49d6729f821cc629194f7e7a4e4b66185c9aeaa2698d06d886
+  - uf: PE
+    ano: 2020
+    release: final
+    source_sha256: 2d7981f7960d9d69b9515e6b5d0ed52b6eba643347a7b8123d007f8b4150d765
+  - uf: PI
+    ano: 2020
+    release: final
+    source_sha256: 5d5a231f395bf1495e975319cdaa0b3af4fa8b37cd45a3f79dd098e032bf5975
+  - uf: RJ
+    ano: 2020
+    release: final
+    source_sha256: 13e5b52c8e946015df3a202dde2a8eaa2d410744b168a40bf3e4a72424666b95
+  - uf: RN
+    ano: 2020
+    release: final
+    source_sha256: 098024799d2bfe663d053ca62385794be35153f68cac62650dab6ea0f9f03f52
+  - uf: RS
+    ano: 2020
+    release: final
+    source_sha256: 7e7018414b105dd1f18b4dfc576da6875b3c5ff1dc08617ffef0dffbcbcc8fec
+  - uf: RO
+    ano: 2020
+    release: final
+    source_sha256: c0edce9f13e10258d1f8af667c22a1e472e3d02f695b194115fe01c1447eea9f
+  - uf: RR
+    ano: 2020
+    release: final
+    source_sha256: b10221d1acfe210726de11bc8975cdcb4bb0b4411db2d383184f51f37b0c2b76
+  - uf: SC
+    ano: 2020
+    release: final
+    source_sha256: bf97e271a2e1d592f777f9e4059d4c0af404af7573bbecc6086c43fec3a559a3
+  - uf: SP
+    ano: 2020
+    release: final
+    source_sha256: efd1370948af0e2f3a54175e2bbb5ad5ba2947fd0d4b81096e1f220d69b74e0d
+  - uf: SE
+    ano: 2020
+    release: final
+    source_sha256: 2a94ca706567991872c6f8972862ae8c2df377e71adf2620df9fab19caa3f467
+  - uf: TO
+    ano: 2020
+    release: final
+    source_sha256: 85d43aacfecdfa087f8f37ca66b794123339947524aa7ee94ee5e4a10a015cd9
+  - uf: AC
+    ano: 2021
+    release: final
+    source_sha256: fccc5b937a9ae6d2bcf6c1137f8961aabdb89907eeef9ac258e322f5d8285426
+  - uf: AL
+    ano: 2021
+    release: final
+    source_sha256: 4851db0500fa5653ba099c8e00892552d093881ba29d672f120bc6434157c2da
+  - uf: AP
+    ano: 2021
+    release: final
+    source_sha256: 018f6a28ac98a1ef3e50da360a6ecfa60561c89010f49c32161a5ff461204757
+  - uf: AM
+    ano: 2021
+    release: final
+    source_sha256: 10208b3a40cbce2dd0e3e3fe83d16a07de4d0021be08155cdf79fbf5fad9ebe2
+  - uf: BA
+    ano: 2021
+    release: final
+    source_sha256: fcd659ab78a7dbb1387abeb3ed6269e76142505f189219d9f9a9e49c3b1ca253
+  - uf: CE
+    ano: 2021
+    release: final
+    source_sha256: 38679c784d04d524cd633202a18bd4e3463d72fba939fc3ea3cd55a1618c5979
+  - uf: DF
+    ano: 2021
+    release: final
+    source_sha256: 133432bbef1fd20cc1704481a35c0170af4d52c7bb6cef2744e6c1ddb7e2de4f
+  - uf: ES
+    ano: 2021
+    release: final
+    source_sha256: 5c5b9a8c903f6cdaba197665bce7e19fb67e3d367b04d4c3a86ec4ae5f482821
+  - uf: GO
+    ano: 2021
+    release: final
+    source_sha256: 83d0bbcc30fc711a2efe96ffc54185367e21d3980da22b0a1c739c2720ad28ce
+  - uf: MA
+    ano: 2021
+    release: final
+    source_sha256: 0dcd34227463633da6a8d0340292df54658d651ddfde3e25a5cc1b39866e130e
+  - uf: MT
+    ano: 2021
+    release: final
+    source_sha256: 00e52d88590f693edc110b203ed4a924c8bb99a9a11da1b2abd7cc6ae5f7d430
+  - uf: MS
+    ano: 2021
+    release: final
+    source_sha256: 7715011f9483337a6be7ee27169e510b4f3ed1d399a2511b0b5b66ae5b7157de
+  - uf: MG
+    ano: 2021
+    release: final
+    source_sha256: 30e94704315a9ed38fac99783b6960a79faf59856ff6c369469677abda20d308
+  - uf: PA
+    ano: 2021
+    release: final
+    source_sha256: 1f9cf9d7fa5877bcc325c35108be5d0e19fad1547912b2b10264e54c58ddd7f5
+  - uf: PB
+    ano: 2021
+    release: final
+    source_sha256: b70a9f91a46628c4b506640dadd4c678dfdeda6f5008451dd1031ad52343a1ca
+  - uf: PR
+    ano: 2021
+    release: final
+    source_sha256: c4509be9dfd337aad9089430d22d00ff1d66bfba546daded35d413497af544dc
+  - uf: PE
+    ano: 2021
+    release: final
+    source_sha256: 91bce32783958db287b36b5c6fbf9b9483d73eac88752dd04de9016effbc8be6
+  - uf: PI
+    ano: 2021
+    release: final
+    source_sha256: a6a0b9a664af63d6be83e60084e03d3d3aef1d6f40c3f86681dd702c479a42a6
+  - uf: RJ
+    ano: 2021
+    release: final
+    source_sha256: 1dea8b9aa1853e9ed22ec19590ac8af790e7298cb404ae001f0902c34abba768
+  - uf: RN
+    ano: 2021
+    release: final
+    source_sha256: dc6e58beb38af16fb23c181b6777f614f2200466d71bff935cfc2bd4135170c4
+  - uf: RS
+    ano: 2021
+    release: final
+    source_sha256: ff30f3c99045276feb88b10c2efdf77f54f70e085297c73a0c32cc97174e207a
+  - uf: RO
+    ano: 2021
+    release: final
+    source_sha256: 426a930b96187aa62524ab17d56b847306887aabbb847081a60a4a85a4459ed7
+  - uf: SC
+    ano: 2021
+    release: final
+    source_sha256: 4a0575b2d336a5223d5fdc7d44c6a1a447d7c050cca86ed92b68aca4d7695093
+  - uf: SP
+    ano: 2021
+    release: final
+    source_sha256: 93ce405bddec508c432bc06a0f32b2f50de4ac4201bdd75aa3434ddd22782f51
+  - uf: SE
+    ano: 2021
+    release: final
+    source_sha256: 6edaaabc70f96682036d52e5a4788d8ff3c47ed448943d8b4790cac2edc3d997
+  - uf: TO
+    ano: 2021
+    release: final
+    source_sha256: 43a4b9782adeba463337379bd5dcce346605bda928e1cc3277a9199688ce9517
+  - uf: AC
+    ano: 2022
+    release: final
+    source_sha256: 04a015b690068baeb42e7e83165e3b9de43f2881bebdf46f0eea5ad0b9984a51
+  - uf: AL
+    ano: 2022
+    release: final
+    source_sha256: 04a27f9a8b57378706463206dbd04c0a321229937f488ff8241795ddb8b96373
+  - uf: AP
+    ano: 2022
+    release: final
+    source_sha256: 46af11f2a5349d1d8e7e22493be680fe8f69084f9c94e40ec980294e5e4858c7
+  - uf: AM
+    ano: 2022
+    release: final
+    source_sha256: 402aa8a2351b3cd7b181e169bee786d9b76d892961111eec80c531c461fd95d0
+  - uf: BA
+    ano: 2022
+    release: final
+    source_sha256: fd15f9bee578224d57d5d38a01870ea20d574a0095b00bbe673536b0a904ef8f
+  - uf: CE
+    ano: 2022
+    release: final
+    source_sha256: b32b4f636e1ec6b9d192b521ae8953ade00b56172f3fe6b0f4e2ee74115c49b5
+  - uf: DF
+    ano: 2022
+    release: final
+    source_sha256: dfbc68a7ea414a19181dccfb947b6f6baf3343d80ff30a06eb9595be9e074305
+  - uf: ES
+    ano: 2022
+    release: final
+    source_sha256: c6bbb70387e99609e2564d0069b960e03ca8fc4984c6c628010556f6de866fae
+  - uf: GO
+    ano: 2022
+    release: final
+    source_sha256: 53c98dcfbd72fb467316c2711680bf02f44f1211d4889461bee6ec2489af4bbc
+  - uf: MA
+    ano: 2022
+    release: final
+    source_sha256: 6f44af36318f25134d0ed9f9672377713833f9636ebbe7155b70d3b0e3625957
+  - uf: MT
+    ano: 2022
+    release: final
+    source_sha256: 2028b97346224a7ac578f322301fae5ac1a52003b1f1ae62f894222b15ca0e6a
+  - uf: MS
+    ano: 2022
+    release: final
+    source_sha256: 85688dbfdf4e04c9eaf95d933e24a10d8392e149ecf06b80d953055f73076bb2
+  - uf: MG
+    ano: 2022
+    release: final
+    source_sha256: b2f6eb185b62b4b69d530ca3445a3c4fcceae1aa014824125dfba0c110a8fdfc
+  - uf: PA
+    ano: 2022
+    release: final
+    source_sha256: d82ecbc07d56748ea9b963189d7e28b7650aa7a0fcf5364fd3899e71f7fcddf2
+  - uf: PB
+    ano: 2022
+    release: final
+    source_sha256: 5055059626db01ee64e5b515f64ca01494f821a3329cc399a4251c8f0fbfccd6
+  - uf: PR
+    ano: 2022
+    release: final
+    source_sha256: fddf7189051fbab254f4276272eab95704bc3e5006f634c13e0164432d6d3e4c
+  - uf: PE
+    ano: 2022
+    release: final
+    source_sha256: 785cf9b4076addf6f2e47f7859b7308a4d8254b3910624228f9c16ef6b0c1468
+  - uf: PI
+    ano: 2022
+    release: final
+    source_sha256: b5d614215b1e18086fe72c2d0e74731923aefb39862ad1e011fc4efc2b6cb4b2
+  - uf: RJ
+    ano: 2022
+    release: final
+    source_sha256: 13b942e57ee0cb132c96bc9179cba7c3240f77e67fe117d3ebb4eb061280efa3
+  - uf: RN
+    ano: 2022
+    release: final
+    source_sha256: 860d409074c3a34b65c9d3205fc39c3f36664451b9ec43698106235a582de64c
+  - uf: RS
+    ano: 2022
+    release: final
+    source_sha256: 10a9df31ba332d7645d5cb7c7500d52046574a5232296a141f13c552b328e0cb
+  - uf: RO
+    ano: 2022
+    release: final
+    source_sha256: 502098fa10876901cfa6bb514f0d1a9fd5413faff968d9bbe413bb4ab8700ab2
+  - uf: SC
+    ano: 2022
+    release: final
+    source_sha256: ccb410b0ff5f20b31910f3493510fb5e610f4297e084d88928d6ea7970f4fb75
+  - uf: SP
+    ano: 2022
+    release: final
+    source_sha256: 34f6f7aef94545b88748982d0891a2b014c21dd43db8fd3b656643e0d6c17540
+  - uf: SE
+    ano: 2022
+    release: final
+    source_sha256: 4fa8cd3667966cf957fa6387c247c7a40fa75ed9e65ed7eceae734aa36c9413c
+  - uf: TO
+    ano: 2022
+    release: final
+    source_sha256: 76e71d061b43ab1db4882ae802154d5ba45e8467c0646b7750955c526f9b7c46
+  - uf: AC
+    ano: 2023
+    release: final
+    source_sha256: 9cd3410cf12490d24acd9adaa6667bfd94fb2216f0b63801c9a7d438f75ef40a
+  - uf: AL
+    ano: 2023
+    release: final
+    source_sha256: 47f66941128d0a8044fc24ccfa77bc64f4dfcd3f7d60f657d6f0bbfe5b0b00d9
+  - uf: AP
+    ano: 2023
+    release: final
+    source_sha256: 4c4971dbb5d824b02289cdba7770a9df7a534964df6d96a8573c76cf614c659a
+  - uf: AM
+    ano: 2023
+    release: final
+    source_sha256: 7b40bbf806440da7d272cc9a5a9bf7249d76bbed2e9a6b1543190c4fd499954a
+  - uf: BA
+    ano: 2023
+    release: final
+    source_sha256: 8d5df8bd7813d61ef6fc38bec700a763598f437b57f064246e7460c4641e7286
+  - uf: CE
+    ano: 2023
+    release: final
+    source_sha256: 46de0e893c9131ba00d085eb28763704e36b5e5a3146a31aa0d501a689d2e411
+  - uf: DF
+    ano: 2023
+    release: final
+    source_sha256: 0756e0cdd95c573f4683d7efbfc30ef18b68e0efa8b483721f6e0ff8d05d22f3
+  - uf: ES
+    ano: 2023
+    release: final
+    source_sha256: bfc52857f2efc3e2d8aec46248fce6c9ea58ccf8fa85aad8d117bc5a31d49acd
+  - uf: GO
+    ano: 2023
+    release: final
+    source_sha256: 79dde91da58c0e280f04d84d33417270d9dda911542e64a8e1dd249c9930090e
+  - uf: MA
+    ano: 2023
+    release: final
+    source_sha256: 1150385e8d0897f24f1657791168a9386c709f4de4883ce36c2b23d794652000
+  - uf: MT
+    ano: 2023
+    release: final
+    source_sha256: 31bcd4fd9355b851bcf31afb31b21c3b48921d58adc28324c4761e2ef0f95e62
+  - uf: MS
+    ano: 2023
+    release: final
+    source_sha256: a4d98e948408988914be4fbdf70f6891494e13525d29685d60a8eaa68d4bb09a
+  - uf: MG
+    ano: 2023
+    release: final
+    source_sha256: fb4c338c2b782054de30eb3989e5be2746db91dbd4ca4849fe4b8749f41aab89
+  - uf: PA
+    ano: 2023
+    release: final
+    source_sha256: 96af0c3be4dce9586069442b9d63bc4c1a69d6718241c2253b483bb96cca0a1e
+  - uf: PB
+    ano: 2023
+    release: final
+    source_sha256: 73a0ad67a764ccfbd8155f58f5d190b9ee56f3b07a672493425e0fe383862545
+  - uf: PR
+    ano: 2023
+    release: final
+    source_sha256: c2332170cec3ebba6acab9f918f962433c1369354f76eacafbbdc0adeacf36c1
+  - uf: PE
+    ano: 2023
+    release: final
+    source_sha256: d5b5600d544cd82a7dfb13663b21c68ccfc004680d50c8dec72a26f97d219451
+  - uf: PI
+    ano: 2023
+    release: final
+    source_sha256: 410d966af8e339313e08cbfdb5a7713226ad255bdce35b1a735dc219444d197d
+  - uf: RJ
+    ano: 2023
+    release: final
+    source_sha256: c988dd824c5c1be7cb7d6266fb828c289a4806b069feaed1c84133069fa20d07
+  - uf: RN
+    ano: 2023
+    release: final
+    source_sha256: a744a9e73f6cbda359ff9f429cd8292ea1ca19f5f03800cdf36cd21598bb0906
+  - uf: RS
+    ano: 2023
+    release: final
+    source_sha256: 3dae23288087e5fa2c17e0370311ad9cb8132b89efff1a5f36cd9b6e7801b150
+  - uf: RO
+    ano: 2023
+    release: final
+    source_sha256: 87b36fa745305589d15b47857202ff9422bc35ec089ded4591e10a21e39fccc1
+  - uf: SC
+    ano: 2023
+    release: final
+    source_sha256: 1be70f99d8f8ec656b35ab4ddeac65a0b588806fe47db6c07e398b79d0a989fa
+  - uf: SP
+    ano: 2023
+    release: final
+    source_sha256: 7743903b55efa96c3da9457fdfd300e2081051a3dc01afe0685544d51cf823e2
+  - uf: SE
+    ano: 2023
+    release: final
+    source_sha256: 97f198889b3d0143e2bd819f3dcb112a9ea62d0fb5586dd4a77c812527ffe157
+  - uf: TO
+    ano: 2023
+    release: final
+    source_sha256: 242ccc486d8e831348747d9f19635afdea9a47f2b7b8189bcf8fc2362627409a
+  - uf: AC
+    ano: 2024
+    release: final
+    source_sha256: 6c3596bf21a5e65d70796a9a13e2bb1a334bd5dd9f066c061c3d6265f5c19ba4
+  - uf: AL
+    ano: 2024
+    release: final
+    source_sha256: 7973cae9d2f98bc3e68594d9d3804978273678843d8bd6d1538fb949cbb7dc5d
+  - uf: AP
+    ano: 2024
+    release: final
+    source_sha256: b0b2d02cd4ef532f31548ddabdfda68b0c3708effc419f64d17c8efabfe335ea
+  - uf: AM
+    ano: 2024
+    release: final
+    source_sha256: da466988f4a966874e640560e47675f1bc459504d2643df431ef7356a7546495
+  - uf: BA
+    ano: 2024
+    release: final
+    source_sha256: 7e9c57c4c39a8df21136691917a19f6ceb099ae9be83f33be27938266c2ee2aa
+  - uf: CE
+    ano: 2024
+    release: final
+    source_sha256: 8fd0642a35da123a34011b0c4df96b9656b8e1b302647f24b54dc35165a13e2a
+  - uf: DF
+    ano: 2024
+    release: final
+    source_sha256: 8020033edcb0e581d996b43b9277c7cae7a979ff062f28b1eaa883ea75c5bc67
+  - uf: ES
+    ano: 2024
+    release: final
+    source_sha256: 396d902b67d49515ed0f9507e9ec94c6b4102c902dbea14d4e2037f9b8f719b8
+  - uf: GO
+    ano: 2024
+    release: final
+    source_sha256: 65f366a3ff4e8e0035ece8a3b3cdbb54bd0bd1945ed55ef5a71c26aa71013983
+  - uf: MA
+    ano: 2024
+    release: final
+    source_sha256: 0b53d3af602d9bc73b05c0a34bacb7bee4b809f27996009c09761896c611928f
+  - uf: MT
+    ano: 2024
+    release: final
+    source_sha256: a7c3ddf45da4ff5bcacd54add29fe58e73e73fce564dbc5974a869bc0c08070b
+  - uf: MS
+    ano: 2024
+    release: final
+    source_sha256: c509fedee389556ed8bf69c32301ce37d1baf696c24e3647280a088d050e7422
+  - uf: MG
+    ano: 2024
+    release: final
+    source_sha256: 01abf0976e4b79bd65392e7e2f93821606748b50ca8115e22a6eee807c2fb75f
+  - uf: PA
+    ano: 2024
+    release: final
+    source_sha256: 1770cb2119df6234d43cabe037a6c2777f60d7b1781acad89a93780cec47aa68
+  - uf: PB
+    ano: 2024
+    release: final
+    source_sha256: 44f4c5928ea55e444e7fbe2407abdb702395dc38e554e9deccfd09a01e7413e6
+  - uf: PR
+    ano: 2024
+    release: final
+    source_sha256: 742b6ca8cfc4d6ffab660748f934df33b6898f65bf51acf5927a013b21511e69
+  - uf: PE
+    ano: 2024
+    release: final
+    source_sha256: 7e5589674aba4c61db99261fee8061262b406fd12c97434af831caebda661b87
+  - uf: PI
+    ano: 2024
+    release: final
+    source_sha256: d13de1fa2f2e6d381be5a90e538c5c16b6685d7ed7e4fac8953a8778440f6f98
+  - uf: RJ
+    ano: 2024
+    release: final
+    source_sha256: 82da177f5db7c6fd033b7712b1fc630e2eb51f80a410e2bfa150adfbb26c7059
+  - uf: RN
+    ano: 2024
+    release: final
+    source_sha256: 1af28ee443d7fdb1466159626f943c4a29bb900791d248bc6db70ae9f447fce4
+  - uf: RS
+    ano: 2024
+    release: final
+    source_sha256: ec4d55abb09859d1dfe1af7ceae41667447bcbe3333b07bd55d39c22bf09d788
+  - uf: RO
+    ano: 2024
+    release: final
+    source_sha256: e433423c57223309d2378b74974208bb13c85c9f54bffcc26ac43536f784f72d
+  - uf: SC
+    ano: 2024
+    release: final
+    source_sha256: e60765a4d90edac97b0645e05f91e9476bd904cd36b56bc20b0004a9c1605058
+  - uf: SE
+    ano: 2024
+    release: final
+    source_sha256: a9133194fb138aa5da80ef36ebd564153223fe368439a0807b70ea1be65617f3
+  - uf: TO
+    ano: 2024
+    release: final
+    source_sha256: 0c39d352881ca441e60d52a3d46585c8c8ce9f90f9975bcf2ee83c474fa7089c
   age:
     field: idade
     kind: sim
