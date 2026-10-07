@@ -223,27 +223,14 @@ def test_tuberculose_audited_source_matches_the_evidence_manifest():
     assert validated.source_sha256 == entry["sha256"]
 
 
-def _audited(node, found: set[tuple]) -> None:
-    """Every (uf, ano, mes, SHA-256) an evidence file records: a manifest entry has
-    ``scope`` and ``sha256``, a publication has ``scope_json`` and ``source_sha256``."""
-    if isinstance(node, dict):
-        sha = node.get("sha256") or node.get("source_sha256")
-        scope = node.get("scope") or json.loads(node.get("scope_json") or "null")
-        if isinstance(sha, str) and isinstance(scope, dict):
-            found.add((scope.get("uf"), scope.get("ano"), scope.get("mes"), sha))
-        for value in node.values():
-            _audited(value, found)
-    elif isinstance(node, list):
-        for value in node:
-            _audited(value, found)
-
-
 def test_every_validated_sim_and_sih_source_was_read_by_a_committed_audit():
     """AGENTS.md rule 1: each validated scope and SHA-256 appear together in a committed
-    evidence file."""
-    recorded: set[tuple] = set()
-    for path in (ROOT / "evidence").rglob("*.json"):
-        _audited(json.loads(path.read_text(encoding="utf-8")), recorded)
+    evidence manifest."""
+    recorded = {
+        (m["scope"].get("uf"), m["scope"]["ano"], m["scope"].get("mes"), m["sha256"])
+        for path in (ROOT / "evidence").glob("*/manifest.json")
+        for m in json.loads(path.read_text(encoding="utf-8"))
+    }
     for dataset in ["sim_obitos", "sih_aih_reduzida"]:
         for source in sus.describe_dataset(dataset)["analytics"]["validated_sources"]:
             key = (source.get("uf"), source["ano"], source.get("mes"), source["source_sha256"])

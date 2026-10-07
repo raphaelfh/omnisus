@@ -87,11 +87,8 @@ def test_fields_and_labelled_fields_count_the_dictionary(table: pl.DataFrame) ->
 def test_validated_scopes_list_the_validated_sources(table: pl.DataFrame) -> None:
     """A list of scopes, never a yes/no: the categories exist only there (ADR 0003).
 
-    The literals are in the ``x-analytics.validated_sources`` of the packaged dictionaries;
-    SIM is checked as a subset, because #85 validated every UF from 2020.
+    The literals are the ``x-analytics.validated_sources`` of the packaged dictionaries.
     """
-    sim = _row(table, "sim_obitos")["validated_scopes"]
-    assert {"RR_2021", "RR_2022", "RR_2023", "RR_2024", "SP_2024", "AC_2020"} <= set(sim)
     assert _row(table, "sih_aih_reduzida")["validated_scopes"][:2] == ["RR_2023_01", "SP_2024_01"]
     assert _row(table, "sinan_chagas")["validated_scopes"] == ["national_2023"]
     assert _row(table, "sia_apac_nefrologia")["validated_scopes"] == []

@@ -155,13 +155,11 @@ def janela(
     inicio: tuple[int, int | None],
     fim: tuple[int, int | None],
 ) -> list[ScopeKey]:
-    """Every scope of ``ufs`` (``None`` for a national dataset) from ``inicio`` to ``fim``."""
-    mensal = d.cadence == "monthly"
+    """Every scope of ``ufs`` (``None``: every UF, or a national dataset), ``inicio`` to ``fim``."""
+    mensal = d.monthly
     if mensal != (inicio[1] is not None) or mensal != (fim[1] is not None):
         raise ValueError(f"{d.name}: use {'AAAA-MM' if mensal else 'AAAA'} em --inicio e --fim")
-    escopos = sus.scopes_for(
-        d, years=range(inicio[0], fim[0] + 1), ufs=None if ufs is None else list(ufs)
-    )
+    escopos = sus.scopes_for(d, years=range(inicio[0], fim[0] + 1), ufs=ufs)
     return [
         s
         for s in escopos
@@ -227,6 +225,7 @@ def _auditar(d: Dataset, scope: ScopeKey, listed: ResolvedSource, downloads: Pat
         resultado.pop("source")
     except Exception as exc:  # recorded and blocked; never accepted
         resultado, erro = None, f"auditoria falhou: {type(exc).__name__}: {exc}"
+    path.unlink()
     return {
         "escopo": str(scope),
         "chave": _chave(entry),
@@ -244,7 +243,11 @@ def _csv(path: Path, header: list[str], rows: list[list]) -> None:
 
 
 def _escrever(
-    pasta: Path, registros: dict[str, dict], decisoes: dict[str, list[str]], ref: dict
+    pasta: Path,
+    registros: dict[ScopeKey, dict],
+    decisoes: dict[ScopeKey, list[str]],
+    ref: dict,
+    regra_idade: Mapping,
 ) -> None:
     """The evidence of one run; ``decisoes`` is in window order, the reference may be outside."""
     pasta.mkdir(parents=True, exist_ok=True)
@@ -257,7 +260,7 @@ def _escrever(
         ["escopo", "sha256", "linhas", "decisao", "motivos"],
         [
             [
-                escopo,
+                str(escopo),
                 registros[escopo]["fonte"]["sha256"] if registros[escopo]["fonte"] else "",
                 registros[escopo]["resultado"]["rows"] if registros[escopo]["resultado"] else "",
                 "bloqueado" if motivos else "aceito",
@@ -276,7 +279,6 @@ def _escrever(
             for s in estados
         ],
     )
-    regra = sus.describe_dataset(ref["dataset"])["analytics"]["age"]
     _csv(
         pasta / "idades.csv",
         ["escopo", "valor", "unidade", "status", "n", "motivo"],
@@ -287,7 +289,7 @@ def _escrever(
                 x["unit"],
                 x["status"],
                 x["n"],
-                motivo_idade(regra, x["value"], x["unit"]),
+                motivo_idade(regra_idade, x["value"], x["unit"]),
             ]
             for r in auditados
             for x in r["resultado"]["uninterpreted_age_codes"]
@@ -356,8 +358,8 @@ def main(
         print(f"{d.name}: --ufs é obrigatório (ALL ou siglas)", file=sys.stderr)
         return 1
     ufs = None
-    if args.ufs:
-        ufs = list(sus.ALL_UFS) if args.ufs == "ALL" else [u.strip() for u in args.ufs.split(",")]
+    if args.ufs and args.ufs != "ALL":
+        ufs = [u.strip() for u in args.ufs.split(",")]
     referencia = _escopo(args.referencia) if args.referencia else REFERENCIAS.get(d.name)
     if referencia is None:
         print(
@@ -387,7 +389,8 @@ def main(
             "validated_sources"
         ]
     }
-    metadata_hash = sus.describe_dataset(d.name)["metadata_hash"]
+    metadados = sus.describe_dataset(d.name)
+    metadata_hash = metadados["metadata_hash"]
     downloads.mkdir(parents=True, exist_ok=True)
     parcial = downloads / f"parcial-{d.name}-{args.inicio}-{args.fim}.jsonl"
     feitos = _ler_parcial(parcial)
@@ -412,12 +415,11 @@ def main(
             registro = feito
         else:
             registro = _auditar(d, scope, listed, downloads)
-            (downloads / listed.files[0].name).unlink()
             with parcial.open("a", encoding="utf-8") as f:
                 f.write(json.dumps(registro, ensure_ascii=False, default=str) + "\n")
             linhas = registro["erro"] or f"{registro['resultado']['rows']} linhas"
             print(f"[{i}] {scope}: {linhas}")
-        registros[str(scope)] = registro
+        registros[scope] = registro
         if scope != referencia:
             continue
         if registro["erro"]:
@@ -432,15 +434,15 @@ def main(
             )
             return 1
 
-    ref = {**registros[str(referencia)], "dataset": d.name}
-    regra_idade = sus.describe_dataset(d.name)["analytics"]["age"]
+    ref = registros[referencia]
+    regra_idade = metadados["analytics"]["age"]
     decisoes = {
-        str(s): [registros[str(s)]["erro"]]
-        if registros[str(s)]["erro"]
-        else bloqueios(registros[str(s)]["resultado"], ref["resultado"], regra_idade)
+        s: [registros[s]["erro"]]
+        if registros[s]["erro"]
+        else bloqueios(registros[s]["resultado"], ref["resultado"], regra_idade)
         for s in escopos
     }
-    _escrever(pasta, registros, decisoes, ref)
+    _escrever(pasta, registros, decisoes, ref, regra_idade)
     parcial.unlink(missing_ok=True)
     bloqueados = [s for s, motivos in decisoes.items() if motivos]
     print(
@@ -450,7 +452,7 @@ def main(
         print(f"  {s}: {'; '.join(decisoes[s])}")
 
     if args.accept:
-        aceitos = [_entrada(registros[str(s)]["fonte"]) for s in escopos if not decisoes[str(s)]]
+        aceitos = [_entrada(registros[s]["fonte"]) for s in escopos if not decisoes[s]]
         print(f"{append_validated_sources(yaml_path, aceitos)} new sources in {yaml_path.name}")
     return 2 if bloqueados else 0
 
