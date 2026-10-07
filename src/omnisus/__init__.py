@@ -264,9 +264,15 @@ def load(
     second call downloads nothing new) and returns the requested scopes' rows with
     codes as DATASUS published them. When every file comes from a validated source
     (see ``describe_dataset(dataset)["analytics"]["validated_sources"]``) it also adds
-    the harmonised categories: ``idade_anos_completos``, ``idade_status``,
-    ``sexo_categoria``, ``sexo_status`` and ``<date>_data`` columns. Otherwise it
-    leaves them out and warns once. Readable labels come from :func:`label`.
+    the harmonised categories the dataset's dictionary defines in
+    ``describe_dataset(dataset)["analytics"]``, e.g. age (``idade_anos_completos``,
+    ``idade_status``), sex (``sexo_categoria``, ``sexo_status``) and dates
+    (``<date>_data``). Not every dictionary defines all three:
+    :func:`describe_datasets` lists each dataset's validated scopes, and
+    [Bases e argumentos](https://raphaelfh.github.io/omnisus/datasets/) shows them
+    with the categories each dictionary defines. Otherwise it leaves the categories
+    out and warns once; a dataset whose dictionary defines none gets no warning.
+    Readable labels come from :func:`label`.
 
     Args:
         dataset: DATASUS FTP dataset name, e.g. ``"sim_obitos"``,
