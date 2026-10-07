@@ -20,6 +20,11 @@
   `sim_obitos` and `sih_aih_reduzida` define all three and the other seven age only.
   The docstring points to `describe_datasets()` and "Bases e argumentos", and says that
   a dataset whose dictionary defines no category gets no warning (#65).
+- The profiles call `docs/datasets.md` "Bases e argumentos", not "catálogo" (in
+  CONTEXT.md the catalog is the lake's database), and every link to it lands on a
+  section: "Onde fica no servidor" when the sentence names a server directory, "Outras
+  fontes" for IBGE population, the system's section otherwise. The CNES profile no
+  longer says the package skips the LT file: it imports it as `cnes_leitos` (#64).
 
 ### Notebooks
 
@@ -36,14 +41,6 @@
 - `sia.py` and `sinan.py` point to `describe_datasets()` and `bases.py` instead of
   listing the `BASE` values by hand; `sia.py` says it runs on any SIA table the
   package imports (#55).
-
-### Docs site
-
-- The profiles call `docs/datasets.md` "Bases e argumentos", not "catálogo" (in
-  CONTEXT.md the catalog is the lake's database), and every link to it lands on a
-  section: "Onde fica no servidor" when the sentence names a server directory, "Outras
-  fontes" for IBGE population, the system's section otherwise. The CNES profile no
-  longer says the package skips the LT file: it imports it as `cnes_leitos` (#64).
 
 ## v0.2.2 — 2026-10-06
 
