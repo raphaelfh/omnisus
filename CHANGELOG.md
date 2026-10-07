@@ -4,6 +4,10 @@
 
 ### Dictionaries
 
+- `sih_aih_reduzida` declares `fonte_orc`, which RD files publish from 2025-03 (layout 6,
+  `evidence/2026-10-06-rd-2008-layouts`). No DEF or CNV of the registered `TAB_SIH.zip`
+  cites it, so it has no labels; the issue `fonte_orc-sem-fonte` says what was consulted.
+  `check_columns` no longer reports it as "not in dictionary" (#86).
 - `sih_aih_reduzida.diagsec9` no longer references `aux_cid10`: the 157 RD files read
   from 2014-01 to 2026-07 (one RR or AP file a month, plus SP and MG at each layout
   change) publish `DIAGSEC9` as C(1), so no row could join. Its
