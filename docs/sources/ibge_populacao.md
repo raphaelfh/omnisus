@@ -58,9 +58,10 @@ alimenta o SIDRA.
 
 ## Cobertura e modalidade
 
-Não há arquivos por UF nem inventário: a população do IBGE usa um importador próprio,
-fora do [catálogo de datasets](../datasets.md), que cobre o FTP do DATASUS. Cada
-chamada pede um produto e um ano:
+Não há arquivos por UF nem inventário: a população do IBGE usa um importador próprio e
+não está na tabela das bases do FTP do DATASUS
+([Bases e argumentos](../datasets.md#outras-fontes)). Cada chamada pede um produto e um
+ano:
 
 - `census`: 2010 e 2022 (`src/omnisus/sources/ibge/products.py`, `CENSUS_YEARS`).
 - `estimate`: só o período mais recente do agregado 6579

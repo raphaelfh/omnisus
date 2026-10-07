@@ -27,7 +27,7 @@ Cada tabela vem de um instrumento ou laudo diferente:
 - `sia_apac_laudos_diversos` (prefixo `AD`): Laudos Diversos da APAC
   (Informe SIASUS 2019-07, p. 5), com o layout comum da APAC e nenhum campo próprio
   (p. 6).
-- `sia_apac_cirurgia_bariatrica` (prefixo `ABO` no catálogo): Laudo de Acompanhamento à
+- `sia_apac_cirurgia_bariatrica` (prefixo `ABO` na biblioteca): Laudo de Acompanhamento à
   Cirurgia Bariátrica da APAC (Informe SIASUS 2019-07, p. 5), com número da AIH, data
   da cirurgia e número de meses de acompanhamento (p. 12).
 - `sia_psicossocial` (prefixo `PS`): Registro das Ações Ambulatoriais de Saúde (RAAS) –
@@ -88,8 +88,8 @@ Sobre as linhas:
 Arquivos mensais por UF, todos no diretório `/dissemin/publicos/SIASUS/200801_/Dados`,
 sem diretório preliminar. O início difere por tabela: 2008-01 para BPA-I, medicamentos,
 quimioterapia e laudos diversos; 2012-11 para a RAAS psicossocial; 2014-01 para
-cirurgia bariátrica; 2014-08 para tratamento dialítico. Veja o
-[catálogo de datasets](../datasets.md).
+cirurgia bariátrica; 2014-08 para tratamento dialítico. Veja
+[Bases e argumentos](../datasets.md#sia).
 
 ### Produção ambulatorial (PA)
 
@@ -129,7 +129,8 @@ DEF no `TAB_SIA.zip`, por isso não tem rótulos. Todas declaram identidade de a
   `Invasao.CNV`, ligado pelo DEF de cada laudo de APAC no pacote oficial
   `TAB_SIA.zip` (`src/omnisus/data/dicionarios/sources/cnv/vinculos.json`).
 - O documento nomeia o arquivo de cirurgia bariátrica `ABufaamm.dbf` (p. 5) e
-  `ABUFMM.DBF` (p. 11); a biblioteca usa o prefixo `ABO` ([catálogo](../datasets.md);
+  `ABUFMM.DBF` (p. 11); a biblioteca usa o prefixo `ABO`
+  ([Bases e argumentos](../datasets.md#onde-fica-no-servidor);
   `tests/unit/sources/datasus_ftp/test_filenames_golden.py`).
 - No arquivo real de cirurgia bariátrica, o cabeçalho tem 86 campos, 8 sem nome, que o
   parser descarta, e nomes variantes como `AP_TPPRE`, `AP_APACAN`, `AP_DTOOCOR` e
@@ -214,7 +215,7 @@ Passo a passo com as sete tabelas, análise e procedência:
   `70fe69dbd4cf0827452e3c265d8d83ebeabe145f63a7e054e57c7848d070c8dc`, conferido de novo
   em 2026-09-13. Registro: `src/omnisus/data/dicionarios/sources/registry.json`. Em 2026-09-13, o
   diretório `/dissemin/publicos/SIASUS/200801_/Doc` só continha este informe.
-- Catálogo gerado do registro da biblioteca: [Datasets](../datasets.md).
+- [Bases e argumentos](../datasets.md#sia), página gerada do registro da biblioteca.
 
 ## Detalhes técnicos
 
@@ -222,8 +223,9 @@ Passo a passo com as sete tabelas, análise e procedência:
 
 As 14 tabelas abaixo usam o mesmo diretório do FTP,
 `/dissemin/publicos/SIASUS/200801_/Dados`, e se distinguem pelo prefixo do arquivo
-([catálogo](../datasets.md)). A décima quinta, `sia_producao_ambulatorial_1994_2007`,
-fica em `SIASUS/199407_200712/Dados` (veja Produção ambulatorial, acima).
+([Bases e argumentos](../datasets.md#onde-fica-no-servidor)). A décima quinta,
+`sia_producao_ambulatorial_1994_2007`, fica em `SIASUS/199407_200712/Dados` (veja
+Produção ambulatorial, acima).
 
 | Dataset | Prefixo |
 | --- | --- |
@@ -243,7 +245,7 @@ fica em `SIASUS/199407_200712/Dados` (veja Produção ambulatorial, acima).
 | `sia_atencao_domiciliar` | `SAD` |
 
 Todos os arquivos que o informe técnico cita (Informe SIASUS 2019-07, p. 1 e p. 5) têm
-linha no catálogo.
+linha em [Bases e argumentos](../datasets.md#sia).
 
 ### Linha de comando
 

@@ -87,4 +87,4 @@ Passo a passo com Chagas, hanseníase e tuberculose, análise e procedência:
 - `TAB_SINANNET.zip`, `TuberculNET5_0.def`:
   <ftp://ftp.datasus.gov.br/dissemin/publicos/SINAN/AUXILIAR/TAB_SINANNET.zip> — SHA-256
   `cad66ee387810de6f7b00560d8e827f2970d016cf363787523691d4f5454c8be`.
-- Catálogo gerado do registro da biblioteca: [Datasets](../datasets.md).
+- [Bases e argumentos](../datasets.md#sinan), página gerada do registro da biblioteca.

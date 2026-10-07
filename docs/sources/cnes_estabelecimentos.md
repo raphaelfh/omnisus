@@ -60,9 +60,9 @@ Arquivo de estabelecimentos (ST) do Cadastro Nacional de Estabelecimentos de Sa�
 ## Cobertura e modalidade
 
 Arquivos mensais por UF, de agosto de 2005 em diante, no diretório
-`/dissemin/publicos/CNES/200508_/Dados/ST`, sem diretório preliminar; veja o
-[catálogo de datasets](../datasets.md). Os demais arquivos que o mesmo documento descreve
-(Informe CNES 2017-06, p. 1–2) são linhas próprias; veja abaixo.
+`/dissemin/publicos/CNES/200508_/Dados/ST`, sem diretório preliminar; veja
+[Bases e argumentos](../datasets.md#onde-fica-no-servidor). Os demais arquivos que o mesmo
+documento descreve (Informe CNES 2017-06, p. 1–2) são linhas próprias; veja abaixo.
 
 ### Os outros subtipos do CNES
 
@@ -122,7 +122,8 @@ Os dicionários dessas linhas partem do inventário físico do descritor DBF de 
   (Informe CNES 2017-06, p. 11).
 - As quantidades de leitos tipo 1 (cirúrgico), 2 (clínico) e 3 (complementar) estão em
   `qtleitp1` a `qtleitp3` (Informe CNES 2017-06, p. 5); o arquivo de leitos é o LT
-  (p. 2), que a biblioteca não importa ([catálogo](../datasets.md)).
+  (p. 2), que a biblioteca importa como `cnes_leitos`
+  ([Bases e argumentos](../datasets.md#cnes)).
 - O nome do estabelecimento não está no ST (Informe CNES 2017-06, p. 3–11):
   `sus.import_cnes_master` busca os nomes na API pública e os junta a `aux_cnes`
   (`src/omnisus/__init__.py`, docstring de `import_cnes_master`).
@@ -188,15 +189,15 @@ Passo a passo com análise e procedência:
   — consultado em 2026-09-10; SHA-256
   `71af7438a8cd77ed3fd7af03f7594b94aecf7eaa71082e28fa85c23c5524a1bb`, conferido de novo
   em 2026-09-13. Registro: `src/omnisus/data/dicionarios/sources/registry.json`.
-- Catálogo gerado do registro da biblioteca: [Datasets](../datasets.md).
+- [Bases e argumentos](../datasets.md#cnes), página gerada do registro da biblioteca.
 
 ## Detalhes técnicos
 
 ### Importação e `aux_cnes`
 
-O CNES-ST usa o pipeline do FTP do DATASUS; o [catálogo](../datasets.md) define
-cadência, cobertura e partições. Qualquer importação devolve um `ImportReport` e
-atualiza `aux_cnes` depois da carga:
+O CNES-ST usa o pipeline do FTP do DATASUS; o registro define cadência, cobertura e
+partições ([Bases e argumentos](../datasets.md#cnes)). Qualquer importação devolve um
+`ImportReport` e atualiza `aux_cnes` depois da carga:
 
 ```python
 import omnisus as sus

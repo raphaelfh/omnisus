@@ -98,7 +98,8 @@ arquivo nacional por ano, ora no diretório final, ora no preliminar.
 
 Um arquivo nacional por ano, de 2001 em diante, no diretório final
 `/dissemin/publicos/SINAN/DADOS/FINAIS` ou no preliminar
-`/dissemin/publicos/SINAN/DADOS/PRELIM`; veja o [catálogo de datasets](../datasets.md).
+`/dissemin/publicos/SINAN/DADOS/PRELIM`; veja
+[Bases e argumentos](../datasets.md#onde-fica-no-servidor).
 Em 2026-09-11, 2001–2023 estavam em `FINAIS` e 2024–2026 em `PRELIM`, e nenhum ano
 estava nos dois (relatório de 2026-09-12, §1.1 e §1.2). A importação não aceita filtro
 de UF nem de mês.
@@ -217,7 +218,7 @@ Passo a passo com Chagas, hanseníase e tuberculose, análise e procedência:
 - Relatório "SINAN além de Chagas e fontes públicas de dispensação", revisado em
   2026-09-12, §1.1–1.3:
   <https://github.com/raphaelfh/omnisus/blob/main/evidence/2026-09-12-sinan-e-dispensacao.md>.
-- Catálogo gerado do registro da biblioteca: [Datasets](../datasets.md).
+- [Bases e argumentos](../datasets.md#sinan), página gerada do registro da biblioteca.
 
 ## Detalhes técnicos
 

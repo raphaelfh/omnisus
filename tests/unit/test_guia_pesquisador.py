@@ -61,6 +61,23 @@ def test_sources_section_cites_a_document(perfil):
     assert re.search(r"(https?|ftp)://\S+", _secao(_texto(perfil), "Fontes"))
 
 
+def _linhas_com(perfil: str, trecho: str) -> list[str]:
+    return [linha for linha in _texto(perfil).splitlines() if trecho in linha]
+
+
+@pytest.mark.parametrize("perfil", sorted(PERFIS))
+def test_profile_calls_datasets_page_bases_e_argumentos(perfil):
+    # In CONTEXT.md the catalog is the lake's database, not docs/datasets.md (#64).
+    linhas = _linhas_com(perfil, "datasets.md")
+    assert [linha for linha in linhas if "catálogo" in linha.lower()] == []
+
+
+@pytest.mark.parametrize("perfil", sorted(PERFIS))
+def test_profile_links_datasets_page_to_a_section(perfil):
+    # mkdocs build --strict fails when the section does not exist (mkdocs.yml, validation).
+    assert _linhas_com(perfil, "](../datasets.md)") == []
+
+
 def test_every_bases_notebook_has_a_profile():
     notebooks = {
         p.stem for p in (ROOT / "notebooks").glob("*.py") if not p.name.startswith("_")
