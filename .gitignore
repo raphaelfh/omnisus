@@ -39,3 +39,6 @@ site/
 # Tool scratch directories
 .hypothesis/
 .playwright-mcp/
+
+# Notebooks e resultados exploratórios locais, fora do repositório
+/experimentos/
