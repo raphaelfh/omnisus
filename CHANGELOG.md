@@ -62,6 +62,15 @@
   January 2024 (#55).
 - The Colab notebook shows every dataset right after the install, in a section of its
   own (#55).
+- The Colab notebook goes through the library end to end with Roraima: SIM 2022, SIH
+  processed in January 2023 and the IBGE 2022 census. It covers `describe_dataset`, `available`,
+  `load`, `check_columns`, `outdated`, `label`, the harmonised age and sex categories,
+  CID-10 chapters in SQL through `LakeReader` and `reference_join_sql`, deaths per
+  100,000 through `import_ibge_populacao` and `municipality_join_key_sql`, and `cite`.
+  The Google Drive lake is behind `USAR_DRIVE`, so "Run all" works without mounting it,
+  and a scope that is not a validated source skips the harmonised section instead of
+  failing. `tests/integration/test_colab_e2e.py` (e2e) runs it against the server for
+  RR and SP, and for the 27 UFs with `OMNISUS_E2E_UFS=ALL`.
 - `sia.py` and `sinan.py` point to `describe_datasets()` and `bases.py` instead of
   listing the `BASE` values by hand; `sia.py` says it runs on any SIA table the
   package imports (#55).
