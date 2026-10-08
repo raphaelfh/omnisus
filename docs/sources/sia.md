@@ -150,9 +150,11 @@ DEF no `TAB_SIA.zip`, por isso não tem rótulos. Todas declaram identidade de a
 - O CNS do paciente vem cifrado (`cns_pac` na RAAS, "criptografia";
   Informe SIASUS 2019-07, p. 16), e os dicionários marcam os campos de CNS com
   `x-crypto: datasus-cns` (`src/omnisus/data/dicionarios/sia_*.yaml`).
-- Depois de decifrado, o CNS liga pessoas entre tabelas do SIA: nos arquivos de teste de
-  Roraima, janeiro de 2024, 312 pessoas estavam no BPA-I e na APAC de medicamentos, e 56
-  no BPA-I e na RAAS psicossocial (`tests/unit/sources/datasus_ftp/test_sia_apac.py`,
+- A biblioteca não decifra o CNS. O valor cifrado, comparado como publicado, liga a mesma
+  pessoa entre tabelas do SIA (`evidence/2026-09-23-linkage-ampliado.md`, seção "SIA: the
+  encrypted CNS"). Nos arquivos de teste de Roraima, janeiro de 2024, 312 CNS distintos
+  aparecem no BPA-I (`cns_pac`) e na APAC de medicamentos (`ap_cnspcn`), e 56 no BPA-I e
+  na RAAS psicossocial (`cns_pac`) (`tests/unit/sources/datasus_ftp/test_sia_apac.py`,
   `test_cross_family_cns_intersection_rr`).
 - Os códigos ficam no lake como publicados: o dicionário decodifica rótulos e datas na
   exibição, não na importação (`src/omnisus/transforms/dictionaries.py`, docstring do
