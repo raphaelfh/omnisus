@@ -15,13 +15,15 @@ Escolha onde rodar. Os três caminhos usam a mesma biblioteca e chegam à mesma 
 === "Google Colab"
 
     Nada para instalar no seu computador. Abra o notebook, rode as células em ordem e,
-    se quiser que os dados fiquem guardados, monte o Google Drive na seção 3.
+    se quiser que os dados fiquem guardados, ponha `USAR_DRIVE = True` na seção 2.
 
     [![Abrir no Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/raphaelfh/omnisus/blob/main/notebooks/colab.ipynb)
 
-    O notebook instala o omnisus, baixa os óbitos de Roraima em 2023, põe rótulos,
-    confere as colunas e imprime a citação. Para outra base, troque o nome e o recorte
-    (veja [Bases e argumentos](../datasets.md)).
+    O notebook instala o omnisus e percorre a biblioteca de ponta a ponta com Roraima:
+    os óbitos de 2022 (SIM), as AIH processadas em janeiro de 2023 (SIH) e o censo 2022 do IBGE.
+    Ele confere as colunas, põe rótulos, usa idade e sexo harmonizados, agrupa as causas
+    pela CID-10 em polars e em SQL, calcula óbitos por 100 mil habitantes e imprime a citação. Para
+    outra base, troque o nome e o recorte (veja [Bases e argumentos](../datasets.md)).
 
 === "marimo no navegador (molab)"
 
