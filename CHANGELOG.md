@@ -65,7 +65,7 @@
 - The Colab notebook goes through the library end to end with Roraima: SIM 2022, SIH
   processed in January 2023 and the IBGE 2022 census. It covers `describe_dataset`, `available`,
   `load`, `check_columns`, `outdated`, `label`, the harmonised age and sex categories,
-  CID-10 chapters in SQL through `LakeReader` and `reference_join_sql`, deaths per
+  CID-10 chapters in polars (SIM) and in SQL through `LakeReader` and `reference_join_sql` (SIH), deaths per
   100,000 through `import_ibge_populacao` and `municipality_join_key_sql`, and `cite`.
   The Google Drive lake is behind `USAR_DRIVE`, so "Run all" works without mounting it,
   and a scope that is not a validated source skips the harmonised section instead of

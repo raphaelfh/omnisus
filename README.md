@@ -39,7 +39,7 @@ Sem instalar nada:
 
 O Colab percorre a biblioteca de ponta a ponta com Roraima: baixa os óbitos de 2022 e as
 AIH processadas em janeiro de 2023, confere as colunas, põe rótulos, usa idade e sexo harmonizados,
-agrupa as causas pela CID-10 em SQL, calcula óbitos por 100 mil habitantes com o censo
+agrupa as causas pela CID-10 em polars e em SQL, calcula óbitos por 100 mil habitantes com o censo
 do IBGE e imprime a citação, com o lake opcionalmente no seu Google Drive. O molab abre os notebooks marimo
 de cada base. Outros caminhos (marimo no seu computador, Jupyter) estão em
 [Comece aqui](https://raphaelfh.github.io/omnisus/pesquisa/).
