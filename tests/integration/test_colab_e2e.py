@@ -75,7 +75,8 @@ def test_the_colab_notebook_runs_for_the_uf(uf, lake, monkeypatch, capsys) -> No
 
 def test_a_scope_without_a_validated_source_still_runs(lake, monkeypatch, capsys) -> None:
     """SIM RR 2019 is not in `validated_sources`: no harmonised categories."""
-    ns, out = _run("RR", 2019, lake, monkeypatch, capsys)
+    with pytest.warns(UserWarning, match="sim_obitos: harmonised categories left out"):
+        ns, out = _run("RR", 2019, lake, monkeypatch, capsys)
 
     assert "idade_anos_completos" not in ns["obitos"].columns
     assert "load deixou as categorias harmonizadas de fora" in out
