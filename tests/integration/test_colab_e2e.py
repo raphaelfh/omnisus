@@ -71,6 +71,9 @@ def test_the_colab_notebook_runs_for_the_uf(uf, lake, monkeypatch, capsys) -> No
     municipios = ns["taxa"]["municipio"].to_list()
     assert municipios and len(municipios) == len(set(municipios))
     assert ns["taxa"]["obitos"].sum() <= ns["obitos"].height
+    taxa = ns["taxa"]
+    esperada = [1e5 * o / p for o, p in zip(taxa["obitos"], taxa["populacao"], strict=True)]
+    assert taxa["obitos_por_100_mil"].to_list() == pytest.approx(esperada, abs=0.05)
 
 
 def test_a_scope_without_a_validated_source_still_runs(lake, monkeypatch, capsys) -> None:

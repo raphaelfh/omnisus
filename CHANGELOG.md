@@ -1,6 +1,16 @@
 # Changelog
 
-## Unreleased
+## v0.2.3 — 2026-10-08
+
+**Upgrading from 0.2.2:** no parser version changed (the import still reads the same
+`encoding` and `x-identity` of every dictionary), so a 0.2.2 lake keeps every scope;
+`load` downloads nothing again.
+
+### API
+
+- `read(table)` returns a lake table or view, whole, as a polars DataFrame: the `aux_*`
+  vocabularies, the `ibge_populacao` view, or every scope of a dataset already imported.
+  A table the lake does not have raises `LookupError` naming what imports it.
 
 ### Dictionaries
 
@@ -65,8 +75,9 @@
 - The Colab notebook goes through the library end to end with Roraima: SIM 2022, SIH
   processed in January 2023 and the IBGE 2022 census. It covers `describe_dataset`, `available`,
   `load`, `check_columns`, `outdated`, `label`, the harmonised age and sex categories,
-  CID-10 chapters in polars (SIM) and in SQL through `LakeReader` and `reference_join_sql` (SIH), deaths per
-  100,000 through `import_ibge_populacao` and `municipality_join_key_sql`, and `cite`.
+  CID-10 chapters of SIM and SIH, deaths per 100,000 through `import_ibge_populacao`,
+  and `cite`. It writes no SQL: `read` brings `aux_cid10`, `aux_municipios`, `aux_uf`
+  and `ibge_populacao` as polars DataFrames, and the joins are in polars.
   The Google Drive lake is behind `USAR_DRIVE`, so "Run all" works without mounting it,
   and a scope that is not a validated source skips the harmonised section instead of
   failing. `tests/integration/test_colab_e2e.py` (e2e) runs it against the server for
