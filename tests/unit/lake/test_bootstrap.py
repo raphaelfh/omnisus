@@ -1,7 +1,8 @@
 """Tests for Lake.bootstrap_auxiliares over the packaged zip.
 
-The zip is built by ``scripts/build_bootstrap_zip.py`` from the hashed DATASUS files in
-``SIM/CID10/TABELAS`` and ``CBO2002.CNV``; its ``manifest.json`` names each digest.
+The zip is built by ``scripts/build_bootstrap_zip.py`` from hashed DATASUS files in
+``SIM/CID10/TABELAS`` and the ``CBO2002.CNV`` and ``CID10GRUPOS.CNV`` members;
+its ``manifest.json`` names each digest.
 """
 
 from __future__ import annotations
@@ -76,6 +77,31 @@ def test_cid10_is_complete_with_chapters(lake: Lake) -> None:
     assert one(lake, "SELECT count(DISTINCT capitulo) FROM lake.aux_cid10") == (22,)
 
 
+def test_cid10_has_blocks_from_the_official_sih_group_table(lake: Lake) -> None:
+    """AGENTS.md rule 2: real DATASUS CID-10 rows and the hashed TAB_SIH CNV."""
+    assert one(
+        lake,
+        "SELECT bloco, bloco_descricao FROM lake.aux_cid10 WHERE codigo = 'B571'",
+    ) == ("B50-B64", "Doenças devidas a protozoários")
+    assert one(
+        lake,
+        "SELECT bloco, bloco_descricao FROM lake.aux_cid10 WHERE codigo = 'E119'",
+    ) == ("E10-E14", "Diabetes mellitus")
+    assert one(
+        lake,
+        "SELECT bloco, bloco_descricao FROM lake.aux_cid10 WHERE codigo = 'O930'",
+    ) == (None, None)
+    assert one(
+        lake,
+        "SELECT bloco, bloco_descricao FROM lake.aux_cid10 WHERE codigo = 'U071'",
+    ) == (None, None)
+    assert one(
+        lake,
+        "SELECT count(*), count(*) FILTER (WHERE bloco IS NULL), "
+        "count(DISTINCT bloco) FROM lake.aux_cid10",
+    ) == (14257, 15, 263)
+
+
 def test_occupations_keep_both_schemes(lake: Lake) -> None:
     assert one(
         lake,
@@ -117,6 +143,19 @@ def test_manifest_names_registered_sources() -> None:
     for table, entry in manifest.items():
         for source in entry["sources"]:
             assert registry[source["sha256"]]["url"] == source["url"], table
+
+
+def test_cid10_manifest_cites_the_official_group_member() -> None:
+    """AGENTS.md rule 1: the derived block labels must identify their source bytes."""
+    raw = (files("omnisus.data") / "auxiliares-bootstrap.zip").read_bytes()
+    with zipfile.ZipFile(io.BytesIO(raw)) as zf:
+        sources = json.loads(zf.read("manifest.json"))["aux_cid10"]["sources"]
+    assert {
+        "url": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIHSUS/200801_/Auxiliar/TAB_SIH.zip",
+        "sha256": "f05b32f32908bfb31c4999774600d72bb77c32e22b751bd28e557bb3236276df",
+        "member": "CNV/CID10GRUPOS.CNV",
+        "member_sha256": "8a40729b61e1b7bd86ffd0aa1d7e91c1effaa08252dc4381e3db17e42bd86dfb",
+    } in sources
 
 
 def test_bootstrap_idempotent(tmp_path: Path) -> None:

@@ -400,6 +400,11 @@
       "membro": "CNV/CARATEND.CNV",
       "sha256": "e57c08cd045e6eab1403013d96c7782c963d17bddf4864840a964b99155d27f8"
     },
+    "sih/CNV/CID10GRUPOS.CNV": {
+      "fonte": "sih-tab-f05b32f32908",
+      "membro": "CNV/CID10GRUPOS.CNV",
+      "sha256": "8a40729b61e1b7bd86ffd0aa1d7e91c1effaa08252dc4381e3db17e42bd86dfb"
+    },
     "sih/CNV/COMPLEX2.CNV": {
       "fonte": "sih-tab-f05b32f32908",
       "membro": "CNV/COMPLEX2.CNV",
