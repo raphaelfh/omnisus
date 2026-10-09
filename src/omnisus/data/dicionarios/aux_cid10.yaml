@@ -1,5 +1,5 @@
 name: aux_cid10
-title: CID-10 completa com capítulos (DATASUS CID10 e CIDCAP10)
+title: CID-10 completa com capítulos e grupos (DATASUS CID10, CIDCAP10 e TAB_SIH)
 profile: tabular-data-resource
 encoding: utf-8
 schema:
@@ -19,7 +19,40 @@ schema:
     - name: capitulo_descricao
       type: string
       description: "CIDCAP10.DESCRICAO"
+    - name: bloco
+      type: string
+      constraints: { pattern: '^[A-Z]\d{2}-[A-Z]\d{2}$' }
+      description: "Faixa CID-10 do CNV/CID10GRUPOS.CNV (TAB_SIH); nulo se o código não pertence a uma faixa publicada."
+      x-metadata:
+        claims:
+          - target: /field/description
+            value_sha256: ef5656f938dee41ce96f1a3ed87e5d139cb36ec34a78c7564cb8f7f2d8f5f47c
+            status: verified_in_source
+            checked_at: '2026-10-09'
+            method: Inspeção do membro CNV no arquivo oficial com SHA-256 registrado.
+            reviewer: OpenAI Codex
+            evidence:
+              - source_id: sih-tab-f05b32f32908
+                pages: []
+                locator: 'CNV/CID10GRUPOS.CNV, categorias 1-264 (faixas); categoria 265 sem código'
+            note: Códigos fora das faixas publicadas ficam sem bloco; não se usa aproximação.
+    - name: bloco_descricao
+      type: string
+      description: "Rótulo da faixa CID-10 no CNV/CID10GRUPOS.CNV (TAB_SIH); nulo quando bloco é nulo."
+      x-metadata:
+        claims:
+          - target: /field/description
+            value_sha256: a0c98ea15bb0c633d2a79d5458b3ab93defe4caf332ca6f41acfa37c56796aa7
+            status: verified_in_source
+            checked_at: '2026-10-09'
+            method: Inspeção do membro CNV no arquivo oficial com SHA-256 registrado.
+            reviewer: OpenAI Codex
+            evidence:
+              - source_id: sih-tab-f05b32f32908
+                pages: []
+                locator: 'CNV/CID10GRUPOS.CNV, colunas de descrição e faixa'
+            note: Rótulo preservado da edição publicada, sem adivinhar códigos ausentes.
   primaryKey: [codigo]
-x-version: "2.0.0"
+x-version: "2.1.0"
 x-source: DATASUS
 x-source-url: "ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID10/TABELAS/CID10.DBF"

@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.2.4 — 2026-10-09
+
+**Upgrading from 0.2.3:** the scope parser is unchanged, so existing dataset scopes
+stay installed. Run `omnisus lake update-auxiliares` on an existing lake to replace
+its `aux_cid10` reference table with the new `bloco` and `bloco_descricao` columns.
+`omnisus init` includes them in a new lake.
+
+### Dictionaries
+
+- `aux_cid10` (2.1.0) adds CID-10 group ranges and labels from the official
+  `TAB_SIH.zip` member `CNV/CID10GRUPOS.CNV`. The bootstrap manifest records the
+  archive and member SHA-256. Of 14,257 codes, 14,242 match one range; 15 codes
+  (`O93` and its subcodes, `U07` and its subcodes) remain null because this edition
+  does not publish a matching range. Codes without a matching range are never
+  assigned a nearby group.
+
 ## v0.2.3 — 2026-10-08
 
 **Upgrading from 0.2.2:** no parser version changed (the import still reads the same

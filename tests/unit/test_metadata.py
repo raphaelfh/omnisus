@@ -33,6 +33,16 @@ def test_metadata_separates_source_from_observation():
     assert all(isinstance(c["value"], str) for c in field["field"]["codes"])
 
 
+def test_cid10_block_fields_cite_the_official_group_source():
+    """AGENTS.md rule 1: new derived field descriptions identify their published source."""
+    description = sus.describe_dataset("aux_cid10")
+    for name in ("bloco", "bloco_descricao"):
+        column = next(field for field in description["fields"] if field["field"]["name"] == name)
+        claim = next(c for c in column["claims"] if c["target"] == "/field/description")
+        assert claim["status"] == "verified_in_source"
+        assert {e["source_id"] for e in claim["evidence"]} == {"sih-tab-f05b32f32908"}
+
+
 def test_unknown_dataset_has_no_fabricated_description():
     with pytest.raises(FileNotFoundError):
         sus.describe_dataset("no_such_dataset")

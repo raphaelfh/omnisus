@@ -2,9 +2,9 @@
 
     uv run python scripts/build_bootstrap_zip.py
 
-Every source is a file of ``SIM/CID10/TABELAS`` registered in
-``sources/registry.json``, plus the packaged ``sources/cnv/sim/CBO2002.CNV``. Each
-download must match its registered SHA-256, else the build stops. The zip carries one
+Sources are registered ``SIM/CID10/TABELAS`` files and the packaged
+``CBO2002.CNV`` and ``CID10GRUPOS.CNV`` members. Downloads and packaged members
+must match their registered SHA-256, else the build stops. The zip carries one
 Parquet file per table and ``manifest.json`` (table -> rows and sources).
 """
 
@@ -14,8 +14,10 @@ import ftplib
 import hashlib
 import io
 import json
+import re
 import tempfile
 import zipfile
+from itertools import pairwise
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
@@ -98,7 +100,41 @@ def aux_municipios(rows: list[dict[str, Any]]) -> pl.DataFrame:
     )
 
 
-def aux_cid10(rows: list[dict[str, Any]], chapters: list[dict[str, Any]]) -> pl.DataFrame:
+def cid10_groups(raw: bytes) -> list[tuple[str, str, str, str]]:
+    """Flat CID-10 ranges in TAB_SIH's CID10GRUPOS.CNV (not its nested GRUPO CNV)."""
+    lines = raw.decode("cp1252").splitlines()
+    if not lines or lines[0] != "265 3 L" or len(lines) != 266:
+        raise ValueError("CID10GRUPOS.CNV: expected header and 265 categories")
+    groups = []
+    for number, line in enumerate(lines[1:], start=1):
+        if not line[:7].strip().isdigit() or int(line[:7]) != number or line[7:9] != "  ":
+            raise ValueError(f"CID10GRUPOS.CNV: invalid category {number}")
+        label = line[9:60].strip()
+        if not label:
+            raise ValueError(f"CID10GRUPOS.CNV: category {number} has no description")
+        if number == 265:
+            if label != "Não preenchido" or line[60:].strip() != ",":
+                raise ValueError("CID10GRUPOS.CNV: invalid empty-code category")
+            continue
+        match = re.fullmatch(r"([A-Z]\d{2})-([A-Z]\d{2}),", line[60:])
+        if match is None:
+            raise ValueError(f"CID10GRUPOS.CNV: invalid range at category {number}")
+        first, last = match.groups()
+        if first > last:
+            raise ValueError(f"CID10GRUPOS.CNV: reversed range at category {number}")
+        groups.append((first, last, f"{first}-{last}", label))
+    ordered = sorted(groups)
+    for previous, current in pairwise(ordered):
+        if current[0] <= previous[1]:
+            raise ValueError(f"CID10GRUPOS.CNV: overlapping ranges {previous[2]} and {current[2]}")
+    return groups
+
+
+def aux_cid10(
+    rows: list[dict[str, Any]],
+    chapters: list[dict[str, Any]],
+    groups: list[tuple[str, str, str, str]],
+) -> pl.DataFrame:
     def display(code: str) -> str:
         return code if len(code) == 3 else f"{code[:3]}.{code[3:]}"
 
@@ -112,15 +148,21 @@ def aux_cid10(rows: list[dict[str, Any]], chapters: list[dict[str, Any]]) -> pl.
             raise SystemExit(f"CID-10 {code} falls in chapters {found}")
         return found[0]
 
+    def group(code: str) -> tuple[str, str, str, str] | None:
+        return next((g for g in groups if g[0] <= code[:3] <= g[1]), None)
+
     for r in rows:
         if not r["DESCR"].startswith(display(r["CID10"])):
             raise SystemExit(f"CID-10 {r['CID10']}: DESCR does not start with its code")
+    matched_groups = [group(r["CID10"]) for r in rows]
     return pl.DataFrame(
         {
             "codigo": [r["CID10"] for r in rows],
             "descricao": [r["DESCR"][len(display(r["CID10"])) :].strip() for r in rows],
             "capitulo": [chapter(r["CID10"]) for r in rows],
             "capitulo_descricao": [chapters[chapter(r["CID10"]) - 1]["DESCRICAO"] for r in rows],
+            "bloco": [g[2] if g else None for g in matched_groups],
+            "bloco_descricao": [g[3] if g else None for g in matched_groups],
         },
         schema_overrides={"capitulo": pl.Int32},
     )
@@ -163,11 +205,25 @@ def main() -> None:
         into = Path(tmp)
         read = {name: download(name, into) for name in ENCODING}
     ocupacoes, cbo_source = aux_ocupacoes(read["TABOCUP.DBF"][0])
+    member = json.loads((CNV / "vinculos.json").read_text(encoding="utf-8"))["membros"][
+        "sih/CNV/CID10GRUPOS.CNV"
+    ]
+    raw_groups = (CNV / "sih/CNV/CID10GRUPOS.CNV").read_bytes()
+    if hashlib.sha256(raw_groups).hexdigest() != member["sha256"]:
+        raise SystemExit("CID10GRUPOS.CNV differs from vinculos.json")
+    archive = next(s for s in sources_registry()["sources"] if s["id"] == member["fonte"])
+    groups_source = {
+        "url": archive["url"],
+        "sha256": archive["sha256"],
+        "member": member["membro"],
+        "member_sha256": member["sha256"],
+    }
+    groups = cid10_groups(raw_groups)
     tables = {
         "aux_uf": (aux_uf(read["TABUF.DBF"][0]), ["TABUF.DBF"]),
         "aux_municipios": (aux_municipios(read["CADMUN.DBF"][0]), ["CADMUN.DBF"]),
         "aux_cid10": (
-            aux_cid10(read["CID10.DBF"][0], read["CIDCAP10.DBF"][0]),
+            aux_cid10(read["CID10.DBF"][0], read["CIDCAP10.DBF"][0], groups),
             ["CID10.DBF", "CIDCAP10.DBF"],
         ),
         "aux_ocupacoes": (ocupacoes, ["TABOCUP.DBF"]),
@@ -191,6 +247,8 @@ def main() -> None:
             sources = [read[n][1] for n in names]
             if table == "aux_ocupacoes":
                 sources.append(cbo_source)
+            if table == "aux_cid10":
+                sources.append(groups_source)
             manifest[table] = {"rows": frame.height, "sources": sources}
             print(f"  {table}: {frame.height} rows")
         zf.writestr(
