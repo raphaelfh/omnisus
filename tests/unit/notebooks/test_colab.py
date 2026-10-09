@@ -39,3 +39,9 @@ def test_every_link_points_to_the_published_docs_or_repository():
         assert url.startswith(
             ("https://raphaelfh.github.io/omnisus/", "https://github.com/raphaelfh/omnisus/")
         ), url
+
+
+def test_cells_query_the_lake_with_polars_not_sql():
+    """The notebook reads lake tables as polars DataFrames and joins them in polars."""
+    for cell in _code():
+        assert ".execute(" not in cell and "SELECT" not in cell, cell
