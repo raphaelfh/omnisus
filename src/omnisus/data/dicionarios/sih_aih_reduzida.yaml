@@ -2459,12 +2459,24 @@ schema:
           description: '''0'' fica sem rótulo: TP_DIAGSEC.CNV (TAB_SIH), ligado a TPDISEC9 no RD2008.DEF,
             lista só ''1'' e ''2''; o IT SIHSUS 1603 descreve TPDISEC9 sem códigos (p. 4). RR 2024-01 (RDRR2401):
             3.714 linhas com ''0'', todas com diagsec9 vazio; a coincidência não é fonte.'
+    - name: fonte_orc
+      type: string
+      x-metadata:
+        issues:
+        - id: fonte_orc-sem-fonte
+          status: open
+          description: 'Sem rótulo nem descrição: o campo entra no layout 6 do RD, de 2025-03
+            em diante (evidence/2026-10-06-rd-2008-layouts), e nenhuma fonte registrada o cita.
+            Nenhum DEF nem CNV do TAB_SIH.zip (f05b32f32908, a versão que o servidor lista em
+            2026-10-07) menciona FONTE_ORC, e o IT_SIHSUS_1603 é de 2016. Valor observado:
+            ''00'' em todas as linhas de RDRR2503 (3.459), RDRR2606 (694) e RDSP2503
+            (245.839).'
 
 x-source-format: dbc
 x-source-family: datasus_ftp
 x-source-prefix: RD
 x-partitions: [ano, uf, mes]
-x-version: "2.12.0"
+x-version: "2.13.0"
 
 x-analytics:
   version: 1.3.0
