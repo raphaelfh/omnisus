@@ -31,8 +31,11 @@ with sus.LakeReader() as lake:
 - `label` puts the dictionary's label next to each code; a code the dictionary does
   not know gets no label.
 - `check_columns` reports, per column, empties, unlabelled codes and date ranges.
+- `read` returns any lake table or view as a polars DataFrame: the `aux_*`
+  vocabularies, `ibge_populacao`, or every scope of a dataset already imported.
 
 ::: omnisus.load
+::: omnisus.read
 ::: omnisus.label
 ::: omnisus.check_columns
 ::: omnisus.cite
