@@ -6,7 +6,7 @@ biblioteca, `sus.describe_dataset` devolve os mesmos metadados.
 | Local | Responsabilidade |
 | --- | --- |
 | `scripts/metadados/` | Consultar, validar e gerar os dicionários |
-| `scripts/metadados/validar_fonte.py` | Audita mais uma fonte para as regras analíticas de um dataset; com `--accept`, registra-a |
+| `scripts/metadados/validar_fonte.py` | Audita um lote de fontes (UFs × período) para as regras analíticas de um dataset, pela regra de aceite do ADR 0003; com `--accept`, registra as aceitas |
 | `scripts/metadados/gerar_decode_cnv.py` | Escreve o `x-decode` dos campos que uma tabela CNV do TabWin decodifica |
 | `scripts/metadados/gerar_sinan.py` | Copia os campos de `sinan_bloco_comum.yaml` para os dicionários SINAN |
 | `scripts/metadados/gerar_subconjuntos_sim.py` | Escreve em DOINF, DOMAT e DOEXT a definição de `sim_obitos` de cada campo comum |
@@ -36,7 +36,7 @@ uv run --locked --extra dev python scripts/metadados/consultar.py --arrow
 `consultar.py` usa `jsonschema` (extra `dev`); o modo `--arrow` também usa `pyarrow`. Os
 caminhos padrão são independentes do diretório de execução; caminhos fornecidos
 como argumentos são relativos ao diretório atual. Só `validar_fonte.py` usa a rede:
-baixa do FTP do DATASUS o arquivo listado para o escopo. Veja
+baixa do FTP do DATASUS cada arquivo listado na janela, audita e apaga. Veja
 [contrato e limitações](../../docs/dicionario/index.md).
 
 `auditar_contrato.py --target <target> --snapshot-id 5 --out <diretorio>` registra

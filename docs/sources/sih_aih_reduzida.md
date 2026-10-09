@@ -247,3 +247,14 @@ A regra 1.1.0 inclui o arquivo final RDRR2301.dbc, identificado pelo SHA-256
 As 4.734 linhas foram auditadas integralmente para idade, sexo e datas.
 Códigos fora do domínio documentado permanecem sem interpretação exata.
 Veja [relatório e reprodução](https://github.com/raphaelfh/omnisus/blob/main/evidence/2026-09-14-extensao-regras/README.md).
+
+### Validação em lote (2026-10-07)
+
+A regra 1.3.0 cobre os 1.674 arquivos `RD{UF}{AAMM}.dbc` das 27 UFs, das competências
+2020-01 a 2025-02, cada um identificado pelo SHA-256 em `validated_sources`. Os arquivos
+foram auditados um a um, com uma regra de aceite escrita (ADR 0003, Consequences), e
+nenhum foi bloqueado. Ficam sem idade interpretada 9.158 registros com a composta `230` e
+12 com a `000`, como a regra documenta. A partir de 2025-03 o RD está no layout 6, ainda
+não validado (#86). Um arquivo republicado depois perde as categorias harmonizadas até
+uma nova validação.
+Veja [relatório e reprodução](https://github.com/raphaelfh/omnisus/blob/main/evidence/2026-10-07-validacao-sih_aih_reduzida-2020-01-2025-02/README.md).

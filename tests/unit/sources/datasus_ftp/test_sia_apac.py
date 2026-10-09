@@ -140,3 +140,27 @@ def test_am_dates_and_competencia_formats(dbc_fixture) -> None:
     assert df["ap_cmp"].head(50).str.len_chars().unique().to_list() == [6]  # AAAAMM
     inic = [v for v in df["ap_dtinic"].head(100).to_list() if v and v.strip()]
     assert all(len(v) == 8 and v[:2] in ("19", "20") for v in inic)  # AAAAMMDD
+
+
+# ---------------------------------------------------------------------------
+# linkage: the encrypted patient CNS across SIA families
+# ---------------------------------------------------------------------------
+
+
+def test_cross_family_cns_intersection_rr(dbc_fixture) -> None:
+    """The encrypted patient CNS, compared as published, is an exact key across families.
+
+    Nothing is decrypted. docs/sources/sia.md states these counts for the RR
+    2024-01 fixtures; evidence/2026-09-23-linkage-ampliado.md shows that the
+    same value in two families agrees on sex and age.
+    """
+
+    def cns(fixture: str, dataset: str, field: str) -> set[str]:
+        df = dbc_bytes_to_lazyframe(dbc_fixture(fixture).read_bytes(), dataset=dataset).collect()
+        return {v for v in df[field].to_list() if v.strip()}
+
+    bpa_i = cns("sia_bi_rr_2024_01_mini", "sia_bpa_individualizado", "cns_pac")
+    medicamentos = cns("sia_am_rr_2024_01_mini", "sia_apac_medicamentos", "ap_cnspcn")
+    psicossocial = cns("sia_ps_rr_2024_01_mini", "sia_psicossocial", "cns_pac")
+    assert len(bpa_i & medicamentos) == 312
+    assert len(bpa_i & psicossocial) == 56

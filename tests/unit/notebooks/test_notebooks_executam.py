@@ -162,10 +162,10 @@ def test_notebook_runs_every_step_on_real_rows(nome, dataset, monkeypatch, tmp_p
     module = _abrir(nome, monkeypatch, tmp_path)
 
     if dataset == ABRE_EM[nome]:
-        module.app.run()
+        _, definidos = module.app.run()
     else:
         parametros = {"BASE": dataset, "UF": escopo.uf, "ANO": escopo.ano, "MES": escopo.mes}
-        module.app.run(defs=parametros | {"EXECUTAR": True, "executar": True})
+        _, definidos = module.app.run(defs=parametros | {"EXECUTAR": True, "executar": True})
 
     assert [p.rsplit("/", 1)[1] for p in baixados] == [filename_for(sus.resolve(dataset), escopo)]
     pasta = tmp_path / "resultados" / dataset
@@ -175,6 +175,29 @@ def test_notebook_runs_every_step_on_real_rows(nome, dataset, monkeypatch, tmp_p
     if tabela == "registros_no_recorte":
         registros = pl.read_csv(pasta / f"{tabela}.csv")["registros"].item()
         assert registros == int(FIXTURES[f"dbc/{fixture}.dbc"]["records"])
+    if nome == "sia.py":
+        _confere_cns_em_branco(definidos["dados"], definidos["cns_em_branco"], escopo)
+
+
+def _confere_cns_em_branco(dados: pl.DataFrame, tabela: pl.DataFrame | None, escopo) -> None:
+    """sia.py step 4: the share of rows whose patient CNS is null or only spaces, per
+    scope (#93). A table without the patient CNS has no such table."""
+    (coluna, *_) = sorted({"cns_pac", "ap_cnspcn"} & set(dados.columns)) or [None]
+    if coluna is None:
+        assert tabela is None
+        return
+    em_branco = (dados[coluna].str.strip_chars().fill_null("") == "").sum()
+    assert tabela.rows() == [
+        (
+            escopo.uf,
+            escopo.ano,
+            escopo.mes,
+            coluna,
+            dados.height,
+            em_branco,
+            round(100 * em_branco / dados.height, 1),
+        )
+    ]
 
 
 @pytest.mark.parametrize("nome", sorted(ABRE_EM))

@@ -37,8 +37,10 @@ Sem instalar nada:
 [![Abrir no Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/raphaelfh/omnisus/blob/main/notebooks/colab.ipynb)
 [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/sim_obitos.py)
 
-O Colab baixa os óbitos de Roraima em 2023, põe rótulos, confere as colunas e imprime a
-citação, com o lake opcionalmente no seu Google Drive. O molab abre os notebooks marimo
+O Colab percorre a biblioteca de ponta a ponta com Roraima: baixa os óbitos de 2022 e as
+AIH processadas em janeiro de 2023, confere as colunas, põe rótulos, usa idade e sexo harmonizados,
+agrupa as causas pela CID-10 em polars e em SQL, calcula óbitos por 100 mil habitantes com o censo
+do IBGE e imprime a citação, com o lake opcionalmente no seu Google Drive. O molab abre os notebooks marimo
 de cada base. Outros caminhos (marimo no seu computador, Jupyter) estão em
 [Comece aqui](https://raphaelfh.github.io/omnisus/pesquisa/).
 

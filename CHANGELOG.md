@@ -1,9 +1,38 @@
 # Changelog
 
-## Unreleased
+## v0.2.3 — 2026-10-08
+
+**Upgrading from 0.2.2:** no parser version changed (the import still reads the same
+`encoding` and `x-identity` of every dictionary), so a 0.2.2 lake keeps every scope;
+`load` downloads nothing again.
+
+### API
+
+- `read(table)` returns a lake table or view, whole, as a polars DataFrame: the `aux_*`
+  vocabularies, the `ibge_populacao` view, or every scope of a dataset already imported.
+  A table the lake does not have raises `LookupError` naming what imports it.
 
 ### Dictionaries
 
+- `sim_obitos` (2.6.0, rule 1.2.0) and `sih_aih_reduzida` (2.12.0, rule 1.3.0) gain
+  harmonised categories in every UF for SIM 2020–2024 and SIH 2020-01 to 2025-02: the
+  135 DO and 1,674 RD files were audited in one batch under the written acceptance rule
+  that ADR 0003 now records, and none was blocked (evidence in
+  `evidence/2026-10-07-validacao-sim_obitos-2020-2024/` and
+  `evidence/2026-10-07-validacao-sih_aih_reduzida-2020-01-2025-02/`). The formulas do not
+  change; a caller that passes the old `rule_version` now gets `ValueError`. The fields'
+  `derivation.rule_version` follows, and so do the SIM subsets that copy them
+  (`sim_obitos_infantis`, `sim_obitos_maternos`, `sim_obitos_externos` 1.1.1). SIH from
+  2025-03 (layout 6) waits for #86 (#85).
+- `scripts/metadados/validar_fonte.py` audits a batch (`--ufs`, `--inicio`, `--fim`,
+  `--referencia`; no `--ufs` for a national dataset) with one server listing. The
+  reference must be the file validated by hand, and the batch stops as soon as it fails.
+  A dropped connection resumes without downloading again, except a failed audit or one
+  made under another dictionary version. Each run writes one evidence folder, with no
+  local path, and never replaces an existing one. Removed: `--uf`, `--year`, `--month`,
+  the `reports/evidence` default and the per-scope `acceptance.json` (#85).
+- `docs/datasets.md` shows the validated scopes as UFs and intervals
+  ("27 UFs, 2020 a 2024") instead of one entry per scope (#85).
 - `sih_aih_reduzida` declares `fonte_orc`, which RD files publish from 2025-03 (layout 6,
   `evidence/2026-10-06-rd-2008-layouts`). No DEF or CNV of the registered `TAB_SIH.zip`
   cites it, so it has no labels; the issue `fonte_orc-sem-fonte` says what was consulted.
@@ -47,6 +76,16 @@
   January 2024 (#55).
 - The Colab notebook shows every dataset right after the install, in a section of its
   own (#55).
+- The Colab notebook goes through the library end to end with Roraima: SIM 2022, SIH
+  processed in January 2023 and the IBGE 2022 census. It covers `describe_dataset`, `available`,
+  `load`, `check_columns`, `outdated`, `label`, the harmonised age and sex categories,
+  CID-10 chapters of SIM and SIH, deaths per 100,000 through `import_ibge_populacao`,
+  and `cite`. It writes no SQL: `read` brings `aux_cid10`, `aux_municipios`, `aux_uf`
+  and `ibge_populacao` as polars DataFrames, and the joins are in polars.
+  The Google Drive lake is behind `USAR_DRIVE`, so "Run all" works without mounting it,
+  and a scope that is not a validated source skips the harmonised section instead of
+  failing. `tests/integration/test_colab_e2e.py` (e2e) runs it against the server for
+  RR and SP, and for the 27 UFs with `OMNISUS_E2E_UFS=ALL`.
 - `sia.py` and `sinan.py` point to `describe_datasets()` and `bases.py` instead of
   listing the `BASE` values by hand; `sia.py` says it runs on any SIA table the
   package imports (#55).

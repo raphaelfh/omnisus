@@ -379,6 +379,41 @@ def _read_with_harmonised(
     return rows
 
 
+def read(table: str, *, target: str | None = None) -> pl.DataFrame:
+    """A lake table or view, whole, as a polars DataFrame.
+
+    For what :func:`load` does not return: the ``aux_*`` vocabularies, the
+    ``ibge_populacao`` view, or every scope of a dataset already in the lake. Codes
+    stay as published; filter and join the result in polars.
+
+    Args:
+        table: Table or view name, e.g. ``"aux_cid10"``, ``"aux_municipios"``,
+            ``"ibge_populacao"`` or ``"sim_obitos"``; ``LakeReader().tables()`` lists them.
+        target: DuckLake target; ``None`` (default) is ``data/raw/omnisus.ducklake``
+            under the working directory, or under ``$OMNISUS_DATA_DIR``.
+
+    Returns:
+        Every row of the table at the lake's latest snapshot.
+
+    Raises:
+        LookupError: the lake has no such table; the message says what imports it.
+
+    Examples:
+        >>> import omnisus as sus
+        >>> cid10 = sus.read("aux_cid10")  # doctest: +SKIP
+        >>> cid10.columns  # doctest: +SKIP
+        ['codigo', 'descricao', 'capitulo', 'capitulo_descricao']
+    """
+    with LakeReader(target) as reader:
+        if table not in reader.tables():
+            raise LookupError(
+                f"{table} is not in the lake. Import it first: sus.load for a DATASUS "
+                "dataset, sus.import_ibge_populacao for ibge_populacao, "
+                "sus.Lake.local().bootstrap_auxiliares() for the aux_* vocabularies."
+            )
+        return reader.connect().sql(f"FROM {qualified(reader.alias, table)}").pl()
+
+
 def import_ibge_populacao(
     *,
     years: Iterable[int],
@@ -645,6 +680,7 @@ __all__ = [
     "municipality_join_key_sql",
     "outdated",
     "products",
+    "read",
     "reference_join_sql",
     "resolve",
     "scopes_for",

@@ -2,7 +2,7 @@
 # requires-python = ">=3.12"
 # dependencies = [
 #     "marimo>=0.25.0,<0.26",
-#     "omnisus==0.2.2",
+#     "omnisus==0.2.3",
 #     "polars>=1.44.2,<2.0",
 # ]
 # ///
@@ -147,6 +147,40 @@ def _(mo):
 def _(BASE, dados, sus):
     sus.check_columns(BASE, dados)
     return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    O CNS cifrado do paciente (`cns_pac` no BPA-I e na RAAS, `ap_cnspcn` nas APAC) é a
+    única chave de pessoa do SIA. De 2024-11 em diante ele vem em branco em boa parte
+    dos arquivos: na APAC de medicamentos de GO e SP, em quase todas as linhas; no
+    BPA-I, na diálise, na quimioterapia e nas outras APAC, em 30% a 70% delas em
+    2026-07. A tabela abaixo mostra quanto falta em cada escopo do recorte. Antes de
+    ligar pessoas, leia a seção Armadilhas do
+    [perfil do SIA](https://raphaelfh.github.io/omnisus/sources/sia/).
+    """)
+    return
+
+
+@app.cell
+def _(dados, pl):
+    # Em branco: nulo ou só espaços, como no censo de evidence/2026-10-08-cns-vazio-sia/.
+    _colunas = sorted({"cns_pac", "ap_cnspcn"} & set(dados.columns))
+    cns_em_branco = (
+        dados.group_by("uf", "ano", "mes")
+        .agg(
+            coluna=pl.lit(_colunas[0]),
+            registros=pl.len(),
+            em_branco=(pl.col(_colunas[0]).str.strip_chars().fill_null("") == "").sum(),
+        )
+        .with_columns(pct_em_branco=(100 * pl.col("em_branco") / pl.col("registros")).round(1))
+        .sort("uf", "ano", "mes")
+        if _colunas
+        else None
+    )
+    cns_em_branco
+    return (cns_em_branco,)
 
 
 @app.cell(hide_code=True)

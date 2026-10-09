@@ -150,13 +150,28 @@ DEF no `TAB_SIA.zip`, por isso não tem rótulos. Todas declaram identidade de a
 - O CNS do paciente vem cifrado (`cns_pac` na RAAS, "criptografia";
   Informe SIASUS 2019-07, p. 16), e os dicionários marcam os campos de CNS com
   `x-crypto: datasus-cns` (`src/omnisus/data/dicionarios/sia_*.yaml`).
-- Depois de decifrado, o CNS liga pessoas entre tabelas do SIA: nos arquivos de teste de
-  Roraima, janeiro de 2024, 312 pessoas estavam no BPA-I e na APAC de medicamentos, e 56
-  no BPA-I e na RAAS psicossocial (`tests/unit/sources/datasus_ftp/test_sia_apac.py`,
+- A biblioteca não decifra o CNS. O valor cifrado, comparado como publicado, liga a mesma
+  pessoa entre tabelas do SIA (`evidence/2026-09-23-linkage-ampliado.md`, seção "SIA: the
+  encrypted CNS"). Nos arquivos de teste de Roraima, janeiro de 2024, 312 CNS distintos
+  aparecem no BPA-I (`cns_pac`) e na APAC de medicamentos (`ap_cnspcn`), e 56 no BPA-I e
+  na RAAS psicossocial (`cns_pac`) (`tests/unit/sources/datasus_ftp/test_sia_apac.py`,
   `test_cross_family_cns_intersection_rr`).
 - Os códigos ficam no lake como publicados: o dicionário decodifica rótulos e datas na
   exibição, não na importação (`src/omnisus/transforms/dictionaries.py`, docstring do
   módulo; `src/omnisus/sources/datasus_ftp/staging.py`, que não decodifica).
+- O CNS cifrado do paciente vem em branco em boa parte das linhas recentes, e a falta
+  muda com a família, a UF e o mês
+  ([censo de 2026-10-08](https://github.com/raphaelfh/omnisus/blob/main/evidence/2026-10-08-cns-vazio-sia/README.md)).
+  - Somadas as UFs fora de SP e GO, a parte em branco subiu de 2024-10 para 2026-07:
+    de 6,0% para 68,4% no BPA-I, de 0,3% para 70,2% no tratamento dialítico, de 2,7%
+    para 45,4% nos laudos diversos, de 0,8% para 29,9% na quimioterapia e de 0,8% para
+    29,6% na cirurgia bariátrica.
+  - Em 2026-07, a parte em branco do BPA-I vai de 27,0% (RR e TO) a 84,0% (GO).
+  - A RAAS psicossocial não tem nenhuma linha em branco nesses meses.
+  - A APAC de medicamentos perdeu o CNS em GO e SP
+    ([Medicamentos](medicamentos.md#armadilhas)) e quase nada nas outras UFs.
+
+  Meça a parte em branco por UF e mês antes de ligar pessoas pelo CNS.
 
 ### Em aberto
 
@@ -215,6 +230,9 @@ Passo a passo com as sete tabelas, análise e procedência:
   `70fe69dbd4cf0827452e3c265d8d83ebeabe145f63a7e054e57c7848d070c8dc`, conferido de novo
   em 2026-09-13. Registro: `src/omnisus/data/dicionarios/sources/registry.json`. Em 2026-09-13, o
   diretório `/dissemin/publicos/SIASUS/200801_/Doc` só continha este informe.
+- Censo do CNS do paciente em branco nos arquivos do SIA, lido em 2026-10-08, com o
+  SHA-256 de cada arquivo:
+  <https://github.com/raphaelfh/omnisus/blob/main/evidence/2026-10-08-cns-vazio-sia/README.md>.
 - [Bases e argumentos](../datasets.md#sia), página gerada do registro da biblioteca.
 
 ## Detalhes técnicos

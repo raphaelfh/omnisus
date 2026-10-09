@@ -17,6 +17,7 @@ from __future__ import annotations
 import argparse
 import re
 import sys
+from collections import defaultdict
 from pathlib import Path
 
 import omnisus as sus
@@ -66,7 +67,8 @@ sus.load("sih_aih_reduzida", years=[2024], ufs=["RR"], months=[1, 2])  # por UF,
   dicionário; o link abre o dicionário desta versão.
 - **Categorias harmonizadas** diz quais categorias o dicionário da base define (idade
   em `idade_anos_completos`, sexo em `sexo_categoria`, datas em `*_data`) e em quais
-  escopos (`UF_ANO`, `UF_ANO_MES` ou `national_ANO`) o arquivo foi auditado. `sus.load`
+  UFs e períodos o arquivo foi auditado (períodos seguidos aparecem como intervalo,
+  `2021 a 2024`; `Brasil` nas bases nacionais). `sus.load`
   só as acrescenta quando todos os escopos que devolve estão nesta lista. A validação
   vale para o arquivo: escopo, diretório (final ou preliminar) e SHA-256, que
   `sus.describe_dataset(base)["analytics"]["validated_sources"]` mostra. Se o DATASUS
@@ -130,14 +132,62 @@ def _labelled(row: dict) -> str:
     return f"[{row['labelled_fields']}]({url})"
 
 
+def _seguinte(periodo: tuple[int, int | None]) -> tuple[int, int | None]:
+    ano, mes = periodo
+    if mes is None:
+        return ano + 1, None
+    return (ano + 1, 1) if mes == 12 else (ano, mes + 1)
+
+
+def _periodo(periodo: tuple[int, int | None]) -> str:
+    ano, mes = periodo
+    return str(ano) if mes is None else f"{ano}-{mes:02d}"
+
+
+def _intervalos(periodos: set[tuple[int, int | None]]) -> str:
+    """``2021 a 2024``; ``2024-01 a 2024-05, 2025-01 a 2025-02``: consecutive periods joined."""
+    intervalos: list[list[tuple[int, int | None]]] = []
+    for periodo in sorted(periodos, key=lambda p: (p[0], p[1] or 0)):
+        if intervalos and _seguinte(intervalos[-1][1]) == periodo:
+            intervalos[-1][1] = periodo
+        else:
+            intervalos.append([periodo, periodo])
+    return ", ".join(
+        _periodo(a) if a == b else f"{_periodo(a)} a {_periodo(b)}" for a, b in intervalos
+    )
+
+
+def _escopos(sources: list[dict]) -> str:
+    """The validated scopes, UFs with the same periods together.
+
+    ``RR, 2021 a 2024; SP, 2024``; ``27 UFs, 2020 a 2024``; ``Brasil, 2023``.
+    """
+    por_uf: dict[str | None, set] = defaultdict(set)
+    for source in sources:
+        por_uf[source.get("uf")].add((source["ano"], source.get("mes")))
+    por_intervalo: dict[str, list] = defaultdict(list)
+    for uf, periodos in por_uf.items():
+        por_intervalo[_intervalos(periodos)].append(uf)
+    partes = []
+    for intervalo, ufs in por_intervalo.items():
+        if ufs == [None]:
+            quem = "Brasil"
+        elif set(ufs) == set(sus.ALL_UFS):
+            quem = "27 UFs"
+        else:
+            quem = ", ".join(sorted(ufs))
+        partes.append(f"{quem}, {intervalo}")
+    return "; ".join(sorted(partes))
+
+
 def _harmonised(row: dict) -> str:
     """The categories the dictionary defines, then the scopes validated for them."""
     if not row["validated_scopes"]:
         return "—"
-    rules = sus.describe_dataset(row["name"])["analytics"]
-    names = [label for key, label in CATEGORIES.items() if rules.get(key)]
+    analytics = sus.describe_dataset(row["name"])["analytics"]
+    names = [label for key, label in CATEGORIES.items() if analytics.get(key)]
     named = names[0] if len(names) == 1 else f"{', '.join(names[:-1])} e {names[-1]}"
-    return f"{named} em " + ", ".join(f"`{scope}`" for scope in row["validated_scopes"])
+    return f"{named} em {_escopos(analytics['validated_sources'])}"
 
 
 def _directory(path: str | None) -> str:

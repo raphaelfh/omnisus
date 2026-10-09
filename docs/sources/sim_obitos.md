@@ -253,3 +253,13 @@ A regra 1.1.0 inclui o arquivo final DORR2021.dbc, identificado pelo SHA-256
 As 4.306 linhas foram auditadas integralmente para idade, sexo e datas.
 Os demais arquivos continuam sujeitos à confirmação individual de identidade.
 Veja [relatório e reprodução](https://github.com/raphaelfh/omnisus/blob/main/evidence/2026-09-14-extensao-regras/README.md).
+
+### Validação em lote (2026-10-07)
+
+A regra 1.2.0 cobre os 135 arquivos finais `DO{UF}{ano}.dbc` das 27 UFs de 2020 a 2024,
+cada um identificado pelo SHA-256 em `validated_sources`. Os arquivos foram auditados um a
+um, com uma regra de aceite escrita (ADR 0003, Consequences), e nenhum foi bloqueado: as
+idades vieram válidas ou ignoradas, os sexos válidos ou ignorados, e nenhuma data foi
+inválida. Um arquivo republicado depois perde as categorias harmonizadas até uma nova
+validação.
+Veja [relatório e reprodução](https://github.com/raphaelfh/omnisus/blob/main/evidence/2026-10-07-validacao-sim_obitos-2020-2024/README.md).

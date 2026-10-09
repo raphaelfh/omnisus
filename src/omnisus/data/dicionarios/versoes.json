@@ -104,7 +104,8 @@
   "sih_aih_reduzida": {
     "2.10.0": "cd8d8b957f2d87e25aa005ced848345a9bb7c4d94b519939afe486a44101a91d",
     "2.11.0": "3156f4894503da2aa44fed35b25a5cc89c8f734d5cbf8ae20c772d8e42a6588b",
-    "2.12.0": "e1da83d804bac59de720d0d1e21d8000d9e7d71c4173cd5d5d5d1124b8284a36"
+    "2.12.0": "2f46bacce5a041da0635ee22dc14ad00d75c4d1504727f7571f72a620db7c7dd",
+    "2.13.0": "005a04970e036eb8808f141a0eafd604e430d2f092b6ada276f829268294fe54"
   },
   "sih_aih_reduzida_1992_2007": {
     "1.1.0": "240c72f5e4d44279aaa6fe8a94a94984a4fc07de67fffce8912519c32573a7a8",
@@ -120,22 +121,26 @@
     "1.1.0": "34a007b44a6ff54f22aba6af29fba978608da15ccdcd362f88884725eaf41f7b"
   },
   "sim_obitos": {
-    "2.5.0": "f8a339e1ea76bb7f9999cc7d01a6f3b988d6c9c7d3f782c2da7e642902d6a967"
+    "2.5.0": "f8a339e1ea76bb7f9999cc7d01a6f3b988d6c9c7d3f782c2da7e642902d6a967",
+    "2.6.0": "520175a3ede2fe82c18ddc398e238dd4b6aa7eb59896a1dbc9abb7abb0d99a6b"
   },
   "sim_obitos_cid9": {
     "1.1.0": "cb087fdf1419616c24a1e2a2c8cec2bdc9f3f531fa3c1015dfe36c450efa32d0"
   },
   "sim_obitos_externos": {
-    "1.1.0": "9525eab149bc209d46865c924ecb7afd4a8511ff8e4bd2d751d56e6a5ce91505"
+    "1.1.0": "9525eab149bc209d46865c924ecb7afd4a8511ff8e4bd2d751d56e6a5ce91505",
+    "1.1.1": "be0e5cc803836831447ea62eb7c6d30a7cbfa981afb7de6dcb90be53b2df30fb"
   },
   "sim_obitos_fetais": {
     "1.1.0": "0c4f7a09f27a7901c967337e3a6cb34c03d4a5b57f65aefa3c2229e37894f83d"
   },
   "sim_obitos_infantis": {
-    "1.1.0": "9f0d1f619674c934d4fa7e3c6d54e0c4087188d62900d43c97994518ffaf68c7"
+    "1.1.0": "9f0d1f619674c934d4fa7e3c6d54e0c4087188d62900d43c97994518ffaf68c7",
+    "1.1.1": "904fa2eb09049ba6a80cd8cf129c90a5dfc915c70dd1e07307a0bfd54b9d1b29"
   },
   "sim_obitos_maternos": {
-    "1.1.0": "6d12bdf5e0b5cf0b6de722db665adca077721bc9778424efad80e9499acb8bb1"
+    "1.1.0": "6d12bdf5e0b5cf0b6de722db665adca077721bc9778424efad80e9499acb8bb1",
+    "1.1.1": "a04bd1e042d1b906b79527f9c9f5c3f10660fd1913005a761f23e08c78078904"
   },
   "sinan_chagas": {
     "1.2.0": "8b341da3cdae13f57e0c577a48b7b50b8c3a511eea1feb1f2ad110cbc52c016a"

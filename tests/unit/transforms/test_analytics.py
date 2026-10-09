@@ -223,6 +223,20 @@ def test_tuberculose_audited_source_matches_the_evidence_manifest():
     assert validated.source_sha256 == entry["sha256"]
 
 
+def test_every_validated_sim_and_sih_source_was_read_by_a_committed_audit():
+    """AGENTS.md rule 1: each validated scope and SHA-256 appear together in a committed
+    evidence manifest."""
+    recorded = {
+        (m["scope"].get("uf"), m["scope"]["ano"], m["scope"].get("mes"), m["sha256"])
+        for path in (ROOT / "evidence").glob("*/manifest.json")
+        for m in json.loads(path.read_text(encoding="utf-8"))
+    }
+    for dataset in ["sim_obitos", "sih_aih_reduzida"]:
+        for source in sus.describe_dataset(dataset)["analytics"]["validated_sources"]:
+            key = (source.get("uf"), source["ano"], source.get("mes"), source["source_sha256"])
+            assert key in recorded, (dataset, source)
+
+
 def test_sim_subyear_age_keeps_quantity_and_unit(dbc_fixture):
     """Real DORR2023: sub-year deaths keep their unit instead of collapsing to 0 years."""
     raw = dbc_fixture("sim_rr_2023_mini").read_bytes()
