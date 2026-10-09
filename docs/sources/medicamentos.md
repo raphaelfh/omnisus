@@ -107,6 +107,17 @@ Dispensação:
   (`ap_cnspcn`) é um campo à parte (p. 7).
 - A APAC tem validade e pode ser de continuidade, com o número da APAC anterior em
   `ap_apacant` (Informe SIASUS 2019-07, p. 7).
+- Em GO e SP o CNS cifrado do paciente (`ap_cnspcn`) falta na maior parte das linhas
+  recentes, e sem ele não há como seguir a mesma pessoa
+  ([censo de 2026-10-08](https://github.com/raphaelfh/omnisus/blob/main/evidence/2026-10-08-cns-vazio-sia/README.md)):
+  - GO: 0% das linhas até a competência 2024-10 e 99,2% a 99,7% de 2024-11 a 2026-07,
+    inclusive nas APAC autorizadas antes de 2024-11;
+  - SP: 0% até 2024-10, 1,9% a 7,1% de 2024-11 a 2025-08, 39% a 95% de 2025-09 a
+    2025-12 e 99,9% de 2026-01 a 2026-07. Falta em cerca de 97% das linhas de APAC
+    autorizadas de 2024-11 a 2025-02 e em 91% a 99,9% das autorizadas de 2025-09 em
+    diante;
+  - nas outras 25 UFs falta em 0 de 1.916.259 linhas em 2025-08 e em 297 de 2.133.813
+    no mês mais recente publicado, 265 delas no Amazonas em 2026-07 (1,8%).
 - Estoque não é dispensação: a API pública de dados abertos tem só dois caminhos sobre
   medicamento, estoque BNAFAR/Hórus e entregas a DSEI, e nenhum de dispensação
   (relatório de 2026-09-12, Parte 2).
@@ -138,6 +149,9 @@ Dispensação:
 - Se a mesma APAC reaparece em meses seguintes: o documento prevê APAC de continuidade e
   período de validade (p. 7), mas não diz se cada mês publica a APAC de novo. Não some
   meses sem conferir `ap_autoriz` e `ap_tpapac`.
+- Por que o CNS falta em GO e SP: a coluna `ap_cnspcn` continua no arquivo e vem em
+  branco, e nenhum documento lido explica a mudança. Em GO o corte segue a competência
+  do arquivo; em SP, a data de autorização da APAC (censo de 2026-10-08).
 - A cobertura do estoque BNAFAR/Hórus: a leitura de uma página comprova aquela resposta,
   não a cobertura histórica ou nacional (`horus.py`, docstring do módulo).
 - Uma fonte de dispensação para pesquisa: o relatório aponta como caminho realista uma
@@ -174,6 +188,9 @@ Passo a passo com a APAC em seis etapas, a página de estoque e o que não é p�
 - Relatório "SINAN além de Chagas e fontes públicas de dispensação", revisado em
   2026-09-12, Parte 2 e §3.6:
   <https://github.com/raphaelfh/omnisus/blob/main/evidence/2026-09-12-sinan-e-dispensacao.md>.
+- Censo do CNS do paciente em branco nos arquivos do SIA, lido em 2026-10-08, com o
+  SHA-256 de cada arquivo:
+  <https://github.com/raphaelfh/omnisus/blob/main/evidence/2026-10-08-cns-vazio-sia/README.md>.
 - Página BNAFAR do Ministério da Saúde:
   <https://www.gov.br/saude/pt-br/composicao/sectics/daf/bnafar> — lida em 2026-09-13.
 - FAQ BNAFAR, atualizada em 16/10/2025:
