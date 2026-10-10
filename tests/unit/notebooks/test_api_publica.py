@@ -18,7 +18,7 @@ NOTEBOOKS = Path(__file__).resolve().parents[3] / "notebooks"
 TODOS = sorted(p for p in NOTEBOOKS.glob("*.py") if not p.name.startswith("_"))
 
 # Modules a notebook may import besides omnisus.
-BIBLIOTECAS = {"json", "marimo", "polars", "pathlib"}
+BIBLIOTECAS = {"json", "marimo", "os", "polars", "pathlib"}
 
 # A name with no public door yet, by notebook. Each one says why.
 EXCECOES = {

@@ -70,8 +70,8 @@ Escolha onde rodar. Os três caminhos usam a mesma biblioteca e chegam à mesma 
     sus.check_columns("sim_obitos", dados)
     ```
 
-Abrir um notebook marimo não baixa nem grava nada: rede e escrita esperam que você
-peça. No Colab, cada célula roda quando você a executa.
+Abrir um notebook marimo não baixa nem grava nada até você pedir. No Colab, nada roda
+até você executar a célula.
 
 ## Qual base responde minha pergunta?
 
@@ -152,8 +152,7 @@ Para ver o que já está no lake, o notebook
 [explorar.py](https://github.com/raphaelfh/omnisus/blob/main/notebooks/explorar.py)
 [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/explorar.py)
 mostra as linhas dos recortes que você escolher, o perfil de uma coluna e a citação.
-Ele lê o lake da pasta que você indicar (`data/raw` se você não mudar), inclusive um lake
-copiado do Google Drive, e só importa quando você clica em *Importar*.
+Ele abre também uma cópia do lake vinda do Google Drive, e importa pelo botão *Importar*.
 
 ## Cuidados gerais
 

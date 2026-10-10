@@ -19,6 +19,7 @@ app = marimo.App(width="full", app_title="Explorar o lake")
 @app.cell
 def _():
     import json
+    import os
     from pathlib import Path
 
     import marimo as mo
@@ -26,7 +27,7 @@ def _():
 
     import omnisus as sus
 
-    return Path, json, mo, pl, sus
+    return Path, json, mo, os, pl, sus
 
 
 @app.cell(hide_code=True)
@@ -44,8 +45,8 @@ def _(mo):
     **Onde está o lake.** Indique a pasta que tem `omnisus-catalog.sqlite` e
     `omnisus.ducklake/`:
 
-    - neste computador, `data/raw` (onde `sus.load` grava por padrão), relativo à
-      pasta em que você abriu o marimo;
+    - neste computador, a pasta onde `sus.load` grava: `$OMNISUS_DATA_DIR`, se você a
+      definiu, ou `data/raw`, relativo à pasta em que você abriu o marimo;
     - no Google Drive, a pasta do lake sincronizada no computador ou, no molab, a
       pasta copiada do Drive para o disco do notebook.
 
@@ -61,9 +62,11 @@ def _(mo):
 
 
 @app.cell
-def _(mo):
+def _(mo, os):
     pasta = mo.ui.text(
-        value=mo.cli_args().get("lake") or "data/raw", label="Pasta do lake", full_width=True
+        value=mo.cli_args().get("lake") or os.environ.get("OMNISUS_DATA_DIR") or "data/raw",
+        label="Pasta do lake",
+        full_width=True,
     )
     executar = bool(mo.cli_args().get("executar"))
     pasta

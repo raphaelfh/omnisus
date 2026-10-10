@@ -91,8 +91,6 @@ def test_opening_downloads_and_writes_nothing(caminho, monkeypatch, tmp_path):
     monkeypatch.setattr(socket.socket, "connect", guarded_connect)
     dados = tmp_path / "dados"
     monkeypatch.setenv("OMNISUS_DATA_DIR", str(dados))
-    # explorar.py opens `data/raw` under the working directory, not $OMNISUS_DATA_DIR.
-    monkeypatch.chdir(tmp_path)
     # `python notebook.py` and marimo put the notebook's folder on sys.path.
     monkeypatch.syspath_prepend(str(caminho.parent))
     spec = importlib.util.spec_from_file_location(f"notebook_{caminho.stem}", caminho)
@@ -102,4 +100,3 @@ def test_opening_downloads_and_writes_nothing(caminho, monkeypatch, tmp_path):
     module.app.run()
 
     assert not dados.exists(), f"{caminho.name} wrote to the research lake on open"
-    assert not (tmp_path / "data").exists(), f"{caminho.name} wrote to data/raw on open"

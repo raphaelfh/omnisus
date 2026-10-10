@@ -39,6 +39,10 @@ def _rodar(monkeypatch, pasta: Path, *argumentos: str) -> dict:
     """Run the notebook on the lake in `pasta`, as `marimo export` would; return its defs."""
     monkeypatch.chdir(pasta.parent)
     monkeypatch.setattr(sys, "argv", ["explorar.py", "--lake", str(pasta), *argumentos])
+    return _executar(monkeypatch)
+
+
+def _executar(monkeypatch) -> dict:
     spec = importlib.util.spec_from_file_location("notebook_explorar", EXPLORAR)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
@@ -81,6 +85,18 @@ def test_the_row_limit_caps_the_table_but_not_the_counts(importado, monkeypatch)
     assert definidos["amostras"]["sim_obitos"].height == 100
     assert definidos["totais"] == {"sim_obitos": REGISTROS}
     assert definidos["perfil"]["registros"].sum() == REGISTROS
+
+
+def test_opens_the_lake_omnisus_data_dir_names(importado, monkeypatch, tmp_path):
+    """Like `sus.load` and the other notebooks, without `--lake` it opens $OMNISUS_DATA_DIR."""
+    pasta, _ = importado
+    monkeypatch.setenv("OMNISUS_DATA_DIR", str(pasta))
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(sys, "argv", ["explorar.py"])
+
+    definidos = _executar(monkeypatch)
+
+    assert definidos["totais"] == {"sim_obitos": REGISTROS}
 
 
 def test_reads_the_lake_after_its_folder_moved(importado, monkeypatch, tmp_path):
