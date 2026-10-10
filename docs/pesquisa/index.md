@@ -81,8 +81,13 @@ forma de publicação e colunas com rótulo, estão em [Bases e argumentos](../d
 O notebook
 [bases.py](https://github.com/raphaelfh/omnisus/blob/main/notebooks/bases.py)
 [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/bases.py)
-mostra a mesma lista e leva qualquer uma delas até a citação. A tabela abaixo leva às
-bases que têm perfil e notebook, inclusive a população do IBGE.
+mostra a mesma lista e leva qualquer uma delas até a citação. Com bases já no lake, o
+notebook
+[explorar.py](https://github.com/raphaelfh/omnisus/blob/main/notebooks/explorar.py)
+[![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/explorar.py)
+escolhe bases e recortes com widgets, mostra as linhas e o perfil de uma coluna e cita
+os recortes escolhidos; ele abre também um lake copiado do Google Drive. A tabela abaixo
+leva às bases que têm perfil e notebook, inclusive a população do IBGE.
 
 | Pergunta | Base | Perfil | Notebook |
 | --- | --- | --- | --- |
