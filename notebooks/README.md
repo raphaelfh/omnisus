@@ -1,8 +1,7 @@
 # Notebooks
 
 Um notebook [marimo](https://marimo.io) por sistema, e `bases.py` para qualquer base,
-para pesquisa. Os notebooks por sistema e `bases.py` seguem as mesmas seis etapas com as
-mesmas funções da biblioteca:
+para pesquisa. Cada um segue as mesmas seis etapas com as mesmas funções da biblioteca:
 o que a base registra (`sus.describe_dataset`), descobrir (`sus.available`), baixar e
 ler (`sus.load`), conferir (`sus.check_columns`), analisar (`sus.label` e polars) e
 citar (`sus.cite`). Troque `BASE`, `UF`, `ANO` (e `MES`) na célula de parâmetros para
