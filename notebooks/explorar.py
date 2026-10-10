@@ -114,7 +114,7 @@ def _(mo, sus):
 def _(base_nova, mo, sus):
     _base = sus.resolve(base_nova.value)
     por_uf = _base.geography == "state"
-    mensal = _base.cadence == "monthly"
+    mensal = _base.monthly
     ano_novo = mo.ui.number(start=_base.coverage[0][0], stop=2100, value=2022, label="Ano")
     ufs_novas = mo.ui.multiselect(options=sus.ALL_UFS, value=["RR"], label="UFs")
     meses_novos = mo.ui.multiselect(options=list(range(1, 13)), value=[1], label="Meses")
@@ -147,24 +147,23 @@ def _(
     sus,
     ufs_novas,
 ):
-    if importar.value or executar:
-        _escopos = sus.scopes_for(
-            base_nova.value,
-            years=[ano_novo.value],
-            ufs=ufs_novas.value if por_uf else None,
-            months=meses_novos.value if mensal else None,
+    mo.stop(not (importar.value or executar))
+    _escopos = sus.scopes_for(
+        base_nova.value,
+        years=[ano_novo.value],
+        ufs=ufs_novas.value if por_uf else None,
+        months=meses_novos.value if mensal else None,
+    )
+    with mo.status.spinner(title=f"Importando {base_nova.value}…"):
+        _relatorio = sus.import_dataset(
+            base_nova.value, scopes=_escopos, target=alvo, policy="skip_same"
         )
-        with mo.status.spinner(title=f"Importando {base_nova.value}…"):
-            _relatorio = sus.import_dataset(
-                base_nova.value, scopes=_escopos, target=alvo, policy="skip_same"
-            )
+    if _relatorio.ok:
         mudar_versao(lambda v: v + 1)
-        mo.output.replace(
-            mo.md(
-                f"Importados: {len(_relatorio.ok)}. Já no lake: {len(_relatorio.skipped)}. "
-                f"Falharam: {[str(o.scope) for o in _relatorio.failed] or 'nenhum'}."
-            )
-        )
+    mo.md(
+        f"Importados: {len(_relatorio.ok)}. Já no lake: {len(_relatorio.skipped)}. "
+        f"Falharam: {[str(o.scope) for o in _relatorio.failed] or 'nenhum'}."
+    )
     return
 
 
@@ -185,14 +184,13 @@ def _(alvo, diretorio, mo, sus, versao):
     try:
         leitor = sus.LakeReader(alvo)
     except sus.CatalogAttachError:
-        leitor = None
-    mo.stop(
-        leitor is None,
-        mo.md(f"Não há lake em `{diretorio}`. Indique outra pasta ou importe uma base acima."),
-    )
+        mo.stop(
+            True,
+            mo.md(f"Não há lake em `{diretorio}`. Indique outra pasta ou importe uma base acima."),
+        )
     snapshot = sus.latest_snapshot_id(leitor)
 
-    def _texto(valor):
+    def _literal(valor):
         return "'" + str(valor).replace("'", "''") + "'"
 
     # O catálogo guarda a pasta onde o lake foi criado. Reabrir com OVERRIDE_DATA_PATH lê os
@@ -201,8 +199,8 @@ def _(alvo, diretorio, mo, sus, versao):
     con = leitor.connect()
     con.execute("DETACH lake")
     con.execute(
-        f"ATTACH {_texto(f'ducklake:sqlite:{_catalogo}')} AS lake "
-        f"(READ_ONLY, DATA_PATH {_texto(diretorio / 'omnisus.ducklake')}, "
+        f"ATTACH {_literal(f'ducklake:sqlite:{_catalogo}')} AS lake "
+        f"(READ_ONLY, DATA_PATH {_literal(diretorio / 'omnisus.ducklake')}, "
         f"OVERRIDE_DATA_PATH true, SNAPSHOT_VERSION {snapshot})"
     )
     return con, leitor, snapshot
@@ -294,7 +292,7 @@ def _(anos, esquemas, meses, publicacoes, ufs):
 
 @app.cell
 def _(escolhidas, esquemas, json, sus):
-    def _onde(publicacoes):
+    def _condicao(publicacoes):
         """`WHERE` e parâmetros que selecionam os recortes destas publicações.
 
         Cada publicação guarda em `scope_json` as colunas e os valores que gravou
@@ -308,7 +306,7 @@ def _(escolhidas, esquemas, json, sus):
         listas = ", ".join("unnest(?)" for _ in chaves)
         return f"({colunas}) IN (SELECT {listas})", [[e[c] for e in escopos] for c in chaves]
 
-    filtros = {_base: _onde(_pubs) for _base, _pubs in escolhidas.items()}
+    filtros = {_base: _condicao(_pubs) for _base, _pubs in escolhidas.items()}
     projecoes = {
         _base: sus.analytical_projection(
             _base,
@@ -343,6 +341,7 @@ def _(mo):
         step=100,
         value=int(mo.cli_args().get("linhas") or 10_000),
         label="Linhas na tabela",
+        debounce=True,
     )
     rotulos = mo.ui.switch(value=True, label="Rótulos do dicionário")
     mo.hstack([linhas, rotulos], justify="start")
@@ -423,18 +422,17 @@ def _(base_perfil, esquemas, mo, sus):
 
 
 @app.cell
-def _(base_perfil, coluna_perfil, con, filtros, pl, sus):
+def _(base_perfil, coluna_perfil, con, filtros, sus):
     _onde, _parametros = filtros[base_perfil.value]
     perfil = sus.label(
         base_perfil.value,
         con.execute(
-            f'SELECT "{coluna_perfil.value}", count(*) AS registros '
+            f'SELECT "{coluna_perfil.value}", count(*) AS registros, '
+            "round(100 * count(*) / sum(count(*)) OVER (), 2) AS pct "
             f'FROM lake."{base_perfil.value}" WHERE {_onde} '
             "GROUP BY ALL ORDER BY registros DESC LIMIT 1000",
             _parametros,
-        )
-        .pl()
-        .with_columns(pct=(100 * pl.col("registros") / pl.col("registros").sum()).round(2)),
+        ).pl(),
     )
     perfil
     return (perfil,)
@@ -453,13 +451,13 @@ def _(mo):
 
 @app.cell
 def _(base_perfil, con, mo):
-    _df = mo.sql(
+    consulta = mo.sql(
         f"""
         SELECT * FROM lake.{base_perfil.value} LIMIT 100
         """,
         engine=con,
     )
-    return
+    return (consulta,)
 
 
 @app.cell(hide_code=True)
@@ -482,7 +480,7 @@ def _(escolhidas, mo, snapshot, sus):
     _texto = "\n\n".join(citacoes.values())
     mo.vstack(
         [
-            mo.md("\n\n".join(f"```text\n{t}\n```" for t in citacoes.values())),
+            mo.md(f"```text\n{_texto}\n```"),
             mo.download(_texto.encode(), filename="citacao.txt", label="Baixar citação"),
         ]
     )

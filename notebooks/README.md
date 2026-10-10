@@ -1,7 +1,7 @@
 # Notebooks
 
 Um notebook [marimo](https://marimo.io) por sistema, e `bases.py` para qualquer base,
-para pesquisa. Todos seguem as mesmas seis etapas com as mesmas funções da biblioteca:
+para pesquisa. Esses dois seguem as mesmas seis etapas com as mesmas funções da biblioteca:
 o que a base registra (`sus.describe_dataset`), descobrir (`sus.available`), baixar e
 ler (`sus.load`), conferir (`sus.check_columns`), analisar (`sus.label` e polars) e
 citar (`sus.cite`). Troque `BASE`, `UF`, `ANO` (e `MES`) na célula de parâmetros para
@@ -14,7 +14,7 @@ escolhidos. Comece pelo
 
 Abrir um notebook não baixa nem grava nada. Rede e escrita ficam atrás de
 `EXECUTAR = False` até você mudar a constante (ou passar `-- --executar true`); em
-`explorar.py`, atrás do botão *Importar*.
+`explorar.py`, atrás do botão *Importar* (ou de `-- --executar true`).
 
 | Notebook | Molab | Base | Recorte inicial |
 | --- | --- | --- | --- |
@@ -62,4 +62,5 @@ uvx marimo export html --sandbox notebooks/sim_obitos.py \
 ```
 
 O lake fica em `data/raw/`; `OMNISUS_DATA_DIR` troca a pasta. As tabelas e a citação
-de cada notebook vão para `resultados/<base>/`.
+dos notebooks de cada base vão para `resultados/<base>/`; `explorar.py` oferece a
+citação para baixar.

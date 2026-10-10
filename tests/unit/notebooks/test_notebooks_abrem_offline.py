@@ -1,7 +1,7 @@
 """Opening a notebook opens no network connection and writes nothing.
 
 Every notebook runs in-process with `app.run()`, as `marimo export` would.
-Cells gated by `EXECUTAR` stop at `mo.stop`, so anything reaching the network or
+Cells gated by `EXECUTAR` (in explorar.py, the *Importar* button) stop at `mo.stop`, so anything reaching the network or
 the research lake on open is a failure. The unit conftest also refuses FTP listings.
 
 The guard below patches `socket.socket.connect`, which is what both `ftplib` and

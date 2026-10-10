@@ -18,6 +18,8 @@ NOTEBOOKS = Path(__file__).resolve().parents[3] / "notebooks"
 TODOS = sorted(p for p in NOTEBOOKS.glob("*.py") if not p.name.startswith("_"))
 
 # Modules a notebook may import besides omnisus.
+# `os`: explorar.py reads $OMNISUS_DATA_DIR, the lake folder `sus.load` uses, which has
+# no public getter.
 BIBLIOTECAS = {"json", "marimo", "os", "polars", "pathlib"}
 
 # A name with no public door yet, by notebook. Each one says why.
@@ -60,16 +62,14 @@ def test_every_odb_name_is_public(caminho):
             assert node.attr in sus.__all__, (caminho.name, node.attr)
 
 
-@pytest.mark.parametrize("caminho", TODOS, ids=lambda p: p.name)
+# explorar.py is left out: its lake may hold more rows than memory, so it imports with
+# `sus.import_dataset`, reads with SQL and cites only the chosen scopes' publications
+# (`test_explorar.py`).
+@pytest.mark.parametrize(
+    "caminho", [p for p in TODOS if p.stem != "explorar"], ids=lambda p: p.name
+)
 def test_rows_come_from_load_and_the_citation_from_cite(caminho):
-    """One mechanism per step: `sus.load` reads, `sus.cite` cites.
-
-    explorar.py is left out: its lake may hold more rows than memory, so it imports
-    with `sus.import_dataset`, reads with SQL and cites only the chosen scopes'
-    publications (`test_explorar.py`).
-    """
-    if caminho.stem == "explorar":
-        return
+    """One mechanism per step: `sus.load` reads, `sus.cite` cites."""
     texto = caminho.read_text(encoding="utf-8")
     if caminho.stem != "ibge_populacao":  # IBGE is not an FTP dataset; see its notebook
         assert "sus.load(" in texto, caminho.name

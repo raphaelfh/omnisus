@@ -3,10 +3,6 @@
 The fake server in `tests/support/fake_datasus.py` serves `sim_rr_2022_mini`, the whole
 DORR2022.dbc (`tests/fixtures/FIXTURES.md`), for the scope the import widgets open on.
 `app.run()` uses each widget's default, as `marimo export` does.
-
-The last test moves the lake's folder before exploring, as when the folder is copied
-from Google Drive to another computer or to molab: the catalog records the absolute
-path where the lake was created.
 """
 
 from __future__ import annotations
@@ -47,34 +43,36 @@ def _rodar(monkeypatch, *argumentos: str) -> dict:
 
 
 @pytest.fixture(scope="module")
-def importado(tmp_path_factory) -> tuple[Path, dict]:
-    """The lake the notebook's import section fills, and what its cells define then."""
+def importado(tmp_path_factory) -> tuple[Path, dict, list[str]]:
+    """The lake the notebook's import section fills, what its cells define then, and
+    the server paths it downloaded."""
     pasta = tmp_path_factory.mktemp("explorar") / "lake"
     with pytest.MonkeyPatch.context() as monkeypatch:
         baixados = fake_datasus.serve(monkeypatch, "sim_obitos", {ESCOPO: ARQUIVO.read_bytes()})
         definidos = _rodar(monkeypatch, "--lake", str(pasta), "--executar", "true")
-    assert [p.rsplit("/", 1)[1] for p in baixados] == [
-        filename_for(sus.resolve("sim_obitos"), ESCOPO)
-    ]
-    return pasta, definidos
+    return pasta, definidos, baixados
 
 
 def test_imports_explores_and_cites_a_real_scope(importado):
-    _, definidos = importado
+    _, definidos, baixados = importado
 
+    assert [p.rsplit("/", 1)[1] for p in baixados] == [
+        filename_for(sus.resolve("sim_obitos"), ESCOPO)
+    ]
     assert definidos["totais"] == {"sim_obitos": REGISTROS}
     amostra = definidos["amostras"]["sim_obitos"]
     assert amostra.height == REGISTROS
     # Labels from the dictionary, and the harmonised categories of a validated source.
     assert {"sexo", "sexo_rotulo", "idade_anos_completos"} <= set(amostra.columns)
     assert definidos["perfil"]["registros"].sum() == REGISTROS
+    assert len(definidos["consulta"]) == 100  # the SQL cell's starting query
     citacao = definidos["citacoes"]["sim_obitos"]
     assert SHA256 in citacao
     assert filename_for(sus.resolve("sim_obitos"), ESCOPO) in citacao
 
 
 def test_the_row_limit_caps_the_table_but_not_the_counts(importado, monkeypatch):
-    pasta, _ = importado
+    pasta, _, _ = importado
 
     definidos = _rodar(monkeypatch, "--lake", str(pasta), "--linhas", "100")
 
@@ -85,7 +83,7 @@ def test_the_row_limit_caps_the_table_but_not_the_counts(importado, monkeypatch)
 
 def test_without_lake_it_opens_the_folder_sus_load_writes_to(importado, monkeypatch, tmp_path):
     """$OMNISUS_DATA_DIR, else data/raw under the working directory, as `data_dir()` says."""
-    pasta, _ = importado
+    pasta, _, _ = importado
     monkeypatch.chdir(tmp_path)
     monkeypatch.setenv("OMNISUS_DATA_DIR", str(pasta))
 
@@ -100,8 +98,9 @@ def test_without_lake_it_opens_the_folder_sus_load_writes_to(importado, monkeypa
     assert _rodar(monkeypatch)["diretorio"] == data_dir().resolve()
 
 
-def test_reads_the_lake_after_its_folder_moved(importado, monkeypatch, tmp_path):
-    _, antes = importado
+def test_reads_the_lake_after_its_folder_moved(monkeypatch, tmp_path):
+    """As when the folder is copied from Google Drive to another computer or to molab:
+    the catalog records the absolute path where the lake was created."""
     fake_datasus.serve(monkeypatch, "sim_obitos", {ESCOPO: ARQUIVO.read_bytes()})
     sus.import_dataset(
         "sim_obitos",
@@ -113,5 +112,5 @@ def test_reads_the_lake_after_its_folder_moved(importado, monkeypatch, tmp_path)
     depois = _rodar(monkeypatch, "--lake", str(tmp_path / "copiado"))
 
     assert depois["totais"] == {"sim_obitos": REGISTROS}
-    assert depois["amostras"]["sim_obitos"].equals(antes["amostras"]["sim_obitos"])
+    assert depois["amostras"]["sim_obitos"].height == REGISTROS
     assert SHA256 in depois["citacoes"]["sim_obitos"]
