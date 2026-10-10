@@ -30,6 +30,7 @@ TODOS = sorted(
 ESPERADOS = {
     "bases.py",
     "cnes_estabelecimentos.py",
+    "explorar.py",
     "ibge_populacao.py",
     "linkage.py",
     "medicamentos.py",
@@ -65,7 +66,13 @@ def test_notebooks_index_links_every_notebook_in_molab():
         assert f"{MOLAB_SHIELD}({MOLAB}{rel})" in indice
 
 
-@pytest.mark.parametrize("caminho", TODOS, ids=lambda p: p.relative_to(NOTEBOOKS).as_posix())
+# The notebooks are scripts a researcher edits and exports; explorar.py is the one app,
+# for exploring a lake with widgets.
+@pytest.mark.parametrize(
+    "caminho",
+    [p for p in TODOS if p.name != "explorar.py"],
+    ids=lambda p: p.relative_to(NOTEBOOKS).as_posix(),
+)
 def test_notebooks_are_not_marimo_apps(caminho):
     texto = caminho.read_text(encoding="utf-8")
     assert "mo.ui." not in texto, f"{caminho.name} still uses marimo widgets"
