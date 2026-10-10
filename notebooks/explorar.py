@@ -62,11 +62,11 @@ def _(mo):
 
 
 @app.cell
-def _(mo, os):
+def _(Path, mo, os):
+    # Onde `sus.load` grava, resolvido como a biblioteca resolve: um `~` literal não é a home.
+    _padrao = Path(os.environ.get("OMNISUS_DATA_DIR") or "data/raw").resolve()
     pasta = mo.ui.text(
-        value=mo.cli_args().get("lake") or os.environ.get("OMNISUS_DATA_DIR") or "data/raw",
-        label="Pasta do lake",
-        full_width=True,
+        value=mo.cli_args().get("lake") or str(_padrao), label="Pasta do lake", full_width=True
     )
     executar = bool(mo.cli_args().get("executar"))
     pasta

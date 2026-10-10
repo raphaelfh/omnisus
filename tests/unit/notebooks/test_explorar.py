@@ -95,6 +95,9 @@ def test_without_lake_it_opens_the_folder_sus_load_writes_to(importado, monkeypa
     assert definidos["totais"] == {"sim_obitos": REGISTROS}
     monkeypatch.delenv("OMNISUS_DATA_DIR")
     assert _rodar(monkeypatch)["diretorio"] == data_dir().resolve()
+    # A literal `~` (as from a .env file) is not the home folder for `sus.load` either.
+    monkeypatch.setenv("OMNISUS_DATA_DIR", "~/omnisus")
+    assert _rodar(monkeypatch)["diretorio"] == data_dir().resolve()
 
 
 def test_reads_the_lake_after_its_folder_moved(importado, monkeypatch, tmp_path):
