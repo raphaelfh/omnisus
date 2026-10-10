@@ -71,7 +71,8 @@ Escolha onde rodar. Os três caminhos usam a mesma biblioteca e chegam à mesma 
     ```
 
 Abrir um notebook marimo não baixa nem grava nada: rede e escrita ficam atrás de
-`EXECUTAR = False` até você mudar a constante. No Colab, cada célula roda quando você
+`EXECUTAR = False` até você mudar a constante (em `explorar.py`, atrás do botão
+*Importar*). No Colab, cada célula roda quando você
 a executa.
 
 ## Qual base responde minha pergunta?
@@ -81,13 +82,8 @@ forma de publicação e colunas com rótulo, estão em [Bases e argumentos](../d
 O notebook
 [bases.py](https://github.com/raphaelfh/omnisus/blob/main/notebooks/bases.py)
 [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/bases.py)
-mostra a mesma lista e leva qualquer uma delas até a citação. Com bases já no lake, o
-notebook
-[explorar.py](https://github.com/raphaelfh/omnisus/blob/main/notebooks/explorar.py)
-[![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/explorar.py)
-escolhe bases e recortes com widgets, mostra as linhas e o perfil de uma coluna e cita
-os recortes escolhidos; ele abre também um lake copiado do Google Drive. A tabela abaixo
-leva às bases que têm perfil e notebook, inclusive a população do IBGE.
+mostra a mesma lista e leva qualquer uma delas até a citação. A tabela abaixo leva às
+bases que têm perfil e notebook, inclusive a população do IBGE.
 
 | Pergunta | Base | Perfil | Notebook |
 | --- | --- | --- | --- |
@@ -107,7 +103,7 @@ e os municípios e o que ainda está em aberto.
 
 ## As seis etapas
 
-Todo notebook de `notebooks/` segue as mesmas etapas, com as mesmas funções da
+Os notebooks de cada base seguem as mesmas etapas, com as mesmas funções da
 biblioteca, `import omnisus as sus`. Só dois importam algo além disso: `medicamentos.py`
 lê a API de estoque do Hórus, que é consultada e nunca publicada no lake, e
 `ibge_populacao.py` lê os anos aceitos, que são constantes do pacote porque o IBGE não
@@ -153,6 +149,12 @@ O lake é um só porque uma taxa precisa de duas bases: óbitos por 100 mil habi
 lê `sim_obitos` e `ibge_populacao`
 (`notebooks/ibge_populacao.py`, tabela `obitos_por_100_mil`). Veja
 [Indicadores](indicadores.md).
+
+Para ver o que já está no lake, o notebook
+[explorar.py](https://github.com/raphaelfh/omnisus/blob/main/notebooks/explorar.py)
+[![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/explorar.py)
+mostra as linhas dos recortes que você escolher, o perfil de uma coluna e a citação.
+Ele abre também um lake copiado do Google Drive.
 
 ## Cuidados gerais
 
