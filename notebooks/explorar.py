@@ -45,8 +45,8 @@ def _(mo):
     **Onde está o lake.** Indique a pasta que tem `omnisus-catalog.sqlite` e
     `omnisus.ducklake/`:
 
-    - neste computador, a pasta onde `sus.load` grava: `$OMNISUS_DATA_DIR`, se você a
-      definiu, ou `data/raw`, relativo à pasta em que você abriu o marimo;
+    - neste computador, a pasta onde `sus.load` grava (`data/raw/`, ou
+      `$OMNISUS_DATA_DIR`), relativa à pasta em que você abriu o marimo;
     - no Google Drive, a pasta do lake sincronizada no computador ou, no molab, a
       pasta copiada do Drive para o disco do notebook.
 
