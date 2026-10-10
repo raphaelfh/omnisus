@@ -35,9 +35,12 @@ REGISTROS = int(
 SHA256 = hashlib.sha256(ARQUIVO.read_bytes()).hexdigest()
 
 
-def _rodar(monkeypatch, pasta: Path, *argumentos: str) -> dict:
-    """Run the notebook from `pasta`'s parent, as `marimo export` would; return its defs."""
-    monkeypatch.chdir(pasta.parent)
+def _rodar(monkeypatch, cwd: Path, *argumentos: str) -> dict:
+    """Run the notebook in `cwd` with these arguments, as `marimo export` would.
+
+    Returns what its cells define.
+    """
+    monkeypatch.chdir(cwd)
     monkeypatch.setattr(sys, "argv", ["explorar.py", *argumentos])
     spec = importlib.util.spec_from_file_location("notebook_explorar", EXPLORAR)
     module = importlib.util.module_from_spec(spec)
@@ -52,7 +55,7 @@ def importado(tmp_path_factory) -> tuple[Path, dict]:
     pasta = tmp_path_factory.mktemp("explorar") / "lake"
     with pytest.MonkeyPatch.context() as monkeypatch:
         baixados = fake_datasus.serve(monkeypatch, "sim_obitos", {ESCOPO: ARQUIVO.read_bytes()})
-        definidos = _rodar(monkeypatch, pasta, "--lake", str(pasta), "--executar", "true")
+        definidos = _rodar(monkeypatch, pasta.parent, "--lake", str(pasta), "--executar", "true")
     assert [p.rsplit("/", 1)[1] for p in baixados] == [
         filename_for(sus.resolve("sim_obitos"), ESCOPO)
     ]
@@ -73,16 +76,24 @@ def test_imports_explores_and_cites_a_real_scope(importado):
     assert filename_for(sus.resolve("sim_obitos"), ESCOPO) in citacao
 
 
-def test_the_row_limit_caps_the_table_but_not_the_counts(importado, monkeypatch):
+def test_the_row_limit_caps_the_table_but_not_the_counts(importado, monkeypatch, tmp_path):
     pasta, _ = importado
-    # Without --lake it opens $OMNISUS_DATA_DIR, like `sus.load` and the other notebooks.
-    monkeypatch.setenv("OMNISUS_DATA_DIR", str(pasta))
 
-    definidos = _rodar(monkeypatch, pasta, "--linhas", "100")
+    definidos = _rodar(monkeypatch, tmp_path, "--lake", str(pasta), "--linhas", "100")
 
     assert definidos["amostras"]["sim_obitos"].height == 100
     assert definidos["totais"] == {"sim_obitos": REGISTROS}
     assert definidos["perfil"]["registros"].sum() == REGISTROS
+
+
+def test_without_lake_it_opens_omnisus_data_dir(importado, monkeypatch, tmp_path):
+    """Like `sus.load` and the other notebooks."""
+    pasta, _ = importado
+    monkeypatch.setenv("OMNISUS_DATA_DIR", str(pasta))
+
+    definidos = _rodar(monkeypatch, tmp_path)
+
+    assert definidos["totais"] == {"sim_obitos": REGISTROS}
 
 
 def test_reads_the_lake_after_its_folder_moved(importado, monkeypatch, tmp_path):
@@ -95,7 +106,7 @@ def test_reads_the_lake_after_its_folder_moved(importado, monkeypatch, tmp_path)
     )
     shutil.move(tmp_path / "criado", tmp_path / "copiado")
 
-    depois = _rodar(monkeypatch, tmp_path / "copiado", "--lake", str(tmp_path / "copiado"))
+    depois = _rodar(monkeypatch, tmp_path, "--lake", str(tmp_path / "copiado"))
 
     assert depois["totais"] == {"sim_obitos": REGISTROS}
     assert depois["amostras"]["sim_obitos"].equals(antes["amostras"]["sim_obitos"])
