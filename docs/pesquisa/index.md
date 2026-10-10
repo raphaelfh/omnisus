@@ -151,7 +151,7 @@ lê `sim_obitos` e `ibge_populacao`
 Para ver o que já está no lake, o notebook
 [explorar.py](https://github.com/raphaelfh/omnisus/blob/main/notebooks/explorar.py)
 [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/explorar.py)
-mostra as linhas dos recortes que você escolher, o perfil de uma coluna e a citação.
+mostra as linhas dos escopos que você escolher, o perfil de uma coluna e a citação.
 Ele abre também um lake copiado do Google Drive e importa pelo botão *Importar*.
 
 ## Cuidados gerais

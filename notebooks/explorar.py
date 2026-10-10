@@ -8,7 +8,7 @@
 # ]
 # ///
 
-"""Explorar o lake: escolher bases e recortes com widgets, ver as linhas e citar."""
+"""Explorar o lake: escolher bases e escopos com widgets, ver as linhas e citar."""
 
 import marimo
 
@@ -37,7 +37,7 @@ def _(mo):
 
     [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/explorar.py)
 
-    Escolha nos widgets as bases e os recortes que o lake já tem e veja as linhas numa
+    Escolha nos widgets as bases e os escopos que o lake já tem e veja as linhas numa
     tabela com busca, filtro e ordenação, o perfil de uma coluna e a citação do que
     você escolheu. Os códigos ficam como o DATASUS publicou; o rótulo vem do
     dicionário, ao lado (`sexo_rotulo`).
@@ -85,9 +85,9 @@ def _(mo):
     mo.md(r"""
     ## Importar
 
-    Para pôr um recorte no lake: escolha a base, o ano e, conforme a base, as UFs e os
+    Para pôr um escopo no lake: escolha a base, o ano e, conforme a base, as UFs e os
     meses. `sus.import_dataset` baixa só o que o lake ainda não tem do mesmo arquivo.
-    *Já no lake* conta os recortes importados antes do mesmo arquivo; *Pulados* lista os
+    *Já no lake* conta os escopos importados antes do mesmo arquivo; *Pulados* lista os
     que o servidor não publica (`not_listed`) ou que estão fora da cobertura da base.
     """)
     return
@@ -178,8 +178,8 @@ def _(mo):
     mo.md(r"""
     ## O que o lake tem
 
-    Um recorte por linha, lido do catálogo, sem rede: a base, o escopo, o diretório
-    do servidor (`final` ou `prelim`), quantas linhas foram gravadas e quando.
+    Um escopo por linha, lido do catálogo, sem rede: a base, a UF, o ano e o mês, o
+    diretório do servidor (`final` ou `prelim`), quantas linhas foram gravadas e quando.
     """)
     return
 
@@ -216,7 +216,7 @@ def _(alvo, diretorio, mo, sus, versao):
 def _(leitor, mo, pl):
     publicacoes = [p for p in leitor.publications() if p["active"] and p["scope"] is not None]
     mo.stop(not publicacoes, mo.md("O lake ainda não tem nenhuma base importada."))
-    recortes = pl.DataFrame(
+    escopos = pl.DataFrame(
         [
             {
                 "base": p["dataset"],
@@ -231,8 +231,8 @@ def _(leitor, mo, pl):
         ],
         schema_overrides={"uf": pl.String, "mes": pl.Int64},
     ).sort("base", "ano", "mes", "uf", nulls_last=True)
-    recortes
-    return publicacoes, recortes
+    escopos
+    return publicacoes, escopos
 
 
 @app.cell(hide_code=True)
@@ -247,17 +247,17 @@ def _(mo):
 
 
 @app.cell
-def _(mo, recortes):
-    _nomes = recortes["base"].unique().sort().to_list()
+def _(mo, escopos):
+    _nomes = escopos["base"].unique().sort().to_list()
     bases = mo.ui.multiselect(options=_nomes, value=_nomes[:1], label="Bases")
     bases
     return (bases,)
 
 
 @app.cell
-def _(bases, con, mo, pl, recortes):
+def _(bases, con, mo, pl, escopos):
     mo.stop(not bases.value, mo.md("Escolha ao menos uma base."))
-    _das_bases = recortes.filter(pl.col("base").is_in(bases.value))
+    _das_bases = escopos.filter(pl.col("base").is_in(bases.value))
 
     def _filtro(coluna, rotulo):
         opcoes = _das_bases[coluna].drop_nulls().unique().sort().to_list()
@@ -299,18 +299,18 @@ def _(anos, esquemas, meses, publicacoes, ufs):
 @app.cell
 def _(escolhidas, esquemas, json, sus):
     def _condicao(publicacoes):
-        """`WHERE` e parâmetros que selecionam os recortes destas publicações.
+        """`WHERE` e parâmetros que selecionam os escopos destas publicações.
 
         Cada publicação guarda em `scope_json` as colunas e os valores que gravou
         (`uf`, `ano`, `mes`; `_source_ano` numa base nacional).
         """
-        escopos = [json.loads(p["scope_json"]) for p in publicacoes]
-        if not escopos:
+        campos = [json.loads(p["scope_json"]) for p in publicacoes]
+        if not campos:
             return "false", []
-        chaves = list(escopos[0])
+        chaves = list(campos[0])
         colunas = ", ".join(f'"{c}"' for c in chaves)
         listas = ", ".join("unnest(?)" for _ in chaves)
-        return f"({colunas}) IN (SELECT {listas})", [[e[c] for e in escopos] for c in chaves]
+        return f"({colunas}) IN (SELECT {listas})", [[e[c] for e in campos] for c in chaves]
 
     filtros = {_base: _condicao(_pubs) for _base, _pubs in escolhidas.items()}
     projecoes = {
@@ -330,11 +330,11 @@ def _(mo):
     mo.md(r"""
     ## Linhas
 
-    Uma aba por base. A contagem é de todos os recortes escolhidos; a tabela mostra até
+    Uma aba por base. A contagem é de todos os escopos escolhidos; a tabela mostra até
     *Linhas na tabela* delas, porque a tabela do marimo guarda na memória tudo o que
-    recebe. Para mais linhas, filtre os recortes ou tire colunas. As categorias
+    recebe. Para mais linhas, filtre os escopos ou tire colunas. As categorias
     harmonizadas (`idade_anos_completos`, `sexo_categoria`...) só aparecem quando todos
-    os recortes vêm de fontes validadas (ADR 0003); a aba diz o motivo quando faltam.
+    os escopos vêm de fontes validadas (ADR 0003); a aba diz o motivo quando faltam.
     """)
     return
 
@@ -386,12 +386,15 @@ def _(brutas, mo, projecoes, rotulos, sus, totais):
         )
 
     # Todas as colunas: as categorias harmonizadas vêm por último e o marimo mostra só 50.
-    tabelas = {
-        _base: mo.ui.table(_amostra, page_size=20, max_columns=None)
-        for _base, _amostra in amostras.items()
-    }
-    mo.ui.tabs({_base: mo.vstack([mo.md(_resumo(_base)), tabelas[_base]]) for _base in tabelas})
-    return amostras, tabelas
+    mo.ui.tabs(
+        {
+            _base: mo.vstack(
+                [mo.md(_resumo(_base)), mo.ui.table(_amostra, page_size=20, max_columns=None)]
+            )
+            for _base, _amostra in amostras.items()
+        }
+    )
+    return (amostras,)
 
 
 @app.cell(hide_code=True)
@@ -399,7 +402,7 @@ def _(mo):
     mo.md(r"""
     ## Perfil de uma coluna
 
-    Quantas linhas tem cada código, em todos os recortes escolhidos (não só nas da
+    Quantas linhas tem cada código, em todos os escopos escolhidos (não só nas da
     tabela acima), com o rótulo do dicionário. Começa no primeiro campo que o
     dicionário rotula.
     """)
@@ -472,7 +475,7 @@ def _(mo):
     ## Citar
 
     A citação nomeia o arquivo do servidor, o SHA-256 e o snapshot do lake de cada
-    recorte escolhido. Guarde-a junto com o resultado.
+    escopo escolhido. Guarde-a junto com o resultado.
     """)
     return
 
@@ -493,7 +496,7 @@ def _(escolhidas, mo, snapshot, sus):
             ]
         )
         if citacoes
-        else mo.md("Nenhum recorte escolhido para citar.")
+        else mo.md("Nenhum escopo escolhido para citar.")
     )
     return (citacoes,)
 

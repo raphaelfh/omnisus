@@ -67,8 +67,6 @@ def test_imports_explores_and_cites_a_real_scope(importado):
     assert {"sexo", "sexo_rotulo", "idade_anos_completos"} <= set(amostra.columns)
     assert definidos["perfil"]["registros"].sum() == REGISTROS
     assert len(definidos["consulta"]) == 100  # the SQL cell's starting query
-    # The harmonised columns come last; the table shows every column, not marimo's first 50.
-    assert "data-max-columns='&quot;all&quot;'" in definidos["tabelas"]["sim_obitos"].text
     citacao = definidos["citacoes"]["sim_obitos"]
     assert SHA256 in citacao
     assert filename_for(sus.resolve("sim_obitos"), ESCOPO) in citacao
@@ -94,10 +92,17 @@ def test_a_base_without_chosen_scopes_has_no_rows_and_no_citation(importado, mon
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
 
-    _, definidos = module.app.run(defs={"escolhidas": {"sim_obitos": []}})
+    saidas, definidos = module.app.run(defs={"escolhidas": {"sim_obitos": []}})
+    texto = " ".join(getattr(s, "text", "") for s in saidas if s is not None)
 
     assert definidos["totais"] == {"sim_obitos": 0}
+    assert definidos["amostras"]["sim_obitos"].height == 0
+    assert definidos["perfil"]["registros"].sum() == 0
     assert definidos["citacoes"] == {}
+    assert "Nenhum escopo escolhido para citar." in texto
+    assert "Baixar citação" not in texto
+    # The harmonised columns come last; the tab's table shows every column, not the first 50.
+    assert "data-max-columns='&quot;all&quot;'" in texto
 
 
 def test_the_row_limit_caps_the_table_but_not_the_counts(importado, monkeypatch):
