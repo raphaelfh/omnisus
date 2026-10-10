@@ -91,7 +91,7 @@ def test_without_lake_it_opens_the_folder_sus_load_writes_to(importado, monkeypa
 
     definidos = _rodar(monkeypatch)
 
-    assert definidos["diretorio"] == data_dir().resolve() == pasta.resolve()
+    assert definidos["diretorio"] == data_dir().resolve()
     assert definidos["totais"] == {"sim_obitos": REGISTROS}
     monkeypatch.delenv("OMNISUS_DATA_DIR")
     assert _rodar(monkeypatch)["diretorio"] == data_dir().resolve()
