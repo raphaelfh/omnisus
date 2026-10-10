@@ -59,6 +59,7 @@ def test_imports_explores_and_cites_a_real_scope(importado):
     assert [p.rsplit("/", 1)[1] for p in baixados] == [
         filename_for(sus.resolve("sim_obitos"), ESCOPO)
     ]
+    assert definidos["importacao"].startswith("Importados: 1. Já no lake: 0. Pulados: nenhum.")
     assert definidos["totais"] == {"sim_obitos": REGISTROS}
     amostra = definidos["amostras"]["sim_obitos"]
     assert amostra.height == REGISTROS
@@ -66,9 +67,37 @@ def test_imports_explores_and_cites_a_real_scope(importado):
     assert {"sexo", "sexo_rotulo", "idade_anos_completos"} <= set(amostra.columns)
     assert definidos["perfil"]["registros"].sum() == REGISTROS
     assert len(definidos["consulta"]) == 100  # the SQL cell's starting query
+    # The harmonised columns come last; the table shows every column, not marimo's first 50.
+    assert "data-max-columns='&quot;all&quot;'" in definidos["tabelas"]["sim_obitos"].text
     citacao = definidos["citacoes"]["sim_obitos"]
     assert SHA256 in citacao
     assert filename_for(sus.resolve("sim_obitos"), ESCOPO) in citacao
+
+
+def test_a_reimport_counts_as_already_in_the_lake_and_an_unlisted_scope_as_skipped(
+    importado, monkeypatch
+):
+    pasta, _, _ = importado
+    fake_datasus.serve(monkeypatch, "sim_obitos", {ESCOPO: ARQUIVO.read_bytes()})
+    de_novo = _rodar(monkeypatch, "--lake", str(pasta), "--executar", "true")["importacao"]
+    fake_datasus.serve(monkeypatch, "sim_obitos", {})
+    ausente = _rodar(monkeypatch, "--lake", str(pasta), "--executar", "true")["importacao"]
+
+    assert de_novo.startswith("Importados: 0. Já no lake: 1. Pulados: nenhum.")
+    assert ausente.startswith("Importados: 0. Já no lake: 0. Pulados: ['RR_2022 (not_listed)'].")
+
+
+def test_a_base_without_chosen_scopes_has_no_rows_and_no_citation(importado, monkeypatch):
+    pasta, _, _ = importado
+    monkeypatch.setattr(sys, "argv", ["explorar.py", "--lake", str(pasta)])
+    spec = importlib.util.spec_from_file_location("notebook_explorar", EXPLORAR)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    _, definidos = module.app.run(defs={"escolhidas": {"sim_obitos": []}})
+
+    assert definidos["totais"] == {"sim_obitos": 0}
+    assert definidos["citacoes"] == {}
 
 
 def test_the_row_limit_caps_the_table_but_not_the_counts(importado, monkeypatch):

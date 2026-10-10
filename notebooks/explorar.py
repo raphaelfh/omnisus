@@ -47,8 +47,8 @@ def _(mo):
 
     - neste computador, a pasta onde `sus.load` grava: `$OMNISUS_DATA_DIR`, se
       definida, ou `data/raw`, relativa à pasta em que você abriu o marimo;
-    - no Google Drive, a pasta do lake sincronizada no computador ou, no molab, a
-      pasta copiada do Drive para o disco do notebook.
+    - no Google Drive, a pasta do lake sincronizada no computador ou, no molab (que não
+      monta o Drive), uma cópia da pasta no disco do notebook.
 
     O catálogo guarda a pasta em que o lake foi criado (no Colab,
     `/content/drive/MyDrive/omnisus`); este notebook lê os dados da pasta indicada,
@@ -87,6 +87,8 @@ def _(mo):
 
     Para pôr um recorte no lake: escolha a base, o ano e, conforme a base, as UFs e os
     meses. `sus.import_dataset` baixa só o que o lake ainda não tem do mesmo arquivo.
+    *Já no lake* conta os recortes importados antes do mesmo arquivo; *Pulados* lista os
+    que o servidor não publica (`not_listed`) ou que estão fora da cobertura da base.
     """)
     return
 
@@ -160,11 +162,15 @@ def _(
         )
     if _relatorio.ok:
         mudar_versao(lambda v: v + 1)
-    mo.md(
-        f"Importados: {len(_relatorio.ok)}. Já no lake: {len(_relatorio.skipped)}. "
+    _no_lake = [o for o in _relatorio.skipped if o.code == "unchanged"]
+    _pulados = [f"{o.scope} ({o.code})" for o in _relatorio.skipped if o.code != "unchanged"]
+    importacao = (
+        f"Importados: {len(_relatorio.ok)}. Já no lake: {len(_no_lake)}. "
+        f"Pulados: {_pulados or 'nenhum'}. "
         f"Falharam: {[str(o.scope) for o in _relatorio.failed] or 'nenhum'}."
     )
-    return
+    mo.md(importacao)
+    return (importacao,)
 
 
 @app.cell(hide_code=True)
@@ -379,13 +385,13 @@ def _(brutas, mo, projecoes, rotulos, sus, totais):
             f" Categorias harmonizadas fora: {', '.join(fora)}." if fora else ""
         )
 
-    mo.ui.tabs(
-        {
-            _base: mo.vstack([mo.md(_resumo(_base)), mo.ui.table(_amostra, page_size=20)])
-            for _base, _amostra in amostras.items()
-        }
-    )
-    return (amostras,)
+    # Todas as colunas: as categorias harmonizadas vêm por último e o marimo mostra só 50.
+    tabelas = {
+        _base: mo.ui.table(_amostra, page_size=20, max_columns=None)
+        for _base, _amostra in amostras.items()
+    }
+    mo.ui.tabs({_base: mo.vstack([mo.md(_resumo(_base)), tabelas[_base]]) for _base in tabelas})
+    return amostras, tabelas
 
 
 @app.cell(hide_code=True)
@@ -476,13 +482,18 @@ def _(escolhidas, mo, snapshot, sus):
     citacoes = {
         _base: sus.citation_from_publications(_pubs, snapshot_id=snapshot, dataset=_base).text
         for _base, _pubs in escolhidas.items()
+        if _pubs
     }
     _texto = "\n\n".join(citacoes.values())
-    mo.vstack(
-        [
-            mo.md(f"```text\n{_texto}\n```"),
-            mo.download(_texto.encode(), filename="citacao.txt", label="Baixar citação"),
-        ]
+    (
+        mo.vstack(
+            [
+                mo.md(f"```text\n{_texto}\n```"),
+                mo.download(_texto.encode(), filename="citacao.txt", label="Baixar citação"),
+            ]
+        )
+        if citacoes
+        else mo.md("Nenhum recorte escolhido para citar.")
     )
     return (citacoes,)
 
