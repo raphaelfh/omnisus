@@ -23,6 +23,7 @@ from tests.support.datasus_names import filename_for
 from tests.unit.test_fixture_provenance import load_fixture_rows
 
 import omnisus as sus
+from omnisus.lake.catalog import data_dir
 from omnisus.sources._base import ScopeKey
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -35,12 +36,8 @@ REGISTROS = int(
 SHA256 = hashlib.sha256(ARQUIVO.read_bytes()).hexdigest()
 
 
-def _rodar(monkeypatch, cwd: Path, *argumentos: str) -> dict:
-    """Run the notebook in `cwd` with these arguments, as `marimo export` would.
-
-    Returns what its cells define.
-    """
-    monkeypatch.chdir(cwd)
+def _rodar(monkeypatch, *argumentos: str) -> dict:
+    """Run the notebook as `marimo export` would; return what its cells define."""
     monkeypatch.setattr(sys, "argv", ["explorar.py", *argumentos])
     spec = importlib.util.spec_from_file_location("notebook_explorar", EXPLORAR)
     module = importlib.util.module_from_spec(spec)
@@ -55,7 +52,7 @@ def importado(tmp_path_factory) -> tuple[Path, dict]:
     pasta = tmp_path_factory.mktemp("explorar") / "lake"
     with pytest.MonkeyPatch.context() as monkeypatch:
         baixados = fake_datasus.serve(monkeypatch, "sim_obitos", {ESCOPO: ARQUIVO.read_bytes()})
-        definidos = _rodar(monkeypatch, pasta.parent, "--lake", str(pasta), "--executar", "true")
+        definidos = _rodar(monkeypatch, "--lake", str(pasta), "--executar", "true")
     assert [p.rsplit("/", 1)[1] for p in baixados] == [
         filename_for(sus.resolve("sim_obitos"), ESCOPO)
     ]
@@ -76,24 +73,28 @@ def test_imports_explores_and_cites_a_real_scope(importado):
     assert filename_for(sus.resolve("sim_obitos"), ESCOPO) in citacao
 
 
-def test_the_row_limit_caps_the_table_but_not_the_counts(importado, monkeypatch, tmp_path):
+def test_the_row_limit_caps_the_table_but_not_the_counts(importado, monkeypatch):
     pasta, _ = importado
 
-    definidos = _rodar(monkeypatch, tmp_path, "--lake", str(pasta), "--linhas", "100")
+    definidos = _rodar(monkeypatch, "--lake", str(pasta), "--linhas", "100")
 
     assert definidos["amostras"]["sim_obitos"].height == 100
     assert definidos["totais"] == {"sim_obitos": REGISTROS}
     assert definidos["perfil"]["registros"].sum() == REGISTROS
 
 
-def test_without_lake_it_opens_omnisus_data_dir(importado, monkeypatch, tmp_path):
-    """Like `sus.load` and the other notebooks."""
+def test_without_lake_it_opens_the_folder_sus_load_writes_to(importado, monkeypatch, tmp_path):
+    """$OMNISUS_DATA_DIR, else data/raw under the working directory, as `data_dir()` says."""
     pasta, _ = importado
+    monkeypatch.chdir(tmp_path)
     monkeypatch.setenv("OMNISUS_DATA_DIR", str(pasta))
 
-    definidos = _rodar(monkeypatch, tmp_path)
+    definidos = _rodar(monkeypatch)
 
+    assert definidos["diretorio"] == data_dir().resolve() == pasta.resolve()
     assert definidos["totais"] == {"sim_obitos": REGISTROS}
+    monkeypatch.delenv("OMNISUS_DATA_DIR")
+    assert _rodar(monkeypatch)["diretorio"] == data_dir().resolve()
 
 
 def test_reads_the_lake_after_its_folder_moved(importado, monkeypatch, tmp_path):
@@ -106,7 +107,7 @@ def test_reads_the_lake_after_its_folder_moved(importado, monkeypatch, tmp_path)
     )
     shutil.move(tmp_path / "criado", tmp_path / "copiado")
 
-    depois = _rodar(monkeypatch, tmp_path, "--lake", str(tmp_path / "copiado"))
+    depois = _rodar(monkeypatch, "--lake", str(tmp_path / "copiado"))
 
     assert depois["totais"] == {"sim_obitos": REGISTROS}
     assert depois["amostras"]["sim_obitos"].equals(antes["amostras"]["sim_obitos"])
