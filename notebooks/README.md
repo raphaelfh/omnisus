@@ -6,11 +6,15 @@ o que a base registra (`sus.describe_dataset`), descobrir (`sus.available`), bai
 ler (`sus.load`), conferir (`sus.check_columns`), analisar (`sus.label` e polars) e
 citar (`sus.cite`). Troque `BASE`, `UF`, `ANO` (e `MES`) na célula de parâmetros para
 outra base ou recorte. `bases.py` lista todas as bases (`sus.describe_datasets()`) e
-leva qualquer uma até a citação, sem análise própria. Comece pelo
+leva qualquer uma até a citação, sem análise própria. `explorar.py` é diferente: abre
+um lake que já existe (no computador ou copiado do Google Drive) e, com widgets, escolhe
+bases e recortes, mostra as linhas e o perfil de uma coluna e cita os recortes
+escolhidos. Comece pelo
 [guia do pesquisador](https://raphaelfh.github.io/omnisus/pesquisa/).
 
 Abrir um notebook não baixa nem grava nada. Rede e escrita ficam atrás de
-`EXECUTAR = False` até você mudar a constante (ou passar `-- --executar true`).
+`EXECUTAR = False` até você mudar a constante (ou passar `-- --executar true`); em
+`explorar.py`, atrás do botão *Importar*.
 
 | Notebook | Molab | Base | Recorte inicial |
 | --- | --- | --- | --- |

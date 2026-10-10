@@ -64,14 +64,13 @@ def test_every_odb_name_is_public(caminho):
 def test_rows_come_from_load_and_the_citation_from_cite(caminho):
     """One mechanism per step: `sus.load` reads, `sus.cite` cites.
 
-    explorar.py reads a lake that may hold more rows than memory: it imports with
-    `sus.import_dataset`, reads with SQL and cites the chosen scopes' publications.
+    explorar.py is left out: its lake may hold more rows than memory, so it imports
+    with `sus.import_dataset`, reads with SQL and cites only the chosen scopes'
+    publications (`test_explorar.py`).
     """
-    texto = caminho.read_text(encoding="utf-8")
     if caminho.stem == "explorar":
-        assert "sus.import_dataset(" in texto
-        assert "sus.citation_from_publications(" in texto
         return
+    texto = caminho.read_text(encoding="utf-8")
     if caminho.stem != "ibge_populacao":  # IBGE is not an FTP dataset; see its notebook
         assert "sus.load(" in texto, caminho.name
     if caminho.stem != "linkage":  # linkage cites nothing: it measures, it does not publish

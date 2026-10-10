@@ -18,6 +18,7 @@ app = marimo.App(width="full", app_title="Explorar o lake")
 
 @app.cell
 def _():
+    import json
     from pathlib import Path
 
     import marimo as mo
@@ -25,7 +26,7 @@ def _():
 
     import omnisus as sus
 
-    return Path, mo, pl, sus
+    return Path, json, mo, pl, sus
 
 
 @app.cell(hide_code=True)
@@ -61,20 +62,12 @@ def _(mo):
 
 @app.cell
 def _(mo):
-    _argumentos = mo.cli_args()
     pasta = mo.ui.text(
-        value=_argumentos.get("lake") or "data/raw", label="Pasta do lake", full_width=True
+        value=mo.cli_args().get("lake") or "data/raw", label="Pasta do lake", full_width=True
     )
-    linhas = mo.ui.number(
-        start=100,
-        stop=1_000_000,
-        step=100,
-        value=int(_argumentos.get("linhas") or 10_000),
-        label="Linhas na tabela",
-    )
-    executar = bool(_argumentos.get("executar"))
+    executar = bool(mo.cli_args().get("executar"))
     pasta
-    return executar, linhas, pasta
+    return executar, pasta
 
 
 @app.cell
@@ -96,36 +89,44 @@ def _(mo):
 
 
 @app.cell
-def _(mo, sus):
-    catalogo = sus.describe_datasets()
-    base_nova = mo.ui.dropdown(
-        options=catalogo["name"].to_list(), value="sim_obitos", label="Base", searchable=True
-    )
-    return base_nova, catalogo
+def _(mo):
+    # Uma importação muda a versão, e só ela reabre o lake: mexer nos widgets de
+    # importação não refaz as consultas abaixo.
+    versao, mudar_versao = mo.state(0)
+    return mudar_versao, versao
 
 
 @app.cell
-def _(base_nova, catalogo, mo, sus):
-    descricao = catalogo.filter(name=base_nova.value).row(0, named=True)
-    ano_novo = mo.ui.number(
-        start=int(descricao["coverage_start"][:4]), stop=2100, value=2022, label="Ano"
+def _(mo, sus):
+    base_nova = mo.ui.dropdown(
+        options=sorted(d.name for d in sus.datasets()),
+        value="sim_obitos",
+        label="Base",
+        searchable=True,
     )
+    return (base_nova,)
+
+
+@app.cell
+def _(base_nova, mo, sus):
+    _base = sus.resolve(base_nova.value)
+    por_uf = _base.geography == "state"
+    mensal = _base.cadence == "monthly"
+    ano_novo = mo.ui.number(start=_base.coverage[0][0], stop=2100, value=2022, label="Ano")
     ufs_novas = mo.ui.multiselect(options=sus.ALL_UFS, value=["RR"], label="UFs")
-    meses_novos = mo.ui.multiselect(
-        options=[str(m) for m in range(1, 13)], value=["1"], label="Meses"
-    )
+    meses_novos = mo.ui.multiselect(options=list(range(1, 13)), value=[1], label="Meses")
     importar = mo.ui.run_button(label="Importar")
     mo.hstack(
         [
             base_nova,
             ano_novo,
-            *([ufs_novas] if descricao["geography"] == "state" else []),
-            *([meses_novos] if descricao["cadence"] == "monthly" else []),
+            *([ufs_novas] if por_uf else []),
+            *([meses_novos] if mensal else []),
             importar,
         ],
         justify="start",
     )
-    return ano_novo, descricao, importar, meses_novos, ufs_novas
+    return ano_novo, importar, mensal, meses_novos, por_uf, ufs_novas
 
 
 @app.cell
@@ -133,36 +134,35 @@ def _(
     alvo,
     ano_novo,
     base_nova,
-    descricao,
     executar,
     importar,
+    mensal,
     meses_novos,
     mo,
+    mudar_versao,
+    por_uf,
     sus,
     ufs_novas,
 ):
-    importados = None
     if importar.value or executar:
         _escopos = sus.scopes_for(
             base_nova.value,
             years=[ano_novo.value],
-            ufs=ufs_novas.value if descricao["geography"] == "state" else None,
-            months=[int(m) for m in meses_novos.value]
-            if descricao["cadence"] == "monthly"
-            else None,
+            ufs=ufs_novas.value if por_uf else None,
+            months=meses_novos.value if mensal else None,
         )
         with mo.status.spinner(title=f"Importando {base_nova.value}…"):
             _relatorio = sus.import_dataset(
                 base_nova.value, scopes=_escopos, target=alvo, policy="skip_same"
             )
-        importados = len(_relatorio.ok)
+        mudar_versao(lambda v: v + 1)
         mo.output.replace(
             mo.md(
-                f"Importados: {importados}. Já no lake: {len(_relatorio.skipped)}. "
+                f"Importados: {len(_relatorio.ok)}. Já no lake: {len(_relatorio.skipped)}. "
                 f"Falharam: {[str(o.scope) for o in _relatorio.failed] or 'nenhum'}."
             )
         )
-    return (importados,)
+    return
 
 
 @app.cell(hide_code=True)
@@ -177,8 +177,8 @@ def _(mo):
 
 
 @app.cell
-def _(alvo, diretorio, importados, mo, sus):
-    importados  # depois de uma importação, o lake é reaberto
+def _(alvo, diretorio, mo, sus, versao):
+    versao()
     try:
         leitor = sus.LakeReader(alvo)
     except sus.CatalogAttachError:
@@ -189,19 +189,20 @@ def _(alvo, diretorio, importados, mo, sus):
     )
     snapshot = sus.latest_snapshot_id(leitor)
 
-    def _texto(caminho):
-        return "'" + str(caminho).replace("'", "''") + "'"
+    def _texto(valor):
+        return "'" + str(valor).replace("'", "''") + "'"
 
     # O catálogo guarda a pasta onde o lake foi criado. Reabrir com OVERRIDE_DATA_PATH lê os
     # Parquet desta pasta, fixa o snapshot e deixa abrir uma cópia vinda do Google Drive.
-    _con = leitor.connect()
-    _con.execute(f"DETACH {leitor.alias}")
-    _con.execute(
-        f"ATTACH {_texto('ducklake:sqlite:' + str(diretorio / 'omnisus-catalog.sqlite'))} "
-        f"AS {leitor.alias} (READ_ONLY, DATA_PATH {_texto(diretorio / 'omnisus.ducklake')}, "
+    _catalogo = diretorio / "omnisus-catalog.sqlite"
+    con = leitor.connect()
+    con.execute("DETACH lake")
+    con.execute(
+        f"ATTACH {_texto(f'ducklake:sqlite:{_catalogo}')} AS lake "
+        f"(READ_ONLY, DATA_PATH {_texto(diretorio / 'omnisus.ducklake')}, "
         f"OVERRIDE_DATA_PATH true, SNAPSHOT_VERSION {snapshot})"
     )
-    return leitor, snapshot
+    return con, leitor, snapshot
 
 
 @app.cell
@@ -242,96 +243,79 @@ def _(mo):
 def _(mo, recortes):
     _nomes = recortes["base"].unique().sort().to_list()
     bases = mo.ui.multiselect(options=_nomes, value=_nomes[:1], label="Bases")
+    bases
     return (bases,)
 
 
 @app.cell
-def _(bases, leitor, linhas, mo, pl, recortes):
+def _(bases, con, mo, pl, recortes):
+    mo.stop(not bases.value, mo.md("Escolha ao menos uma base."))
     _das_bases = recortes.filter(pl.col("base").is_in(bases.value))
 
-    def _opcoes(coluna):
-        return [str(v) for v in _das_bases[coluna].drop_nulls().unique().sort()]
+    def _filtro(coluna, rotulo):
+        opcoes = _das_bases[coluna].drop_nulls().unique().sort().to_list()
+        return mo.ui.multiselect(options=opcoes, value=opcoes, label=rotulo)
 
-    ufs = mo.ui.multiselect(options=_opcoes("uf"), value=_opcoes("uf"), label="UFs")
-    anos = mo.ui.multiselect(options=_opcoes("ano"), value=_opcoes("ano"), label="Anos")
-    meses = mo.ui.multiselect(options=_opcoes("mes"), value=_opcoes("mes"), label="Meses")
-    _colunas = {
-        _base: [
-            nome
-            for nome, *_ in leitor.connect()
-            .execute(f'DESCRIBE {leitor.alias}."{_base}"')
-            .fetchall()
-        ]
+    ufs, anos, meses = _filtro("uf", "UFs"), _filtro("ano", "Anos"), _filtro("mes", "Meses")
+    esquemas = {
+        _base: {
+            nome: tipo for nome, tipo, *_ in con.execute(f'DESCRIBE lake."{_base}"').fetchall()
+        }
         for _base in bases.value
     }
     colunas = mo.ui.dictionary(
         {
-            _base: mo.ui.multiselect(options=c, value=c, label=_base)
-            for _base, c in _colunas.items()
+            _base: mo.ui.multiselect(options=list(e), value=list(e), label=_base)
+            for _base, e in esquemas.items()
         }
     )
-    rotulos = mo.ui.switch(value=True, label="Rótulos do dicionário")
-    mo.vstack(
-        [
-            mo.hstack([bases, ufs, anos, meses], justify="start"),
-            colunas,
-            mo.hstack([linhas, rotulos]),
-        ]
-    )
-    return anos, colunas, meses, rotulos, ufs
+    mo.vstack([mo.hstack([ufs, anos, meses], justify="start"), colunas])
+    return anos, colunas, esquemas, meses, ufs
 
 
 @app.cell
-def _(anos, bases, meses, publicacoes, ufs):
-    def _escolhida(p):
-        escopo = p["scope"]
+def _(anos, esquemas, meses, publicacoes, ufs):
+    def _escolhido(e):
         return (
-            p["dataset"] in bases.value
-            and (escopo.uf is None or escopo.uf in ufs.value)
-            and str(escopo.ano) in anos.value
-            and (escopo.mes is None or str(escopo.mes) in meses.value)
+            (e.uf is None or e.uf in ufs.value)
+            and e.ano in anos.value
+            and (e.mes is None or e.mes in meses.value)
         )
 
-    escolhidas = [p for p in publicacoes if _escolhida(p)]
+    escolhidas = {
+        _base: [p for p in publicacoes if p["dataset"] == _base and _escolhido(p["scope"])]
+        for _base in esquemas
+    }
     return (escolhidas,)
 
 
 @app.cell
-def _(escolhidas, leitor, sus):
-    def recorte_sql(base):
-        """`FROM ... WHERE ...` e parâmetros que selecionam os recortes escolhidos da base.
+def _(escolhidas, esquemas, json, sus):
+    def _onde(publicacoes):
+        """`WHERE` e parâmetros que selecionam os recortes destas publicações.
 
-        Uma base por UF grava `uf`, `ano` e `mes`; uma nacional, `_source_ano` e
-        `_source_mes`. O mês fica de fora numa base anual.
+        Cada publicação guarda em `scope_json` as colunas e os valores que gravou
+        (`uf`, `ano`, `mes`; `_source_ano` numa base nacional).
         """
-        condicoes, parametros = [], []
-        for p in escolhidas:
-            if p["dataset"] != base:
-                continue
-            e = p["scope"]
-            campos = {"uf": e.uf, "ano": e.ano, "mes": e.mes}
-            if e.uf is None:
-                campos = {"_source_ano": e.ano, "_source_mes": e.mes}
-            campos = {k: v for k, v in campos.items() if v is not None or k == "uf"}
-            condicoes.append(" AND ".join(f'"{k}" = ?' for k in campos))
-            parametros += campos.values()
-        onde = " OR ".join(f"({c})" for c in condicoes) or "false"
-        return f'FROM {leitor.alias}."{base}" WHERE {onde}', parametros
+        escopos = [json.loads(p["scope_json"]) for p in publicacoes]
+        if not escopos:
+            return "false", []
+        chaves = list(escopos[0])
+        colunas = ", ".join(f'"{c}"' for c in chaves)
+        listas = ", ".join("unnest(?)" for _ in chaves)
+        return f"({colunas}) IN (SELECT {listas})", [[e[c] for e in escopos] for c in chaves]
 
-    def categorias_sql(base):
-        """As categorias harmonizadas que as fontes escolhidas permitem (ADR 0003)."""
-        _con = leitor.connect()
-        esquema = dict(
-            (nome, tipo)
-            for nome, tipo, *_ in _con.execute(f'DESCRIBE {leitor.alias}."{base}"').fetchall()
+    filtros = {_base: _onde(_pubs) for _base, _pubs in escolhidas.items()}
+    projecoes = {
+        _base: sus.analytical_projection(
+            _base,
+            observed_schema=esquemas[_base],
+            scopes=[sus.SourceContext.from_publication(p) for p in _pubs],
         )
-        fontes = [
-            sus.SourceContext.from_publication(p) for p in escolhidas if p["dataset"] == base
-        ]
-        projecao = sus.analytical_projection(base, observed_schema=esquema, scopes=fontes)
-        return "".join(f', {c.expression} AS "{c.name}"' for c in projecao.columns)
-
-    return categorias_sql, recorte_sql
+        for _base, _pubs in escolhidas.items()
+    }
+    totais = {_base: sum(p["rows"] for p in _pubs) for _base, _pubs in escolhidas.items()}
+    return filtros, projecoes, totais
 
 
 @app.cell(hide_code=True)
@@ -341,50 +325,65 @@ def _(mo):
 
     Uma aba por base. A contagem é de todos os recortes escolhidos; a tabela mostra até
     *Linhas na tabela* delas, porque a tabela do marimo guarda na memória tudo o que
-    recebe. Para mais linhas, filtre os recortes ou tire colunas.
+    recebe. Para mais linhas, filtre os recortes ou tire colunas. As categorias
+    harmonizadas (`idade_anos_completos`, `sexo_categoria`...) só aparecem quando todos
+    os recortes vêm de fontes validadas (ADR 0003); a aba diz o motivo quando faltam.
     """)
     return
 
 
 @app.cell
-def _(
-    bases,
-    catalogo,
-    categorias_sql,
-    colunas,
-    leitor,
-    linhas,
-    mo,
-    recorte_sql,
-    rotulos,
-    sus,
-):
-    _con = leitor.connect()
-    _rotulaveis = set(catalogo.filter(catalogo["labelled_fields"] > 0)["name"])
-    totais, amostras = {}, {}
-    for _base in bases.value:
-        _de, _parametros = recorte_sql(_base)
-        totais[_base] = _con.execute(f"SELECT count(*) {_de}", _parametros).fetchone()[0]
+def _(mo):
+    linhas = mo.ui.number(
+        start=100,
+        stop=1_000_000,
+        step=100,
+        value=int(mo.cli_args().get("linhas") or 10_000),
+        label="Linhas na tabela",
+    )
+    rotulos = mo.ui.switch(value=True, label="Rótulos do dicionário")
+    mo.hstack([linhas, rotulos], justify="start")
+    return linhas, rotulos
+
+
+@app.cell
+def _(colunas, con, filtros, linhas, projecoes):
+    brutas = {}
+    for _base, (_onde, _parametros) in filtros.items():
         _selecao = ", ".join(f'"{c}"' for c in colunas.value[_base]) or "NULL AS sem_colunas"
-        _amostra = _con.execute(
-            f"SELECT {_selecao}{categorias_sql(_base)} {_de} LIMIT {int(linhas.value)}",
+        _categorias = "".join(f', {c.expression} AS "{c.name}"' for c in projecoes[_base].columns)
+        brutas[_base] = con.execute(
+            f'SELECT {_selecao}{_categorias} FROM lake."{_base}" '
+            f"WHERE {_onde} LIMIT {int(linhas.value)}",
             _parametros,
         ).pl()
-        if rotulos.value and _base in _rotulaveis:
-            _amostra = sus.label(_base, _amostra)
-        amostras[_base] = _amostra
+    return (brutas,)
+
+
+@app.cell
+def _(brutas, mo, projecoes, rotulos, sus, totais):
+    amostras = {
+        _base: sus.label(_base, _bruta) if rotulos.value else _bruta
+        for _base, _bruta in brutas.items()
+    }
+
+    def _resumo(base):
+        fora = [
+            f"`{u.field}` ({u.reason})"
+            for u in projecoes[base].unavailable
+            if u.reason != "unsupported_dataset"
+        ]
+        return f"**{totais[base]:,}** linhas; a tabela mostra {amostras[base].height:,}." + (
+            f" Categorias harmonizadas fora: {', '.join(fora)}." if fora else ""
+        )
+
     mo.ui.tabs(
         {
-            _base: mo.vstack(
-                [
-                    mo.md(f"**{totais[_base]:,}** linhas; a tabela mostra {_amostra.height:,}."),
-                    mo.ui.table(_amostra, page_size=20),
-                ]
-            )
+            _base: mo.vstack([mo.md(_resumo(_base)), mo.ui.table(_amostra, page_size=20)])
             for _base, _amostra in amostras.items()
         }
     )
-    return amostras, totais
+    return (amostras,)
 
 
 @app.cell(hide_code=True)
@@ -400,44 +399,40 @@ def _(mo):
 
 
 @app.cell
-def _(bases, mo):
-    base_perfil = mo.ui.dropdown(options=bases.value, value=bases.value[0], label="Base")
+def _(esquemas, mo):
+    base_perfil = mo.ui.dropdown(options=list(esquemas), value=next(iter(esquemas)), label="Base")
     return (base_perfil,)
 
 
 @app.cell
-def _(amostras, base_perfil, mo, sus):
-    rotulados = [
+def _(base_perfil, esquemas, mo, sus):
+    _colunas = list(esquemas[base_perfil.value])
+    _rotuladas = [
         f["name"]
         for f in sus.describe_dataset(base_perfil.value)["schema"]["fields"]
-        if f.get("x-decode") and f["name"] in amostras[base_perfil.value].columns
+        if f.get("x-decode") and f["name"] in _colunas
     ]
     coluna_perfil = mo.ui.dropdown(
-        options=amostras[base_perfil.value].columns,
-        value=(rotulados or amostras[base_perfil.value].columns)[0],
-        label="Coluna",
-        searchable=True,
+        options=_colunas, value=(_rotuladas or _colunas)[0], label="Coluna", searchable=True
     )
     mo.hstack([base_perfil, coluna_perfil], justify="start")
-    return coluna_perfil, rotulados
+    return (coluna_perfil,)
 
 
 @app.cell
-def _(base_perfil, coluna_perfil, leitor, pl, recorte_sql, rotulados, sus):
-    _de, _parametros = recorte_sql(base_perfil.value)
-    _coluna = coluna_perfil.value
-    perfil = (
-        leitor.connect()
-        .execute(
-            f'SELECT "{_coluna}", count(*) AS registros {_de} '
+def _(base_perfil, coluna_perfil, con, filtros, pl, sus):
+    _onde, _parametros = filtros[base_perfil.value]
+    perfil = sus.label(
+        base_perfil.value,
+        con.execute(
+            f'SELECT "{coluna_perfil.value}", count(*) AS registros '
+            f'FROM lake."{base_perfil.value}" WHERE {_onde} '
             "GROUP BY ALL ORDER BY registros DESC LIMIT 1000",
             _parametros,
         )
         .pl()
-        .with_columns(pct=(100 * pl.col("registros") / pl.col("registros").sum()).round(2))
+        .with_columns(pct=(100 * pl.col("registros") / pl.col("registros").sum()).round(2)),
     )
-    if _coluna in rotulados:
-        perfil = sus.label(base_perfil.value, perfil, columns=[_coluna])
     perfil
     return (perfil,)
 
@@ -445,28 +440,21 @@ def _(base_perfil, coluna_perfil, leitor, pl, recorte_sql, rotulados, sus):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## Transformar e consultar
+    ## Consultar em SQL
 
-    Filtre, agrupe e some as linhas da tabela da primeira base com o editor abaixo; ele
-    mostra o código polars de cada passo. Para consultar o lake inteiro, use SQL: as
-    tabelas estão em `lake.<base>`.
+    Para ir além das linhas da tabela, consulte o lake inteiro: as tabelas estão em
+    `lake.<base>`. A consulta abaixo começa na base do perfil.
     """)
     return
 
 
 @app.cell
-def _(amostras, bases, mo):
-    mo.ui.dataframe(amostras[bases.value[0]], page_size=20)
-    return
-
-
-@app.cell
-def _(bases, leitor, mo):
+def _(base_perfil, con, mo):
     _df = mo.sql(
         f"""
-        SELECT * FROM lake.{bases.value[0]} LIMIT 100
+        SELECT * FROM lake.{base_perfil.value} LIMIT 100
         """,
-        engine=leitor.connect(),
+        engine=con,
     )
     return
 
@@ -483,14 +471,10 @@ def _(mo):
 
 
 @app.cell
-def _(bases, escolhidas, mo, snapshot, sus):
+def _(escolhidas, mo, snapshot, sus):
     citacoes = {
-        _base: sus.citation_from_publications(
-            [p for p in escolhidas if p["dataset"] == _base],
-            snapshot_id=snapshot,
-            dataset=_base,
-        ).text
-        for _base in bases.value
+        _base: sus.citation_from_publications(_pubs, snapshot_id=snapshot, dataset=_base).text
+        for _base, _pubs in escolhidas.items()
     }
     _texto = "\n\n".join(citacoes.values())
     mo.vstack(
