@@ -20,6 +20,9 @@ app = marimo.App(width="full", app_title="Explorar o lake")
 def _():
     import json
     import os
+    import shutil
+    import tempfile
+    from datetime import date
     from pathlib import Path
 
     import marimo as mo
@@ -27,7 +30,7 @@ def _():
 
     import omnisus as sus
 
-    return Path, json, mo, os, pl, sus
+    return Path, date, json, mo, os, pl, shutil, sus, tempfile
 
 
 @app.cell(hide_code=True)
@@ -85,10 +88,21 @@ def _(mo):
     mo.md(r"""
     ## Importar
 
-    Para pôr um escopo no lake: escolha a base, o ano e, conforme a base, as UFs e os
-    meses. `sus.import_dataset` baixa só o que o lake ainda não tem do mesmo arquivo.
-    *Já no lake* conta os escopos importados antes do mesmo arquivo; *Pulados* lista os
-    que o servidor não publica (`not_listed`) ou que estão fora da cobertura da base.
+    Para pôr escopos no lake: escolha a base e, conforme a base, os anos, as UFs e os
+    meses. Cada lista tem *Select all* e *Deselect all* no topo; digitar filtra a
+    lista. `sus.import_dataset` baixa só o que o lake ainda não tem do mesmo arquivo.
+
+    A importação anda em partes de 24 escopos, um commit no lake por parte. O que
+    limita a velocidade é o servidor do DATASUS: o omnisus baixa até 6 arquivos por
+    vez, de propósito, porque o servidor é público e compartilhado. A memória fica
+    limitada a um arquivo descompactado por vez mais 1 GiB de downloads em espera;
+    o disco cresce com o que você escolhe, por isso a linha abaixo dos seletores mostra
+    o espaço livre. *Interromper* para ao fim da parte em curso.
+
+    Se algo falhar, o relatório diz o motivo de cada escopo. Clique em *Importar* de
+    novo para continuar: o que já está no lake é pulado sem baixar. Ligue *Substituir*
+    só quando o motivo pedir `replace` (o arquivo foi importado por outra versão do
+    omnisus): os escopos escolhidos são baixados e gravados de novo.
     """)
     return
 
@@ -105,7 +119,7 @@ def _(mo):
 def _(mo, sus):
     base_nova = mo.ui.dropdown(
         options=sorted(d.name for d in sus.datasets()),
-        value="sim_obitos",
+        value=mo.cli_args().get("base") or "sim_obitos",
         label="Base",
         searchable=True,
     )
@@ -113,64 +127,189 @@ def _(mo, sus):
 
 
 @app.cell
-def _(base_nova, mo, sus):
+def _(base_nova, date, mo, sus):
     _base = sus.resolve(base_nova.value)
     por_uf = _base.geography == "state"
     mensal = _base.monthly
-    ano_novo = mo.ui.number(start=_base.coverage[0][0], stop=2100, value=2022, label="Ano")
-    ufs_novas = mo.ui.multiselect(options=sus.ALL_UFS, value=["RR"], label="UFs")
-    meses_novos = mo.ui.multiselect(options=list(range(1, 13)), value=[1], label="Meses")
+
+    def _da_linha(nome, padrao):
+        """Os valores de `-- --nome a,b` (vírgula ou espaço), ou o padrão."""
+        valor = mo.cli_args().get(nome)
+        return padrao if valor is None else str(valor).replace(",", " ").split()
+
+    (_primeiro, _), _ultimo = _base.coverage
+    _anos = list(range(_primeiro, (_ultimo or (date.today().year,))[0] + 1))
+    anos_novos = mo.ui.multiselect(
+        options=_anos,
+        value=[int(a) for a in _da_linha("anos", [min(2022, _anos[-1])])],
+        label="Anos",
+    )
+    ufs_novas = mo.ui.multiselect(options=sus.ALL_UFS, value=_da_linha("ufs", ["RR"]), label="UFs")
+    meses_novos = mo.ui.multiselect(
+        options=list(range(1, 13)), value=[int(m) for m in _da_linha("meses", [1])], label="Meses"
+    )
+    substituir = mo.ui.switch(
+        value=bool(mo.cli_args().get("substituir")), label="Substituir o que já está no lake"
+    )
     importar = mo.ui.run_button(label="Importar")
     mo.hstack(
         [
             base_nova,
-            ano_novo,
+            anos_novos,
             *([ufs_novas] if por_uf else []),
             *([meses_novos] if mensal else []),
-            importar,
         ],
         justify="start",
+        wrap=True,
     )
-    return ano_novo, importar, mensal, meses_novos, por_uf, ufs_novas
+    return anos_novos, importar, mensal, meses_novos, por_uf, substituir, ufs_novas
+
+
+@app.cell
+def _(
+    Path,
+    anos_novos,
+    base_nova,
+    diretorio,
+    importar,
+    mensal,
+    meses_novos,
+    mo,
+    por_uf,
+    shutil,
+    substituir,
+    sus,
+    tempfile,
+    ufs_novas,
+):
+    escopos_novos = sus.scopes_for(
+        base_nova.value,
+        years=sorted(anos_novos.value),
+        ufs=[u for u in sus.ALL_UFS if u in ufs_novas.value] if por_uf else None,
+        months=sorted(meses_novos.value) if mensal else None,
+    )
+
+    def _livre(pasta):
+        """GiB livres no disco de `pasta` ou, se ela ainda não existe, da pasta acima."""
+        while not pasta.exists():
+            pasta = pasta.parent
+        return shutil.disk_usage(pasta).free / 2**30
+
+    _temporaria = Path(tempfile.gettempdir())
+    mo.vstack(
+        [
+            mo.md(
+                f"**{len(escopos_novos):,} escopos.** Disco livre: "
+                f"{_livre(diretorio):.1f} GiB na pasta do lake e "
+                f"{_livre(_temporaria):.1f} GiB em `{_temporaria}`, onde a importação "
+                "descompacta cada arquivo."
+            ),
+            mo.hstack([importar, substituir], justify="start"),
+        ]
+    )
+    return (escopos_novos,)
 
 
 @app.cell
 def _(
     alvo,
-    ano_novo,
     base_nova,
+    escopos_novos,
     executar,
     importar,
-    mensal,
-    meses_novos,
     mo,
     mudar_versao,
-    por_uf,
+    pl,
+    substituir,
     sus,
-    ufs_novas,
 ):
     mo.stop(not (importar.value or executar))
-    _escopos = sus.scopes_for(
-        base_nova.value,
-        years=[ano_novo.value],
-        ufs=ufs_novas.value if por_uf else None,
-        months=meses_novos.value if mensal else None,
+    mo.stop(not escopos_novos, mo.md("Escolha ao menos um ano, uma UF e um mês."))
+
+    _situacoes = {
+        None: "importado",
+        "unchanged": "já estava no lake",
+        "not_listed": "o DATASUS não publica",
+        "outside_coverage": "fora da cobertura da base",
+        "fetch_failed": "falhou ao baixar",
+        "ingest_failed": "falhou ao gravar",
+        "rolled_back": "desfeito: outro escopo da parte falhou",
+    }
+    _ao_abrir = {
+        "install": "o DuckDB precisa de internet para baixar a extensão ducklake uma vez",
+        "attach": "um lake só recebe importações na pasta onde foi criado (#87)",
+        "set_option": "outro programa está lendo este lake; feche-o",
+    }
+    _resultado = {}  # escopo -> (situação, motivo)
+
+    def _anotar(relatorio):
+        for o in relatorio.outcomes:
+            _resultado[o.scope] = (_situacoes[o.code], o.reason)
+
+    def _parte(escopos):
+        """Importa uma parte e anota cada escopo; devolve por que parar, se for o caso."""
+        try:
+            _anotar(
+                sus.import_dataset(
+                    base_nova.value,
+                    scopes=escopos,
+                    target=alvo,
+                    policy="replace" if substituir.value else "skip_same",
+                )
+            )
+        except sus.ImportAbortedError as e:
+            _anotar(e.report)
+            for _, escopo in e.unresolved:
+                _resultado[escopo] = ("sem resultado", str(e.__cause__ or e))
+            return f"A gravação no lake parou ({e.__cause__ or e})."
+        except (sus.FtpUnavailable, sus.FtpPathNotFound) as e:
+            return f"O servidor do DATASUS não respondeu ({e.__cause__ or e})."
+        except sus.CatalogAttachError as e:
+            return f"Não deu para abrir o lake para gravar: {_ao_abrir[e.stage]} ({e.__cause__ or e})."
+        return None
+
+    _partes = [escopos_novos[i : i + 24] for i in range(0, len(escopos_novos), 24)]
+    parada = None
+    with mo.status.progress_bar(
+        total=len(escopos_novos), title=f"Importando {base_nova.value}", show_eta=True
+    ) as _barra:
+        for _escopos in _partes:
+            try:
+                parada = _parte(_escopos)
+            except KeyboardInterrupt:
+                for _escopo in _escopos:
+                    _resultado.setdefault(_escopo, ("sem resultado", "interrompido"))
+                parada = "Interrompido. A parte em curso terminou antes de parar."
+            _barra.update(increment=len(_escopos))
+            if parada:
+                break
+
+    relatorio = pl.DataFrame(
+        [(str(e), *_resultado.get(e, ("não tentado", None))) for e in escopos_novos],
+        schema=["escopo", "situacao", "motivo"],
+        orient="row",
     )
-    with mo.status.spinner(title=f"Importando {base_nova.value}…"):
-        _relatorio = sus.import_dataset(
-            base_nova.value, scopes=_escopos, target=alvo, policy="skip_same"
-        )
-    if _relatorio.ok:
+    importacao = " · ".join(
+        f"{s}: {n}" for s, n in relatorio["situacao"].value_counts(sort=True).rows()
+    )
+    if relatorio["situacao"].is_in(["importado", "sem resultado"]).any():
         mudar_versao(lambda v: v + 1)
-    _no_lake = [o for o in _relatorio.skipped if o.code == "unchanged"]
-    _pulados = [f"{o.scope} ({o.code})" for o in _relatorio.skipped if o.code != "unchanged"]
-    importacao = (
-        f"Importados: {len(_relatorio.ok)}. Já no lake: {len(_no_lake)}. "
-        f"Pulados: {_pulados or 'nenhum'}. "
-        f"Falharam: {[str(o.scope) for o in _relatorio.failed] or 'nenhum'}."
+    mo.vstack(
+        [
+            *(
+                [
+                    mo.callout(
+                        mo.md(f"{parada} Clique em *Importar* para continuar."), kind="danger"
+                    )
+                ]
+                if parada
+                else []
+            ),
+            mo.md(importacao),
+            mo.ui.table(relatorio, page_size=10, selection=None),
+        ]
     )
-    mo.md(importacao)
-    return (importacao,)
+    return importacao, parada, relatorio
 
 
 @app.cell(hide_code=True)

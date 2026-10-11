@@ -21,14 +21,22 @@ from tests.unit.test_fixture_provenance import load_fixture_rows
 import omnisus as sus
 from omnisus.lake.catalog import data_dir
 from omnisus.sources._base import ScopeKey
+from omnisus.sources.datasus_ftp import _runner
 
 ROOT = Path(__file__).resolve().parents[3]
 EXPLORAR = ROOT / "notebooks" / "explorar.py"
 ARQUIVO = ROOT / "tests" / "fixtures" / "dbc" / "sim_rr_2022_mini.dbc"
 ESCOPO = ScopeKey(uf="RR", ano=2022)
-REGISTROS = int(
-    next(r for r in load_fixture_rows() if r["file"] == "dbc/sim_rr_2022_mini.dbc")["records"]
-)
+ARQUIVO_2023 = ROOT / "tests" / "fixtures" / "dbc" / "sim_rr_2023_mini.dbc"
+ESCOPO_2023 = ScopeKey(uf="RR", ano=2023)
+
+
+def _registros(arquivo: Path) -> int:
+    nome = f"dbc/{arquivo.name}"
+    return int(next(r for r in load_fixture_rows() if r["file"] == nome)["records"])
+
+
+REGISTROS = _registros(ARQUIVO)
 SHA256 = hashlib.sha256(ARQUIVO.read_bytes()).hexdigest()
 
 
@@ -59,7 +67,8 @@ def test_imports_explores_and_cites_a_real_scope(importado):
     assert [p.rsplit("/", 1)[1] for p in baixados] == [
         filename_for(sus.resolve("sim_obitos"), ESCOPO)
     ]
-    assert definidos["importacao"].startswith("Importados: 1. Já no lake: 0. Pulados: nenhum.")
+    assert definidos["relatorio"].rows() == [("RR_2022", "importado", None)]
+    assert definidos["importacao"] == "importado: 1"
     assert definidos["totais"] == {"sim_obitos": REGISTROS}
     amostra = definidos["amostras"]["sim_obitos"]
     assert amostra.height == REGISTROS
@@ -72,17 +81,110 @@ def test_imports_explores_and_cites_a_real_scope(importado):
     assert filename_for(sus.resolve("sim_obitos"), ESCOPO) in citacao
 
 
-def test_a_reimport_counts_as_already_in_the_lake_and_an_unlisted_scope_as_skipped(
+def test_a_reimport_counts_as_already_in_the_lake_and_an_unlisted_scope_as_not_published(
     importado, monkeypatch
 ):
     pasta, _, _ = importado
     fake_datasus.serve(monkeypatch, "sim_obitos", {ESCOPO: ARQUIVO.read_bytes()})
-    de_novo = _rodar(monkeypatch, "--lake", str(pasta), "--executar", "true")["importacao"]
+    de_novo = _rodar(monkeypatch, "--lake", str(pasta), "--executar", "true")["relatorio"]
     fake_datasus.serve(monkeypatch, "sim_obitos", {})
-    ausente = _rodar(monkeypatch, "--lake", str(pasta), "--executar", "true")["importacao"]
+    ausente = _rodar(monkeypatch, "--lake", str(pasta), "--executar", "true")["relatorio"]
 
-    assert de_novo.startswith("Importados: 0. Já no lake: 1. Pulados: nenhum.")
-    assert ausente.startswith("Importados: 0. Já no lake: 0. Pulados: ['RR_2022 (not_listed)'].")
+    assert de_novo["situacao"].to_list() == ["já estava no lake"]
+    assert ausente["situacao"].to_list() == ["o DATASUS não publica"]
+    assert "not in the server listing" in ausente["motivo"].item()
+
+
+def test_imports_several_years_at_once(monkeypatch, tmp_path):
+    fake_datasus.serve(
+        monkeypatch,
+        "sim_obitos",
+        {ESCOPO: ARQUIVO.read_bytes(), ESCOPO_2023: ARQUIVO_2023.read_bytes()},
+    )
+
+    definidos = _rodar(
+        monkeypatch, "--lake", str(tmp_path), "--anos", "2022,2023", "--executar", "true"
+    )
+
+    assert definidos["relatorio"]["situacao"].to_list() == ["importado", "importado"]
+    assert definidos["totais"] == {"sim_obitos": REGISTROS + _registros(ARQUIVO_2023)}
+
+
+def test_a_failed_download_is_reported_and_a_second_click_imports_only_what_is_missing(
+    monkeypatch, tmp_path
+):
+    arquivos = {ESCOPO: ARQUIVO.read_bytes(), ESCOPO_2023: ARQUIVO_2023.read_bytes()}
+    fake_datasus.serve(monkeypatch, "sim_obitos", arquivos)
+    baixar = _runner.fetch_dbc_bytes
+
+    async def falha_em_2023(entry, **kw):
+        if entry.name.endswith("2023.dbc"):
+            raise ConnectionResetError(f"{entry.path}: connection reset by peer")
+        return await baixar(entry, **kw)
+
+    monkeypatch.setattr(_runner, "fetch_dbc_bytes", falha_em_2023)
+    antes = _rodar(
+        monkeypatch, "--lake", str(tmp_path), "--anos", "2022 2023", "--executar", "true"
+    )
+    baixados = fake_datasus.serve(monkeypatch, "sim_obitos", arquivos)
+    depois = _rodar(
+        monkeypatch, "--lake", str(tmp_path), "--anos", "2022 2023", "--executar", "true"
+    )
+
+    assert antes["relatorio"]["situacao"].to_list() == ["importado", "falhou ao baixar"]
+    assert "connection reset by peer" in antes["relatorio"]["motivo"][1]
+    assert antes["totais"] == {"sim_obitos": REGISTROS}
+    assert depois["relatorio"]["situacao"].to_list() == ["já estava no lake", "importado"]
+    assert [p.rsplit("/", 1)[1] for p in baixados] == ["DORR2023.dbc"]
+
+
+def test_a_scope_imported_by_another_omnisus_version_asks_for_and_takes_substituir(
+    monkeypatch, tmp_path
+):
+    """A new parser version (another omnisus release or dictionary) on the same file."""
+    fake_datasus.serve(monkeypatch, "sim_obitos", {ESCOPO: ARQUIVO.read_bytes()})
+    _rodar(monkeypatch, "--lake", str(tmp_path), "--executar", "true")
+    versao = _runner.parser_version
+    monkeypatch.setattr(_runner, "parser_version", lambda d: versao(d) + "-nova")
+
+    recusado = _rodar(monkeypatch, "--lake", str(tmp_path), "--executar", "true")["relatorio"]
+    substituido = _rodar(
+        monkeypatch, "--lake", str(tmp_path), "--executar", "true", "--substituir", "true"
+    )["relatorio"]
+
+    assert recusado["situacao"].to_list() == ["falhou ao gravar"]
+    assert "request replace explicitly" in recusado["motivo"].item()
+    assert substituido["situacao"].to_list() == ["importado"]
+
+
+def test_when_the_server_stops_answering_what_was_imported_stays_and_the_rest_is_not_tried(
+    monkeypatch, tmp_path
+):
+    """The import runs in parts; a part that fails stops the rest, not the parts before it."""
+    fake_datasus.serve(monkeypatch, "sim_obitos", {ESCOPO: ARQUIVO.read_bytes()})
+    listar = _runner.list_sources
+    listagens = []
+
+    def responde_uma_vez(d, **kw):
+        listagens.append(d.name)
+        if len(listagens) > 1:
+            raise sus.FtpUnavailable("/dissemin/publicos/SIM/CID10/DORES: 3 attempts failed")
+        return listar(d, **kw)
+
+    monkeypatch.setattr(_runner, "list_sources", responde_uma_vez)
+    todas = ",".join(sus.ALL_UFS)
+    definidos = _rodar(monkeypatch, "--lake", str(tmp_path), "--ufs", todas, "--executar", "true")
+    relatorio = definidos["relatorio"]
+
+    assert relatorio.height == len(sus.ALL_UFS)
+    assert relatorio.filter(escopo="RR_2022")["situacao"].item() == "importado"
+    assert relatorio["situacao"].value_counts(sort=True).rows() == [
+        ("o DATASUS não publica", len(sus.ALL_UFS) - 4),
+        ("não tentado", 3),
+        ("importado", 1),
+    ]
+    assert "não respondeu" in definidos["parada"]
+    assert definidos["totais"] == {"sim_obitos": REGISTROS}
 
 
 def test_a_base_without_chosen_scopes_has_no_rows_and_no_citation(importado, monkeypatch):

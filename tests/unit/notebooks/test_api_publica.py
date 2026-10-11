@@ -20,7 +20,9 @@ TODOS = sorted(p for p in NOTEBOOKS.glob("*.py") if not p.name.startswith("_"))
 # Modules a notebook may import besides omnisus.
 # `os`: explorar.py reads $OMNISUS_DATA_DIR, the lake folder `sus.load` uses, which has
 # no public getter.
-BIBLIOTECAS = {"json", "marimo", "os", "polars", "pathlib"}
+# `shutil`, `tempfile`: explorar.py shows the free disk where an import writes.
+# `datetime`: explorar.py offers the years of a dataset up to the current one.
+BIBLIOTECAS = {"datetime", "json", "marimo", "os", "polars", "pathlib", "shutil", "tempfile"}
 
 # A name with no public door yet, by notebook. Each one says why.
 EXCECOES = {
