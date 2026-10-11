@@ -11,9 +11,11 @@ import errno
 import gzip
 import hashlib
 import importlib.util
+import io
 import os
 import shutil
 import sys
+import zipfile
 from pathlib import Path
 
 import duckdb
@@ -106,10 +108,11 @@ def _planilha(conteudo: bytes, aba: str) -> pl.DataFrame:
 
 
 def test_each_tab_downloads_a_workbook_of_its_columns_and_of_the_codes_it_labels(importado):
-    """Sheet `colunas`: one row per column of the table. Sheet `codigos`: one row per
-    code, with the label the table shows."""
+    """Sheet `colunas`: one row per column of the lake table. Sheet `codigos`: one row
+    per code, with the label the table shows."""
     _, definidos, _ = importado
     descricao = sus.describe_dataset("sim_obitos")
+    esquema = definidos["esquemas"]["sim_obitos"]
 
     nome, conteudo = definidos["dicionarios"]["sim_obitos"]
     colunas = _planilha(conteudo, "colunas")
@@ -117,25 +120,42 @@ def test_each_tab_downloads_a_workbook_of_its_columns_and_of_the_codes_it_labels
     na_tabela = definidos["amostras"]["sim_obitos"].select("sexo", "sexo_rotulo").drop_nulls()
 
     assert nome == f"sim_obitos_dicionario_{descricao['dictionary_version']}.xlsx"
-    assert colunas["coluna"].to_list() == list(definidos["esquemas"]["sim_obitos"])
-    assert codigos.columns == ["coluna", "codigo", "rotulo"]
-    sexo = codigos.filter(coluna="sexo").select("codigo", "rotulo")
-    assert set(na_tabela.unique().iter_rows()) <= set(sexo.iter_rows())
-    linha = colunas.filter(coluna="sexo").row(0, named=True)
-    assert linha["no_dicionario"] == "sim"
-    assert int(linha["codigos"]) == sexo.height
-    assert linha["fonte_sha256"] in {d["sha256"] for d in descricao["sources"]}
+    assert colunas.select("coluna", "tipo_no_lake").rows() == list(esquema.items())
+    # Every code of every column in the lake table; the blank code is an empty cell.
+    assert set(codigos.iter_rows()) == {
+        (f["field"]["name"], c["value"] or None, c["label"])
+        for f in descricao["fields"]
+        if f["field"]["name"] in esquema
+        for c in f["field"]["codes"]
+    }
+    assert set(na_tabela.unique().iter_rows()) <= set(
+        codigos.filter(coluna="sexo").select("codigo", "rotulo").iter_rows()
+    )
+    sexo = colunas.filter(coluna="sexo").row(0, named=True)
+    fonte = next(d for d in descricao["sources"] if d["sha256"] == sexo["fonte_sha256"])
+    assert (sexo["no_dicionario"], sexo["titulo"], sexo["fonte"], sexo["onde"]) == (
+        "sim",
+        "Sexo",
+        fonte["url"],
+        "Linha10 SEXO p. 2",
+    )
     # The note says what a `conflicting` map conflicts with.
     tipobito = colunas.filter(coluna="tipobito").row(0, named=True)
     assert tipobito["conferencia"] == "conflicting"
     assert "cnv-difere-do-mapa-anterior" in tipobito["nota"]
-    # A date the lake keeps as published text.
+    # A date the lake keeps as published text; with no codes, nothing was conferred.
     dtobito = colunas.filter(coluna="dtobito").row(0, named=True)
-    assert (dtobito["tipo_no_lake"], dtobito["tipo_no_dicionario"]) == ("VARCHAR", "date")
+    assert (dtobito["tipo_no_lake"], dtobito["tipo_no_dicionario"], dtobito["conferencia"]) == (
+        "VARCHAR",
+        "date",
+        None,
+    )
     # Codes are text cells: `00` keeps its zero in a spreadsheet.
-    tipados = pl.read_excel(conteudo, sheet_name="codigos")
-    assert tipados["codigo"].dtype == pl.String
-    assert "00" in tipados.filter(coluna="escfalagr1")["codigo"].to_list()
+    assert "00" in codigos.filter(coluna="escfalagr1")["codigo"].to_list()
+    # A source is plain text: several URLs in one cell would make one broken link.
+    with zipfile.ZipFile(io.BytesIO(conteudo)) as planilha:
+        folhas = [n for n in planilha.namelist() if n.startswith("xl/worksheets/sheet")]
+        assert not [n for n in folhas if b"<hyperlink" in planilha.read(n)]
 
 
 def test_the_workbook_lists_every_column_of_the_table_also_those_the_dictionary_lacks(

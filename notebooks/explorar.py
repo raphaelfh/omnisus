@@ -526,15 +526,17 @@ def _(mo):
     os escopos vêm de fontes validadas (ADR 0003); a aba diz o motivo quando faltam.
 
     *Baixar o dicionário (XLSX)* traz uma planilha com duas abas. A aba `colunas` tem
-    uma linha por coluna da tabela, com o tipo no lake e, quando o dicionário descreve a
-    coluna (`no_dicionario`), o título, a descrição, o tipo declarado e quantos códigos
-    ela tem; para o mapa de códigos, como foi conferido (`verified_in_source`,
-    `conflicting` ou `unreviewed`), a `nota` que explica um conflito e, quando foi
-    conferido, o documento oficial de onde veio (URL, SHA-256 e onde ler). A aba
-    `codigos` tem uma linha por código, com o rótulo que a tabela mostra; os códigos
-    são texto, e `06` continua `06`. O nome do arquivo leva a versão do dicionário, a
-    que se cita. Nomes de CID-10, de municípios e de ocupações não estão no dicionário:
-    ficam nas tabelas `aux_*`, que *Importar* não grava.
+    uma linha por coluna gravada no lake, com o tipo dela e, quando o dicionário
+    descreve a coluna (`no_dicionario`), o título, a descrição, o tipo declarado e
+    quantos códigos ela tem; para o mapa de códigos, como foi conferido
+    (`verified_in_source`, `conflicting` ou `unreviewed`), a `nota` que explica um
+    conflito e, quando foi conferido, o documento oficial de onde veio (URL, SHA-256 e
+    onde ler). As colunas `_rotulo` e as categorias harmonizadas, que a tabela acima
+    calcula, não entram. A aba `codigos` tem uma linha por código, com o rótulo que a
+    tabela mostra; os códigos são texto, e `06` continua `06`; uma célula vazia em
+    `codigo` é o código vazio (o campo em branco do arquivo). O nome do arquivo leva a
+    versão do dicionário, a que se cita. Nomes de CID-10, de municípios e de ocupações
+    não estão no dicionário: ficam nas tabelas `aux_*`, que *Importar* não grava.
     """)
     return
 
@@ -576,8 +578,8 @@ def _(esquemas, io, pl, sus, xlsxwriter):
     def _dicionario(base):
         """O dicionário da tabela `base` numa planilha: (nome do arquivo, bytes).
 
-        Aba `colunas`: uma linha por coluna da tabela, também as que o dicionário não
-        descreve. Aba `codigos`: uma linha por código de cada coluna.
+        Aba `colunas`: uma linha por coluna gravada no lake, também as que o dicionário
+        não descreve. Aba `codigos`: uma linha por código de cada coluna.
         """
         meta = sus.describe_dataset(base)
         documentos = {d["id"]: d for d in meta["sources"]}
@@ -621,7 +623,8 @@ def _(esquemas, io, pl, sus, xlsxwriter):
             ),
         }
         arquivo = io.BytesIO()
-        with xlsxwriter.Workbook(arquivo) as livro:
+        # Texto puro: uma fonte com várias URLs viraria um link só, que não existe.
+        with xlsxwriter.Workbook(arquivo, {"strings_to_urls": False}) as livro:
             for aba, tabela in abas.items():
                 tabela.write_excel(livro, worksheet=aba, autofit=True, freeze_panes="A2")
         return f"{base}_dicionario_{meta['dictionary_version']}.xlsx", arquivo.getvalue()
