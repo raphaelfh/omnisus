@@ -11,7 +11,6 @@ import errno
 import gzip
 import hashlib
 import importlib.util
-import io
 import os
 import shutil
 import sys
@@ -101,24 +100,64 @@ def test_imports_explores_and_cites_a_real_scope(importado):
     assert filename_for(sus.resolve("sim_obitos"), ESCOPO) in citacao
 
 
-def test_each_tab_downloads_the_dictionary_of_the_labels_it_shows(importado):
-    """One row per code, with the label the table shows and the document it comes from."""
+def _planilha(conteudo: bytes, aba: str) -> pl.DataFrame:
+    """One sheet of the dictionary workbook, every cell as text."""
+    return pl.read_excel(conteudo, sheet_name=aba, infer_schema_length=0)
+
+
+def test_each_tab_downloads_a_workbook_of_its_columns_and_of_the_codes_it_labels(importado):
+    """Sheet `colunas`: one row per column of the table. Sheet `codigos`: one row per
+    code, with the label the table shows."""
     _, definidos, _ = importado
     descricao = sus.describe_dataset("sim_obitos")
 
     nome, conteudo = definidos["dicionarios"]["sim_obitos"]
-    dicionario = pl.read_csv(io.BytesIO(conteudo), infer_schema=False)
-    sexo = dicionario.filter(coluna="sexo")
+    colunas = _planilha(conteudo, "colunas")
+    codigos = _planilha(conteudo, "codigos")
     na_tabela = definidos["amostras"]["sim_obitos"].select("sexo", "sexo_rotulo").drop_nulls()
 
-    assert nome == f"sim_obitos_dicionario_{descricao['dictionary_version']}.csv"
-    assert set(na_tabela.unique().iter_rows()) <= set(sexo.select("codigo", "rotulo").iter_rows())
-    assert set(sexo["fonte_sha256"]) <= {d["sha256"] for d in descricao["sources"]}
-    assert set(dicionario["coluna"]) == {f["name"] for f in descricao["schema"]["fields"]}
+    assert nome == f"sim_obitos_dicionario_{descricao['dictionary_version']}.xlsx"
+    assert colunas["coluna"].to_list() == list(definidos["esquemas"]["sim_obitos"])
+    assert codigos.columns == ["coluna", "codigo", "rotulo"]
+    sexo = codigos.filter(coluna="sexo").select("codigo", "rotulo")
+    assert set(na_tabela.unique().iter_rows()) <= set(sexo.iter_rows())
+    linha = colunas.filter(coluna="sexo").row(0, named=True)
+    assert linha["no_dicionario"] == "sim"
+    assert int(linha["codigos"]) == sexo.height
+    assert linha["fonte_sha256"] in {d["sha256"] for d in descricao["sources"]}
     # The note says what a `conflicting` map conflicts with.
-    tipobito = dicionario.filter(coluna="tipobito")
-    assert set(tipobito["conferencia"]) == {"conflicting"}
-    assert "cnv-difere-do-mapa-anterior" in tipobito["nota"][0]
+    tipobito = colunas.filter(coluna="tipobito").row(0, named=True)
+    assert tipobito["conferencia"] == "conflicting"
+    assert "cnv-difere-do-mapa-anterior" in tipobito["nota"]
+    # A date the lake keeps as published text.
+    dtobito = colunas.filter(coluna="dtobito").row(0, named=True)
+    assert (dtobito["tipo_no_lake"], dtobito["tipo_no_dicionario"]) == ("VARCHAR", "date")
+    # Codes are text cells: `00` keeps its zero in a spreadsheet.
+    tipados = pl.read_excel(conteudo, sheet_name="codigos")
+    assert tipados["codigo"].dtype == pl.String
+    assert "00" in tipados.filter(coluna="escfalagr1")["codigo"].to_list()
+
+
+def test_the_workbook_lists_every_column_of_the_table_also_those_the_dictionary_lacks(
+    monkeypatch, tmp_path
+):
+    """The CNES dictionary describes a few of the columns of the ST file."""
+    arquivo = ROOT / "tests" / "fixtures" / "dbc" / "cnes_rr_2024_01_mini.dbc"
+    escopo = ScopeKey(uf="RR", ano=2024, mes=1)
+    fake_datasus.serve(monkeypatch, "cnes_estabelecimentos", {escopo: arquivo.read_bytes()})
+
+    definidos = _importar(
+        monkeypatch, tmp_path, "--base", "cnes_estabelecimentos", "--anos", "2024", "--meses", "1"
+    )
+    colunas = _planilha(definidos["dicionarios"]["cnes_estabelecimentos"][1], "colunas")
+    descritas = {
+        f["field"]["name"] for f in sus.describe_dataset("cnes_estabelecimentos")["fields"]
+    }
+
+    assert colunas["coluna"].to_list() == list(definidos["esquemas"]["cnes_estabelecimentos"])
+    fora = set(colunas.filter(no_dicionario="não")["coluna"])
+    assert fora == set(colunas["coluna"]) - descritas
+    assert len(fora) > len(descritas)
 
 
 def test_a_table_outside_the_dataset_registry_offers_its_packaged_dictionary(
@@ -140,7 +179,7 @@ def test_a_table_outside_the_dataset_registry_offers_its_packaged_dictionary(
 
     assert definidos["dicionarios"]["aux_sigtap_procedimentos"][0] == (
         "aux_sigtap_procedimentos_dicionario_"
-        f"{sus.describe_dataset('aux_sigtap_procedimentos')['dictionary_version']}.csv"
+        f"{sus.describe_dataset('aux_sigtap_procedimentos')['dictionary_version']}.xlsx"
     )
 
 
@@ -406,7 +445,7 @@ def test_a_base_without_chosen_scopes_has_no_rows_and_no_citation(importado, mon
     assert definidos["citacoes"] == {}
     assert "Nenhum escopo escolhido para citar." in texto
     assert "Baixar citação" not in texto
-    assert "Baixar o dicionário (CSV)" in texto  # the tab still offers its dictionary
+    assert "Baixar o dicionário (XLSX)" in texto  # the tab still offers its dictionary
     # The harmonised columns come last; the tab's table shows every column, not the first 50.
     assert "data-max-columns='&quot;all&quot;'" in texto
 

@@ -5,6 +5,7 @@
 #     "omnisus==0.2.3",
 #     "polars>=1.44.2,<2.0",
 #     "sqlglot>=30.18.0",
+#     "xlsxwriter>=3.2.9",
 # ]
 # ///
 
@@ -18,6 +19,7 @@ app = marimo.App(width="full", app_title="Explorar o lake")
 
 @app.cell
 def _():
+    import io
     import json
     import os
     import shutil
@@ -27,11 +29,12 @@ def _():
 
     import marimo as mo
     import polars as pl
+    import xlsxwriter
 
     import omnisus as sus
     from omnisus.lake.locking import WriterBusyError
 
-    return Path, WriterBusyError, date, json, mo, os, pl, shutil, sus, tempfile
+    return Path, WriterBusyError, date, io, json, mo, os, pl, shutil, sus, tempfile, xlsxwriter
 
 
 @app.cell(hide_code=True)
@@ -522,16 +525,16 @@ def _(mo):
     harmonizadas (`idade_anos_completos`, `sexo_categoria`...) só aparecem quando todos
     os escopos vêm de fontes validadas (ADR 0003); a aba diz o motivo quando faltam.
 
-    *Baixar o dicionário (CSV)* traz, para cada coluna, o tipo declarado (e o título e a
-    descrição, quando o dicionário os tem) e uma linha por código com o rótulo que a
-    tabela mostra. Cada mapa de códigos diz como foi conferido (`verified_in_source`,
-    `conflicting` ou `unreviewed`), com a `nota` que explica um conflito, e, quando foi
-    conferido, de qual documento oficial veio (URL, SHA-256 e onde ler); um mapa
-    `unreviewed` sai com `fonte` vazia. O nome do arquivo leva a versão do dicionário, a
-    que se cita. Leia a coluna `codigo` como texto, na planilha ou no polars
-    (`pl.read_csv(..., infer_schema=False)`), para não perder o zero de `06`. Nomes de
-    CID-10, de municípios e de ocupações não estão no dicionário: ficam nas tabelas
-    `aux_*`, que *Importar* não grava.
+    *Baixar o dicionário (XLSX)* traz uma planilha com duas abas. A aba `colunas` tem
+    uma linha por coluna da tabela, com o tipo no lake e, quando o dicionário descreve a
+    coluna (`no_dicionario`), o título, a descrição, o tipo declarado e quantos códigos
+    ela tem; para o mapa de códigos, como foi conferido (`verified_in_source`,
+    `conflicting` ou `unreviewed`), a `nota` que explica um conflito e, quando foi
+    conferido, o documento oficial de onde veio (URL, SHA-256 e onde ler). A aba
+    `codigos` tem uma linha por código, com o rótulo que a tabela mostra; os códigos
+    são texto, e `06` continua `06`. O nome do arquivo leva a versão do dicionário, a
+    que se cita. Nomes de CID-10, de municípios e de ocupações não estão no dicionário:
+    ficam nas tabelas `aux_*`, que *Importar* não grava.
     """)
     return
 
@@ -566,43 +569,62 @@ def _(colunas, con, filtros, linhas, projecoes):
 
 
 @app.cell
-def _(esquemas, pl, sus):
+def _(esquemas, io, pl, sus, xlsxwriter):
     def _juntar(valores):
         return " | ".join(valores) or None
 
     def _dicionario(base):
-        """O dicionário de `base` em CSV: (nome do arquivo, bytes).
+        """O dicionário da tabela `base` numa planilha: (nome do arquivo, bytes).
 
-        Uma linha por código e uma por coluna sem mapa de códigos.
+        Aba `colunas`: uma linha por coluna da tabela, também as que o dicionário não
+        descreve. Aba `codigos`: uma linha por código de cada coluna.
         """
         meta = sus.describe_dataset(base)
         documentos = {d["id"]: d for d in meta["sources"]}
-        registros = []
-        for item in meta["fields"]:
-            campo = item["field"]
-            mapa = next(c for c in item["claims"] if c["target"] == "/field/codes")
-            provas = mapa["evidence"] if campo["codes"] else []
-            comum = {
-                "coluna": campo["name"],
-                "titulo": campo["label"],
-                "descricao": campo["description"],
-                "tipo": campo["logical_type"],
-                "conferencia": mapa["status"] if campo["codes"] else None,
-                "nota": mapa["note"] if campo["codes"] else None,
-                "fonte": _juntar(documentos[p["source_id"]]["url"] for p in provas),
-                "fonte_sha256": _juntar(documentos[p["source_id"]]["sha256"] for p in provas),
-                "onde": _juntar(
-                    " ".join([p["locator"] or "", *(f"p. {n}" for n in p["pages"])]).strip()
-                    for p in provas
-                ),
-            }
-            for codigo in campo["codes"] or [{"value": None, "label": None}]:
-                registros.append({**comum, "codigo": codigo["value"], "rotulo": codigo["label"]})
-        colunas = ["coluna", "titulo", "descricao", "tipo", "codigo", "rotulo"]
-        colunas += ["conferencia", "nota", "fonte", "fonte_sha256", "onde"]
-        tabela = pl.DataFrame(registros, schema=dict.fromkeys(colunas, pl.String))
-        nome = f"{base}_dicionario_{meta['dictionary_version']}.csv"
-        return nome, tabela.write_csv(include_bom=True).encode()
+        descritas = {item["field"]["name"]: item for item in meta["fields"]}
+        colunas, codigos = [], []
+        for nome, tipo in esquemas[base].items():
+            linha = {"coluna": nome, "tipo_no_lake": tipo, "no_dicionario": "não"}
+            if (item := descritas.get(nome)) is not None:
+                campo = item["field"]
+                mapa = next(c for c in item["claims"] if c["target"] == "/field/codes")
+                provas = mapa["evidence"] if campo["codes"] else []
+                linha |= {
+                    "no_dicionario": "sim",
+                    "titulo": campo["label"],
+                    "descricao": campo["description"],
+                    "tipo_no_dicionario": campo["logical_type"],
+                    "codigos": len(campo["codes"]),
+                    "conferencia": mapa["status"] if campo["codes"] else None,
+                    "nota": mapa["note"] if campo["codes"] else None,
+                    "fonte": _juntar(documentos[p["source_id"]]["url"] for p in provas),
+                    "fonte_sha256": _juntar(documentos[p["source_id"]]["sha256"] for p in provas),
+                    "onde": _juntar(
+                        " ".join([p["locator"] or "", *(f"p. {n}" for n in p["pages"])]).strip()
+                        for p in provas
+                    ),
+                }
+                codigos += [
+                    {"coluna": nome, "codigo": c["value"], "rotulo": c["label"]}
+                    for c in campo["codes"]
+                ]
+            colunas.append(linha)
+        nomes = ["coluna", "tipo_no_lake", "no_dicionario", "titulo", "descricao"]
+        nomes += ["tipo_no_dicionario", "codigos", "conferencia", "nota", "fonte"]
+        nomes += ["fonte_sha256", "onde"]
+        abas = {
+            "colunas": pl.DataFrame(
+                colunas, schema=dict.fromkeys(nomes, pl.String) | {"codigos": pl.Int64}
+            ),
+            "codigos": pl.DataFrame(
+                codigos, schema=dict.fromkeys(["coluna", "codigo", "rotulo"], pl.String)
+            ),
+        }
+        arquivo = io.BytesIO()
+        with xlsxwriter.Workbook(arquivo) as livro:
+            for aba, tabela in abas.items():
+                tabela.write_excel(livro, worksheet=aba, autofit=True, freeze_panes="A2")
+        return f"{base}_dicionario_{meta['dictionary_version']}.xlsx", arquivo.getvalue()
 
     dicionarios = {_base: _dicionario(_base) for _base in esquemas}
     return (dicionarios,)
@@ -627,7 +649,12 @@ def _(brutas, dicionarios, mo, projecoes, rotulos, sus, totais):
 
     def _cabecalho(base):
         nome, conteudo = dicionarios[base]
-        baixar = mo.download(conteudo, filename=nome, label="Baixar o dicionário (CSV)")
+        baixar = mo.download(
+            conteudo,
+            filename=nome,
+            mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            label="Baixar o dicionário (XLSX)",
+        )
         return mo.hstack([mo.md(_resumo(base)), baixar], justify="space-between", align="center")
 
     # Todas as colunas: as categorias harmonizadas vêm por último e o marimo mostra só 50.

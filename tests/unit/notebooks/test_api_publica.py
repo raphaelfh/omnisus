@@ -22,7 +22,19 @@ TODOS = sorted(p for p in NOTEBOOKS.glob("*.py") if not p.name.startswith("_"))
 # no public getter.
 # `shutil`, `tempfile`: explorar.py shows the free disk where an import writes.
 # `datetime`: explorar.py offers the years of a dataset up to the current one.
-BIBLIOTECAS = {"datetime", "json", "marimo", "os", "polars", "pathlib", "shutil", "tempfile"}
+# `io`, `xlsxwriter`: explorar.py writes each dataset's dictionary as a two-sheet workbook.
+BIBLIOTECAS = {
+    "datetime",
+    "io",
+    "json",
+    "marimo",
+    "os",
+    "polars",
+    "pathlib",
+    "shutil",
+    "tempfile",
+    "xlsxwriter",
+}
 
 # A name with no public door yet, by notebook. Each one says why.
 EXCECOES = {
