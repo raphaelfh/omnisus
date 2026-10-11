@@ -7,9 +7,11 @@ DORR2022.dbc (`tests/fixtures/FIXTURES.md`), for the scope the import widgets op
 
 from __future__ import annotations
 
+import errno
 import hashlib
 import importlib.util
 import io
+import os
 import shutil
 import sys
 from pathlib import Path
@@ -22,6 +24,7 @@ from tests.support.datasus_names import filename_for
 from tests.unit.test_fixture_provenance import load_fixture_rows
 
 import omnisus as sus
+from omnisus.lake._transactions import CommitOutcomeUnknown
 from omnisus.lake.catalog import data_dir
 from omnisus.sources._base import ScopeKey
 from omnisus.sources.datasus_ftp import _runner
@@ -184,6 +187,52 @@ def test_another_writer_on_the_lake_stops_the_import_with_a_message(monkeypatch,
         definidos = _rodar(monkeypatch, "--lake", str(tmp_path), "--executar", "true")
 
     assert "Outro processo está gravando neste lake" in definidos["parada"]
+    assert definidos["relatorio"]["situacao"].to_list() == ["não tentado"]
+
+
+def test_an_aborted_write_shows_its_innermost_cause_and_leaves_the_scope_unresolved(
+    monkeypatch, tmp_path
+):
+    fake_datasus.serve(monkeypatch, "sim_obitos", {ESCOPO: ARQUIVO.read_bytes()})
+
+    def commit_incerto(*_a, **_kw):
+        try:
+            raise OSError("database is locked")
+        except OSError as e:
+            raise CommitOutcomeUnknown("commit outcome unknown; inspect before retry") from e
+
+    monkeypatch.setattr(_runner, "publish_staged", commit_incerto)
+    definidos = _rodar(monkeypatch, "--lake", str(tmp_path), "--executar", "true")
+
+    assert "database is locked" in definidos["parada"]
+    assert definidos["relatorio"]["situacao"].to_list() == ["sem resultado"]
+
+
+def test_a_full_disk_stops_the_import_instead_of_downloading_the_rest(monkeypatch, tmp_path):
+    fake_datasus.serve(monkeypatch, "sim_obitos", {ESCOPO: ARQUIVO.read_bytes()})
+
+    def disco_cheio(*_a, **_kw):
+        raise OSError(errno.ENOSPC, os.strerror(errno.ENOSPC))
+
+    monkeypatch.setattr(_runner, "stage_raw", disco_cheio)
+    todas = ",".join(sus.ALL_UFS)
+    definidos = _rodar(monkeypatch, "--lake", str(tmp_path), "--ufs", todas, "--executar", "true")
+
+    assert "Disco cheio" in definidos["parada"]
+    assert definidos["relatorio"].filter(escopo="RR_2022")["situacao"].item() == "falhou ao gravar"
+    assert definidos["relatorio"]["situacao"].to_list()[-3:] == ["não tentado"] * 3
+
+
+def test_an_unexpected_error_becomes_a_message_and_keeps_the_report(monkeypatch, tmp_path):
+    """Such as a listing that names one scope in two directories."""
+
+    def listagem_incoerente(d, **_kw):
+        raise ValueError("sim_obitos: RR_2022 is published as both final and prelim")
+
+    monkeypatch.setattr(_runner, "list_sources", listagem_incoerente)
+    definidos = _rodar(monkeypatch, "--lake", str(tmp_path), "--executar", "true")
+
+    assert "ValueError: sim_obitos: RR_2022 is published as both" in definidos["parada"]
     assert definidos["relatorio"]["situacao"].to_list() == ["não tentado"]
 
 

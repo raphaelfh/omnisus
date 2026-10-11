@@ -96,19 +96,20 @@ def _(mo):
 
     **Limites.** A importação anda em partes de 24 escopos, com um commit no lake por
     parte. O omnisus baixa até 6 arquivos por vez, de propósito: o servidor do DATASUS
-    é público e compartilhado. Cada arquivo é descompactado inteiro na memória, e os do
-    SIA de SP e MG têm centenas de MB compactados; numa máquina com pouca memória,
-    importe-os poucos de cada vez. O disco cresce com o que você escolhe: a linha
-    abaixo dos seletores mostra o espaço livre.
+    é público e compartilhado. Cada arquivo é descompactado inteiro na memória, e os
+    maiores do SIA (BI e PA dos estados grandes) passam de 300 MB compactados; numa
+    máquina com pouca memória, importe-os poucos de cada vez. O disco cresce com o que
+    você escolhe: a linha abaixo dos seletores mostra o espaço livre. No molab, o lake
+    importado fica no disco da sessão e some quando ela termina.
 
     **Falhas.** O relatório diz o que houve com cada escopo. Clique em *Importar* de
     novo para continuar: o que já está no lake é pulado sem baixar. Se o kernel cair
     (por falta de memória, por exemplo), o que as partes anteriores gravaram fica.
     *Interromper* (■, só no modo de edição) para ao fim da parte em curso, que é
     gravada mas não entra no relatório; o resto da página se atualiza no próximo
-    *Importar*. Ligue *Substituir* só quando o motivo pedir `replace` (o arquivo foi
-    importado por outra versão do omnisus): os escopos escolhidos são baixados e
-    gravados de novo.
+    *Importar*. Ligue *Substituir* só quando o motivo pedir `replace`: o DATASUS
+    publicou o arquivo de novo, ou outra versão do omnisus o importou. Com ele, todos
+    os escopos escolhidos são baixados e gravados de novo.
     """)
     return
 
@@ -209,20 +210,20 @@ def _(
             pasta = pasta.parent
         return shutil.disk_usage(pasta).free / 2**30
 
-    _temporaria = Path(tempfile.gettempdir())
+    temporaria = Path(tempfile.gettempdir())
     mo.vstack(
         [
             mo.md(
                 f"**{len(escopos_novos):,} escopo{'' if len(escopos_novos) == 1 else 's'}.** "
                 "Disco livre: "
                 f"{_livre(diretorio):.1f} GiB na pasta do lake e "
-                f"{_livre(_temporaria):.1f} GiB em `{_temporaria}`, onde a importação "
+                f"{_livre(temporaria):.1f} GiB em `{temporaria}`, onde a importação "
                 "descompacta cada arquivo."
             ),
             mo.hstack([importar, substituir], justify="start"),
         ]
     )
-    return (escopos_novos,)
+    return escopos_novos, temporaria
 
 
 @app.cell
@@ -238,6 +239,7 @@ def _(
     pl,
     substituir,
     sus,
+    temporaria,
 ):
     mo.stop(not (importar.value or executar))
     mo.stop(not escopos_novos, mo.md("Escolha ao menos um ano, uma UF e um mês."))
@@ -258,6 +260,12 @@ def _(
     }
     _resultado = {}  # escopo -> (situação, motivo)
 
+    def _causa(e):
+        """O texto da exceção mais interna, a que diz o que houve."""
+        while e.__cause__ is not None:
+            e = e.__cause__
+        return str(e)
+
     def _anotar(relatorio):
         for o in relatorio.outcomes:
             _resultado[o.scope] = (_situacoes[o.code], o.reason)
@@ -276,36 +284,47 @@ def _(
         except sus.ImportAbortedError as e:
             _anotar(e.report)
             for _, escopo in e.unresolved:
-                _resultado[escopo] = ("sem resultado", str(e.__cause__ or e))
-            return f"A gravação no lake parou ({e.__cause__ or e})."
+                _resultado[escopo] = ("sem resultado", _causa(e))
+            return f"A gravação no lake parou ({_causa(e)})."
         except sus.FtpUnavailable as e:
-            return f"O servidor do DATASUS não respondeu ({e.__cause__ or e})."
+            return f"O servidor do DATASUS não respondeu ({_causa(e)})."
         except sus.FtpPathNotFound as e:
             return f"O DATASUS não tem mais um diretório desta base ({e}); atualize o omnisus."
         except sus.CatalogAttachError as e:
-            return f"Não deu para abrir o lake para gravar: {_ao_abrir[e.stage]} ({e.__cause__ or e})."
+            return f"Não deu para abrir o lake para gravar: {_ao_abrir[e.stage]} ({_causa(e)})."
         except WriterBusyError:
             return (
                 "Outro processo está gravando neste lake (outra aba deste notebook, outro "
-                "notebook ou um terminal). Espere ele terminar."
+                "notebook, um terminal, ou uma importação interrompida ainda terminando). "
+                "Espere ele terminar."
             )
+        except Exception as e:
+            return f"Erro inesperado: {type(e).__name__}: {_causa(e)}."
         return None
 
     _partes = [escopos_novos[i : i + 24] for i in range(0, len(escopos_novos), 24)]
-    parada = None
-    with mo.status.progress_bar(
-        total=len(escopos_novos), title=f"Importando {base_nova.value}", show_eta=True
-    ) as _barra:
-        for _escopos in _partes:
-            try:
+    parada, _escopos = None, []
+    try:
+        with mo.status.progress_bar(
+            total=len(escopos_novos), title=f"Importando {base_nova.value}", show_eta=True
+        ) as _barra:
+            for _escopos in _partes:
                 parada = _parte(_escopos)
-            except KeyboardInterrupt:
-                for _escopo in _escopos:
-                    _resultado.setdefault(_escopo, ("sem resultado", "interrompido"))
-                parada = "Interrompido. A parte em curso foi gravada, mas não entra no relatório."
-            _barra.update(increment=len(_escopos))
-            if parada:
-                break
+                _barra.update(increment=len(_escopos))
+                # Disco cheio falha cada escopo sem parar a importação; o resto falharia igual.
+                if not parada and any(
+                    "No space left on device" in (_motivo or "")
+                    for _, _motivo in _resultado.values()
+                ):
+                    parada = f"Disco cheio na pasta do lake ou em `{temporaria}`. Libere espaço."
+                if parada:
+                    break
+    except KeyboardInterrupt:
+        # A parte em curso termina e é gravada antes de a interrupção chegar aqui, mas o
+        # relatório dela se perde.
+        for _escopo in _escopos:
+            _resultado.setdefault(_escopo, ("sem resultado", "interrompido"))
+        parada = "Interrompido. A parte em curso foi gravada, mas não entra no relatório."
 
     relatorio = pl.DataFrame(
         [(str(e), *_resultado.get(e, ("não tentado", None))) for e in escopos_novos],
