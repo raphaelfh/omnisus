@@ -15,7 +15,8 @@ um relatório do que houve com cada escopo. Comece pelo
 
 Abrir um notebook não baixa nem grava nada. Rede e escrita ficam atrás de
 `EXECUTAR = False` até você mudar a constante (ou passar `-- --executar true`); em
-`explorar.py`, atrás do botão *Importar* (ou de `-- --executar true`).
+`explorar.py`, atrás do botão *Importar* (ou de `-- --executar true`, ao rodar sem
+interface).
 
 | Notebook | Molab | Base | Recorte inicial |
 | --- | --- | --- | --- |
@@ -60,6 +61,14 @@ Para executar as etapas sem interface, com a versão fixada:
 ```bash
 uvx marimo export html --sandbox notebooks/sim_obitos.py \
   -o /tmp/sim_obitos.html -- --executar true
+```
+
+Em `explorar.py`, `--base`, `--anos`, `--ufs` e `--meses` (separados por vírgula) e
+`--substituir true` dão os valores dos seletores de *Importar*:
+
+```bash
+uvx marimo export html --sandbox notebooks/explorar.py -o /tmp/explorar.html -- \
+  --base sih_aih_reduzida --anos 2023,2024 --ufs RR,AC --meses 1,2,3 --executar true
 ```
 
 O lake fica em `data/raw/`; `OMNISUS_DATA_DIR` troca a pasta. As tabelas e a citação

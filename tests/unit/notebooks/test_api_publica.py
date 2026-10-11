@@ -32,8 +32,8 @@ EXCECOES = {
     "ibge_populacao.py": {
         "omnisus.sources.ibge.products": {"CENSUS_YEARS", "ESTIMATE_UNAVAILABLE_YEARS"}
     },
-    # An import refused because another process writes to the lake raises this class,
-    # which omnisus does not export.
+    # An import refused because another writer (process or handle) holds the lake raises
+    # this class, which omnisus does not export yet (#102).
     "explorar.py": {"omnisus.lake.locking": {"WriterBusyError"}},
 }
 
