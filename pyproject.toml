@@ -63,7 +63,7 @@ docs = [
     "mkdocstrings[python]>=1.0.6",
 ]
 notebooks = [
-    "marimo>=0.25.0,<0.26",
+    "marimo>=0.25.1,<0.26",
     # marimo parses mo.sql cells with sqlglot; no library code imports it.
     "sqlglot>=30.18.0",
 ]

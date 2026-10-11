@@ -1,7 +1,7 @@
 # /// script
 # requires-python = ">=3.12"
 # dependencies = [
-#     "marimo>=0.25.0,<0.26",
+#     "marimo>=0.25.1,<0.26",
 #     "omnisus==0.2.3",
 #     "polars>=1.44.2,<2.0",
 #     "sqlglot>=30.18.0",
@@ -12,7 +12,7 @@
 
 import marimo
 
-__generated_with = "0.25.0"
+__generated_with = "0.25.1"
 app = marimo.App(width="full", app_title="Explorar o lake")
 
 
