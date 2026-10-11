@@ -29,8 +29,9 @@ def _():
     import polars as pl
 
     import omnisus as sus
+    from omnisus.lake.locking import WriterBusyError
 
-    return Path, date, json, mo, os, pl, shutil, sus, tempfile
+    return Path, WriterBusyError, date, json, mo, os, pl, shutil, sus, tempfile
 
 
 @app.cell(hide_code=True)
@@ -89,20 +90,25 @@ def _(mo):
     ## Importar
 
     Para pôr escopos no lake: escolha a base e, conforme a base, os anos, as UFs e os
-    meses. Cada lista tem *Select all* e *Deselect all* no topo; digitar filtra a
-    lista. `sus.import_dataset` baixa só o que o lake ainda não tem do mesmo arquivo.
+    meses. Cada lista tem *Select all* e *Deselect all* no topo; digitar filtra a lista
+    (`201` e depois *Select 10 matching* marca 2010 a 2019). `sus.import_dataset` baixa
+    só o que o lake ainda não tem do mesmo arquivo.
 
-    A importação anda em partes de 24 escopos, um commit no lake por parte. O que
-    limita a velocidade é o servidor do DATASUS: o omnisus baixa até 6 arquivos por
-    vez, de propósito, porque o servidor é público e compartilhado. A memória fica
-    limitada a um arquivo descompactado por vez mais 1 GiB de downloads em espera;
-    o disco cresce com o que você escolhe, por isso a linha abaixo dos seletores mostra
-    o espaço livre. *Interromper* para ao fim da parte em curso.
+    **Limites.** A importação anda em partes de 24 escopos, com um commit no lake por
+    parte. O omnisus baixa até 6 arquivos por vez, de propósito: o servidor do DATASUS
+    é público e compartilhado. Cada arquivo é descompactado inteiro na memória, e os do
+    SIA de SP e MG têm centenas de MB compactados; numa máquina com pouca memória,
+    importe-os poucos de cada vez. O disco cresce com o que você escolhe: a linha
+    abaixo dos seletores mostra o espaço livre.
 
-    Se algo falhar, o relatório diz o motivo de cada escopo. Clique em *Importar* de
-    novo para continuar: o que já está no lake é pulado sem baixar. Ligue *Substituir*
-    só quando o motivo pedir `replace` (o arquivo foi importado por outra versão do
-    omnisus): os escopos escolhidos são baixados e gravados de novo.
+    **Falhas.** O relatório diz o que houve com cada escopo. Clique em *Importar* de
+    novo para continuar: o que já está no lake é pulado sem baixar. Se o kernel cair
+    (por falta de memória, por exemplo), o que as partes anteriores gravaram fica.
+    *Interromper* (■, só no modo de edição) para ao fim da parte em curso, que é
+    gravada mas não entra no relatório; o resto da página se atualiza no próximo
+    *Importar*. Ligue *Substituir* só quando o motivo pedir `replace` (o arquivo foi
+    importado por outra versão do omnisus): os escopos escolhidos são baixados e
+    gravados de novo.
     """)
     return
 
@@ -162,7 +168,15 @@ def _(base_nova, date, mo, sus):
         justify="start",
         wrap=True,
     )
-    return anos_novos, importar, mensal, meses_novos, por_uf, substituir, ufs_novas
+    return (
+        anos_novos,
+        importar,
+        mensal,
+        meses_novos,
+        por_uf,
+        substituir,
+        ufs_novas,
+    )
 
 
 @app.cell
@@ -199,7 +213,8 @@ def _(
     mo.vstack(
         [
             mo.md(
-                f"**{len(escopos_novos):,} escopos.** Disco livre: "
+                f"**{len(escopos_novos):,} escopo{'' if len(escopos_novos) == 1 else 's'}.** "
+                "Disco livre: "
                 f"{_livre(diretorio):.1f} GiB na pasta do lake e "
                 f"{_livre(_temporaria):.1f} GiB em `{_temporaria}`, onde a importação "
                 "descompacta cada arquivo."
@@ -212,6 +227,7 @@ def _(
 
 @app.cell
 def _(
+    WriterBusyError,
     alvo,
     base_nova,
     escopos_novos,
@@ -262,10 +278,17 @@ def _(
             for _, escopo in e.unresolved:
                 _resultado[escopo] = ("sem resultado", str(e.__cause__ or e))
             return f"A gravação no lake parou ({e.__cause__ or e})."
-        except (sus.FtpUnavailable, sus.FtpPathNotFound) as e:
+        except sus.FtpUnavailable as e:
             return f"O servidor do DATASUS não respondeu ({e.__cause__ or e})."
+        except sus.FtpPathNotFound as e:
+            return f"O DATASUS não tem mais um diretório desta base ({e}); atualize o omnisus."
         except sus.CatalogAttachError as e:
             return f"Não deu para abrir o lake para gravar: {_ao_abrir[e.stage]} ({e.__cause__ or e})."
+        except WriterBusyError:
+            return (
+                "Outro processo está gravando neste lake (outra aba deste notebook, outro "
+                "notebook ou um terminal). Espere ele terminar."
+            )
         return None
 
     _partes = [escopos_novos[i : i + 24] for i in range(0, len(escopos_novos), 24)]
@@ -279,7 +302,7 @@ def _(
             except KeyboardInterrupt:
                 for _escopo in _escopos:
                     _resultado.setdefault(_escopo, ("sem resultado", "interrompido"))
-                parada = "Interrompido. A parte em curso terminou antes de parar."
+                parada = "Interrompido. A parte em curso foi gravada, mas não entra no relatório."
             _barra.update(increment=len(_escopos))
             if parada:
                 break
@@ -292,8 +315,10 @@ def _(
     importacao = " · ".join(
         f"{s}: {n}" for s, n in relatorio["situacao"].value_counts(sort=True).rows()
     )
-    if relatorio["situacao"].is_in(["importado", "sem resultado"]).any():
-        mudar_versao(lambda v: v + 1)
+    # Reabre o lake mesmo sem escopo novo: depois de uma interrupção, o marimo descarta
+    # a mudança de versão, e é este clique que atualiza o resto da página.
+    mudar_versao(lambda v: v + 1)
+    _falhas = relatorio["situacao"].str.starts_with("falhou").any()
     mo.vstack(
         [
             *(
@@ -303,10 +328,12 @@ def _(
                     )
                 ]
                 if parada
+                else [mo.callout(mo.md("Clique em *Importar* para tentar de novo."), kind="warn")]
+                if _falhas
                 else []
             ),
             mo.md(importacao),
-            mo.ui.table(relatorio, page_size=10, selection=None),
+            mo.ui.table(relatorio, page_size=10, selection=None, wrapped_columns=["motivo"]),
         ]
     )
     return importacao, parada, relatorio
@@ -341,12 +368,14 @@ def _(alvo, diretorio, mo, sus, versao):
     # O catálogo guarda a pasta onde o lake foi criado. Reabrir com OVERRIDE_DATA_PATH lê os
     # Parquet desta pasta, fixa o snapshot e deixa abrir uma cópia vinda do Google Drive.
     _catalogo = diretorio / "omnisus-catalog.sqlite"
-    con = leitor.connect()
-    con.execute("DETACH lake")
-    con.execute(
-        f"ATTACH {_literal(f'ducklake:sqlite:{_catalogo}')} AS lake "
-        f"(READ_ONLY, DATA_PATH {_literal(diretorio / 'omnisus.ducklake')}, "
-        f"OVERRIDE_DATA_PATH true, SNAPSHOT_VERSION {snapshot})"
+    con = (
+        leitor.connect()
+        .execute("DETACH lake")
+        .execute(
+            f"ATTACH {_literal(f'ducklake:sqlite:{_catalogo}')} AS lake "
+            f"(READ_ONLY, DATA_PATH {_literal(diretorio / 'omnisus.ducklake')}, "
+            f"OVERRIDE_DATA_PATH true, SNAPSHOT_VERSION {snapshot})"
+        )
     )
     return con, leitor, snapshot
 
@@ -371,7 +400,7 @@ def _(leitor, mo, pl):
         schema_overrides={"uf": pl.String, "mes": pl.Int64},
     ).sort("base", "ano", "mes", "uf", nulls_last=True)
     escopos
-    return publicacoes, escopos
+    return escopos, publicacoes
 
 
 @app.cell(hide_code=True)
@@ -386,7 +415,7 @@ def _(mo):
 
 
 @app.cell
-def _(mo, escopos):
+def _(escopos, mo):
     _nomes = escopos["base"].unique().sort().to_list()
     bases = mo.ui.multiselect(options=_nomes, value=_nomes[:1], label="Bases")
     bases
@@ -394,7 +423,7 @@ def _(mo, escopos):
 
 
 @app.cell
-def _(bases, con, mo, pl, escopos):
+def _(bases, con, escopos, mo, pl):
     mo.stop(not bases.value, mo.md("Escolha ao menos uma base."))
     _das_bases = escopos.filter(pl.col("base").is_in(bases.value))
 
@@ -474,6 +503,13 @@ def _(mo):
     recebe. Para mais linhas, filtre os escopos ou tire colunas. As categorias
     harmonizadas (`idade_anos_completos`, `sexo_categoria`...) só aparecem quando todos
     os escopos vêm de fontes validadas (ADR 0003); a aba diz o motivo quando faltam.
+
+    *Baixar o dicionário (CSV)* traz, para cada coluna, o tipo declarado e uma linha por
+    código com o rótulo que a tabela mostra. Cada mapa de códigos diz como foi conferido
+    (`verified_in_source`, `conflicting`, `unreviewed`) e de qual documento oficial veio
+    (URL, SHA-256 e onde ler). O nome do arquivo leva a versão do dicionário, a que se
+    cita. Abra a coluna `codigo` como texto na planilha, para não perder o zero de
+    `06`. Nomes de CID-10 e de municípios ficam nas tabelas `aux_*` (`sus.read("aux_cid10")`).
     """)
     return
 
@@ -508,7 +544,54 @@ def _(colunas, con, filtros, linhas, projecoes):
 
 
 @app.cell
-def _(brutas, mo, projecoes, rotulos, sus, totais):
+def _(esquemas, pl, sus):
+    def _juntar(valores):
+        return " | ".join(valores) or None
+
+    def _dicionario(base):
+        """O dicionário de `base` em CSV: (nome do arquivo, bytes).
+
+        Uma linha por código e uma por coluna sem mapa de códigos. Cada mapa leva a
+        conferência (`verified_in_source`, `conflicting`, `unreviewed`...) e o
+        documento que a sustenta: URL, SHA-256 e onde ler.
+        """
+        meta = sus.describe_dataset(base)
+        documentos = {d["id"]: d for d in meta["sources"]}
+        registros = []
+        for item in meta["fields"]:
+            campo = item["field"]
+            mapa = next(c for c in item["claims"] if c["target"] == "/field/codes")
+            provas = mapa["evidence"] if campo["codes"] else []
+            comum = {
+                "coluna": campo["name"],
+                "titulo": campo["label"],
+                "descricao": campo["description"],
+                "tipo": campo["logical_type"],
+                "conferencia": mapa["status"] if campo["codes"] else None,
+                "fonte": _juntar(documentos[p["source_id"]]["url"] for p in provas),
+                "fonte_sha256": _juntar(documentos[p["source_id"]]["sha256"] for p in provas),
+                "onde": _juntar(
+                    " ".join([p["locator"] or "", *(f"p. {n}" for n in p["pages"])]).strip()
+                    for p in provas
+                ),
+            }
+            for codigo in campo["codes"] or [{"value": None, "label": None}]:
+                registros.append({**comum, "codigo": codigo["value"], "rotulo": codigo["label"]})
+        colunas = ["coluna", "titulo", "descricao", "tipo", "codigo", "rotulo"]
+        colunas += ["conferencia", "fonte", "fonte_sha256", "onde"]
+        tabela = pl.DataFrame(registros, schema=dict.fromkeys(colunas, pl.String))
+        nome = f"{base}_dicionario_{meta['dictionary_version']}.csv"
+        return nome, tabela.write_csv(include_bom=True).encode()
+
+    # Toda base de `sus.datasets()` tem dicionário no pacote; uma tabela importada com
+    # um `Dataset` próprio pode não ter, e fica sem botão.
+    _no_pacote = {d.name for d in sus.datasets()}
+    dicionarios = {_base: _dicionario(_base) for _base in esquemas if _base in _no_pacote}
+    return (dicionarios,)
+
+
+@app.cell
+def _(brutas, dicionarios, mo, projecoes, rotulos, sus, totais):
     amostras = {
         _base: sus.label(_base, _bruta) if rotulos.value else _bruta
         for _base, _bruta in brutas.items()
@@ -528,7 +611,27 @@ def _(brutas, mo, projecoes, rotulos, sus, totais):
     mo.ui.tabs(
         {
             _base: mo.vstack(
-                [mo.md(_resumo(_base)), mo.ui.table(_amostra, page_size=20, max_columns=None)]
+                [
+                    mo.hstack(
+                        [
+                            mo.md(_resumo(_base)),
+                            *(
+                                [
+                                    mo.download(
+                                        dicionarios[_base][1],
+                                        filename=dicionarios[_base][0],
+                                        label="Baixar o dicionário (CSV)",
+                                    )
+                                ]
+                                if _base in dicionarios
+                                else []
+                            ),
+                        ],
+                        justify="space-between",
+                        align="center",
+                    ),
+                    mo.ui.table(_amostra, page_size=20, max_columns=None),
+                ]
             )
             for _base, _amostra in amostras.items()
         }

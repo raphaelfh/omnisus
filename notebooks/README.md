@@ -8,8 +8,9 @@ citar (`sus.cite`). Troque `BASE`, `UF`, `ANO` (e `MES`) na célula de parâmetr
 outra base ou recorte. `bases.py` lista todas as bases (`sus.describe_datasets()`) e
 leva qualquer uma até a citação, sem análise própria. `explorar.py` é diferente: abre
 um lake que já existe (no computador ou copiado do Google Drive) e, com widgets, escolhe
-bases e escopos, mostra as linhas e o perfil de uma coluna e cita os escopos
-escolhidos. Comece pelo
+bases e escopos, mostra as linhas, o dicionário de cada base e o perfil de uma coluna e
+cita os escopos escolhidos. Ele também importa vários anos, UFs e meses de uma vez, com
+um relatório do que houve com cada escopo. Comece pelo
 [guia do pesquisador](https://raphaelfh.github.io/omnisus/pesquisa/).
 
 Abrir um notebook não baixa nem grava nada. Rede e escrita ficam atrás de
@@ -27,7 +28,7 @@ Abrir um notebook não baixa nem grava nada. Rede e escrita ficam atrás de
 | [sinan.py](sinan.py) | [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/sinan.py) | SINAN · Chagas aguda, hanseníase e tuberculose | nacional, 2023 |
 | [medicamentos.py](medicamentos.py) | [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/medicamentos.py) | SIA-AM, estoque Hórus | RR, jan/2024 |
 | [bases.py](bases.py) | [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/bases.py) | todas as bases do FTP: a lista e qualquer uma até a citação | `cnes_leitos`, RR, jan/2024 |
-| [explorar.py](explorar.py) | [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/explorar.py) | as bases já no lake, com widgets: escolher escopos, ver as linhas, perfil de uma coluna e citação | o lake em `data/raw` |
+| [explorar.py](explorar.py) | [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/explorar.py) | as bases já no lake, com widgets: importar, escolher escopos, ver as linhas e o dicionário, perfil de uma coluna e citação | o lake em `data/raw` |
 | [linkage.py](linkage.py) | [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/linkage.py) | todas as bases de uma UF e ano: colunas com o decoder e linkage determinístico | RR, 2022 |
 
 Para começar sem instalar nada, o [notebook do Colab](colab.ipynb)
