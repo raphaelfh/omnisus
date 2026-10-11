@@ -4,11 +4,24 @@
 
 ### API
 
+- `WriterBusyError`, `CommitOutcomeUnknown`, `CENSUS_YEARS` and
+  `ESTIMATE_UNAVAILABLE_YEARS` are exported from `omnisus`, so a caller that imports
+  only `omnisus.__all__` can catch the writer's errors and build the IBGE year selector.
+  `Product.name` documents that it is also the relation the importer writes in the lake
+  (#102).
 - `publications()` and `reference_join_sql()` take `snapshot_id: int | None = None`:
   one attach reads the manifest and the `aux_*` vocabulary at snapshot `N` with
   `AT (VERSION => N)`, which wins over `LakeReader(snapshot_id=...)`. A snapshot from
   before the first import returns `[]`. `None` keeps the SQL and the rows of 0.2.3. The
   data table is pinned by the caller's `FROM` (#101).
+
+### Packaging
+
+- `ipykernel` leaves the required dependencies, where 0.2.3 put it without a changelog
+  entry, for the new `colab` extra: a library-only install (a server reading the lake with
+  `LakeReader`) no longer pulls the Jupyter kernel and its ~25 dependencies. The Colab
+  notebook installs `"omnisus[colab]==<version>"`; `uv pip install "omnisus[colab]"` does
+  the same elsewhere (#100).
 
 ## v0.2.3 — 2026-10-08
 
