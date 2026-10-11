@@ -20,8 +20,11 @@ which line wins.
   61: ``CBO2002.CNV`` (SIM) does so on 246 of its 2,429 lines. A line whose column
   60 is filled and that holds nothing from column 61 (``DNNOVA.CNV`` writes its
   code there) is outside the layout.
-* The header's second number is the code width; a longer code, or a range whose
-  bounds are not digits (``A00-A09``), raises instead of becoming a literal key.
+* The header's second number is the code width, measured on each part of a token
+  split at the hyphen: a longer part, or a range whose bounds are not digits
+  (``A00-A09``), raises instead of becoming a literal key. A token whose lower bound
+  is blank (``  -99`` in TurnosAt.CNV, `` -Z`` in TPGESTAO.CNV) is neither and stays a
+  literal key, as written (#24).
 * A short code (width up to 4) listed on two lines takes the later line: in the
   manual's MESES.CNV, ``01`` is first "Ignorado" (``00-99``), then "Janeiro", which
   "prevalece, por aparecer por último" (ManualTabnet.pdf p. 21). A long code keeps
