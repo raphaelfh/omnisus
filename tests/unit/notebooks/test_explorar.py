@@ -39,6 +39,7 @@ ARQUIVO = ROOT / "tests" / "fixtures" / "dbc" / "sim_rr_2022_mini.dbc"
 ESCOPO = ScopeKey(uf="RR", ano=2022)
 ARQUIVO_2023 = ROOT / "tests" / "fixtures" / "dbc" / "sim_rr_2023_mini.dbc"
 ESCOPO_2023 = ScopeKey(uf="RR", ano=2023)
+TODAS_AS_UFS = ",".join(sus.ALL_UFS)  # `--ufs` with every UF
 
 
 def _registros(arquivo: Path) -> int:
@@ -357,8 +358,7 @@ def test_a_full_disk_stops_the_import_instead_of_downloading_the_rest(monkeypatc
         raise OSError(errno.ENOSPC, os.strerror(errno.ENOSPC))
 
     monkeypatch.setattr(_runner, "stage_raw", disco_cheio)
-    todas = ",".join(sus.ALL_UFS)
-    definidos = _importar(monkeypatch, tmp_path, "--ufs", todas)
+    definidos = _importar(monkeypatch, tmp_path, "--ufs", TODAS_AS_UFS)
 
     assert "Disco cheio" in definidos["parada"]
     assert definidos["relatorio"].filter(escopo="RR_2022")["situacao"].item() == "falhou ao gravar"
@@ -395,8 +395,7 @@ def test_when_the_server_stops_answering_what_was_imported_stays_and_the_rest_is
         return listar(d, **kw)
 
     monkeypatch.setattr(_runner, "list_sources", responde_uma_vez)
-    todas = ",".join(sus.ALL_UFS)
-    definidos = _importar(monkeypatch, tmp_path, "--ufs", todas)
+    definidos = _importar(monkeypatch, tmp_path, "--ufs", TODAS_AS_UFS)
     relatorio = definidos["relatorio"]
 
     assert relatorio.height == len(sus.ALL_UFS)
@@ -408,7 +407,7 @@ def test_when_the_server_stops_answering_what_was_imported_stays_and_the_rest_is
     ]
     assert (
         "não respondeu (/dissemin/publicos/SIM/CID10/DORES: 3 attempts failed)"
-        in (definidos["parada"])
+        in definidos["parada"]
     )
     assert definidos["totais"] == {"sim_obitos": REGISTROS}
 
@@ -429,8 +428,7 @@ def test_an_interrupt_leaves_the_running_part_without_result_and_the_rest_not_tr
         return listar(d, **kw)
 
     monkeypatch.setattr(_runner, "list_sources", interrompe_na_segunda)
-    todas = ",".join(sus.ALL_UFS)
-    definidos = _importar(monkeypatch, tmp_path, "--anos", "2021,2022", "--ufs", todas)
+    definidos = _importar(monkeypatch, tmp_path, "--anos", "2021,2022", "--ufs", TODAS_AS_UFS)
 
     assert definidos["parada"].startswith("Interrompido.")
     assert definidos["relatorio"]["situacao"].value_counts(sort=True).rows() == [
@@ -456,9 +454,8 @@ def test_a_report_of_many_scopes_keeps_a_reason_that_comes_after_the_first_hundr
         )
 
     monkeypatch.setattr(sus, "import_dataset", importa_ate_2022)
-    todas = ",".join(sus.ALL_UFS)
     relatorio = _importar(
-        monkeypatch, tmp_path, "--anos", "2019,2020,2021,2022,2023", "--ufs", todas
+        monkeypatch, tmp_path, "--anos", "2019,2020,2021,2022,2023", "--ufs", TODAS_AS_UFS
     )["relatorio"]
 
     assert relatorio.height == 5 * len(sus.ALL_UFS)

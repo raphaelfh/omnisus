@@ -372,15 +372,16 @@ def _(
     # dependem da versão, e é esse clique que atualiza a página.
     if parada is None or relatorio["situacao"].is_in(["importado", "sem resultado"]).any():
         mudar_versao(lambda v: v + 1)
-    _aviso = (
-        f"{parada} Clique em *Importar* para continuar."
-        if parada
-        else "Veja o motivo de cada escopo. Se ele pedir `replace`, importe esses escopos "
-        "à parte, com *Substituir* ligado; os desfeitos da mesma parte entram no clique "
-        "seguinte. Senão, clique em *Importar* para tentar de novo."
-        if relatorio["situacao"].str.starts_with("falhou").any()
-        else None
-    )
+    if parada:
+        _aviso = f"{parada} Clique em *Importar* para continuar."
+    elif relatorio["situacao"].str.starts_with("falhou").any():
+        _aviso = (
+            "Veja o motivo de cada escopo. Se ele pedir `replace`, importe esses escopos "
+            "à parte, com *Substituir* ligado; os desfeitos da mesma parte entram no clique "
+            "seguinte. Senão, clique em *Importar* para tentar de novo."
+        )
+    else:
+        _aviso = None
     _ultima = (_aviso, "danger" if parada else "warn", importacao, relatorio)
     guardar_ultima(_ultima)
     _mostrar(_ultima)
