@@ -45,7 +45,7 @@ EXCECOES = {
         "omnisus.sources.ibge.products": {"CENSUS_YEARS", "ESTIMATE_UNAVAILABLE_YEARS"}
     },
     # An import refused because another writer (process or handle) holds the lake raises
-    # this class, which omnisus does not export yet (#102).
+    # this class. `sus.WriterBusyError` (#111) is not in the omnisus 0.2.3 the notebook pins.
     "explorar.py": {"omnisus.lake.locking": {"WriterBusyError"}},
 }
 

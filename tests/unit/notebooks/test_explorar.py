@@ -281,7 +281,9 @@ def test_a_scope_imported_by_another_omnisus_version_asks_for_and_takes_substitu
 ):
     """A new parser version (another omnisus release or dictionary) on the same file."""
     fake_datasus.serve(monkeypatch, "sim_obitos", {ESCOPO: ARQUIVO.read_bytes()})
-    _importar(monkeypatch, tmp_path)
+    sus.import_dataset(
+        "sim_obitos", scopes=[ESCOPO], target=f"ducklake:{tmp_path / 'omnisus.ducklake'}"
+    )
     versao = _runner.parser_version
     monkeypatch.setattr(_runner, "parser_version", lambda d: versao(d) + "-nova")
 
@@ -519,15 +521,15 @@ def test_reads_the_lake_after_its_folder_moved(monkeypatch, tmp_path):
 
 
 def test_a_reader_holding_the_catalog_stops_the_import_with_a_message(monkeypatch, tmp_path):
-    """Another notebook or DuckDB session with a read transaction open on the lake."""
-    fake_datasus.serve(monkeypatch, "sim_obitos", {ESCOPO: ARQUIVO.read_bytes()})
-    _importar(monkeypatch, tmp_path)
+    """Another notebook or DuckDB session with a read transaction open on the lake makes
+    the writer fail while setting its options, after SQLite's 5 s busy timeout; this
+    raises at once what `Lake.local` raises then."""
 
-    with sus.LakeReader(f"ducklake:{tmp_path / 'omnisus.ducklake'}") as leitor:
-        conexao = leitor.connect()
-        conexao.execute("BEGIN TRANSACTION")
-        conexao.execute("SELECT count(*) FROM lake.sim_obitos").fetchall()
-        definidos = _importar(monkeypatch, tmp_path)
-        conexao.execute("ROLLBACK")
+    def catalogo_ocupado(*_a, **_kw):
+        raise sus.CatalogAttachError("set_option", "TransactionException")
+
+    monkeypatch.setattr(sus, "import_dataset", catalogo_ocupado)
+    definidos = _importar(monkeypatch, tmp_path)
 
     assert "outro programa está lendo este lake" in definidos["parada"]
+    assert definidos["relatorio"]["situacao"].to_list() == ["não tentado"]
