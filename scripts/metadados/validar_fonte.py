@@ -385,12 +385,8 @@ def main(
         return 1
 
     yaml_path = dictionaries / f"{d.name}.yaml"
-    validadas = {
-        _identidade(entry)
-        for entry in yaml.load(yaml_path.read_text(encoding="utf-8"), Loader=yaml.CSafeLoader)[
-            "x-analytics"
-        ]["validated_sources"]
-    }
+    dicionario = yaml.load(yaml_path.read_text(encoding="utf-8"), Loader=yaml.CSafeLoader)
+    validadas = {_identidade(entry) for entry in dicionario["x-analytics"]["validated_sources"]}
     metadados = sus.describe_dataset(d.name)
     metadata_hash = metadados["metadata_hash"]
     downloads.mkdir(parents=True, exist_ok=True)

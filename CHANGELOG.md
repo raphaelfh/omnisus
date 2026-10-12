@@ -45,7 +45,8 @@
   `describe_dataset()` for each dataset (about 0.4 s to 3 ms per call). The table is the
   same; the consistency checks of `describe_dataset()` still run when it is called, and
   the tests call it for every dataset.
-- Staging looks each column up once per batch instead of once per field.
+- Staging maps each batch's columns by name once, instead of rebuilding the list of
+  column names for every field.
 
 ## v0.2.3 — 2026-10-08
 
