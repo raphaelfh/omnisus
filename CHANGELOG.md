@@ -15,6 +15,15 @@
   before the first import returns `[]`. `None` keeps the SQL and the rows of 0.2.3. The
   data table is pinned by the caller's `FROM` (#101).
 
+### Dictionaries
+
+- `sih_aih_reduzida` (2.13.0) declares `fonte_orc`, which RD files publish from 2025-03
+  (layout 6, `evidence/2026-10-06-rd-2008-layouts`), with the labels of `CNV/fonterem.CNV`
+  of `TAB_SIH.zip`, now packaged, which `RD2008.DEF` binds to `FONTE_ORC`. `00`, the only
+  value of the RDRR2503 excerpt, is not a key of the table and stays unlabeled (issue
+  `fonte_orc-00-sem-fonte`). `check_columns` no longer reports the field as "not in
+  dictionary" (#86).
+
 ### Packaging
 
 - `ipykernel` leaves the required dependencies, where 0.2.3 put it without a changelog
@@ -81,10 +90,6 @@
   the `reports/evidence` default and the per-scope `acceptance.json` (#85).
 - `docs/datasets.md` shows the validated scopes as UFs and intervals
   ("27 UFs, 2020 a 2024") instead of one entry per scope (#85).
-- `sih_aih_reduzida` declares `fonte_orc`, which RD files publish from 2025-03 (layout 6,
-  `evidence/2026-10-06-rd-2008-layouts`). No DEF or CNV of the registered `TAB_SIH.zip`
-  cites it, so it has no labels; the issue `fonte_orc-sem-fonte` says what was consulted.
-  `check_columns` no longer reports it as "not in dictionary" (#86).
 - `sih_aih_reduzida.diagsec9` no longer references `aux_cid10`: the 157 RD files read
   from 2014-01 to 2026-07 (one RR or AP file a month, plus SP and MG at each layout
   change) publish `DIAGSEC9` as C(1), so no row could join. Its
