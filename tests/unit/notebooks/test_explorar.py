@@ -283,6 +283,24 @@ def test_a_command_line_year_outside_the_base_coverage_is_left_out(monkeypatch, 
     assert [str(e) for e in definidos["escopos_novos"]] == ["RR_1995"]
 
 
+def test_only_true_turns_a_command_line_switch_on(monkeypatch, tmp_path):
+    """marimo makes only true/false booleans; `--substituir no` must not re-download
+    every scope, and `--executar no` must not import."""
+    for valor in ("no", "nao", "off", "FALSE"):
+        definidos = _rodar(
+            monkeypatch, "--lake", str(tmp_path), "--substituir", valor, "--executar", valor
+        )
+        assert (definidos["substituir"].value, definidos["executar"]) == (False, False), valor
+        assert "relatorio" not in definidos
+    assert _rodar(monkeypatch, "--lake", str(tmp_path), "--substituir", "true")["substituir"].value
+
+
+def test_command_line_ufs_take_lowercase(monkeypatch, tmp_path):
+    definidos = _rodar(monkeypatch, "--lake", str(tmp_path), "--ufs", "rr,ap")
+
+    assert [str(e) for e in definidos["escopos_novos"]] == ["AP_2022", "RR_2022"]
+
+
 def test_a_scope_imported_by_another_omnisus_version_asks_for_and_takes_substituir(
     monkeypatch, tmp_path
 ):
@@ -475,6 +493,8 @@ def test_a_base_without_chosen_scopes_has_no_rows_and_no_citation(importado, mon
     assert "Nenhum escopo escolhido para citar." in texto
     assert "Baixar citação" not in texto
     assert "Baixar o dicionário (XLSX)" in texto  # the tab still offers its dictionary
+    # With no scope there is no source to validate, so no category is "left out".
+    assert "Categorias harmonizadas fora" not in texto
     # The harmonised columns come last; the tab's table shows every column, not the first 50.
     assert "data-max-columns='&quot;all&quot;'" in texto
 
@@ -482,11 +502,16 @@ def test_a_base_without_chosen_scopes_has_no_rows_and_no_citation(importado, mon
 def test_the_row_limit_caps_the_table_but_not_the_counts(importado, monkeypatch):
     pasta, _, _ = importado
 
-    definidos = _rodar(monkeypatch, "--lake", str(pasta), "--linhas", "100")
+    texto, definidos = _executar(monkeypatch, "--lake", str(pasta), "--linhas", "100")
 
     assert definidos["amostras"]["sim_obitos"].height == 100
     assert definidos["totais"] == {"sim_obitos": REGISTROS}
     assert definidos["perfil"]["registros"].sum() == REGISTROS
+    # Numbers as written in Portuguese: 3.246, not 3,246 (which reads as about 3).
+    assert f"{REGISTROS:,}".replace(",", ".") in texto
+    assert f"{REGISTROS:,}" not in texto
+    # The lake has only an annual base, so Escolher shows no Meses filter.
+    assert "Meses" not in texto
 
 
 def test_without_lake_it_opens_the_folder_sus_load_writes_to(importado, monkeypatch, tmp_path):
@@ -540,3 +565,48 @@ def test_a_reader_holding_the_catalog_stops_the_import_with_a_message(monkeypatc
 
     assert "outro programa está lendo este lake" in definidos["parada"]
     assert definidos["relatorio"]["situacao"].to_list() == ["não tentado"]
+
+
+def test_the_last_report_stays_while_the_widgets_change(importado, monkeypatch):
+    """The warning asks to import some scopes again with *Substituir* on: changing the
+    widgets reruns the import cell without a click, and the report that names those
+    scopes stays until the next click."""
+    pasta, _, _ = importado
+    relatorio = pl.DataFrame(
+        {"escopo": ["RR_2022"], "situacao": ["falhou ao gravar"], "motivo": ["replace"]}
+    )
+    ultima = ("Veja o motivo de cada escopo.", "warn", "falhou ao gravar: 1", relatorio)
+    estado = {
+        "versao": lambda: 0,
+        "mudar_versao": lambda _v: None,
+        "ultima": lambda: ultima,
+        "guardar_ultima": lambda _v: None,
+    }
+
+    texto, definidos = _executar(monkeypatch, "--lake", str(pasta), defs=estado)
+
+    assert "relatorio" not in definidos  # no click, no import
+    assert "falhou ao gravar: 1" in texto
+    assert "Veja o motivo de cada escopo." in texto
+
+
+def test_the_rows_open_on_the_base_the_command_line_names(monkeypatch, tmp_path):
+    """On a lake with other bases, `--base` is the one Escolher starts on, so an export
+    shows and cites what it imported. An unvalidated source says why its categories
+    are out, in Portuguese."""
+    sih = ROOT / "tests" / "fixtures" / "dbc" / "sih_rr_2024_01_mini.dbc"
+    janeiro = ScopeKey(uf="RR", ano=2024, mes=1)
+    fake_datasus.serve(monkeypatch, "sih_aih_reduzida", {janeiro: sih.read_bytes()})
+    sus.import_dataset(
+        "sih_aih_reduzida", scopes=[janeiro], target=f"ducklake:{tmp_path / 'omnisus.ducklake'}"
+    )
+    fake_datasus.serve(monkeypatch, "sim_obitos", {ESCOPO: ARQUIVO.read_bytes()})
+
+    sim = _importar(monkeypatch, tmp_path, "--base", "sim_obitos")
+    texto, rd = _executar(monkeypatch, "--lake", str(tmp_path), "--base", "sih_aih_reduzida")
+
+    assert sim["bases"].value == ["sim_obitos"]
+    assert list(sim["citacoes"]) == ["sim_obitos"]
+    assert rd["bases"].value == ["sih_aih_reduzida"]
+    assert "porque nem todos os escopos vêm de fontes validadas" in texto
+    assert "unconfirmed_source_scope" not in texto

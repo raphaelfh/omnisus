@@ -64,7 +64,9 @@ uvx marimo export html --sandbox notebooks/sim_obitos.py \
 ```
 
 Em `explorar.py`, `--base`, `--anos`, `--ufs` e `--meses` (separados por vírgula) e
-`--substituir true` dão os valores dos seletores de *Importar*:
+`--substituir true` dão os valores dos seletores de *Importar*; *Escolher* começa na
+base de `--base`. `--lake` indica a pasta do lake e `--linhas`, quantas linhas cada
+tabela mostra (10.000 sem o flag). Só `true` liga `--executar` e `--substituir`:
 
 ```bash
 uvx marimo export html --sandbox notebooks/explorar.py -o /tmp/explorar.html -- \

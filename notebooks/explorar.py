@@ -37,6 +37,15 @@ def _():
     return Path, WriterBusyError, date, io, json, mo, os, pl, shutil, sus, tempfile, xlsxwriter
 
 
+@app.cell
+def _():
+    def numero(valor, casas=0):
+        """`valor` como se escreve em português: 3.246 linhas, 23,5 GiB."""
+        return f"{valor:,.{casas}f}".translate(str.maketrans(",.", ".,"))
+
+    return (numero,)
+
+
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
@@ -75,7 +84,8 @@ def _(Path, mo, os):
     pasta = mo.ui.text(
         value=mo.cli_args().get("lake") or str(_padrao), label="Pasta do lake", full_width=True
     )
-    executar = bool(mo.cli_args().get("executar"))
+    # Só `true` liga: o marimo converte true/false em booleano, e `no` seria um texto não vazio.
+    executar = mo.cli_args().get("executar") is True
     pasta
     return executar, pasta
 
@@ -123,7 +133,9 @@ def _(mo):
     # Uma importação muda a versão, e só ela reabre o lake: mexer nos widgets de
     # importação não refaz as consultas abaixo.
     versao, mudar_versao = mo.state(0)
-    return mudar_versao, versao
+    # A última importação fica na tela até o próximo clique, mesmo que um widget mude.
+    ultima, guardar_ultima = mo.state(None)
+    return guardar_ultima, mudar_versao, ultima, versao
 
 
 @app.cell
@@ -158,13 +170,13 @@ def _(base_nova, date, mo, sus):
         label="Anos",
     )
     ufs_novas = mo.ui.multiselect(
-        options=sus.ALL_UFS, value=_da_linha("ufs", ["RR"], str), label="UFs"
+        options=sus.ALL_UFS, value=_da_linha("ufs", ["RR"], str.upper), label="UFs"
     )
     meses_novos = mo.ui.multiselect(
         options=list(range(1, 13)), value=_da_linha("meses", [1], int), label="Meses"
     )
     substituir = mo.ui.switch(
-        value=bool(mo.cli_args().get("substituir")), label="Substituir o que já está no lake"
+        value=mo.cli_args().get("substituir") is True, label="Substituir o que já está no lake"
     )
     importar = mo.ui.run_button(label="Importar")
     mo.hstack(
@@ -193,14 +205,14 @@ def _(Path, anos_novos, base_nova, mensal, meses_novos, por_uf, sus, tempfile, u
 
 
 @app.cell
-def _(diretorio, escopos_novos, importar, mo, shutil, substituir, temporaria, versao):
+def _(diretorio, escopos_novos, importar, mo, numero, shutil, substituir, temporaria, versao):
     versao()  # mede o disco de novo depois de cada importação
 
     def _livre(pasta):
         """Espaço livre no disco de `pasta` ou da primeira pasta acima dela que existe."""
         for _pasta in (pasta, *pasta.parents):
             try:
-                return f"{shutil.disk_usage(_pasta).free / 2**30:.1f} GiB"
+                return f"{numero(shutil.disk_usage(_pasta).free / 2**30, 1)} GiB"
             except OSError:  # não existe, sem permissão, drive ou rede fora do ar
                 pass
         return "? GiB"
@@ -208,7 +220,7 @@ def _(diretorio, escopos_novos, importar, mo, shutil, substituir, temporaria, ve
     mo.vstack(
         [
             mo.md(
-                f"**{len(escopos_novos):,} escopo{'' if len(escopos_novos) == 1 else 's'}.** "
+                f"**{numero(len(escopos_novos))} escopo{'' if len(escopos_novos) == 1 else 's'}.** "
                 f"Disco livre: {_livre(diretorio)} na pasta do lake e {_livre(temporaria)} "
                 f"em `{temporaria}`, onde a importação prepara cada escopo antes de gravá-lo "
                 "no lake."
@@ -226,6 +238,7 @@ def _(
     base_nova,
     escopos_novos,
     executar,
+    guardar_ultima,
     importar,
     mo,
     mudar_versao,
@@ -233,10 +246,28 @@ def _(
     substituir,
     sus,
     temporaria,
+    ultima,
 ):
+    def _mostrar(importacao):
+        """Aviso, resumo e uma linha por escopo de uma importação."""
+        if importacao is None:
+            return None
+        aviso, tipo, resumo, tabela = importacao
+        return mo.vstack(
+            [
+                *([mo.callout(mo.md(aviso), kind=tipo)] if aviso else []),
+                mo.md(resumo),
+                mo.ui.table(
+                    tabela.fill_null(""), page_size=10, selection=None, wrapped_columns=["motivo"]
+                ),
+            ]
+        )
+
     # `-- --executar true` é para rodar sem interface (export, script): numa sessão
-    # interativa, cada mudança de widget importaria de novo.
-    mo.stop(not (importar.value or executar))
+    # interativa, cada mudança de widget importaria de novo. Sem clique, a célula mostra a
+    # última importação: o aviso pode pedir para importar alguns escopos de novo, com
+    # outros valores nos widgets.
+    mo.stop(not (importar.value or executar), _mostrar(ultima()))
     mo.stop(
         not escopos_novos,
         mo.md("Nenhum escopo escolhido: marque ao menos um valor em cada lista acima."),
@@ -350,13 +381,9 @@ def _(
         if relatorio["situacao"].str.starts_with("falhou").any()
         else None
     )
-    mo.vstack(
-        [
-            *([mo.callout(mo.md(_aviso), kind="danger" if parada else "warn")] if _aviso else []),
-            mo.md(importacao),
-            mo.ui.table(relatorio, page_size=10, selection=None, wrapped_columns=["motivo"]),
-        ]
-    )
+    _ultima = (_aviso, "danger" if parada else "warn", importacao, relatorio)
+    guardar_ultima(_ultima)
+    _mostrar(_ultima)
     return importacao, parada, relatorio
 
 
@@ -420,7 +447,7 @@ def _(leitor, mo, pl):
         ],
         schema_overrides={"uf": pl.String, "mes": pl.Int64},
     ).sort("base", "ano", "mes", "uf", nulls_last=True)
-    escopos
+    mo.ui.table(escopos, selection=None, format_mapping={"ano": str})  # 2024, não 2,024
     return escopos, publicacoes
 
 
@@ -438,7 +465,11 @@ def _(mo):
 @app.cell
 def _(escopos, mo):
     _nomes = escopos["base"].unique().sort().to_list()
-    bases = mo.ui.multiselect(options=_nomes, value=_nomes[:1], label="Bases")
+    # Começa na base de `--base`, se o lake a tem: um export mostra e cita o que importou.
+    _pedida = mo.cli_args().get("base")
+    bases = mo.ui.multiselect(
+        options=_nomes, value=[_pedida] if _pedida in _nomes else _nomes[:1], label="Bases"
+    )
     bases
     return (bases,)
 
@@ -465,7 +496,8 @@ def _(bases, con, escopos, mo, pl):
             for _base, e in esquemas.items()
         }
     )
-    mo.vstack([mo.hstack([ufs, anos, meses], justify="start"), colunas])
+    _filtros = [f for f in (ufs, anos, meses) if f.options]  # base anual: sem Meses
+    mo.vstack([mo.hstack(_filtros, justify="start"), *colunas.values()])
     return anos, colunas, esquemas, meses, ufs
 
 
@@ -634,21 +666,33 @@ def _(esquemas, io, pl, sus, xlsxwriter):
 
 
 @app.cell
-def _(brutas, dicionarios, mo, projecoes, rotulos, sus, totais):
+def _(brutas, dicionarios, escolhidas, mo, numero, projecoes, rotulos, sus, totais):
     amostras = {
         _base: sus.label(_base, _bruta) if rotulos.value else _bruta
         for _base, _bruta in brutas.items()
     }
 
+    _por_que = {
+        "unconfirmed_source_scope": "nem todos os escopos vêm de fontes validadas",
+        "missing_source_field": "falta na tabela a coluna de onde ela sai",
+        "unsupported_field": "a base não tem regra para ela",
+        "unsupported_date_format": "a data tem um formato sem regra",
+    }
+
     def _resumo(base):
-        fora = [
-            f"`{u.field}` ({u.reason})"
-            for u in projecoes[base].unavailable
-            if u.reason != "unsupported_dataset"
-        ]
-        return f"**{totais[base]:,}** linhas; a tabela mostra {amostras[base].height:,}." + (
-            f" Categorias harmonizadas fora: {', '.join(fora)}." if fora else ""
+        fora = {}
+        # Sem escopo escolhido não há fonte a conferir, nem categoria a explicar.
+        for u in projecoes[base].unavailable if escolhidas[base] else []:
+            if u.reason != "unsupported_dataset":
+                fora.setdefault(_por_que.get(u.reason, u.reason), []).append(f"`{u.field}`")
+        notas = "".join(
+            f" Categorias harmonizadas fora, porque {motivo}: {', '.join(campos)}."
+            for motivo, campos in fora.items()
         )
+        linhas = (
+            f"**{numero(totais[base])}** linhas; a tabela mostra {numero(amostras[base].height)}."
+        )
+        return linhas + notas
 
     def _cabecalho(base):
         nome, conteudo = dicionarios[base]
@@ -658,13 +702,18 @@ def _(brutas, dicionarios, mo, projecoes, rotulos, sus, totais):
             mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             label="Baixar o dicionário (XLSX)",
         )
-        return mo.hstack([mo.md(_resumo(base)), baixar], justify="space-between", align="center")
+        return mo.vstack([baixar, mo.md(_resumo(base))], align="start")  # a nota pode ser longa
 
     # Todas as colunas: as categorias harmonizadas vêm por último e o marimo mostra só 50.
     mo.ui.tabs(
         {
             _base: mo.vstack(
-                [_cabecalho(_base), mo.ui.table(_amostra, page_size=20, max_columns=None)]
+                [
+                    _cabecalho(_base),
+                    mo.ui.table(
+                        _amostra, page_size=20, max_columns=None, format_mapping={"ano": str}
+                    ),
+                ]
             )
             for _base, _amostra in amostras.items()
         }
