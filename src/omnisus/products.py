@@ -1,7 +1,7 @@
 """Every importer family except SIGTAP, stated once: the FTP registry, IBGE and CNES master.
 
-Facts, not forms. Year rules for IBGE stay in ``sources.ibge.products``
-(``CENSUS_YEARS``, ``ESTIMATE_UNAVAILABLE_YEARS``); an estimate is importable
+Facts, not forms. Year rules for IBGE are ``omnisus.CENSUS_YEARS`` and
+``omnisus.ESTIMATE_UNAVAILABLE_YEARS``; an estimate is importable
 only as its latest edition, checked live at import, so there is no floor year.
 """
 
@@ -13,9 +13,10 @@ from typing import Literal
 import polars as pl
 
 from omnisus.lake.publication import POLICIES
-from omnisus.metadata import category, describe_dataset
+from omnisus.metadata import category
 from omnisus.sources._base import ScopeKey
 from omnisus.sources.datasus_ftp.datasets import REGISTRY, YM, Dataset
+from omnisus.transforms.dictionaries import load_dicionario
 
 ReconcileBy = Literal["run_id", "publication_id", "rerun"]
 
@@ -25,7 +26,12 @@ class Product:
     """One importer family and what it supports."""
 
     name: str
-    """Registry key or importer name: ``sim_obitos``, ``ibge_populacao``, ``cnes_master``."""
+    """Registry key or importer name: ``sim_obitos``, ``ibge_populacao``, ``cnes_master``.
+
+    It is also the relation the importer writes in the lake: query
+    ``FROM lake.<name>``. Whether that relation is a table or a view
+    (``ibge_populacao`` is a view) is the catalog's to say, in
+    ``information_schema.tables.table_type``."""
 
     dataset: Dataset | None
     """The FTP registry row, or ``None`` for IBGE and CNES master."""
@@ -90,8 +96,9 @@ def describe_datasets() -> pl.DataFrame:
 
     What each dataset is, how it is published and since when. DATASUS publishes other
     datasets that the package does not import. Works offline: it reads only the
-    registry and :func:`~omnisus.describe_dataset`. Coverage is the window the registry
-    declares, not what the server lists today; ask :func:`~omnisus.available` for that.
+    registry and the packaged dictionaries that :func:`~omnisus.describe_dataset`
+    describes. Coverage is the window the registry declares, not what the server lists
+    today; ask :func:`~omnisus.available` for that.
 
     Returns:
         One row per :func:`~omnisus.datasets` entry, sorted by ``name``, with columns
@@ -121,15 +128,17 @@ def describe_datasets() -> pl.DataFrame:
     """
     rows = []
     for d in sorted(datasets(), key=lambda d: d.name):
-        metadata = describe_dataset(d.name)
-        fields = metadata["schema"]["fields"]
+        # The dictionary, not describe_dataset(): the table needs none of the per-field
+        # review documents and digests that make up most of describe_dataset()'s cost.
+        dictionary = load_dicionario(d.name)
+        fields = dictionary.fields
         first, last = d.coverage
-        validated = (metadata["analytics"] or {}).get("validated_sources", [])
+        validated = (dictionary.raw.get("x-analytics") or {}).get("validated_sources", [])
         rows.append(
             {
                 "name": d.name,
                 "category": category(d.name),
-                "title": metadata["title"],
+                "title": dictionary.title,
                 "geography": d.geography,
                 "cadence": d.cadence,
                 "coverage_start": _period(first, d),

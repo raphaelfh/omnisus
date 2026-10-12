@@ -103,7 +103,8 @@ is already running. Importing `cnes_estabelecimentos` by any function refreshes 
 
 The bootstrap tables (`aux_uf`, `aux_municipios`, `aux_cid10`, `aux_ocupacoes`,
 `aux_paises`) come from DATASUS's `SIM/CID10/TABELAS`; the CBO 2002 codes in
-`aux_ocupacoes` come from `CBO2002.CNV` in `SIM/CID10/TAB/OBITOS_CID10_TAB.zip`. Each
+`aux_ocupacoes` and the CID-10 blocks of `aux_cid10` (`bloco`, `bloco_descricao`) come
+from `CBO2002.CNV` and `CID10-grup_d.cnv` in `SIM/CID10/TAB/OBITOS_CID10_TAB.zip`. Each
 file is hashed in the source registry. Nothing joins at import: `reference_join_sql` writes the `LEFT JOIN` a
 field's dictionary declares. See [vocabularies](sources/vocabularios.md).
 
@@ -161,6 +162,24 @@ with sus.LakeReader(snapshot_id=latest) as reader:
     ...  # every statement here sees exactly that snapshot
 ```
 
+`LakeReader(snapshot_id=N)` is enough when one session reads one snapshot. When one
+attach serves many snapshots (opening another attach costs a round trip to a
+PostgreSQL catalog), pin each query instead: `reader.publications(snapshot_id=N)` and
+`reference_join_sql(..., snapshot_id=N)` read the manifest and the vocabulary at `N`,
+whatever snapshot the attach is pinned to. The data table is pinned by the query you
+write, with the alias before `AT`:
+
+```python
+with sus.LakeReader() as reader:
+    n = sus.latest_snapshot_id(reader)
+    fontes = reader.publications(snapshot_id=n)
+    join = sus.reference_join_sql("sim_obitos", "causabas", snapshot_id=n)
+    df = reader.connect().sql(
+        f"SELECT ref_causabas.capitulo, count(*) AS obitos "
+        f"FROM lake.sim_obitos AS d AT (VERSION => {n}) {join} GROUP BY ALL"
+    ).pl()
+```
+
 ```python
 import omnisus as sus
 import polars as pl
@@ -216,9 +235,10 @@ datasets as one table, offline, with title, system, coverage and labelled column
 `products()` covers every importer
 family except SIGTAP: the FTP datasets and the two families outside the registry
 (`ibge_populacao`, `cnes_master`). It states, per family, the scope fields, accepted
-policies, how an interrupted run is reconciled and whether `available()` applies. Year rules for IBGE remain in
-`omnisus.sources.ibge.products` (`CENSUS_YEARS`, `ESTIMATE_UNAVAILABLE_YEARS`);
-an estimate is importable only as its latest edition, so there is no floor year.
+policies, how an interrupted run is reconciled and whether `available()` applies. A
+product's `name` is also the relation it writes in the lake. Year rules for IBGE are
+`CENSUS_YEARS` and `ESTIMATE_UNAVAILABLE_YEARS`; an estimate is importable only as its
+latest edition, so there is no floor year.
 
 ::: omnisus.Dataset
 ::: omnisus.resolve
@@ -226,10 +246,12 @@ an estimate is importable only as its latest edition, so there is no floor year.
 ::: omnisus.describe_datasets
 ::: omnisus.products
 ::: omnisus.Product
+::: omnisus.CENSUS_YEARS
+::: omnisus.ESTIMATE_UNAVAILABLE_YEARS
 
 ## Errors
 
-Lake transaction errors are imported from `omnisus.lake`. A
+A `WriterBusyError` means another handle already has the lake open for writing. A
 `CommitOutcomeUnknown` means the COMMIT raised and the handle is unusable;
 inspect the catalog before retrying. The FTP runner wraps transaction state
 failures in the top-level `ImportAbortedError` with partial progress.
@@ -239,7 +261,8 @@ carries the connection string.
 
 ::: omnisus.ImportAbortedError
 ::: omnisus.CatalogAttachError
+::: omnisus.WriterBusyError
+::: omnisus.CommitOutcomeUnknown
 ::: omnisus.lake.TransactionStateError
-::: omnisus.lake.CommitOutcomeUnknown
 ::: omnisus.FtpPathNotFound
 ::: omnisus.FtpUnavailable
