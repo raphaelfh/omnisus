@@ -8,6 +8,7 @@ DORR2022.dbc (`tests/fixtures/FIXTURES.md`), for the scope the import widgets op
 from __future__ import annotations
 
 import errno
+import functools
 import gzip
 import hashlib
 import importlib.util
@@ -49,14 +50,20 @@ REGISTROS = _registros(ARQUIVO)
 SHA256 = hashlib.sha256(ARQUIVO.read_bytes()).hexdigest()
 
 
+@functools.cache
+def _app():
+    """The notebook, loaded once: each load compiles its cells again."""
+    spec = importlib.util.spec_from_file_location("notebook_explorar", EXPLORAR)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.app
+
+
 def _executar(monkeypatch, *argumentos: str, defs: dict | None = None) -> tuple[str, dict]:
     """Run the notebook as `marimo export` would; return the text it shows and what its
     cells define."""
     monkeypatch.setattr(sys, "argv", ["explorar.py", *argumentos])
-    spec = importlib.util.spec_from_file_location("notebook_explorar", EXPLORAR)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    saidas, definidos = module.app.run(defs=defs)
+    saidas, definidos = _app().run(defs=defs)
     assert not [s for s in saidas if isinstance(s, duckdb.DuckDBPyConnection)]
     return " ".join(getattr(s, "text", "") for s in saidas if s is not None), definidos
 
