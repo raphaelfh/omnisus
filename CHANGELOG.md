@@ -29,6 +29,21 @@
   notebook installs `"omnisus[colab]==<version>"`; `uv pip install "omnisus[colab]"` does
   the same elsewhere (#100).
 
+### Dictionaries
+
+- `sia_apac_cirurgia_bariatrica` (0.2.0) is titled "SIASUS — APAC de Acompanhamento
+  Pós-Cirurgia Bariátrica (ABO)": `TAB_SIA.zip` reads `ABO` files with
+  `APAC_Pos_Cirurgia_Bariatica.def`, and every row of `ABOSP2401.dbc` has `ap_pripal`
+  0301120056, post-surgery follow-up in SIGTAP. The dataset keeps its name; renaming it
+  would change the API. It gains the labels that DEF binds for `ap_catend`
+  (`CARAT_AT.CNV`), `ap_condic` (`TP_GESTAO.CNV`), `ap_motsai` (`MOTSAIPE.CNV`) and
+  `ap_tpups` (`TP_ESTAB.CNV`), as `sia_apac_acompanhamento_bariatrica` already had.
+  `ap_mn_ind` stays unlabelled: the DEF binds it to `MANT_IND.CNV` without the `CNV/`
+  folder, which is not the packaged member; so do `ap_cid_c1`–`ap_cid_c5`, whose
+  `CID_COM.CNV` is not archived.
+- `docs/sources/sia.md` gives the Informe SIASUS 2019-07 bariatric follow-up layout
+  (`ABUFMM.DBF`, 58 fields) to `AB`, whose header it matches, instead of `ABO`.
+
 ### Vocabularies
 
 - `aux_cid10` (2.1.0) gains `bloco` and `bloco_descricao`: the CID-10 group of each code
