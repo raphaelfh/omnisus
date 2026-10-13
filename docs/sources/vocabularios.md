@@ -112,10 +112,12 @@ O que isso muda na análise:
 - **`diag_princ` de `sih_aih_reduzida_1992_2007` mistura as duas classificações.** De
   1992 a 1997 é CID-9 e de 1998 a 2007, CID-10, na mesma coluna. Filtre por `ano` ou
   pelo comprimento do código antes de juntar à `aux_cid10`; o repositório não traz
-  tabela da CID-9 nem correspondência entre as duas.
+  tabela da CID-9 nem correspondência entre as duas. O dicionário diz o mesmo no issue
+  aberto `diag-princ-cid9-ate-1997` do campo.
 - **Categoria com zero à esquerda.** No exemplo do SIH de 2007-12, `cid_morte` grava
   `0I64`, `0I10`, `0B24` e `0D77`, e `cid_asso`, `0I10`: a categoria de 3 caracteres
-  com um `0` antes, que não junta à `aux_cid10`.
+  com um `0` antes, que não junta à `aux_cid10` (issue `cid-zero-a-esquerda` dos dois
+  campos).
 
 ## SIGTAP por competência
 
