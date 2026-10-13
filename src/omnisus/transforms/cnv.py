@@ -20,12 +20,13 @@ which line wins.
   61: ``CBO2002.CNV`` (SIM) does so on 246 of its 2,429 lines. A line whose column
   60 is filled and that holds nothing from column 61 (``DNNOVA.CNV`` writes its
   code there) is outside the layout.
-* The header's second number is the code width, measured on each part of a token
-  split at the hyphen: a longer part, or a range with a non-blank, non-digit character
-  on both sides of the hyphen (``A00-A09``), raises instead of becoming a literal key.
-  A token with a blank or empty side that fits the width is not a range and stays a
-  literal key, as written: ``"  -99"`` in TurnosAt.CNV and ``" -Z"`` in TPGESTAO.CNV
-  (#24), ``"0-"`` in CARAT_AT.CNV (#73).
+* The header's second number is the code width; each part of a token split at the
+  hyphen must fit it, or the token raises. A token that, blanks around it aside, is
+  one word with a hyphen between two non-blank characters is a range, and a range
+  that is not bare ``digits-digits`` raises (``A00-A09``, ``1-A``, ``" 1-2"``) instead
+  of becoming a literal key. A token whose hyphen has a blank or nothing on one side
+  is not a range and stays a literal key, as written: ``"  -99"`` in TurnosAt.CNV and
+  ``" -Z"`` in TPGESTAO.CNV (#24), ``"0-"`` in CARAT_AT.CNV (#73).
 * A short code (width up to 4) listed on two lines takes the later line: in the
   manual's MESES.CNV, ``01`` is first "Ignorado" (``00-99``), then "Janeiro", which
   "prevalece, por aparecer por último" (ManualTabnet.pdf p. 21). A long code keeps
