@@ -76,6 +76,23 @@ que não resolve (`tests/unit/test_references.py`).
   `aux_cid10`, como `N182` e `N185`. `M881` (5 linhas) e `Q350` (3) têm rótulo próprio
   no S_CID, mas também não têm linha na `aux_cid10` e ficam sem rótulo no lake
   (`evidence/2026-10-07-sia-cid-widths/values.csv`).
+- **`0`, `0000` e categorias com zero no PA de 1994-2007.** Em
+  `sia_producao_ambulatorial_1994_2007`, `pa_cidpri` e `pa_cidsec` gravam `0`, de um
+  caractere, nas linhas com `pa_docorig` 'B': no arquivo de RR de 2007-12 (PARR0712),
+  todas as 14.123 linhas assim têm `0` nos dois campos. O S_CID do `TAB_SIA.zip` chama o
+  `0` de "CID NÃO IDENTIFICADO". `pa_cidpri` também grava `0000` ("CID NAO INFORMADO").
+  Os dois campos gravam ainda categorias de três caracteres completadas com zero
+  (`C610`, `C560`, `C800`...), que o S_CID também chama de "CID NÃO IDENTIFICADO",
+  exceto `C330`, que não está no S_CID. A `aux_cid10` guarda uma categoria sem
+  subcategorias com os três caracteres (`C61`), então nenhum desses valores encontra
+  linha e todos ficam sem rótulo no lake. O lake não converte `C610` em `C61`: em geral o
+  zero não é só enchimento (`C100` é o código C10.0). Quem quer, por exemplo, câncer de
+  próstata nessa era decide por conta própria se filtra `pa_cidpri IN ('C61', 'C610')`.
+  No censo de RR (162 arquivos de 1994-07 a 2007-12), de 674.744 `pa_cidpri`
+  preenchidos, 469.967 são `0`, 132.431 são `0000`, 718 são categorias com zero, 1 é
+  `Q350` e 71.627 encontram linha; de 629.457 `pa_cidsec` preenchidos, 618.123 são `0`,
+  533 são categorias com zero, 1 é `2` e 10.800 encontram linha. Só RR foi contado; outras UFs podem ter
+  outros valores (`evidence/2026-10-07-sia-cid-widths/values.csv`).
 - **Descrições abreviadas.** `aux_cid10.descricao` é o texto de `CID10.DBF`, que
   abrevia (`Form aguda doenc de Chagas s/compr cardiaco`).
 
