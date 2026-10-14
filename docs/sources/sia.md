@@ -302,9 +302,9 @@ quais campos se relacionam ao `S_CID.DBF`; a lista vem do censo de RR em
 `evidence/2026-10-07-sia-cid-widths/`. Os códigos ficam como publicados, e muitos não
 encontram linha na `aux_cid10`, por isso ficam sem rótulo (ver
 [Vocabulários](vocabularios.md)): o `0`, o `0000` e categorias de três caracteres
-completadas com zero (`C610`). Os códigos CID-10 válidos estão escritos como na
-`aux_cid10`, inclusive as categorias sem subcategoria (`G20`, `B24`), e encontram o nome
-da doença.
+completadas com zero (`C610`). Os códigos CID-10 válidos encontram o nome da doença,
+inclusive as categorias de três caracteres escritas sem zero (`G20`); as completadas com
+zero (`C610`), não.
 
 Também declaram referência a `aux_cid10.codigo` os campos de CID-10 de
 `sia_apac_laudos_diversos`, `sia_apac_medicamentos`, `sia_apac_nefrologia` e
