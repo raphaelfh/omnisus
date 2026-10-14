@@ -67,6 +67,29 @@
   notebook installs `"omnisus[colab]==<version>"`; `uv pip install "omnisus[colab]"` does
   the same elsewhere (#100).
 
+### Dictionaries
+
+- `sih_aih_reduzida_1992_2007` (1.3.0) warns in the dictionary, not only in the docs,
+  that `diag_princ` holds CID-9 (6 digits) from 1992-01 to 1997-12 and CID-10 from
+  1998-01 to 2007-12 in the same column, so a filter such as `LIKE 'I21%'` over
+  1992–2007 misses 1992–1997: open issue `diag-princ-cid9-ate-1997`, from the layout
+  census in `evidence/2026-10-01-rd-1992-2007-layouts/` and the four RD fixtures.
+  `cid_morte` and `cid_asso` get `cid-zero-a-esquerda`: RDRR0712 writes CID-10
+  categories after a `0` (`0I64`), which do not join `aux_cid10`. Codes and labels do
+  not change.
+- `sia_apac_cirurgia_bariatrica` (0.2.0) is titled "SIASUS — APAC de Acompanhamento
+  Pós-Cirurgia Bariátrica (ABO)": `TAB_SIA.zip` reads `ABO` files with
+  `APAC_Pos_Cirurgia_Bariatica.def`, and every row of `ABOSP2401.dbc` has `ap_pripal`
+  0301120056, post-surgery follow-up in SIGTAP. The dataset keeps its name; renaming it
+  would change the API. It gains the labels that DEF binds for `ap_catend`
+  (`CARAT_AT.CNV`), `ap_condic` (`TP_GESTAO.CNV`), `ap_motsai` (`MOTSAIPE.CNV`) and
+  `ap_tpups` (`TP_ESTAB.CNV`), as `sia_apac_acompanhamento_bariatrica` already had.
+  `ap_mn_ind` stays unlabelled: the DEF binds it to `MANT_IND.CNV` without the `CNV/`
+  folder, which is not the packaged member; so do `ap_cid_c1`–`ap_cid_c5`, whose
+  `CID_COM.CNV` is not archived.
+- `docs/sources/sia.md` gives the Informe SIASUS 2019-07 bariatric follow-up layout
+  (`ABUFMM.DBF`, 58 fields) to `AB`, whose header it matches, instead of `ABO`.
+
 ### Vocabularies
 
 - `aux_cid10` (2.1.0) gains `bloco` and `bloco_descricao`: the CID-10 group of each code
