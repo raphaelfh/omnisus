@@ -83,10 +83,18 @@ Os dicionários dessas linhas partem do inventário físico do descritor DBF de 
 
 De 1992-01 a 2007-12, os arquivos `RD` lidos (um de RR por mês, AP onde RR falta, e SP e MG nos meses de troca) têm 19 layouts DBF, e o dicionário de `sih_aih_reduzida_1992_2007` declara os 89 campos que aparecem em algum deles. Colunas aparecem e somem: `us_sh`, `us_sp`, `us_sadt`, `us_ortp` e `us_sangue` existem até 1997-12 (`us_rn`, de 1994-01 a 1997-12); `uti_total`, até 1999-12; `cod_arq` e `cont`, até 2006-03, menos em 2001; `semiplen`, de 1995-01 a 1997-12; `diag_sec`, só em 1997; `val_sang`, só em 1994-12, mês que não tem `val_sangue`; `cgc_mant`, só em 2004-07; `cod_seg`, de 2004-07 a 2006-03. Numa tabela com vários meses, a coluna que falta num mês fica NULL nas linhas desse mês. O `RD.DEF` dos três pacotes liga `semiplen` ("Gestão (95-97)") a `GESTAO.CNV`, de onde vêm os rótulos, e `diag_sec` a tabelas CID-9; `diag_sec` fica sem rótulo, como `diag_princ`. `num_proc` é numérico (N) de 1996-01 a 1996-07, e `insc_pn` e `seq_aih5`, de 2004-07 a 2006-03; nos outros meses em que existem são texto (C), o tipo que o dicionário declara até a [issue #40](https://github.com/raphaelfh/omnisus/issues/40) decidir. O lake recusa a mudança de tipo de uma coluna com `UnsafeSchemaError`: gravar `RDRR9602` numa tabela que já tem `RDRR9506` dá `VARCHAR versus BIGINT`. Com `import_dataset`, o lote do escopo recusado é desfeito (os outros escopos do lote saem como `failed`, código `rolled_back`) e os lotes seguintes continuam. Os arquivos lidos, com data, tamanho, SHA-256 e layout, estão em `evidence/2026-10-01-rd-1992-2007-layouts/`.
 
-Em `sih_aih_reduzida` e `sih_aih_rejeitada`, `CONTRAC.CNV` (`contracep1` e `contracep2`) e `motbloqueio.cnv` (`st_mot_blo`, só em `RJ`) abrem com a faixa `00-99`, que rotula qualquer código de dois dígitos: um código fora da tabela recebe "Ignorado/não se aplica" ou "NÃO ESPECIFICADO", e não fica sem rótulo.
+De 2008-01 em diante, os arquivos `RD` lidos (um de RR por mês, AP onde RR falta, e SP e MG nos meses de troca) têm 6 layouts (`evidence/2026-10-06-rd-2008-layouts/`). O layout 6, de 2025-03 em diante, acrescenta `fonte_orc` (C(2)). O `RD2008.DEF` liga o campo a `CNV/fonterem.CNV`, e os rótulos vêm dele: `01` a `04` (também escritos `1` e ` 1`) e a chave literal `  -zz`, "Branco Ignorado" (#24). No excerto de RDRR2503 (`sih_rd_rr_2025_03_excerpt`, 30 registros) ele vale `00` em todas as linhas, e `00` não é chave da tabela: fica sem rótulo, e a issue `fonte_orc-00-sem-fonte` do campo diz isso.
+
+Em `sih_aih_reduzida` e `sih_aih_rejeitada`, `CONTRAC.CNV` (`contracep1` e `contracep2`) e `motbloqueio.cnv` (`st_mot_blo`, só em `RJ`) abrem com a faixa `00-99`, que rotula qualquer código de dois dígitos: um código fora da tabela recebe "Ignorado/não se aplica" ou "NÃO ESPECIFICADO", e não fica sem rótulo. Do mesmo jeito, `etnia.cnv` (`etnia`) lista os códigos `0001` a `0264` e abre com a faixa `0000-9999`: qualquer outro código de quatro dígitos, `0000` inclusive, recebe "NÃO INFORMADO" só pela faixa (issue `etnia-nao-informado-pela-faixa` no campo).
 
 ## Armadilhas
 
+- Em `etnia`, o `0000` das fixtures do RD e do RJ (RR 2024-01 e excertos SP de 2022 e
+  2023) marca AIH de paciente não indígena, e não etnia desconhecida: nelas, toda linha
+  com `0000` tem `raca_cor` de 01 a 04, e toda linha com `raca_cor` 05 (indígena) tem um
+  código de `0001` a `0264`. O `etnia.cnv` rotula o `0000` "NÃO INFORMADO" só pela faixa
+  `0000-9999`; em RR 2024-01 são 3.303 das 3.714 AIHs do RD. Para contar pacientes
+  indígenas, filtre por `raca_cor`.
 - Há AIH de tipos diferentes em `ident` (Informe SIH 2016-03, p. 1) e um sequencial
   próprio para a AIH de longa permanência (p. 3).
 - A consulta `aih_distintas` do notebook compara o número de linhas com o número de
@@ -120,11 +128,11 @@ Em `sih_aih_reduzida` e `sih_aih_rejeitada`, `CONTRAC.CNV` (`contracep1` e `cont
   `DBF/CID10.DBF`). O `diagsec9` fica sem a ligação: a p. 4 dá `char (4)`, mas os 157
   arquivos RD lidos de 2014-01 a 2026-07 (um de RR ou AP por mês, mais SP e MG nos meses
   de troca de layout) publicam o campo com 1 caractere, curto demais para um código da
-  CID-10 (censo em `evidence/2026-10-06-rd-2008-layouts/`). A `aux_cid10` vem do `CID10.DBF` do SIM (ver
-  [Vocabulários](vocabularios.md)), não do `DBF/cid10.dbf` de `TAB_SIH.zip`, que o
-  repositório não empacota. O tipo de cada um, em `tpdisec1` a `tpdisec9`, vem de
-  `RD2008.DEF` → `TP_DIAGSEC.CNV`: 1 = preexistente, 2 = adquirido. O `0` que os
-  arquivos publicam não está na tabela e fica sem rótulo.
+  CID-10 (censo em `evidence/2026-10-06-rd-2008-layouts/`). A `aux_cid10` vem do
+  `CID10.DBF` do SIM (ver [Vocabulários](vocabularios.md)), não do `DBF/cid10.dbf` de
+  `TAB_SIH.zip`, que o repositório não empacota. O tipo de cada um, em `tpdisec1` a
+  `tpdisec9`, vem de `RD2008.DEF` → `TP_DIAGSEC.CNV`: 1 = preexistente, 2 = adquirido. O
+  `0` que os arquivos publicam não está na tabela e fica sem rótulo.
 - `natureza` tem conteúdo só até maio de 2012; a natureza jurídica pela CONCLA está em
   `nat_jur` (Informe SIH 2016-03, p. 2).
 - `idade` depende de `cod_idade` (Informe SIH 2016-03, p. 2). O pacote oficial
@@ -168,10 +176,6 @@ Em `sih_aih_reduzida` e `sih_aih_rejeitada`, `CONTRAC.CNV` (`contracep1` e `cont
   a auditoria de 2026-09-14 acrescentou o pacote oficial TAB_SIH: unidade 5 usa
   100 + quantidade no domínio confirmado; sexo 1 é masculino e 2/3 feminino. A consulta `campo_morte` do notebook mostra
   os valores publicados.
-- `complex`, `ident`, `instru`, `natureza`, `raca_cor`, `sexo` e `vincprev` mantêm o
-  mapa manual: o CNV de cada um reivindica um código duas vezes (faixa e valor
-  explícito), e o gerador rejeita esse caso
-  (`src/omnisus/data/dicionarios/sources/cnv/vinculos.json`, `sem_cnv`).
 - O comprimento do código de município nos dados: o documento declara 6 caracteres
   (p. 1–2). Confira nos seus dados antes de juntar com outra base.
 - Se o layout vale para arquivos processados depois de 2016-03: o documento é o informe
