@@ -7,7 +7,7 @@ ler (`sus.load`), conferir (`sus.check_columns`), analisar (`sus.label` e polars
 citar (`sus.cite`). Troque `BASE`, `UF`, `ANO` (e `MES`) na célula de parâmetros para
 outra base ou recorte. `bases.py` lista todas as bases (`sus.describe_datasets()`) e
 leva qualquer uma até a citação, sem análise própria. `explorar.py` é diferente: abre
-um lake que já existe (no computador ou copiado do Google Drive) e, com widgets, escolhe
+um lake que já existe numa pasta do computador e, com widgets, escolhe
 bases e escopos, mostra as linhas, o dicionário de cada base e o perfil de uma coluna e
 cita os escopos escolhidos. Ele também importa vários anos, UFs e meses de uma vez, com
 um relatório do que houve com cada escopo. Comece pelo
@@ -35,7 +35,12 @@ interface).
 Para começar sem instalar nada, o [notebook do Colab](colab.ipynb)
 [![Abrir no Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/raphaelfh/omnisus/blob/main/notebooks/colab.ipynb)
 percorre a biblioteca de ponta a ponta com Roraima: SIM 2022, SIH processado em janeiro de 2023
-e o censo 2022 do IBGE, do download à taxa por 100 mil habitantes e à citação.
+e o censo 2022 do IBGE, do download à taxa por 100 mil habitantes e à citação. O
+[notebook de exploração do Colab](explorar_colab.ipynb)
+[![Abrir no Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/raphaelfh/omnisus/blob/main/notebooks/explorar_colab.ipynb)
+faz no Colab o que `explorar.py` faz no computador, com o lake no seu Google Drive:
+importa escopos, mostra as linhas de um recorte com rótulos, o perfil de uma coluna e a
+citação.
 
 ## Como abrir
 
