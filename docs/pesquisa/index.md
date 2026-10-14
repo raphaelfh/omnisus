@@ -33,7 +33,9 @@ Escolha onde rodar. Os três caminhos usam a mesma biblioteca e chegam à mesma 
     [![Open in molab](https://molab.marimo.io/molab-shield.svg)](https://molab.marimo.io/github/raphaelfh/omnisus/blob/main/notebooks/sim_obitos.py)
 
     Use a execução em **servidor**, não em WebAssembly: DuckDB e o FTP do DATASUS não
-    rodam no navegador.
+    rodam no navegador. Mesmo no servidor, o download do DATASUS quase sempre falha no
+    molab: a conexão de dados do FTP cai na maior parte das vezes a partir da rede dele
+    ([medições](https://github.com/raphaelfh/omnisus/blob/main/evidence/2026-10-14-ftp-550-conexao-de-dados.md)). Para baixar dados, use o Colab ou o seu computador.
 
 === "marimo no seu computador"
 

@@ -122,8 +122,13 @@ def _(mo):
     maiores do SIA passam de 300 MB compactados (o BPA-I de SP de outubro de 2023,
     `BISP2310.dbc`, tem 370 MB); numa máquina com pouca memória, importe-os poucos de
     cada vez. O disco cresce com o que você escolhe: a linha abaixo dos seletores
-    mostra o espaço livre. No molab, o lake importado fica no disco da sessão e some
-    quando ela termina.
+    mostra o espaço livre.
+
+    **No molab, importar quase sempre falha.** A conexão de dados do FTP do DATASUS
+    cai na maior parte das vezes a partir da rede do molab
+    ([medições](https://github.com/raphaelfh/omnisus/blob/main/evidence/2026-10-14-ftp-550-conexao-de-dados.md)), e uma importação precisa de várias seguidas. Importe no
+    computador ou no Colab, com o
+    [notebook de exploração do Colab](https://github.com/raphaelfh/omnisus/blob/main/notebooks/explorar_colab.ipynb).
 
     **Falhas.** O relatório diz o que houve com cada escopo. Clique em *Importar* de
     novo para continuar: o que já está no lake é pulado sem baixar. Se o kernel cair

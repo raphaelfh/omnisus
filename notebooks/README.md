@@ -45,7 +45,9 @@ citação.
 ## Como abrir
 
 No navegador, sem instalar nada: a badge **Open in molab** de cada notebook.
-DuckDB, FTP e o lake local não rodam em `/wasm`.
+DuckDB, FTP e o lake local não rodam em `/wasm`. No molab, o download do DATASUS quase
+sempre falha: a conexão de dados do FTP cai na maior parte das vezes a partir da rede
+dele ([medições](https://github.com/raphaelfh/omnisus/blob/main/evidence/2026-10-14-ftp-550-conexao-de-dados.md)). Para baixar dados, use o Colab ou o seu computador.
 
 No seu computador, com a versão do PyPI fixada no cabeçalho PEP 723 de cada notebook:
 
