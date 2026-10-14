@@ -38,6 +38,13 @@
   unknown ethnicity, as the SIH page and that issue say: count indigenous patients by
   `raca_cor`. 15 labels hold U+00AD, a soft hyphen, and a text search misses them
   (issue `etnia-hifen-suave`). The RD dictionary grows by 314 KB and the RJ one by 294 KB.
+- The CID-10 fields of `sia_producao_ambulatorial` (1.2.0), `sia_apac_quimioterapia`
+  (0.2.0) and `sia_apac_radioterapia` (1.1.0), 20 fields, declare a reference to
+  `aux_cid10`, so `reference_join_sql` works for them. `0000` is "CID NAO INFORMADO" in
+  `S_CID.DBF` of `TAB_SIA.zip` and finds no row. The census of the CID field widths and
+  of the values without a row is in `evidence/2026-10-07-sia-cid-widths/`.
+  `sia_producao_ambulatorial_1994_2007` does not declare the reference yet: its `0` and
+  zero-padded categories (`C610`) wait for a decision in #82.
 
 ### Packaging
 
@@ -49,6 +56,14 @@
 
 ### Dictionaries
 
+- `sih_aih_reduzida_1992_2007` (1.3.0) warns in the dictionary, not only in the docs,
+  that `diag_princ` holds CID-9 (6 digits) from 1992-01 to 1997-12 and CID-10 from
+  1998-01 to 2007-12 in the same column, so a filter such as `LIKE 'I21%'` over
+  1992–2007 misses 1992–1997: open issue `diag-princ-cid9-ate-1997`, from the layout
+  census in `evidence/2026-10-01-rd-1992-2007-layouts/` and the four RD fixtures.
+  `cid_morte` and `cid_asso` get `cid-zero-a-esquerda`: RDRR0712 writes CID-10
+  categories after a `0` (`0I64`), which do not join `aux_cid10`. Codes and labels do
+  not change.
 - `sia_apac_cirurgia_bariatrica` (0.2.0) is titled "SIASUS — APAC de Acompanhamento
   Pós-Cirurgia Bariátrica (ABO)": `TAB_SIA.zip` reads `ABO` files with
   `APAC_Pos_Cirurgia_Bariatica.def`, and every row of `ABOSP2401.dbc` has `ap_pripal`
