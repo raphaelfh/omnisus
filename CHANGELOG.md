@@ -22,13 +22,17 @@
   data table is pinned by the caller's `FROM` (#101).
 
 - `cite()` and `citation_from_publications()` with `accessed=None` print as the access
-  date the UTC day each row's publication was written to the lake (`published_at`, or
-  `collected_at` for IBGE), instead of the day the citation is generated: a file imported
-  on 2026-10-18 and cited a week later stays "acessado em 2026-10-18". `accessed=` still
-  sets one date for every row. A row with neither column prints "(data de acesso
-  desconhecida)"; a value that is not an ISO date raises `ValueError`.
-- `cite(snapshot_id=N)` reads the publications as they were at snapshot N: after a
-  `replace`, citing an older snapshot keeps that snapshot's date and run.
+  date the UTC day of each row's `published_at` (when the publication was written to the
+  lake) or, for IBGE, of `collected_at` (when the HTTP request was made), instead of the
+  day the citation is generated: a file imported on 2026-10-18 and cited a week later
+  stays "acessado em 2026-10-18". A value with an offset is converted to UTC first.
+  `accessed=` still sets one date for every row. A row with neither column prints
+  "(data de acesso desconhecida)"; a value that is not an ISO date raises `ValueError`.
+- `cite(snapshot_id=N)` reads the publications, and the IBGE manifest, as they were at
+  snapshot N: after a `replace`, citing an older snapshot keeps that snapshot's date and
+  run. Without `snapshot_id`, a `LakeReader(snapshot_id=M)` cites M instead of the
+  newest snapshot. A snapshot the lake does not have raises
+  `duckdb.InvalidInputException`.
 
 ### Dictionaries
 

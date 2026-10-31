@@ -4,13 +4,13 @@ from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
-from datetime import date
+from datetime import UTC, date, datetime
 from typing import Any
 from urllib.parse import urlparse
 
 from omnisus._version import __version__
 from omnisus.lake import Lake, LakeReader
-from omnisus.lake.publication import ImportPolicy
+from omnisus.lake.publication import ImportPolicy, _select
 from omnisus.lake.sql import at_version, qualified, quote_identifier
 from omnisus.sources._base import ImportReport, ScopeKey
 from omnisus.sources.datasus_ftp._runner import (
@@ -258,9 +258,9 @@ def citation_from_publications(
             the IBGE wording.
         run_id: The run to name; ``None`` uses each row's own ``run_id``.
         accessed: Access date to print for every row; ``None`` (default) prints the
-            UTC day each row's publication was written to the lake (``published_at``,
-            or ``collected_at`` for IBGE); a row with neither prints "(data de acesso
-            desconhecida)".
+            UTC day of each row's ``published_at`` (when the publication was written to
+            the lake) or, for IBGE, of ``collected_at`` (when the HTTP request was
+            made); a row with neither prints "(data de acesso desconhecida)".
 
     Returns:
         A :class:`~omnisus.Citation` whose ``text`` is the Portuguese paragraph.
@@ -325,27 +325,38 @@ def cite(
         lake: An open :class:`~omnisus.Lake` or :class:`~omnisus.LakeReader`.
         dataset: Cite only this dataset, e.g. ``"sim_obitos"``; ``None`` (default)
             cites every active publication.
-        snapshot_id: The snapshot your analysis read; ``None`` (default) is the
-            newest.
-        run_id: Cite only this run's publications.
+        snapshot_id: The snapshot your analysis read; ``None`` (default) is the one a
+            ``LakeReader(snapshot_id=...)`` is pinned to, else the newest. The
+            publications are read as they were at that snapshot.
+        run_id: Cite only this run's publications. The IBGE manifest has no run, so
+            ``run_id`` does not filter ``"ibge_populacao"``.
         accessed: Access date to print; ``None`` (default) prints the UTC day each
-            publication was written to the lake.
+            publication was written to the lake (for IBGE, the day of the HTTP
+            request).
 
     Returns:
         A :class:`~omnisus.Citation`; paste ``citation.text`` into the methods.
 
     Raises:
-        LookupError: ``snapshot_id`` is ``None`` and the lake has no snapshots.
-        ValueError: a publication's ``published_at`` is not an ISO date.
+        LookupError: ``snapshot_id`` is ``None``, the handle is not pinned and the lake
+            has no snapshots.
+        ValueError: a publication's ``published_at`` or ``collected_at`` is not an ISO
+            date.
+        duckdb.InvalidInputException: the lake has no snapshot ``snapshot_id``.
 
     Examples:
         >>> import omnisus as sus
         >>> with sus.LakeReader() as lake:  # doctest: +SKIP
         ...     print(sus.cite(lake, dataset="sim_obitos").text)
     """
-    pinned = latest_snapshot_id(lake) if snapshot_id is None else snapshot_id
+    if snapshot_id is not None:
+        pinned = snapshot_id
+    elif isinstance(lake, LakeReader) and lake.snapshot_id is not None:
+        pinned = lake.snapshot_id
+    else:
+        pinned = latest_snapshot_id(lake)
     if dataset == "ibge_populacao":
-        rows = _ibge_manifest(lake)
+        rows = _ibge_manifest(lake, pinned)
     else:
         rows = [
             row
@@ -362,8 +373,9 @@ def cite(
 
 
 def _accessed_on(row: Mapping[str, Any], accessed: date | None) -> str:
-    """The access date to print: ``accessed`` when given, else the UTC day the row's
-    publication was written to the lake (``published_at``, or ``collected_at`` for IBGE).
+    """The access date to print: ``accessed`` when given, else the UTC day of the row's
+    ``published_at`` (when the publication was written to the lake) or, for IBGE,
+    ``collected_at`` (when the HTTP request was made). A value without an offset is UTC.
 
     Raises:
         ValueError: the row's date is not an ISO date (``AAAA-MM-DD...``).
@@ -374,12 +386,11 @@ def _accessed_on(row: Mapping[str, Any], accessed: date | None) -> str:
     stamp = row.get(field)
     if not stamp:
         return "(data de acesso desconhecida)"
-    if isinstance(stamp, date):
-        return stamp.isoformat()[:10]
     try:
-        return date.fromisoformat(str(stamp)[:10]).isoformat()
+        when = datetime.fromisoformat(str(stamp))
     except ValueError:
         raise ValueError(f"{field} must be an ISO date (AAAA-MM-DD...), got {stamp!r}") from None
+    return (when.astimezone(UTC) if when.tzinfo else when).date().isoformat()
 
 
 def _require_join_digits(digits: int) -> None:
@@ -437,17 +448,11 @@ def _ibge_paragraph(row: Mapping[str, Any], snapshot_id: int, accessed_on: str) 
     )
 
 
-def _ibge_manifest(lake: Lake | LakeReader) -> list[dict[str, Any]]:
-    tables = lake.tables()
-    if "ibge_population_manifest" not in tables:
-        return []
-    rows = (
-        lake.connect()
-        .execute(
-            f"SELECT publication_id, product, ano, sha256, url, collected_at "
-            f"FROM {qualified(lake.alias, 'ibge_population_manifest')}"
-        )
-        .to_arrow_table()
-        .to_pylist()
+def _ibge_manifest(lake: Lake | LakeReader, snapshot_id: int) -> list[dict[str, Any]]:
+    rows = _select(
+        lake,
+        f"SELECT publication_id, product, ano, sha256, url, collected_at "
+        f"FROM {qualified(lake.alias, 'ibge_population_manifest')}{at_version(snapshot_id)}",
+        [],
     )
-    return list(rows)
+    return rows or []

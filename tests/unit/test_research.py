@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import UTC, date, datetime
+from datetime import UTC, date, datetime, timedelta, timezone
 from pathlib import Path
 
 import duckdb
@@ -308,3 +308,47 @@ def test_an_import_date_that_is_not_iso_raises_a_clear_error(stamp: str) -> None
 def test_an_import_date_may_be_a_datetime_or_a_date(stamp: date) -> None:
     row = {"dataset": "sim_obitos", "source_uri": "x/DORR2023.dbc", "published_at": stamp}
     assert "acessado em 2026-10-18 " in sus.citation_from_publications([row], snapshot_id=3).text
+
+
+@pytest.mark.parametrize(
+    "stamp",
+    [
+        "2026-10-18T22:30:00-03:00",
+        datetime(2026, 10, 18, 22, 30, tzinfo=timezone(timedelta(hours=-3))),
+    ],
+)
+def test_an_import_date_with_an_offset_prints_its_utc_day(stamp: object) -> None:
+    """22:30 at -03:00 is already 2026-10-19 in UTC, the day the docs promise."""
+    row = {"dataset": "sim_obitos", "source_uri": "x/DORR2023.dbc", "published_at": stamp}
+    assert "acessado em 2026-10-19 " in sus.citation_from_publications([row], snapshot_id=3).text
+
+
+def test_cite_ibge_reads_the_manifest_at_the_snapshot(tmp_path: Path) -> None:
+    """A second manifest row written after snapshot N stays out of ``cite(snapshot_id=N)``."""
+    pl = __import__("polars")
+    target = f"ducklake:{tmp_path}/ibge-pin.ducklake"
+
+    def _manifest(publication_id: str, sha256: str, collected_at: str):
+        return pl.DataFrame(
+            {
+                "publication_id": [publication_id],
+                "product": ["census"],
+                "ano": [2022],
+                "sha256": [sha256],
+                "url": ["https://example.test/sidra"],
+                "collected_at": [collected_at],
+            }
+        ).lazy()
+
+    with Lake.local(target) as lake:
+        lake.ingest(
+            "ibge_population_manifest", _manifest("pub-1", "a" * 64, "2026-01-01T00:00:00+00:00")
+        )
+        antigo = sus.latest_snapshot_id(lake)
+        lake.ingest(
+            "ibge_population_manifest", _manifest("pub-2", "b" * 64, "2026-02-01T00:00:00+00:00")
+        )
+        velha = sus.cite(lake, dataset="ibge_populacao", snapshot_id=antigo)
+
+    assert "a" * 64 in velha.text and "acessado em 2026-01-01." in velha.text
+    assert "b" * 64 not in velha.text and "2026-02-01" not in velha.text
