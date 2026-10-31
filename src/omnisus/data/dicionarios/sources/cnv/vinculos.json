@@ -1071,7 +1071,7 @@
         "num_filhos": "RD2008.DEF (linha 521) liga NUM_FILHOS a NUMFILH.CNV; não está empacotado. Issue 137.",
         "proc_rea": "RD2008.DEF (linhas 281-283) liga PROC_REA a PROCOBS2b.CNV; as linhas trazem um nome de campo no lugar da coluna inicial, forma que as pp. 87-88 do TabWin.pdf não documentam para CNV; não está empacotado. Issue 137.",
         "seq_aih5": "RD2008.DEF (linha 232) liga SEQ_AIH5 a SEQAIH.CNV; não está empacotado. Issue 137.",
-        "uf_zi": "RD2008.DEF (linhas 175-176) liga UF_ZI a br_municgestor.cnv; não está empacotado. É agrupamento do código: o DEF chama as linhas de 'Município gestor'. Issue 137.",
+        "uf_zi": "RD2008.DEF (linhas 175-176) liga UF_ZI a br_municgestor.cnv, com o rótulo 'Município gestor'; não está empacotado. Issue 137.",
         "uti_mes_to": "RD2008.DEF (linha 236) liga UTI_MES_TO a DIARIASUTI.CNV; não está empacotado. Issue 137."
       }
     },
@@ -1436,7 +1436,7 @@
         "num_filhos": "RJ2008.DEF (linha 478) liga NUM_FILHOS a NUMFILH.CNV; não está empacotado. Issue 137.",
         "proc_rea": "RJ2008.DEF (linhas 283-285) liga PROC_REA a PROCOBS2b.CNV; as linhas trazem um nome de campo no lugar da coluna inicial, forma que as pp. 87-88 do TabWin.pdf não documentam para CNV; não está empacotado. Issue 137.",
         "seq_aih5": "RJ2008.DEF (linha 236) liga SEQ_AIH5 a SEQAIH.CNV; não está empacotado. Issue 137.",
-        "uf_zi": "RJ2008.DEF (linhas 177-178) liga UF_ZI a br_municgestor.cnv; não está empacotado. É agrupamento do código: o DEF chama as linhas de 'Município gestor'. Issue 137.",
+        "uf_zi": "RJ2008.DEF (linhas 177-178) liga UF_ZI a br_municgestor.cnv, com o rótulo 'Município gestor'; não está empacotado. Issue 137.",
         "uti_mes_to": "RJ2008.DEF (linha 240) liga UTI_MES_TO a DIARIASUTI.CNV; não está empacotado. Issue 137."
       }
     },

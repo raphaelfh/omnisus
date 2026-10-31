@@ -15,7 +15,7 @@ import pytest
 import yaml
 
 from omnisus.sources.datasus_ftp.parse import dbc_bytes_to_lazyframe
-from omnisus.transforms.cnv import parse_def
+from omnisus.transforms.cnv import DefBinding, parse_def
 
 ROOT = Path(__file__).resolve().parents[3]
 CNV = ROOT / "src/omnisus/data/dicionarios/sources/cnv"
@@ -71,62 +71,27 @@ def test_every_hand_map_a_def_binds_is_generated_or_excused(monkeypatch):
         assert set(spec.get("sem_cnv", {})) <= bound_anywhere, dataset
 
 
-# Issue #7: the fields RD2008.DEF and RJ2008.DEF bind at position 1 to CNV members that
-# are not packaged yet, with the values the RR 2024-01 fixture publishes. gestor_cod of
-# the RD is related to DBF/LIBGESTOR.DBF (a lookup, decision 6), not bound to a CNV, so
-# it is not here.
-SIH_FIELDS_WAITING_FOR_A_MEMBER = [
-    ("sih_aih_reduzida", "sih_rr_2024_01_mini", "nat_jur", {"1236", "1244", "2062"}),
-    ("sih_aih_reduzida", "sih_rr_2024_01_mini", "cnaer", {"000"}),
-    ("sih_aih_rejeitada", "sih_rj_rr_2024_01_mini", "nat_jur", {"1236", "1244"}),
-    ("sih_aih_rejeitada", "sih_rj_rr_2024_01_mini", "cnaer", {"000"}),
-    ("sih_aih_rejeitada", "sih_rj_rr_2024_01_mini", "gestor_cod", {""}),
-]
-
-
-@pytest.mark.parametrize(
-    ("dataset", "fixture", "field", "observed"), SIH_FIELDS_WAITING_FOR_A_MEMBER
-)
-def test_a_sih_field_bound_to_an_unpackaged_cnv_is_excused_naming_each_member(
-    monkeypatch, dataset, fixture, field, observed
-):
-    """Issue #7, decision 4: a field the SIH DEF binds to a CNV that is not packaged has no
-    map and is listed in `sem_cnv` with a reason that names every member the DEF binds it
-    to, taken from the packaged DEF, not from memory; the fixture publishes exactly the
-    values recorded here, which the reason may cite."""
-    gerar = _load(monkeypatch)
-    vinculos = json.loads((CNV / "vinculos.json").read_text(encoding="utf-8"))
-    spec = vinculos["datasets"][dataset]
-    members = {
-        (Path(def_path).parent / b.table.replace("\\", "/")).as_posix()
-        for def_path in spec["def"]
-        for b in parse_def(gerar.read_def(def_path, vinculos))
-        if b.field.lower() == field and b.start == 1
-    }
-    assert members, (dataset, field)
-    packaged = {m.lower() for m in vinculos["membros"]}
-    assert not {m.lower() for m in members} & packaged, (dataset, field)
-    doc = yaml.load(
-        (ROOT / "src/omnisus/data/dicionarios" / f"{dataset}.yaml").read_text("utf-8"),
-        Loader=yaml.CSafeLoader,
-    )
-    (definition,) = [f for f in doc["schema"]["fields"] if f["name"] == field]
-    assert "x-decode" not in definition
-    assert field not in spec["campos"]
-    reason = spec.get("sem_cnv", {}).get(field, "")
-    assert reason, (dataset, field)
-    assert all(Path(m).name in reason for m in members), (dataset, field, sorted(members))
-    frame = dbc_bytes_to_lazyframe(
-        (ROOT / "tests/fixtures/dbc" / f"{fixture}.dbc").read_bytes(), dataset=dataset
-    ).collect()
-    assert set(frame[field].to_list()) == observed, (dataset, field)
-
-
-# Issue #137: every field RD2008.DEF and RJ2008.DEF bind to a CNV, at any start column,
-# has a map (`x-decode` or `campos`) or a reason in `sem_cnv`. The issue leaves one field
-# out on purpose: cod_idade of the RJ, which issue #6 tracks.
+# Issues #7 (decision 4) and #137: every field RD2008.DEF and RJ2008.DEF bind to a CNV,
+# at any start column, has a map (`x-decode` or `campos`) or a reason in `sem_cnv`. The
+# issue leaves one field out on purpose: cod_idade of the RJ, which issue #6 tracks.
 SIH_2008_FIELDS_LEFT_TO_ANOTHER_ISSUE = {"sih_aih_rejeitada": {"cod_idade"}}
+# Issue #7: fields waiting for the choice of a member, with the values the RR 2024-01
+# fixtures publish, which their reasons cite. gestor_cod of the RD is related to
+# DBF/LIBGESTOR.DBF (a lookup, decision 6), not bound to a CNV, so it is not here.
+SIH_FIELDS_WAITING_FOR_A_MEMBER = {
+    ("sih_aih_reduzida", "nat_jur"): ("sih_rr_2024_01_mini", {"1236", "1244", "2062"}),
+    ("sih_aih_reduzida", "cnaer"): ("sih_rr_2024_01_mini", {"000"}),
+    ("sih_aih_rejeitada", "nat_jur"): ("sih_rj_rr_2024_01_mini", {"1236", "1244"}),
+    ("sih_aih_rejeitada", "cnaer"): ("sih_rj_rr_2024_01_mini", {"000"}),
+    ("sih_aih_rejeitada", "gestor_cod"): ("sih_rj_rr_2024_01_mini", {""}),
+}
 _CITED_LINES = re.compile(r"\blinhas? ((?:\d+(?:-\d+)?(?:, | e )?)+)")
+_CITED_DEFS = re.compile(r"\b\w+\.DEF\b")
+_CITED_MEMBERS = re.compile(r"[\w-]+\.cnv\b", re.IGNORECASE)
+_CITED_COUNT = re.compile(r"\ba (\d+) tabelas\b")
+_CITED_STARTS = re.compile(r"([\w-]+\.cnv) a partir da posição (\d+)", re.IGNORECASE)
+_CITED_LABELS = re.compile(r"(?:chama as linhas de|com o rótulo) ((?:'[^']+'(?:, | e )?)+)")
+_NO_START_COLUMN = "nome de campo no lugar da coluna inicial"
 
 
 def _cited_lines(reason: str) -> set[int]:
@@ -139,13 +104,18 @@ def _cited_lines(reason: str) -> set[int]:
 
 
 @pytest.mark.parametrize("dataset", ["sih_aih_reduzida", "sih_aih_rejeitada"])
-def test_every_field_the_sih_2008_def_binds_has_a_map_or_a_reason(monkeypatch, dataset):
-    """Issue #137 (decision 4 of #7, extended): no field the RD or RJ DEF binds is left
-    without a map and without a word. A field with no map is in `sem_cnv` with a reason
-    that names the DEF and cites every line of it that binds the field, read from the
-    packaged DEF (each line on its own), and says why the binding gives no map: a
-    grouping, a start other than 1, a start column the DEF does not give, or a member
-    that is not packaged. cod_idade of the RJ is the one field left out, by the issue."""
+def test_every_field_the_sih_2008_def_binds_has_a_map_or_a_reason_true_to_the_def(
+    monkeypatch, dataset
+):
+    """Issues #7 (decision 4) and #137: no field the RD or RJ DEF binds is left without a
+    map and without a word, and each reason says what the packaged DEF says, read line by
+    line. A field with no map is in `sem_cnv` with a reason that cites that DEF and no
+    other, exactly the lines that bind the field, every member by name (or their exact
+    count, naming only real members), each start other than 1, the field name the DEF
+    puts in place of a start column, and only labels the DEF writes; every member is
+    unpacked and the reason never says otherwise. The fields waiting for a member also
+    hold the values the fixture publishes. cod_idade of the RJ is the one field left out,
+    by the issue."""
     gerar = _load(monkeypatch)
     vinculos = json.loads((CNV / "vinculos.json").read_text(encoding="utf-8"))
     spec = vinculos["datasets"][dataset]
@@ -155,31 +125,65 @@ def test_every_field_the_sih_2008_def_binds_has_a_map_or_a_reason(monkeypatch, d
         Loader=yaml.CSafeLoader,
     )
     fields = {f["name"]: f for f in doc["schema"]["fields"]}
-    lines: dict[str, set[int]] = defaultdict(set)
+    bindings: dict[str, list[tuple[int, DefBinding]]] = defaultdict(list)
     text = gerar.read_def(def_path, vinculos)
     for number, line in enumerate(text.splitlines(), 1):
         for b in parse_def(line):
             if b.field.lower() in fields:
-                lines[b.field.lower()].add(number)
+                bindings[b.field.lower()].append((number, b))
     reasons = spec.get("sem_cnv", {})
     without_word = {
         f
-        for f in lines
+        for f in bindings
         if not fields[f].get("x-decode") and f not in spec["campos"] and f not in reasons
     }
     assert without_word == SIH_2008_FIELDS_LEFT_TO_ANOTHER_ISSUE.get(dataset, set()), (
         dataset,
         sorted(without_word),
     )
-    for field in sorted(lines.keys() & reasons.keys()):
+    packaged = {Path(m).name.lower() for m in vinculos["membros"]}
+    for field in sorted(bindings.keys() & reasons.keys()):
         if fields[field].get("x-decode"):
             continue  # a hand map with a reason says why the CNV does not fit (cod_idade, RD)
-        reason = reasons[field]
-        assert Path(def_path).name in reason, (dataset, field)
-        missing = lines[field] - _cited_lines(reason)
-        assert not missing, (dataset, field, sorted(missing))
-        kinds = ("agrupamento", "posição", "coluna inicial", "empacotad")
-        assert any(kind in reason for kind in kinds), (dataset, field)
+        reason, where = reasons[field], (dataset, field)
+        bound = [b for _, b in bindings[field]]
+        members = {Path(b.table.replace("\\", "/")).name for b in bound}
+        assert set(_CITED_DEFS.findall(reason)) == {Path(def_path).name}, where
+        assert _cited_lines(reason) == {n for n, _ in bindings[field]}, where
+        named = set(_CITED_MEMBERS.findall(reason))
+        count = _CITED_COUNT.search(reason)
+        if count:
+            assert int(count.group(1)) == len({m.lower() for m in members}), where
+            assert named and named <= members, (where, sorted(named - members))
+        else:
+            assert named == members, (where, sorted(named ^ members))
+        starts = {
+            (Path(b.table.replace("\\", "/")).name, b.start)
+            for b in bound
+            if b.start not in (1, None)
+        }
+        cited_starts = {(m, int(p)) for m, p in _CITED_STARTS.findall(reason)}
+        assert cited_starts == starts, where
+        assert (_NO_START_COLUMN in reason) == any(b.start is None for b in bound), where
+        quoted = {
+            label
+            for group in _CITED_LABELS.findall(reason)
+            for label in re.findall(r"'([^']+)'", group)
+        }
+        assert quoted <= {b.label for b in bound}, (where, sorted(quoted))
+        assert not {m.lower() for m in members} & packaged, where
+        claims = re.findall(r"[^.;]*empacotad[^.;]*", reason)
+        assert claims, where
+        assert all(re.search(r"\b(?:não|nenhum|nenhuma)\b", c) for c in claims), where
+        if where in SIH_FIELDS_WAITING_FOR_A_MEMBER:
+            fixture, observed = SIH_FIELDS_WAITING_FOR_A_MEMBER[where]
+            frame = dbc_bytes_to_lazyframe(
+                (ROOT / "tests/fixtures/dbc" / f"{fixture}.dbc").read_bytes(), dataset=dataset
+            ).collect()
+            assert set(frame[field].to_list()) == observed, where
+    assert {k for k in SIH_FIELDS_WAITING_FOR_A_MEMBER if k[0] == dataset} <= {
+        (dataset, f) for f in reasons
+    }
 
 
 def test_the_listed_out_of_layout_def_lines_are_the_only_ones_dropped(monkeypatch):

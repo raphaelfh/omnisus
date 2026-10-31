@@ -196,9 +196,9 @@ Em `sih_aih_reduzida` e `sih_aih_rejeitada`, `CONTRAC.CNV` (`contracep1` e `cont
 - Os demais campos que o `RD2008.DEF` e o `RJ2008.DEF` ligam a um CNV e que ficam sem
   mapa (21 no RD, 20 no RJ) também estão em `sem_cnv`, com as linhas do DEF e o motivo:
   agrupamento do código (capítulo e grupo da CID, ano e mês das datas, região e UF do
-  município, `br_municgestor`), coluna inicial diferente de 1 (`dias_perm`, `n_aih`),
-  linhas sem coluna inicial (`faec_tp`, `proc_rea`) ou tabela não empacotada (#137). O
-  `cod_idade` do RJ fica de fora, na #6.
+  município), coluna inicial diferente de 1 (`dias_perm`, `n_aih`), linhas que trazem um
+  nome de campo no lugar da coluna inicial (`faec_tp`, `proc_rea`) ou tabela não
+  empacotada (`uf_zi` e os demais, #137). O `cod_idade` do RJ fica de fora, na #6.
 
 ## Como usar
 
