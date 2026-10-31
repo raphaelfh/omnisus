@@ -122,20 +122,6 @@ def _batches(raw, backend, batch_rows):
         return list(reader)
 
 
-@pytest.fixture
-def native_reads_date(request):
-    """omnisus-dbf 0.2.0 (on PyPI, pinned in uv.lock) rejects D fields; native.yml builds
-    the wheel from this checkout and runs with --require-rust-dbf, so there it must pass."""
-    try:
-        native().open_reader(
-            make_dbf([("X", "D", 8, 0)], [b" 20240101"]), encoding="latin-1", batch_rows=1
-        ).close()
-    except native().UnsupportedDbfError:
-        if request.config.getoption("--require-rust-dbf"):
-            pytest.fail("--require-rust-dbf: the installed omnisus-dbf rejects D fields")
-        pytest.skip("installed omnisus-dbf predates D fields")
-
-
 # dbfread2 parseD: int() of each slice, so whitespace, sign and underscores count.
 @pytest.mark.parametrize(
     "raw",

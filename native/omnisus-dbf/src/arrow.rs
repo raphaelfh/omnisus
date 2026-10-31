@@ -38,23 +38,20 @@ impl Column {
         if kind == b'D' {
             let value = decode::date(data)?;
             // A date column stays Arrow null until its first value, like numbers.
-            if let Self::Null(count) = self {
-                let count = *count;
-                match value {
-                    None => *self = Self::Null(count + 1),
+            match self {
+                Self::Null(count) => match value {
+                    None => *count += 1,
                     Some(days) => {
                         let mut b = Date32Builder::new();
-                        b.append_nulls(count);
+                        b.append_nulls(*count);
                         b.append_value(days);
                         *self = Self::Date(b);
                     }
-                }
-                return Ok(());
+                },
+                Self::Date(b) => b.append_option(value),
+                // `build` starts a non-`C` column as `Null`, and only this branch changes it.
+                _ => unreachable!("a DBF date column is only Null or Date"),
             }
-            let Self::Date(b) = self else {
-                return Err(Error::Type("DBF date column holds a non-date value".into()));
-            };
-            b.append_option(value);
             return Ok(());
         }
         let value = decode::number(data)?;
