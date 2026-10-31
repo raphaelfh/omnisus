@@ -8,7 +8,7 @@ A `aux_cid10` 2.3.0 junta ao `CID10.DBF` os códigos do `tb_cid.txt` do SIGTAP q
 
 | Arquivo | SHA-256 |
 | --- | --- |
-| `SIM/CID10/TABELAS/CID10.DBF` (registrado, `sim-tab-*`) | `5c755bcdabc5396cfa1eff2aa3f6189aa7256b01eb10ce6ca890be0dda4dd717` |
+| `SIM/CID10/TABELAS/CID10.DBF` (registrado, `sim-tabelas-cid10-5c755bcdabc5`) | `5c755bcdabc5396cfa1eff2aa3f6189aa7256b01eb10ce6ca890be0dda4dd717` |
 | `TabelaUnificada_202610_v2610271043.zip` (registrado, `sigtap-525e5ef197da`) | `525e5ef197da5133ed3177f42b56cb341057668af8da2fdc7f6674bcc25af5cd` |
 | `tb_cid.txt` desse zip | `611805b5e14c3495c0e28780b13d86c68cdd047c0668c614ef770160212a508d` |
 | `SIHSUS/200801_/Auxiliar/TAB_SIH.zip`, lido em 2026-10-31 (6.083.658 bytes; não é nenhum dos TAB_SIH registrados) | `21e42384645a9386add9f3644264145f39fc00bbb602f305d87bd0793b7e476b` |

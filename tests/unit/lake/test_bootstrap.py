@@ -1,7 +1,8 @@
 """Tests for Lake.bootstrap_auxiliares over the packaged zip.
 
 The zip is built by ``scripts/build_bootstrap_zip.py`` from the hashed DATASUS files in
-``SIM/CID10/TABELAS`` and ``CBO2002.CNV``; its ``manifest.json`` names each digest.
+``SIM/CID10/TABELAS``, the DATASUS territorial base, the SIGTAP Tabela Unificada and
+``CBO2002.CNV``; its ``manifest.json`` names each digest.
 """
 
 from __future__ import annotations
@@ -110,7 +111,7 @@ def test_cid10_blocks_come_from_the_tabwin_groups(lake: Lake) -> None:
     ) == (0,)
 
 
-def test_six_newer_municipalities_come_from_the_territorial_base(lake: Lake) -> None:
+def test_six_municipalities_cadmun_lacks_come_from_the_territorial_base(lake: Lake) -> None:
     """CADMUN.DBF (2011) lacks them; tb_municip of the DATASUS territorial base
     (jun/2026) adds the six, names as written there. Health regions stay NULL: the base
     codes them in another scheme than CADMUN's RSAUDCOD and MSAUDCOD."""
