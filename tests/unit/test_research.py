@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import date
+from datetime import UTC, date, datetime
 from pathlib import Path
 
 import duckdb
@@ -125,6 +125,45 @@ def test_cite_without_snapshot_pins_the_latest(monkeypatch, tmp_path: Path, dbc_
     assert citacao.snapshot_id == expected
 
 
+def _freeze_publication_clock(monkeypatch, stamp: str) -> None:
+    """Make the lake record ``published_at`` as ``stamp`` (UTC)."""
+    frozen = datetime.fromisoformat(stamp)
+
+    class _Clock(datetime):
+        @classmethod
+        def now(cls, tz=None):  # type: ignore[override]
+            return frozen
+
+    monkeypatch.setattr("omnisus.lake.publication.datetime", _Clock)
+
+
+def test_cite_of_an_old_snapshot_keeps_its_date_and_run_after_a_replace(
+    monkeypatch, tmp_path: Path, dbc_fixture
+) -> None:
+    """A citation of snapshot N reads the publications as they were at N: a later
+    ``replace`` changes neither the access date nor the run it prints."""
+    _serve_sim_rr_2023(monkeypatch, dbc_fixture("sim_rr_2023_mini").read_bytes())
+    target = f"ducklake:{tmp_path}/replace.ducklake"
+    scopes = [ScopeKey(uf="RR", ano=2023)]
+
+    _freeze_publication_clock(monkeypatch, "2026-10-18T12:00:00+00:00")
+    sus.import_research("sim_obitos", scopes=scopes, target=target, run_id="r1")
+    with sus.LakeReader(target) as leitor:
+        antigo = sus.latest_snapshot_id(leitor)
+
+    _freeze_publication_clock(monkeypatch, "2026-10-25T12:00:00+00:00")
+    sus.import_research("sim_obitos", scopes=scopes, target=target, run_id="r2", policy="replace")
+
+    with sus.LakeReader(target) as leitor:
+        velha = sus.cite(leitor, dataset="sim_obitos", snapshot_id=antigo)
+        nova = sus.cite(leitor, dataset="sim_obitos")
+
+    assert "acessado em 2026-10-18 " in velha.text
+    assert "execução r1." in velha.text
+    assert "acessado em 2026-10-25 " in nova.text
+    assert "execução r2." in nova.text
+
+
 def test_latest_snapshot_id_without_history() -> None:
     class _Vazio:
         def snapshots(self):
@@ -243,3 +282,29 @@ def test_municipality_join_key_sql_matches_the_guide() -> None:
     )
     with pytest.raises(ValueError):
         sus.municipality_join_key_sql("codmunres", digits=8)
+
+
+def test_a_row_without_an_import_date_has_an_unknown_access_date() -> None:
+    """No ``published_at`` nor ``collected_at``: the citation says the date is unknown
+    instead of printing today."""
+    row = {
+        "dataset": "sim_obitos",
+        "source_uri": "ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID10/DORES/DORR2023.dbc",
+        "source_sha256": "15b5203507161b7c35f9c69a52c955bdac133629549099b85a88e03a9a45baf0",
+        "run_id": "r1",
+    }
+    text = sus.citation_from_publications([row], snapshot_id=3).text
+    assert "acessado em (data de acesso desconhecida) pelo DATASUS." in text
+
+
+@pytest.mark.parametrize("stamp", ["None", "18/10/2026", "ontem"])
+def test_an_import_date_that_is_not_iso_raises_a_clear_error(stamp: str) -> None:
+    row = {"dataset": "sim_obitos", "source_uri": "x/DORR2023.dbc", "published_at": stamp}
+    with pytest.raises(ValueError, match=r"published_at.*ISO"):
+        sus.citation_from_publications([row], snapshot_id=3)
+
+
+@pytest.mark.parametrize("stamp", [datetime(2026, 10, 18, 23, 40, tzinfo=UTC), date(2026, 10, 18)])
+def test_an_import_date_may_be_a_datetime_or_a_date(stamp: date) -> None:
+    row = {"dataset": "sim_obitos", "source_uri": "x/DORR2023.dbc", "published_at": stamp}
+    assert "acessado em 2026-10-18 " in sus.citation_from_publications([row], snapshot_id=3).text

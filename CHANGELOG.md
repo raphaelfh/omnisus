@@ -21,11 +21,14 @@
   before the first import returns `[]`. `None` keeps the SQL and the rows of 0.2.3. The
   data table is pinned by the caller's `FROM` (#101).
 
-- `cite()` and `citation_from_publications()` with `accessed=None` print each row's
-  import date (`published_at`, or `collected_at` for IBGE) as the access date, instead of
-  the day the citation is generated: a file imported on 2026-10-18 and cited a week later
-  stays "acessado em 2026-10-18". `accessed=` still sets one date for every row; a row
-  without either column keeps today.
+- `cite()` and `citation_from_publications()` with `accessed=None` print as the access
+  date the UTC day each row's publication was written to the lake (`published_at`, or
+  `collected_at` for IBGE), instead of the day the citation is generated: a file imported
+  on 2026-10-18 and cited a week later stays "acessado em 2026-10-18". `accessed=` still
+  sets one date for every row. A row with neither column prints "(data de acesso
+  desconhecida)"; a value that is not an ISO date raises `ValueError`.
+- `cite(snapshot_id=N)` reads the publications as they were at snapshot N: after a
+  `replace`, citing an older snapshot keeps that snapshot's date and run.
 
 ### Dictionaries
 

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
-from datetime import UTC, date, datetime
+from datetime import date
 from typing import Any
 from urllib.parse import urlparse
 
@@ -257,12 +257,16 @@ def citation_from_publications(
         dataset: Dataset name, used when a row lacks it; ``"ibge_populacao"`` selects
             the IBGE wording.
         run_id: The run to name; ``None`` uses each row's own ``run_id``.
-        accessed: Access date to print for every row; ``None`` (default) prints each
-            row's import date (``published_at``, or ``collected_at`` for IBGE), and
-            today only for a row that has neither.
+        accessed: Access date to print for every row; ``None`` (default) prints the
+            UTC day each row's publication was written to the lake (``published_at``,
+            or ``collected_at`` for IBGE); a row with neither prints "(data de acesso
+            desconhecida)".
 
     Returns:
         A :class:`~omnisus.Citation` whose ``text`` is the Portuguese paragraph.
+
+    Raises:
+        ValueError: a row's ``published_at`` or ``collected_at`` is not an ISO date.
 
     Examples:
         >>> from datetime import date
@@ -324,14 +328,15 @@ def cite(
         snapshot_id: The snapshot your analysis read; ``None`` (default) is the
             newest.
         run_id: Cite only this run's publications.
-        accessed: Access date to print; ``None`` (default) prints each publication's
-            import date.
+        accessed: Access date to print; ``None`` (default) prints the UTC day each
+            publication was written to the lake.
 
     Returns:
         A :class:`~omnisus.Citation`; paste ``citation.text`` into the methods.
 
     Raises:
         LookupError: ``snapshot_id`` is ``None`` and the lake has no snapshots.
+        ValueError: a publication's ``published_at`` is not an ISO date.
 
     Examples:
         >>> import omnisus as sus
@@ -344,7 +349,7 @@ def cite(
     else:
         rows = [
             row
-            for row in lake.publications(run_id=run_id)
+            for row in lake.publications(run_id=run_id, snapshot_id=pinned)
             if row.get("active", True) and (dataset is None or row.get("dataset") == dataset)
         ]
     return citation_from_publications(
@@ -356,13 +361,25 @@ def cite(
     )
 
 
-def _accessed_on(row: Mapping[str, Any], accessed: date | None) -> date:
-    """The date the file was fetched: ``accessed`` when given, else the day the row was
-    imported, which is when omnisus downloaded it."""
+def _accessed_on(row: Mapping[str, Any], accessed: date | None) -> str:
+    """The access date to print: ``accessed`` when given, else the UTC day the row's
+    publication was written to the lake (``published_at``, or ``collected_at`` for IBGE).
+
+    Raises:
+        ValueError: the row's date is not an ISO date (``AAAA-MM-DD...``).
+    """
     if accessed is not None:
-        return accessed
-    stamp = row.get("published_at") or row.get("collected_at")
-    return date.fromisoformat(str(stamp)[:10]) if stamp else datetime.now(UTC).date()
+        return accessed.isoformat()
+    field = "published_at" if row.get("published_at") else "collected_at"
+    stamp = row.get(field)
+    if not stamp:
+        return "(data de acesso desconhecida)"
+    if isinstance(stamp, date):
+        return stamp.isoformat()[:10]
+    try:
+        return date.fromisoformat(str(stamp)[:10]).isoformat()
+    except ValueError:
+        raise ValueError(f"{field} must be an ISO date (AAAA-MM-DD...), got {stamp!r}") from None
 
 
 def _require_join_digits(digits: int) -> None:
@@ -386,7 +403,7 @@ def _title(dataset: str) -> str:
 
 
 def _ftp_paragraph(
-    row: Mapping[str, Any], snapshot_id: int, accessed_on: date, run_id: str | None
+    row: Mapping[str, Any], snapshot_id: int, accessed_on: str, run_id: str | None
 ) -> str:
     dataset = str(row.get("dataset") or "(dataset desconhecido)")
     execucao = run_id or row.get("run_id") or "(run_id desconhecido)"
@@ -403,19 +420,19 @@ def _ftp_paragraph(
         sha = row.get("source_sha256") or "(SHA-256 desconhecido)"
         origem = f"arquivo {_filename(uri)} ({uri}), SHA-256 {sha}, acessado"
     return (
-        f"{titulo} ({dataset}), {origem} em {accessed_on.isoformat()} pelo DATASUS. "
+        f"{titulo} ({dataset}), {origem} em {accessed_on} pelo DATASUS. "
         f"Importado com omnisus {__version__}, lake snapshot {snapshot_id}, "
         f"execução {execucao}."
     )
 
 
-def _ibge_paragraph(row: Mapping[str, Any], snapshot_id: int, accessed_on: date) -> str:
+def _ibge_paragraph(row: Mapping[str, Any], snapshot_id: int, accessed_on: str) -> str:
     url = row.get("url") or "(URL desconhecida)"
     sha = row.get("sha256") or "(SHA-256 desconhecido)"
     execucao = row.get("publication_id") or "(publication_id desconhecido)"
     return (
         f"IBGE · população (ibge_populacao), URL {url}, SHA-256 {sha}, "
-        f"acessado em {accessed_on.isoformat()}. Importado com omnisus {__version__}, "
+        f"acessado em {accessed_on}. Importado com omnisus {__version__}, "
         f"lake snapshot {snapshot_id}, execução {execucao}."
     )
 
