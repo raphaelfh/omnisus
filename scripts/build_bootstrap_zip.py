@@ -41,6 +41,10 @@ SIGTAP = (
 )
 NEW_MUNICIPALITIES = ("150475", "220672", "421265", "422000", "431454", "500627")
 """Municipalities that CADMUN.DBF (2011) lacks and the SIM, SINASC and SIH code."""
+TERRITORIAL_STATUS = ("ATIVO", "REG ADM", "TRANS", "IGNR", "EXTIN", "IGNOR")
+"""CO_STATUS values of the 5725 records of tb_municip.dbf (base of 2026-06). CADMUN's
+SITUACAO has ATIVO, EXTIN, IGNOR and TRANS only, so the base's vocabulary is checked
+here, and a test holds the dictionary's enum to CADMUN's four."""
 # The DBF headers do not state these reliably (CID10 declares none); read from the text.
 ENCODING = {
     "TABUF.DBF": "ascii",
@@ -131,6 +135,8 @@ def _decimal(value: str) -> float | None:
 def _from_territorial(r: dict[str, Any]) -> dict[str, Any]:
     """A tb_municip record in CADMUN's columns. The base codes health regions in another
     scheme than CADMUN's RSAUDCOD and MSAUDCOD, so those stay empty."""
+    if r["CO_STATUS"] not in TERRITORIAL_STATUS:
+        raise SystemExit(f"tb_municip {r['CO_MUNICIP']}: CO_STATUS {r['CO_STATUS']!r} is new")
     altitude = _decimal(r["NU_ALTITUD"])
     return {
         "MUNCODDV": r["CO_MUNICDV"],

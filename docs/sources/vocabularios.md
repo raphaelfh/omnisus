@@ -45,13 +45,17 @@ que não resolve (`tests/unit/test_references.py`).
 
 - **Municípios com 6 dígitos.** SIM, SINASC, SIH e CNES gravam o código sem o dígito
   verificador; as referências apontam para `aux_municipios.codigo_6`.
-- **CADMUN é de 2011** (data do arquivo no servidor). Os seis municípios instalados
-  depois que SIM, SINASC e SIH gravam (`150475` Mojuí dos Campos, `220672` Nazária,
+- **CADMUN é de 2011** (data do arquivo no servidor). Os seis municípios que ele não
+  tem e que SIM, SINASC e SIH gravam (`150475` Mojuí dos Campos, `220672` Nazária,
   `421265` Pescaria Brava, `422000` Balneário Rincão, `431454` Pinto Bandeira e `500627`
   Paraíso das Águas) vêm do `tb_municip.dbf` da base territorial do DATASUS
   (`ftp://ftp.datasus.gov.br/territorio/tabelas/2026/06-base_territorial_jun26.zip`):
   o nome como a base grava, sem acento (`Mojui Dos Campos`), e `regiao_saude` e
-  `macrorregiao_saude` nulos, porque a base usa outro código de região que o CADMUN.
+  `macrorregiao_saude` nulos, porque a base usa outro código de região que o CADMUN. Cinco
+  têm `DT_INSTAL` 2013; Nazária tem 2009, anterior ao CADMUN, que mesmo assim não a traz.
+  A base grava `CO_STATUS` com seis valores (`ATIVO`, `REG ADM`, `TRANS`, `IGNR`, `EXTIN`,
+  `IGNOR`; `evidence/2026-10-31-tb-municip-co-status/`); os seis municípios são `ATIVO`, e o
+  build para diante de valor fora desses seis.
 - **Coordenadas nulas em 91 municípios.** O CADMUN grava 0 e 0 nas linhas de ignorado
   (27), transferidos (60) e em 4 ativos; o lake guarda nulo, porque 0°, 0° fica no
   Atlântico.

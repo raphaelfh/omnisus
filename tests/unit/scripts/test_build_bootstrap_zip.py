@@ -10,7 +10,12 @@ from pathlib import Path
 
 import polars as pl
 import pytest
-from scripts.build_bootstrap_zip import aux_cid10, parse_tb_cid, sigtap_cid10
+from scripts.build_bootstrap_zip import (
+    _from_territorial,
+    aux_cid10,
+    parse_tb_cid,
+    sigtap_cid10,
+)
 
 SIGTAP = Path(__file__).resolve().parents[2] / "fixtures" / "sigtap"
 # tb_cid.txt codes that CID10.DBF (2020) lacks: the 9 of the first review, plus A925, A97,
@@ -19,6 +24,29 @@ MISSING = [
     "A925", "A97", "C823", "C824", "C825", "C826", "N182", "N183", "N184", "N185", "P354",
     "U09", "U099", "U10", "U109", *[f"W46{n}" for n in range(10)],
 ]  # fmt: skip
+
+
+# Records of tb_municip.dbf in 06-base_territorial_jun26.zip (SHA-256 f6e06a67...316a;
+# tb_municip.dbf SHA-256 a99e4594fcfa824212536b589cf6ebe2adec9a9f3c18047b88fb836a6fce20f3,
+# 5725 records), as dbfread2 reads them with cp1252, unchanged. Transcribed, not committed
+# as a file: the DBF is 1.2 MB.
+PINTO_BANDEIRA = {
+    "CO_MUNICIP": "431454", "CO_MUNICDV": "4314548", "CO_STATUS": "ATIVO", "CO_TIPO": "ATIVO",
+    "DS_NOME": "Pinto Bandeira", "UF": "RS", "MACRORREGI": "4310",
+    "DS_NOMEPAD": "PINTO BANDEIRA", "DS_OBSERV": "S", "CO_REGIAO": "4", "CO_UF": "43",
+    "CO_ALTER": "", "CO_ALTERDV": "", "IN_CAPITAL": "N", "IN_AMAZLEG": "N", "IN_SEMIAR": "",
+    "IN_FRONTZN": "N", "DT_INSTAL": "2013", "DT_EXTIN": "", "CO_SUCESS": "", "NU_ORDEM": "",
+    "NU_ORDMAP": "", "NU_LATITUD": "-29,09777778", "NU_LONGIT": "-51,45027778",
+    "NU_ALTITUD": "638", "NU_AREA": "104,821",
+}  # fmt: skip
+NAZARIA = {
+    **PINTO_BANDEIRA, "CO_MUNICIP": "220672", "CO_MUNICDV": "2206720", "UF": "PI",
+    "MACRORREGI": "2208", "DS_NOME": "Nazaria", "DS_NOMEPAD": "NAZARIA", "CO_REGIAO": "2",
+    "CO_UF": "22", "DT_INSTAL": "2009", "NU_LATITUD": "-5,346925",
+    "NU_LONGIT": "-42,8140484695768", "NU_ALTITUD": "72", "NU_AREA": "",
+}  # fmt: skip
+# CO_STATUS of the 5725 records: ATIVO 5571, REG ADM 63, TRANS 60, IGNR 27, EXTIN 2, IGNOR 2.
+TERRITORIAL_STATUS = ["ATIVO", "REG ADM", "TRANS", "IGNR", "EXTIN", "IGNOR"]
 
 
 def tb_cid_files() -> tuple[list[str], list[str]]:
@@ -61,3 +89,38 @@ def test_cid10_dbf_description_must_repeat_its_code() -> None:
     """Synthetic row: the malformed-input case of AGENTS.md rule 2."""
     with pytest.raises(SystemExit, match="A00: DESCR does not start with its code"):
         aux_cid10([{"CID10": "A00", "DESCR": "B00 Colera"}], [], [], [])
+
+
+def test_a_territorial_record_takes_cadmuns_columns() -> None:
+    assert _from_territorial(PINTO_BANDEIRA) == {
+        "MUNCODDV": "4314548",
+        "MUNCOD": "431454",
+        "MUNNOME": "Pinto Bandeira",
+        "UFCOD": "43",
+        "SITUACAO": "ATIVO",
+        "ANOINST": "2013",
+        "ANOEXT": "",
+        "SUCESSOR": "",
+        "LATITUDE": -29.09777778,
+        "LONGITUDE": -51.45027778,
+        "ALTITUDE": 638,
+        "AREA": 104.821,
+        "RSAUDCOD": None,
+        "MSAUDCOD": None,
+    }
+
+
+def test_a_territorial_record_without_area_has_none() -> None:
+    nazaria = _from_territorial(NAZARIA)
+    assert (nazaria["ANOINST"], nazaria["ALTITUDE"], nazaria["AREA"]) == ("2009", 72, None)
+
+
+@pytest.mark.parametrize("status", TERRITORIAL_STATUS)
+def test_every_status_of_the_territorial_base_is_accepted(status: str) -> None:
+    assert _from_territorial({**PINTO_BANDEIRA, "CO_STATUS": status})["SITUACAO"] == status
+
+
+def test_a_status_outside_the_territorial_base_stops_the_build() -> None:
+    """The real record with CO_STATUS changed: the malformed-input case of AGENTS.md rule 2."""
+    with pytest.raises(SystemExit, match="CO_STATUS 'EM INSTALACAO'"):
+        _from_territorial({**PINTO_BANDEIRA, "CO_STATUS": "EM INSTALACAO"})

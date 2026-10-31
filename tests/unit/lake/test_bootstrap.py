@@ -13,6 +13,7 @@ from importlib.resources import files
 from pathlib import Path
 
 import pytest
+import yaml
 
 from omnisus.lake import Lake
 from omnisus.metadata import sources_registry
@@ -110,7 +111,7 @@ def test_cid10_blocks_come_from_the_tabwin_groups(lake: Lake) -> None:
 
 
 def test_six_newer_municipalities_come_from_the_territorial_base(lake: Lake) -> None:
-    """CADMUN.DBF (2011) predates them; tb_municip of the DATASUS territorial base
+    """CADMUN.DBF (2011) lacks them; tb_municip of the DATASUS territorial base
     (jun/2026) adds the six, names as written there. Health regions stay NULL: the base
     codes them in another scheme than CADMUN's RSAUDCOD and MSAUDCOD."""
     assert lake.connect().execute(
@@ -130,6 +131,18 @@ def test_six_newer_municipalities_come_from_the_territorial_base(lake: Lake) -> 
         "SELECT latitude, longitude, altitude, area, regiao_saude, macrorregiao_saude "
         "FROM lake.aux_municipios WHERE codigo_6 = '431454'",
     ) == (-29.09777778, -51.45027778, 638, 104.821, None, None)
+
+
+def test_situacao_stays_within_the_dictionary_enum(lake: Lake) -> None:
+    """The six territorial rows carry tb_municip's CO_STATUS; the column's enum is CADMUN's
+    (the base also writes REG ADM and IGNR), so a new value must be decided on, not copied."""
+    raw = (files("omnisus.data") / "dicionarios" / "aux_municipios.yaml").read_text("utf-8")
+    enum = {c for f in yaml.safe_load(raw)["schema"]["fields"] if f["name"] == "situacao"
+            for c in f["constraints"]["enum"]}  # fmt: skip
+    found = {
+        row[0] for row in lake.connect().execute("SELECT DISTINCT situacao FROM lake.aux_municipios").fetchall()
+    }  # fmt: skip
+    assert found == enum == {"ATIVO", "EXTIN", "IGNOR", "TRANS"}
 
 
 def test_cid10_gains_the_codes_sigtap_lists(lake: Lake) -> None:

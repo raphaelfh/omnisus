@@ -27,7 +27,7 @@ BOOTSTRAP = {"aux_uf", "aux_municipios", "aux_cid10", "aux_ocupacoes", "aux_pais
 
 # (dataset, fixture, ano, uf) -> every (field, value, rows) that finds no reference row.
 # Counted 2026-09-22. SIH writes 0000 where there is no secondary, associated or death
-# cause. 150475 (Mojuí dos Campos, PA), installed after the 2011 CADMUN, resolves since
+# cause. 150475 (Mojuí dos Campos, PA), absent from the 2011 CADMUN, resolves since
 # aux_municipios takes it from the DATASUS territorial base.
 # SIA (2026-10-07, #82): 0000 is "CID NAO INFORMADO" in S_CID.DBF of TAB_SIA.zip, not a
 # CID-10 code.
