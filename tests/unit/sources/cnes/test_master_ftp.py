@@ -13,7 +13,11 @@ from pathlib import Path
 import pytest
 
 from omnisus.lake import Lake
-from omnisus.sources.cnes.importers.master_ftp import import_cnes_master_ftp, read_names
+from omnisus.sources.cnes.importers.master_ftp import (
+    FTP_FONTE,
+    import_cnes_master_ftp,
+    read_names,
+)
 
 FIXTURE = (
     Path(__file__).resolve().parents[3]
@@ -64,14 +68,14 @@ def test_import_fills_view_and_a_second_load_keeps_existing_names(tmp_path: Path
         rows = (
             lake.connect()
             .execute(
-                f"SELECT cnes, nome, competencia_nome, fonte_nome IS NOT NULL "
+                f"SELECT cnes, nome, competencia_nome, fonte_nome "
                 f"FROM {lake.alias}.aux_cnes WHERE cnes IN ('0860638', '4339517') ORDER BY cnes"
             )
             .fetchall()
         )
     assert rows == [
-        ("0860638", "HOSPITAL HELIO MACEDO", "202312", True),
-        ("4339517", "ASSOCIACAO PESTALOZZI DE DIVINO DE SAO LOURENCO", "202312", True),
+        ("0860638", "HOSPITAL HELIO MACEDO", "202312", FTP_FONTE),
+        ("4339517", "ASSOCIACAO PESTALOZZI DE DIVINO DE SAO LOURENCO", "202312", FTP_FONTE),
     ]
 
 

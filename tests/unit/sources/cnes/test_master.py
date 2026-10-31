@@ -11,6 +11,7 @@ import respx
 
 from omnisus import import_cnes_master
 from omnisus.lake import Lake
+from omnisus.sources.cnes.importers.master import API_FONTE
 from tests.support.connection_faults import FaultyConnection
 
 
@@ -94,6 +95,13 @@ def test_import_cnes_master_writes_table_and_refreshes_view(tmp_path: Path) -> N
             ("0123456", "UBS BAIRRO X"),
             ("2789590", "HOSPITAL BRASIL"),
         ]
+        # The source of an API name is recorded in cnes_master and shown as fonte_nome.
+        assert lake.connect().execute(
+            f"SELECT DISTINCT fonte FROM {lake.alias}.cnes_master"
+        ).fetchall() == [(API_FONTE,)]
+        assert lake.connect().execute(
+            f"SELECT DISTINCT fonte_nome FROM {lake.alias}.aux_cnes"
+        ).fetchall() == [(API_FONTE,)]
 
 
 @respx.mock

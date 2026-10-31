@@ -152,17 +152,16 @@ def _upsert_master(lake: Lake, records: list[dict]) -> None:
     context = nullcontext() if lake.in_transaction else lake.transaction()
     with context:
         con = lake.connect()
-        columns = _MASTER_COLUMNS[: len(rows[0])]
         # A whole monthly base is ~600k rows: go through an Arrow table instead of
         # one bound parameter per code.
-        batch = pa.table({c: [row[i] for row in rows] for i, c in enumerate(columns)})
+        batch = pa.table({c: [row[i] for row in rows] for i, c in enumerate(_MASTER_COLUMNS)})
         con.register("_cnes_master_batch", batch)
         try:
             con.execute(
                 f"DELETE FROM {lake.alias}.cnes_master "
                 "WHERE cnes IN (SELECT cnes FROM _cnes_master_batch)"
             )
-            names = ", ".join(columns)
+            names = ", ".join(_MASTER_COLUMNS)
             con.execute(
                 f"INSERT INTO {lake.alias}.cnes_master ({names}) SELECT {names} FROM _cnes_master_batch"
             )
