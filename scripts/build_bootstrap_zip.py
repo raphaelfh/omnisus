@@ -37,7 +37,7 @@ TABELAS = "ftp://ftp.datasus.gov.br/dissemin/publicos/SIM/CID10/TABELAS/"
 TERRITORIAL = "ftp://ftp.datasus.gov.br/territorio/tabelas/2026/06-base_territorial_jun26.zip"
 SIGTAP = (
     "ftp://ftp2.datasus.gov.br/public/sistemas/tup/downloads/"
-    "TabelaUnificada_202610_v2610151110.zip"
+    "TabelaUnificada_202610_v2610271043.zip"
 )
 NEW_MUNICIPALITIES = ("150475", "220672", "421265", "422000", "431454", "500627")
 """Municipalities installed after CADMUN.DBF (2011) that the SIM, SINASC and SIH codes."""

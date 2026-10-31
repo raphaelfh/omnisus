@@ -565,18 +565,18 @@
       "last_checked_on": "2026-10-25"
     },
     {
-      "id": "sigtap-f497ebccc12d",
+      "id": "sigtap-525e5ef197da",
       "category": "SIGTAP",
-      "title": "TabelaUnificada_202610_v2610151110.zip",
+      "title": "TabelaUnificada_202610_v2610271043.zip",
       "publisher": "Ministério da Saúde / DATASUS",
       "authority": "official",
-      "url": "ftp://ftp2.datasus.gov.br/public/sistemas/tup/downloads/TabelaUnificada_202610_v2610151110.zip",
-      "sha256": "f497ebccc12d6563bcbadb79acf2e5ca59d8a9ac2ea5d864e9e6b3e6fc1f2606",
-      "bytes": 2163617,
+      "url": "ftp://ftp2.datasus.gov.br/public/sistemas/tup/downloads/TabelaUnificada_202610_v2610271043.zip",
+      "sha256": "525e5ef197da5133ed3177f42b56cb341057668af8da2fdc7f6674bcc25af5cd",
+      "bytes": 2163764,
       "edition": "2026-10",
-      "published_on": "2026-10-15",
-      "retrieved_on": "2026-10-25",
-      "last_checked_on": "2026-10-25"
+      "published_on": "2026-10-27",
+      "retrieved_on": "2026-10-31",
+      "last_checked_on": "2026-10-31"
     }
   ]
 }
