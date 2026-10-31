@@ -148,6 +148,9 @@ def read_names(
         if len(members) != 1:
             raise ValueError(f"{zip_path.name} has no single {wanted}")
         with zf.open(members[0]) as raw:
+            # latin-1, not cp1252: 202312 has no byte in 0x80-0x9F, so both read it the
+            # same, and latin-1 cannot fail on a later month
+            # (evidence/2026-10-31-cnes-tbestabelecimento-encoding.md).
             reader = csv.DictReader(
                 io.TextIOWrapper(raw, encoding="latin-1", newline=""), delimiter=";"
             )

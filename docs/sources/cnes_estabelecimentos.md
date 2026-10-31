@@ -142,6 +142,9 @@ Os dicionários dessas linhas partem do inventário físico do descritor DBF de 
   nome: a razão social e o nome fantasia dele trazem o nome do profissional, e a importação
   ignora essas linhas. Uma linha sem razão social e sem nome fantasia também é ignorada; as
   duas contagens saem no log `cnes_master_ftp.rows_skipped`.
+  O arquivo é lido como `latin-1`: o de 202312 não tem nenhum byte entre `0x80` e `0x9F`, a
+  faixa em que `latin-1` e `cp1252` diferem, então as duas leituras coincidem
+  ([medição](https://github.com/raphaelfh/omnisus/blob/main/evidence/2026-10-31-cnes-tbestabelecimento-encoding.md)).
 - `aux_cnes` mostra `tp_unid` e `codufmun` da competência mais recente de cada CNES,
   não os da competência que você analisa
   (`src/omnisus/lake/operations.py`, `ensure_aux_cnes_view`).
