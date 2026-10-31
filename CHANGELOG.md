@@ -140,6 +140,12 @@
   of `sih_aih_reduzida` in a process drops from about 0.7 s to 0.1 s, and a cold
   `describe_datasets()` from about 2.5 s to 0.4 s. The parsed dictionaries are the same.
 
+### omnisus-dbf 0.2.2
+
+- The native reader reads D (date) fields with the semantics of dbfread's `parseD`, so
+  SINAN national files no longer fall back to the Python reader. `API_VERSION` stays 2
+  (#149).
+
 ## v0.2.3 — 2026-10-08
 
 **Upgrading from 0.2.2:** no parser version changed (the import still reads the same
