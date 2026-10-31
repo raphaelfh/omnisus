@@ -36,6 +36,7 @@ logger = structlog.get_logger(__name__)
 
 FTP_URL = "ftp://ftp.datasus.gov.br/cnes/BASE_DE_DADOS_CNES_{competencia}.ZIP"
 FTP_FONTE = "DATASUS FTP, base completa do CNES (tbEstabelecimento)"
+PESSOA_FISICA = "1"  # TP_PFPJ: 1 pessoa física, 3 pessoa jurídica
 _COMPETENCIA = re.compile(r"^(19|20)\d{2}(0[1-9]|1[0-2])$")
 
 
@@ -73,11 +74,19 @@ def read_names(zip_path: Path, competencia: str) -> list[dict]:
             reader = csv.DictReader(
                 io.TextIOWrapper(raw, encoding="latin-1", newline=""), delimiter=";"
             )
-            missing = {"CO_CNES", "NO_RAZAO_SOCIAL", "NO_FANTASIA"} - set(reader.fieldnames or [])
+            missing = {"CO_CNES", "TP_PFPJ", "NO_RAZAO_SOCIAL", "NO_FANTASIA"} - set(
+                reader.fieldnames or []
+            )
             if missing:
                 raise ValueError(f"tbEstabelecimento lacks columns: {sorted(missing)}")
             records: dict[str, dict] = {}
+            pessoa_fisica = 0
             for row in reader:
+                if row["TP_PFPJ"].strip() == PESSOA_FISICA:
+                    # NO_RAZAO_SOCIAL and NO_FANTASIA of a pessoa física carry the
+                    # professional's name: no name is kept for it (AGENTS.md, "Never commit").
+                    pessoa_fisica += 1
+                    continue
                 code = row["CO_CNES"].strip()
                 fantasia = row["NO_FANTASIA"].strip() or None
                 razao = row["NO_RAZAO_SOCIAL"].strip() or None
@@ -91,6 +100,9 @@ def read_names(zip_path: Path, competencia: str) -> list[dict]:
                     "sha256": sha,
                     "competencia_nome": competencia,
                 }
+    logger.info(
+        "cnes_master_ftp.rows_skipped", competencia=competencia, pessoa_fisica=pessoa_fisica
+    )
     return list(records.values())
 
 

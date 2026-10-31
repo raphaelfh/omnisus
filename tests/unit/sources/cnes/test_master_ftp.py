@@ -1,16 +1,24 @@
 """Tests for CNES names from the full CNES base (FTP zip -> lake.cnes_master).
 
-The fixture is five records of the real tbEstabelecimento202312.csv
+The fixture is six records of the real tbEstabelecimento202312.csv
 (tests/fixtures/FIXTURES.md): four hospitals with a nome fantasia, one of them
-with a leading-zero code, and one establishment with only a razão social.
+with a leading-zero code, one establishment with only a razão social, and one
+pessoa física (TP_PFPJ=1) whose names are blanked in the fixture.
+
+The real file has no row without a name and no repeated CO_CNES (checked on all 509875
+rows of 202312), and the committed pessoa física has its names blanked. The tests that
+need those cases build a ZIP from the fixture's CSV and say so: they are synthetic,
+for malformed or sensitive input only.
 """
 
 from __future__ import annotations
 
 import hashlib
+import zipfile
 from pathlib import Path
 
 import pytest
+from structlog.testing import capture_logs
 
 from omnisus.lake import Lake
 from omnisus.sources.cnes.importers.master_ftp import (
@@ -26,6 +34,23 @@ FIXTURE = (
     / "BASE_DE_DADOS_CNES_202312.ZIP"
 )
 CODES = ["0860638", "2319659", "2320886", "4339517", "6185177"]
+PESSOA_FISICA = "3107981"
+MEMBER = "tbEstabelecimento202312.csv"
+
+
+def _synthetic_zip(tmp_path: Path, edit) -> Path:
+    """Synthetic: the fixture's CSV text passed through ``edit``, zipped under the same name."""
+    with zipfile.ZipFile(FIXTURE) as zf:
+        text = zf.read(MEMBER).decode("latin-1")
+    path = tmp_path / "BASE_DE_DADOS_CNES_202312.ZIP"
+    with zipfile.ZipFile(path, "w") as zf:
+        zf.writestr(MEMBER, edit(text).encode("latin-1"))
+    return path
+
+
+def _line_of(text: str, code: str) -> str:
+    (line,) = [ln for ln in text.splitlines() if f'";"{code}";"' in ln]
+    return line
 
 
 def _seed(lake: Lake, codes: list[str]) -> None:
@@ -51,6 +76,32 @@ def test_read_names_prefers_fantasia_and_records_provenance() -> None:
     assert recs["2320886"]["sha256"] == hashlib.sha256(FIXTURE.read_bytes()).hexdigest()
     assert recs["2320886"]["competencia_nome"] == "202312"
     assert recs["2320886"]["arquivo"] == "BASE_DE_DADOS_CNES_202312.ZIP"
+
+
+def test_a_pessoa_fisica_row_gives_no_name() -> None:
+    """The committed pessoa física has its names blanked; the row is left out, not written empty."""
+    with capture_logs() as logs:
+        recs = {r["cnes"] for r in read_names(FIXTURE, "202312")}
+    assert PESSOA_FISICA not in recs
+    (skipped,) = [e for e in logs if e["event"] == "cnes_master_ftp.rows_skipped"]
+    assert skipped["pessoa_fisica"] == 1
+
+
+def test_a_pessoa_fisica_name_in_the_file_never_reaches_the_records(tmp_path: Path) -> None:
+    """Synthetic: the real pessoa física has the professional's name in NO_FANTASIA (and in
+    NO_RAZAO_SOCIAL); the fixture blanks it, so a name is put back here."""
+
+    def with_names(text: str) -> str:
+        line = _line_of(text, PESSOA_FISICA)
+        return text.replace(
+            line, line.replace('"";"";"', '"DR EXEMPLO";"CONSULTORIO DR EXEMPLO";"', 1)
+        )
+
+    path = _synthetic_zip(tmp_path, with_names)
+    assert "CONSULTORIO DR EXEMPLO" in zipfile.ZipFile(path).read(MEMBER).decode("latin-1")
+    recs = read_names(path, "202312")
+    assert sorted(r["cnes"] for r in recs) == CODES
+    assert "EXEMPLO" not in repr(recs)
 
 
 def test_read_names_rejects_zip_without_the_month_file() -> None:

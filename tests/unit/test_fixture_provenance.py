@@ -134,6 +134,13 @@ def test_no_fixture_holds_a_person_identifier_in_clear() -> None:
             )
             if hits:
                 found.append(f"{path.name} {column}: {hits} records")
+    # A zipped CSV excerpt (cnes_base/) is read by cell: the ``blanked:`` list says what
+    # was blanked, this checks what the file holds.
+    for path in sorted((FIXTURES / "cnes_base").glob("*.ZIP")):
+        for record in _zipped_csv_records(path):
+            for column, cell in record.items():
+                if _person_identifier(cell.strip()):
+                    found.append(f"{path.name} {column}: {record['CO_CNES']}")
     assert found == []
 
 
@@ -150,11 +157,12 @@ def test_blanked_columns_are_blank() -> None:
     for row in load_fixture_rows():
         listed = re.search(r"blanked: ([A-Z0-9_:=, ]+)", row["note"])
         if listed and row["file"].endswith(".ZIP"):
-            assert all(
-                record[column] == ""
-                for record in _zipped_csv_records(FIXTURES / row["file"])
-                for column in listed.group(1).split(", ")
-            ), row["file"]
+            for blank in listed.group(1).split(", "):
+                column, _, condition = blank.partition(":")
+                flag, _, value = condition.partition("=")
+                for record in _zipped_csv_records(FIXTURES / row["file"]):
+                    if not flag or record[flag] == value:
+                        assert record[column] == "", (row["file"], blank)
         elif listed:
             dbf = decompress_bytes((FIXTURES / row["file"]).read_bytes())
             assert blank_dbf(dbf, listed.group(1).split(", ")) == dbf, row["file"]
