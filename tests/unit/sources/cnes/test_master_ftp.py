@@ -175,6 +175,14 @@ def test_import_fills_view_and_a_second_load_keeps_existing_names(tmp_path: Path
     ]
 
 
+def test_the_importer_is_public_next_to_import_cnes_master(tmp_path: Path) -> None:
+    import omnisus as sus
+
+    assert "import_cnes_master_ftp" in sus.__all__
+    target = f"ducklake:{tmp_path}/publico.ducklake"
+    assert sus.import_cnes_master_ftp("202312", zip_path=FIXTURE, target=target) == 5
+
+
 def test_import_rejects_bad_competencia() -> None:
     with pytest.raises(ValueError, match="AAAAMM"):
         import_cnes_master_ftp("2023-12", zip_path=FIXTURE)

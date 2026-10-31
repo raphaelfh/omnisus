@@ -128,7 +128,7 @@ Os dicionários dessas linhas partem do inventário físico do descritor DBF de 
   `sus.import_cnes_master` busca os nomes na API pública e os junta a `aux_cnes`
   (`src/omnisus/__init__.py`, docstring de `import_cnes_master`). São uma requisição por
   código, e a API recusava conexões em 25/10/2026. Para o lake inteiro,
-  `import_cnes_master_ftp` (`omnisus.sources.cnes.importers.master_ftp`) lê o
+  `sus.import_cnes_master_ftp` lê o
   `tbEstabelecimentoAAAAMM.csv` da base completa do CNES
   (`ftp://ftp.datasus.gov.br/cnes/BASE_DE_DADOS_CNES_AAAAMM.ZIP`), com razão social e nome
   fantasia, e grava em `cnes_master` o arquivo, o SHA-256 e a competência. Quando ela mesma

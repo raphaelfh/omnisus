@@ -21,8 +21,8 @@
   before the first import returns `[]`. `None` keeps the SQL and the rows of 0.2.3. The
   data table is pinned by the caller's `FROM` (#101).
 
-- `import_cnes_master_ftp(competencia, zip_path=..., download_dir=...)`
-  (`omnisus.sources.cnes.importers.master_ftp`) fills `cnes_master` from
+- `sus.import_cnes_master_ftp(competencia, zip_path=..., download_dir=...)`
+  fills `cnes_master` from
   `tbEstabelecimentoAAAAMM.csv` of the full CNES base on the FTP
   (`BASE_DE_DADOS_CNES_AAAAMM.ZIP`, about 576 MB for 202312) in one pass, instead of one
   request per code to the open-data API. Each row records `fonte`, `arquivo`, `sha256`,
