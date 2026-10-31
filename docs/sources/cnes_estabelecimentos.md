@@ -131,7 +131,10 @@ Os dicionários dessas linhas partem do inventário físico do descritor DBF de 
   `import_cnes_master_ftp` (`omnisus.sources.cnes.importers.master_ftp`) lê o
   `tbEstabelecimentoAAAAMM.csv` da base completa do CNES
   (`ftp://ftp.datasus.gov.br/cnes/BASE_DE_DADOS_CNES_AAAAMM.ZIP`), com razão social e nome
-  fantasia, e grava em `cnes_master` o arquivo, o SHA-256 e a competência. `aux_cnes` expõe
+  fantasia, e grava em `cnes_master` o arquivo, o SHA-256 e a competência. Quando ela mesma
+  baixa o arquivo (`download_dir`), grava também a URL do servidor (`url`) e o `MDTM` do
+  arquivo (`modificado_em`); um ZIP passado em `zip_path` tem origem desconhecida e fica sem
+  esses dois campos. `aux_cnes` expõe
   `nome` (fantasia ou razão), `nome_fantasia`, `razao_social`, `competencia_nome` e
   `fonte_nome`. O nome é o da competência do arquivo, não o do último mês do código no ST.
   Carregar um mês recente primeiro e meses antigos depois só preenche os códigos sem nome.

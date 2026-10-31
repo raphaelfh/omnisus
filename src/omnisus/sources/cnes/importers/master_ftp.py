@@ -8,20 +8,28 @@ The CNES-ST DBF has no establishment name. The monthly full base
 
 Each row records the file name, its SHA-256 and the competência, because a name
 reflects the month of the file: a CNES last seen in 2018 gets the name it had in
-that file's month, which may differ from the name in 2018.
+that file's month, which may differ from the name in 2018. A file this module
+downloaded also records the server URL and the file's ``MDTM``; a file the caller
+passes in has no known origin, so those two stay empty.
+
+The zip is about 576 MB (202312), more than ``fetch_dbc_bytes`` keeps in memory, so it
+goes to disk through the connection primitives of ``datasus_ftp._ftp``: the host
+override, the retry on transient errors and the transient ``550`` of a dropped data
+connection.
 """
 
 from __future__ import annotations
 
+import contextlib
 import csv
+import ftplib
 import hashlib
 import io
 import re
-import shutil
-import urllib.request
+import time
 import zipfile
-from contextlib import nullcontext
 from pathlib import Path
+from typing import NamedTuple
 
 import structlog
 
@@ -31,10 +39,18 @@ from omnisus.sources.cnes.importers.master import (
     _prepare_master_rows,
     _upsert_master,
 )
+from omnisus.sources.datasus_ftp._ftp import (
+    TRANSIENT_FTP_ERRORS,
+    DataConnectionLost,
+    ftp_host,
+    is_missing,
+)
+from omnisus.sources.datasus_ftp.fetch import FtpFileNotFound, FtpUnavailable, _still_there
 
 logger = structlog.get_logger(__name__)
 
-FTP_URL = "ftp://ftp.datasus.gov.br/cnes/BASE_DE_DADOS_CNES_{competencia}.ZIP"
+FTP_DIR = "/cnes"
+FTP_NAME = "BASE_DE_DADOS_CNES_{competencia}.ZIP"
 FTP_FONTE = "DATASUS FTP, base completa do CNES (tbEstabelecimento)"
 PESSOA_FISICA = "1"  # TP_PFPJ: 1 pessoa física, 3 pessoa jurídica
 _COMPETENCIA = re.compile(r"^(19|20)\d{2}(0[1-9]|1[0-2])$")
@@ -48,22 +64,83 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def download_base(competencia: str, dest_dir: Path) -> Path:
-    """Download ``BASE_DE_DADOS_CNES_{competencia}.ZIP`` into ``dest_dir``."""
+class Download(NamedTuple):
+    path: Path
+    url: str  # where the bytes came from, on the host in use
+    modificado_em: str  # the file's MDTM on the server, ``YYYY-MM-DDTHH:MM``
+
+
+def _fetch_to_disk(name: str, partial: Path, timeout_seconds: float) -> str:
+    """One attempt: ``RETR`` ``name`` into ``partial``; returns its ``MDTM``."""
+    with contextlib.closing(ftplib.FTP(timeout=timeout_seconds)) as ftp:
+        ftp.connect(ftp_host())
+        ftp.login()
+        ftp.cwd(FTP_DIR)
+        stamp = ftp.sendcmd(f"MDTM {name}").split()[-1]
+        with partial.open("wb") as fh:
+            try:
+                ftp.retrbinary(f"RETR {name}", fh.write)
+            except ftplib.error_perm as exc:
+                if is_missing(exc) and _still_there(ftp, name):
+                    raise DataConnectionLost(str(exc)) from exc
+                raise
+    return f"{stamp[:4]}-{stamp[4:6]}-{stamp[6:8]}T{stamp[8:10]}:{stamp[10:12]}"
+
+
+def download_base(
+    competencia: str,
+    dest_dir: Path,
+    *,
+    timeout_seconds: float = 120.0,
+    max_retries: int = 3,
+    backoff_seconds: float = 1.0,
+) -> Download:
+    """Download ``BASE_DE_DADOS_CNES_{competencia}.ZIP`` into ``dest_dir``.
+
+    Raises:
+        FtpFileNotFound: the server has no such file. Terminal.
+        FtpUnavailable: transient failures exhausted ``max_retries``.
+
+    A failed download leaves no ``.ZIP.part`` behind.
+    """
     if not _COMPETENCIA.match(competencia):
         raise ValueError("competencia must be AAAAMM")
     dest_dir.mkdir(parents=True, exist_ok=True)
-    final = dest_dir / f"BASE_DE_DADOS_CNES_{competencia}.ZIP"
+    name = FTP_NAME.format(competencia=competencia)
+    final = dest_dir / name
     partial = final.with_suffix(".ZIP.part")
-    url = FTP_URL.format(competencia=competencia)
-    with urllib.request.urlopen(url, timeout=120) as resp, partial.open("wb") as fh:
-        shutil.copyfileobj(resp, fh, 1 << 20)
-    partial.replace(final)
-    return final
+    url = f"ftp://{ftp_host()}{FTP_DIR}/{name}"
+    last_exc: BaseException | None = None
+    try:
+        for attempt in range(max_retries):
+            try:
+                modificado_em = _fetch_to_disk(name, partial, timeout_seconds)
+            except TRANSIENT_FTP_ERRORS as exc:
+                if is_missing(exc):
+                    raise FtpFileNotFound(f"{url}: {exc}") from exc
+                last_exc = exc
+                if attempt + 1 < max_retries:
+                    time.sleep(backoff_seconds * (2**attempt))
+                continue
+            partial.replace(final)
+            logger.info("cnes_master_ftp.downloaded", url=url, attempt=attempt)
+            return Download(final, url, modificado_em)
+        raise FtpUnavailable(f"{url}: {max_retries} attempts failed") from last_exc
+    finally:
+        partial.unlink(missing_ok=True)
 
 
-def read_names(zip_path: Path, competencia: str) -> list[dict]:
-    """One record per establishment in the base's tbEstabelecimento."""
+def read_names(
+    zip_path: Path,
+    competencia: str,
+    *,
+    url: str | None = None,
+    modificado_em: str | None = None,
+) -> list[dict]:
+    """One record per establishment in the base's tbEstabelecimento.
+
+    ``url`` and ``modificado_em`` are where the zip came from, when known.
+    """
     sha = _sha256(zip_path)
     wanted = f"tbestabelecimento{competencia}.csv"
     with zipfile.ZipFile(zip_path) as zf:
@@ -104,6 +181,8 @@ def read_names(zip_path: Path, competencia: str) -> list[dict]:
                         "arquivo": zip_path.name,
                         "sha256": sha,
                         "competencia_nome": competencia,
+                        "url": url,
+                        "modificado_em": modificado_em,
                     }
                 )
     logger.info(
@@ -130,7 +209,8 @@ def import_cnes_master_ftp(
     Args:
         competencia: ``AAAAMM`` of the base, e.g. ``"202312"``.
         zip_path: an already downloaded ``BASE_DE_DADOS_CNES_AAAAMM.ZIP``; when
-            ``None`` the file is downloaded into ``download_dir``.
+            ``None`` the file is downloaded into ``download_dir``. Only a file
+            downloaded here records its server ``url`` and ``modificado_em``.
         download_dir: where to download; required when ``zip_path`` is ``None``.
         target: DuckLake target, as in the other importers.
         only_missing: ``True`` (default) keeps names already in ``cnes_master``, so
@@ -144,10 +224,17 @@ def import_cnes_master_ftp(
     if zip_path is None:
         if download_dir is None:
             raise ValueError("pass zip_path or download_dir")
-        zip_path = download_base(competencia, download_dir)
-    records = read_names(Path(zip_path), competencia)
+        downloaded = download_base(competencia, download_dir)
+        records = read_names(
+            downloaded.path,
+            competencia,
+            url=downloaded.url,
+            modificado_em=downloaded.modificado_em,
+        )
+    else:
+        records = read_names(Path(zip_path), competencia)
     with Lake.local(target) as lake:
-        context = nullcontext() if lake.in_transaction else lake.transaction()
+        context = contextlib.nullcontext() if lake.in_transaction else lake.transaction()
         with context:
             _ensure_master_table(lake)
             if only_missing:

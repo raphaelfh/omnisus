@@ -13,6 +13,7 @@ for malformed or sensitive input only.
 
 from __future__ import annotations
 
+import ftplib
 import hashlib
 import zipfile
 from pathlib import Path
@@ -23,9 +24,12 @@ from structlog.testing import capture_logs
 from omnisus.lake import Lake
 from omnisus.sources.cnes.importers.master_ftp import (
     FTP_FONTE,
+    download_base,
     import_cnes_master_ftp,
     read_names,
 )
+from omnisus.sources.datasus_ftp.fetch import FtpFileNotFound, FtpUnavailable
+from tests.support import fake_ftp
 
 FIXTURE = (
     Path(__file__).resolve().parents[3]
@@ -198,3 +202,98 @@ def test_api_rows_keep_working_alongside_provenance_columns(tmp_path: Path) -> N
             .fetchone()
         )
     assert row == ("API", None)
+
+
+# Download: the FTP connection is `fake_ftp`; the bytes are the real fixture ZIP.
+MDTM = "213 20240112212745"
+URL = "ftp://ftp.datasus.gov.br/cnes/BASE_DE_DADOS_CNES_202312.ZIP"
+
+
+def _serve_base(monkeypatch: pytest.MonkeyPatch, **replies: list[object]) -> list[str]:
+    replies.setdefault("CWD", [fake_ftp.CWD_OK])
+    replies.setdefault("MDTM", [MDTM])
+    replies.setdefault("RETR", [FIXTURE.read_bytes()])
+    replies.setdefault("SIZE", [FIXTURE.stat().st_size])
+    return fake_ftp.serve(monkeypatch, **replies)
+
+
+def test_download_writes_the_zip_and_returns_url_and_mdtm(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.delenv("OMNISUS_FTP_HOST", raising=False)
+    _serve_base(monkeypatch)
+    got = download_base("202312", tmp_path / "dl")
+    assert got.path.read_bytes() == FIXTURE.read_bytes()
+    assert (got.url, got.modificado_em) == (URL, "2024-01-12T21:27")
+    assert [p.name for p in got.path.parent.iterdir()] == [got.path.name]
+
+
+def test_download_retries_a_550_that_size_says_is_the_connection(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    sent = _serve_base(monkeypatch, RETR=[fake_ftp.ABORTED, FIXTURE.read_bytes()])
+    got = download_base("202312", tmp_path, backoff_seconds=0)
+    assert got.path.read_bytes() == FIXTURE.read_bytes()
+    assert sent.count("RETR") == 2
+
+
+def test_a_failed_download_leaves_no_part_file(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    _serve_base(monkeypatch, RETR=[fake_ftp.ABORTED])
+    with pytest.raises(FtpUnavailable):
+        download_base("202312", tmp_path, backoff_seconds=0)
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_a_base_the_server_does_not_have_is_file_not_found(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    _serve_base(monkeypatch, MDTM=[fake_ftp.NOT_FOUND])
+    with pytest.raises(FtpFileNotFound):
+        download_base("202312", tmp_path, backoff_seconds=0)
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_download_goes_to_the_overridden_host(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    _serve_base(monkeypatch)
+    hosts: list[str] = []
+    monkeypatch.setattr(ftplib.FTP, "connect", lambda _self, host, *_: hosts.append(host))
+    monkeypatch.setenv("OMNISUS_FTP_HOST", "mirror.example.org")
+    got = download_base("202312", tmp_path)
+    assert hosts == ["mirror.example.org"]
+    assert got.url == "ftp://mirror.example.org/cnes/BASE_DE_DADOS_CNES_202312.ZIP"
+
+
+def test_a_downloaded_base_records_url_mdtm_and_sha256(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.delenv("OMNISUS_FTP_HOST", raising=False)
+    _serve_base(monkeypatch)
+    target = f"ducklake:{tmp_path}/dl.ducklake"
+    assert import_cnes_master_ftp("202312", download_dir=tmp_path / "dl", target=target) == 5
+    with Lake.local(target) as lake:
+        rows = (
+            lake.connect()
+            .execute(
+                f"SELECT DISTINCT arquivo, url, modificado_em, sha256 FROM {lake.alias}.cnes_master"
+            )
+            .fetchall()
+        )
+    sha = hashlib.sha256(FIXTURE.read_bytes()).hexdigest()
+    assert rows == [("BASE_DE_DADOS_CNES_202312.ZIP", URL, "2024-01-12T21:27", sha)]
+
+
+def test_a_zip_from_the_caller_has_no_url_or_mdtm(tmp_path: Path) -> None:
+    """Nothing says where a caller's file came from, so no origin is recorded for it."""
+    target = f"ducklake:{tmp_path}/local.ducklake"
+    import_cnes_master_ftp("202312", zip_path=FIXTURE, target=target)
+    with Lake.local(target) as lake:
+        rows = (
+            lake.connect()
+            .execute(f"SELECT DISTINCT url, modificado_em FROM {lake.alias}.cnes_master")
+            .fetchall()
+        )
+    assert rows == [(None, None)]

@@ -25,8 +25,9 @@
   (`omnisus.sources.cnes.importers.master_ftp`) fills `cnes_master` from
   `tbEstabelecimentoAAAAMM.csv` of the full CNES base on the FTP
   (`BASE_DE_DADOS_CNES_AAAAMM.ZIP`, about 576 MB for 202312) in one pass, instead of one
-  request per code to the open-data API. Each row records `fonte`, `arquivo`, `sha256`
-  and `competencia_nome`; tables created by `import_cnes_master` gain those columns on the
+  request per code to the open-data API. Each row records `fonte`, `arquivo`, `sha256`,
+  `competencia_nome` and, for a file the importer downloaded, the server `url` and
+  `modificado_em` (MDTM); tables created by `import_cnes_master` gain those columns on the
   next write. `aux_cnes` exposes `nome_fantasia`, `razao_social`, `competencia_nome` and
   `fonte_nome` next to `nome`. The name is the one of the loaded competência, not of the
   code's last month in ST (#150).

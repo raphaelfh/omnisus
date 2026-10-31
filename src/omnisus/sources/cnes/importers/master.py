@@ -35,8 +35,9 @@ logger = structlog.get_logger(__name__)
 API_URL = "https://apidadosabertos.saude.gov.br/cnes/estabelecimentos/{cnes}"
 
 # Provenance kept per row: which source gave the name, the file and its SHA-256,
-# and the competência (AAAAMM) the name reflects. API rows carry only ``fonte``.
-_PROVENANCE_COLUMNS = ("fonte", "arquivo", "sha256", "competencia_nome")
+# the competência (AAAAMM) the name reflects, and the server URL and MDTM of a file
+# the importer downloaded. API rows carry only ``fonte``.
+_PROVENANCE_COLUMNS = ("fonte", "arquivo", "sha256", "competencia_nome", "url", "modificado_em")
 _MASTER_COLUMNS = ("cnes", "nome", "nome_fantasia", "razao_social", *_PROVENANCE_COLUMNS)
 API_FONTE = "API dados abertos CNES (apidadosabertos.saude.gov.br)"
 
