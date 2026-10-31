@@ -124,6 +124,27 @@ def test_a_row_without_any_name_is_skipped_and_the_month_still_loads(tmp_path: P
     assert import_cnes_master_ftp("202312", zip_path=path, target=target) == 4
 
 
+def test_a_repeated_code_with_another_name_is_a_conflict(tmp_path: Path) -> None:
+    """Synthetic: the real file repeats no CO_CNES; a second line of 2320886 with another
+    nome fantasia is added, as the API path would receive two answers for one code."""
+
+    def repeated(text: str) -> str:
+        line = _line_of(text, "2320886")
+        return text + line.replace("HOSPITAL JOSE GUEDES CATAO", "OUTRO NOME") + "\n"
+
+    path = _synthetic_zip(tmp_path, repeated)
+    with pytest.raises(ValueError, match="conflicting CNES records for 2320886"):
+        read_names(path, "202312")
+    with pytest.raises(ValueError, match="conflicting CNES records for 2320886"):
+        import_cnes_master_ftp("202312", zip_path=path, target=f"ducklake:{tmp_path}/c.ducklake")
+
+
+def test_a_repeated_identical_line_is_one_record(tmp_path: Path) -> None:
+    """Synthetic: the line of 2320886 twice, byte for byte."""
+    path = _synthetic_zip(tmp_path, lambda text: text + _line_of(text, "2320886") + "\n")
+    assert sorted(r["cnes"] for r in read_names(path, "202312")) == CODES
+
+
 def test_read_names_rejects_zip_without_the_month_file() -> None:
     with pytest.raises(ValueError, match="tbestabelecimento202311"):
         read_names(FIXTURE, "202311")

@@ -79,7 +79,7 @@ def read_names(zip_path: Path, competencia: str) -> list[dict]:
             )
             if missing:
                 raise ValueError(f"tbEstabelecimento lacks columns: {sorted(missing)}")
-            records: dict[str, dict] = {}
+            records: list[dict] = []
             pessoa_fisica = 0
             sem_nome = 0
             for row in reader:
@@ -94,23 +94,27 @@ def read_names(zip_path: Path, competencia: str) -> list[dict]:
                 if not (fantasia or razao):
                     sem_nome += 1
                     continue
-                records[code] = {
-                    "cnes": code,
-                    "nome": fantasia or razao,
-                    "nome_fantasia": fantasia,
-                    "razao_social": razao,
-                    "fonte": FTP_FONTE,
-                    "arquivo": zip_path.name,
-                    "sha256": sha,
-                    "competencia_nome": competencia,
-                }
+                records.append(
+                    {
+                        "cnes": code,
+                        "nome": fantasia or razao,
+                        "nome_fantasia": fantasia,
+                        "razao_social": razao,
+                        "fonte": FTP_FONTE,
+                        "arquivo": zip_path.name,
+                        "sha256": sha,
+                        "competencia_nome": competencia,
+                    }
+                )
     logger.info(
         "cnes_master_ftp.rows_skipped",
         competencia=competencia,
         pessoa_fisica=pessoa_fisica,
         sem_nome=sem_nome,
     )
-    return list(records.values())
+    # One answer per code, as on the API path: a repeated code with another name is an error.
+    _prepare_master_rows(records)
+    return list({record["cnes"]: record for record in records}.values())
 
 
 def import_cnes_master_ftp(
@@ -142,7 +146,6 @@ def import_cnes_master_ftp(
             raise ValueError("pass zip_path or download_dir")
         zip_path = download_base(competencia, download_dir)
     records = read_names(Path(zip_path), competencia)
-    _prepare_master_rows(records)
     with Lake.local(target) as lake:
         context = nullcontext() if lake.in_transaction else lake.transaction()
         with context:
