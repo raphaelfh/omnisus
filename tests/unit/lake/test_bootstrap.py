@@ -39,7 +39,7 @@ def test_bootstrap_loads_the_five_vocabularies(lake: Lake) -> None:
     assert set(lake.tables()) >= TABLES
     counts = {t: one(lake, f"SELECT count(*) FROM lake.{t}")[0] for t in sorted(TABLES)}
     assert counts == {
-        "aux_cid10": 14257 + 9,
+        "aux_cid10": 14257 + 25,
         "aux_municipios": 5652 + 6,
         "aux_ocupacoes": 2458 + 3564,
         "aux_paises": 264,
@@ -133,12 +133,14 @@ def test_six_newer_municipalities_come_from_the_territorial_base(lake: Lake) -> 
 
 
 def test_cid10_gains_the_codes_sigtap_lists(lake: Lake) -> None:
-    """tb_cid of the SIGTAP (202610) has the codes CID10.DBF (2020) lacks; N181 and
-    O987 are in neither and stay out."""
+    """tb_cid of the SIGTAP (202610) has 25 codes CID10.DBF (2020) lacks, all of them in
+    the table; N181 and O987 are in neither file and stay out."""
     assert lake.connect().execute(
         "SELECT codigo, descricao, capitulo, bloco FROM lake.aux_cid10 WHERE codigo IN "
-        "('N185', 'P354', 'U099', 'U10') ORDER BY codigo"
+        "('A97', 'C824', 'N185', 'P354', 'U099', 'U10', 'W469') ORDER BY codigo"
     ).fetchall() == [
+        ("A97", "Dengue (AGRAVO DE NOTIFICAÇÃO COMPULSÓRIA)", 1, "A90-A99"),
+        ("C824", "Linfoma folicular grau IIIb", 2, "C81-C96"),
         ("N185", "Doença renal crônica, estádio 5", 14, "N17-N19"),
         (
             "P354",
@@ -154,6 +156,7 @@ def test_cid10_gains_the_codes_sigtap_lists(lake: Lake) -> None:
             22,
             "U04-U12",
         ),
+        ("W469", "Contato com agulha hipodérmica - local não especificado", 20, "W20-W49"),
     ]
     assert (
         lake.connect()

@@ -18,7 +18,7 @@ exceto a CBO 2002 e os blocos da CID-10, que vêm de `CBO2002.CNV` e `CID10-grup
 | --- | --- | ---: | --- |
 | `aux_uf` | `TABUF.DBF` | 27 | `codigo_ibge` (2 dígitos) |
 | `aux_municipios` | `CADMUN.DBF` + `tb_municip.dbf` da base territorial | 5.652 + 6 | `codigo_ibge` (7 dígitos); `codigo_6` também é único |
-| `aux_cid10` | `CID10.DBF` + `CIDCAP10.DBF` + `CID10-grup_d.cnv` + `tb_cid.txt` do SIGTAP | 14.257 + 9 | `codigo` sem ponto (`B571`) |
+| `aux_cid10` | `CID10.DBF` + `CIDCAP10.DBF` + `CID10-grup_d.cnv` + `tb_cid.txt` do SIGTAP | 14.257 + 25 | `codigo` sem ponto (`B571`) |
 | `aux_ocupacoes` | `CBO2002.CNV` + `TABOCUP.DBF` | 2.458 + 3.564 | `(esquema, codigo)` só em `cbo2002` |
 | `aux_paises` | `TABPAIS.DBF` | 264 | nenhuma: 3 códigos têm dois nomes |
 
@@ -76,8 +76,9 @@ que não resolve (`tests/unit/test_references.py`).
   `pa_cidcas` também fica em branco (161.665 linhas). `ap_cidpri` da AQ e da AR está
   preenchido em toda linha do censo e não tem `0000`; os campos `aq_*` e `ar_*` ficam em
   branco em parte das linhas e também não têm `0000`. A mesma tabela chama de "CID NÃO
-  IDENTIFICADO" alguns códigos de 4 caracteres que o PA publica e que não estão na
-  `aux_cid10`, como `N182` e `N185`. `M881` (5 linhas) e `Q350` (3) têm rótulo próprio
+  IDENTIFICADO" alguns códigos de 4 caracteres que o PA publica, como `N182` e `N185`,
+  que a `aux_cid10` 2.3.0 rotula com o texto do SIGTAP (abaixo). `M881` (5 linhas) e
+  `Q350` (3) têm rótulo próprio
   no S_CID, mas também não têm linha na `aux_cid10` e ficam sem rótulo no lake
   (`evidence/2026-10-07-sia-cid-widths/values.csv`).
 - **`0`, `0000` e categorias com zero no PA de 1994-2007.** Em
@@ -104,10 +105,20 @@ que não resolve (`tests/unit/test_references.py`).
   outras UFs podem ter outros valores (`evidence/2026-10-07-sia-cid-widths/`).
 - **Descrições abreviadas.** `aux_cid10.descricao` é o texto de `CID10.DBF`, que
   abrevia (`Form aguda doenc de Chagas s/compr cardiaco`).
-- **Códigos que o `CID10.DBF` não tem.** O arquivo é de 2020. N182 a N185, P354, U09,
-  U099, U10 e U109, que SIH e SIM gravam, vêm do `tb_cid.txt` do SIGTAP de 202610, com a
-  descrição por extenso como o SIGTAP grava. N181 e O987 também aparecem nos dados, mas
-  não estão em nenhum dos dois arquivos e não resolvem.
+- **Códigos que o `CID10.DBF` não tem.** O arquivo é de 2020. Os 25 códigos do
+  `tb_cid.txt` do SIGTAP de 202610 que ele não tem entram na `aux_cid10`, com a descrição
+  por extenso como o SIGTAP grava: `A925`, `A97`, `C823` a `C826`, `N182` a `N185`,
+  `P354`, `U09`, `U099`, `U10`, `U109` e `W460` a `W469`
+  (`evidence/2026-10-31-cid10-sigtap-e-s-cid/`). `N181` e `O987` aparecem nos dados, mas
+  não estão em nenhum dos dois arquivos e não resolvem (issue #151).
+- **`N182` e `N185` no S_CID do SIH.** O `DBF/S_CID.DBF` do `TAB_SIH.zip` rotula os dois
+  "CID NÃO IDENTIFICADO", como rotula `N181`, e não tem `N183` nem `N184`. Vale o
+  `tb_cid.txt` do SIGTAP: "CID NÃO IDENTIFICADO" diz que a tabela do TabWin não tem nome
+  para o código, não é um nome de doença, e a `aux_cid10` só dá rótulo onde um dicionário
+  dá um nome (o `0` do SIA, que o S_CID também chama de "CID NÃO IDENTIFICADO", fica sem
+  linha pelo mesmo motivo). Quem junta o
+  `diag_princ` do SIH com o S_CID lê "CID NÃO IDENTIFICADO" onde a `aux_cid10` lê
+  "Doença renal crônica, estádio 5".
 
 ## CID-9 e CID-10 nos sistemas do SUS
 

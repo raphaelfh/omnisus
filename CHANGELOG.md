@@ -114,10 +114,13 @@
   Names are written as the base writes them, unaccented; `regiao_saude` and
   `macrorregiao_saude` are NULL in those rows, since the base codes regions in another
   scheme. `codmunnatu` `150475` of the SIM RR 2023 excerpt now resolves.
-- `aux_cid10` (2.2.0) gains `N182`-`N185`, `P354`, `U09`, `U099`, `U10` and `U109`, which
-  `CID10.DBF` (2020) lacks, from `tb_cid.txt` of the SIGTAP 202610, registered with its
-  SHA-256 and listed in the manifest as a second source. `N181` and `O987` appear in the
-  data but are in neither file and stay out. Run `omnisus lake update-auxiliares` (or
+- `aux_cid10` (2.3.0) gains the 25 codes of `tb_cid.txt` of the SIGTAP 202610 that
+  `CID10.DBF` (2020) lacks: `A925`, `A97`, `C823`-`C826`, `N182`-`N185`, `P354`, `U09`,
+  `U099`, `U10`, `U109` and `W460`-`W469` (`evidence/2026-10-31-cid10-sigtap-e-s-cid/`).
+  The SIGTAP zip is registered with its SHA-256 and listed in the manifest as a second
+  source. `N181` and `O987` appear in the data but are in neither file and stay out. The
+  SIH `S_CID.DBF` labels `N182` and `N185` "CID NÃO IDENTIFICADO"; the table keeps the
+  SIGTAP name (`docs/sources/vocabularios.md`). Run `omnisus lake update-auxiliares` (or
   `Lake.bootstrap_auxiliares()`) to load the new rows.
 
 ### Performance

@@ -5,11 +5,11 @@
 Every source is a file of ``SIM/CID10/TABELAS`` registered in
 ``sources/registry.json``, plus the packaged ``sources/cnv/sim/CBO2002.CNV`` and
 ``sources/cnv/sim/CID10-grup_d.cnv``. Two newer registered files fill what the
-TABELAS (CADMUN of 2011, CID10 of 2020) lack: the six municipalities installed after
-CADMUN, from ``tb_municip.dbf`` of the DATASUS territorial base, and the CID-10 codes
-of ``NEW_CID10``, from ``tb_cid.txt`` of the SIGTAP. Each download, and each packaged
-member, must match its registered SHA-256, else the build stops. The zip carries one
-Parquet file per table and ``manifest.json`` (table -> rows and sources).
+TABELAS (CADMUN of 2011, CID10 of 2020) lack: the six municipalities CADMUN does not
+have, from ``tb_municip.dbf`` of the DATASUS territorial base, and every CID-10 code of
+``tb_cid.txt`` of the SIGTAP that ``CID10.DBF`` does not have. Each download, and each
+packaged member, must match its registered SHA-256, else the build stops. The zip carries
+one Parquet file per table and ``manifest.json`` (table -> rows and sources).
 """
 
 from __future__ import annotations
@@ -40,10 +40,7 @@ SIGTAP = (
     "TabelaUnificada_202610_v2610271043.zip"
 )
 NEW_MUNICIPALITIES = ("150475", "220672", "421265", "422000", "431454", "500627")
-"""Municipalities installed after CADMUN.DBF (2011) that the SIM, SINASC and SIH codes."""
-NEW_CID10 = ("N182", "N183", "N184", "N185", "P354", "U09", "U099", "U10", "U109")
-"""Codes the SIH and SIM use that CID10.DBF (2020) lacks and the SIGTAP tb_cid has.
-N181 and O987 are used too but are in neither file."""
+"""Municipalities that CADMUN.DBF (2011) lacks and the SIM, SINASC and SIH code."""
 # The DBF headers do not state these reliably (CID10 declares none); read from the text.
 ENCODING = {
     "TABUF.DBF": "ascii",
@@ -89,19 +86,27 @@ def territorial_municipalities(into: Path) -> tuple[list[dict[str, Any]], dict[s
     return rows, source
 
 
-def sigtap_cid10() -> tuple[list[tuple[str, str]], dict[str, str]]:
-    """(code, description) of ``NEW_CID10`` in tb_cid.txt of the SIGTAP, read with its
-    layout file (CO_CID in columns 1-4, NO_CID in 5-104)."""
+def parse_tb_cid(layout: list[str], lines: list[str]) -> dict[str, str]:
+    """code -> description of each line of tb_cid.txt, read with its layout file
+    (CO_CID in columns 1-4, NO_CID in 5-104)."""
+    if layout[1:3] != ["CO_CID,4,1,4,VARCHAR2", "NO_CID,100,5,104,VARCHAR2"]:
+        raise SystemExit(f"tb_cid_layout.txt changed: {layout[:3]}")
+    return {line[:4].strip(): line[4:104].strip() for line in lines}
+
+
+def sigtap_cid10(layout: list[str], lines: list[str], have: set[str]) -> list[tuple[str, str]]:
+    """(code, description) of every tb_cid code that ``have`` (CID10.DBF) lacks."""
+    codes = parse_tb_cid(layout, lines)
+    return [(c, d) for c, d in codes.items() if c not in have]
+
+
+def sigtap_tb_cid() -> tuple[list[str], list[str], dict[str, str]]:
+    """The layout and the lines of tb_cid.txt in the registered SIGTAP zip."""
     raw, source = fetch(SIGTAP)
     with zipfile.ZipFile(io.BytesIO(raw)) as zf:
         layout = zf.read("tb_cid_layout.txt").decode("latin-1").splitlines()
         lines = zf.read("tb_cid.txt").decode("latin-1").splitlines()
-    if layout[1:3] != ["CO_CID,4,1,4,VARCHAR2", "NO_CID,100,5,104,VARCHAR2"]:
-        raise SystemExit(f"tb_cid_layout.txt changed: {layout[:3]}")
-    codes = {line[:4].strip(): line[4:104].strip() for line in lines}
-    if missing := [c for c in NEW_CID10 if c not in codes]:
-        raise SystemExit(f"tb_cid.txt lacks {missing}")
-    return [(c, codes[c]) for c in NEW_CID10], source
+    return layout, lines, source
 
 
 def aux_uf(rows: list[dict[str, Any]]) -> pl.DataFrame:
@@ -227,10 +232,15 @@ def aux_cid10(
     def display(code: str) -> str:
         return code if len(code) == 3 else f"{code[:3]}.{code[3:]}"
 
-    if clash := {c for c, _ in sigtap} & {r["CID10"] for r in rows}:
-        raise SystemExit(f"CID10.DBF already has {sorted(clash)}")
-    # In CID10's shape, DESCR repeating the code, so both go through the same checks.
-    rows = rows + [{"CID10": c, "DESCR": f"{display(c)} {d}"} for c, d in sigtap]
+    for r in rows:
+        if not r["DESCR"].startswith(display(r["CID10"])):
+            raise SystemExit(f"CID-10 {r['CID10']}: DESCR does not start with its code")
+    # The SIGTAP writes NO_CID without the code in front, unlike CID10.DESCR.
+    rows = [
+        {"CID10": r["CID10"], "DESCR": r["DESCR"][len(display(r["CID10"])) :].strip()}
+        for r in rows
+    ]
+    rows += [{"CID10": c, "DESCR": d} for c, d in sigtap]
 
     def chapter(code: str) -> int:
         found = [n for n, c in enumerate(chapters, start=1) if _in_range(code, c["CAUSAS"])]
@@ -253,13 +263,10 @@ def aux_cid10(
     if spanning := {b: c for b, c in in_chapters.items() if len(c) > 1}:
         raise SystemExit(f"CID-10 groups span chapters: {spanning}")
 
-    for r in rows:
-        if not r["DESCR"].startswith(display(r["CID10"])):
-            raise SystemExit(f"CID-10 {r['CID10']}: DESCR does not start with its code")
     return pl.DataFrame(
         {
             "codigo": [r["CID10"] for r in rows],
-            "descricao": [r["DESCR"][len(display(r["CID10"])) :].strip() for r in rows],
+            "descricao": [r["DESCR"] for r in rows],
             "capitulo": [chapter(r["CID10"]) for r in rows],
             "capitulo_descricao": [chapters[chapter(r["CID10"]) - 1]["DESCRICAO"] for r in rows],
             "bloco": [block(r["CID10"])[0] for r in rows],
@@ -294,7 +301,8 @@ def main() -> None:
         into = Path(tmp)
         read = {name: download(name, into) for name in ENCODING}
         territorial, territorial_source = territorial_municipalities(into)
-    sigtap, sigtap_source = sigtap_cid10()
+    layout, lines, sigtap_source = sigtap_tb_cid()
+    sigtap = sigtap_cid10(layout, lines, {r["CID10"] for r in read["CID10.DBF"][0]})
     ocupacoes, cbo_source = aux_ocupacoes(read["TABOCUP.DBF"][0])
     blocks, blocks_source = cid10_blocks()
     tables = {
