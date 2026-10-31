@@ -84,7 +84,7 @@ def test_a_pessoa_fisica_row_gives_no_name() -> None:
         recs = {r["cnes"] for r in read_names(FIXTURE, "202312")}
     assert PESSOA_FISICA not in recs
     (skipped,) = [e for e in logs if e["event"] == "cnes_master_ftp.rows_skipped"]
-    assert skipped["pessoa_fisica"] == 1
+    assert (skipped["pessoa_fisica"], skipped["sem_nome"]) == (1, 0)
 
 
 def test_a_pessoa_fisica_name_in_the_file_never_reaches_the_records(tmp_path: Path) -> None:
@@ -102,6 +102,26 @@ def test_a_pessoa_fisica_name_in_the_file_never_reaches_the_records(tmp_path: Pa
     recs = read_names(path, "202312")
     assert sorted(r["cnes"] for r in recs) == CODES
     assert "EXEMPLO" not in repr(recs)
+
+
+def test_a_row_without_any_name_is_skipped_and_the_month_still_loads(tmp_path: Path) -> None:
+    """Synthetic: the real file has no row with both names empty; the razão social of the
+    fixture's only fantasia-less establishment is blanked to make one."""
+
+    def nameless(text: str) -> str:
+        line = _line_of(text, "4339517")
+        return text.replace(
+            line, line.replace("ASSOCIACAO PESTALOZZI DE DIVINO DE SAO LOURENCO", "")
+        )
+
+    path = _synthetic_zip(tmp_path, nameless)
+    with capture_logs() as logs:
+        recs = read_names(path, "202312")
+    assert sorted(r["cnes"] for r in recs) == [c for c in CODES if c != "4339517"]
+    (skipped,) = [e for e in logs if e["event"] == "cnes_master_ftp.rows_skipped"]
+    assert (skipped["pessoa_fisica"], skipped["sem_nome"]) == (1, 1)
+    target = f"ducklake:{tmp_path}/sem_nome.ducklake"
+    assert import_cnes_master_ftp("202312", zip_path=path, target=target) == 4
 
 
 def test_read_names_rejects_zip_without_the_month_file() -> None:

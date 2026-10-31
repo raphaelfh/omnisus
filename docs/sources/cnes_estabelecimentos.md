@@ -137,7 +137,8 @@ Os dicionários dessas linhas partem do inventário físico do descritor DBF de 
   Carregar um mês recente primeiro e meses antigos depois só preenche os códigos sem nome.
   Estabelecimento de pessoa física (`TP_PFPJ=1`, cerca de 30% das linhas de 202312) fica sem
   nome: a razão social e o nome fantasia dele trazem o nome do profissional, e a importação
-  ignora essas linhas.
+  ignora essas linhas. Uma linha sem razão social e sem nome fantasia também é ignorada; as
+  duas contagens saem no log `cnes_master_ftp.rows_skipped`.
 - `aux_cnes` mostra `tp_unid` e `codufmun` da competência mais recente de cada CNES,
   não os da competência que você analisa
   (`src/omnisus/lake/operations.py`, `ensure_aux_cnes_view`).

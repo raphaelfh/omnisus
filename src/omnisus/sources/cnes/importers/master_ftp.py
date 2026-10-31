@@ -81,6 +81,7 @@ def read_names(zip_path: Path, competencia: str) -> list[dict]:
                 raise ValueError(f"tbEstabelecimento lacks columns: {sorted(missing)}")
             records: dict[str, dict] = {}
             pessoa_fisica = 0
+            sem_nome = 0
             for row in reader:
                 if row["TP_PFPJ"].strip() == PESSOA_FISICA:
                     # NO_RAZAO_SOCIAL and NO_FANTASIA of a pessoa física carry the
@@ -90,6 +91,9 @@ def read_names(zip_path: Path, competencia: str) -> list[dict]:
                 code = row["CO_CNES"].strip()
                 fantasia = row["NO_FANTASIA"].strip() or None
                 razao = row["NO_RAZAO_SOCIAL"].strip() or None
+                if not (fantasia or razao):
+                    sem_nome += 1
+                    continue
                 records[code] = {
                     "cnes": code,
                     "nome": fantasia or razao,
@@ -101,7 +105,10 @@ def read_names(zip_path: Path, competencia: str) -> list[dict]:
                     "competencia_nome": competencia,
                 }
     logger.info(
-        "cnes_master_ftp.rows_skipped", competencia=competencia, pessoa_fisica=pessoa_fisica
+        "cnes_master_ftp.rows_skipped",
+        competencia=competencia,
+        pessoa_fisica=pessoa_fisica,
+        sem_nome=sem_nome,
     )
     return list(records.values())
 
