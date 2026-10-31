@@ -30,7 +30,9 @@
   `modificado_em` (MDTM); tables created by `import_cnes_master` gain those columns on the
   next write. `aux_cnes` exposes `nome_fantasia`, `razao_social`, `competencia_nome` and
   `fonte_nome` next to `nome`. The name is the one of the loaded competência, not of the
-  code's last month in ST (#150).
+  code's last month in ST (#150). A pessoa física (`TP_PFPJ=1`) gets no name, a row with no
+  name is skipped, and a `CO_CNES` repeated with another name is an error; the counts of
+  skipped rows go to the `cnes_master_ftp.rows_skipped` log.
 
 ### Dictionaries
 
