@@ -125,6 +125,22 @@ def _codes_from_lake(lake: Lake, *, only_missing: bool) -> list[str]:
     return [r[0] for r in con.execute(sql).fetchall()]
 
 
+def _pessoa_fisica_codes(lake: Lake) -> set[str]:
+    """Codes ``cnes_estabelecimentos`` marks as pessoa física (``pf_pj = '1'``) in any month.
+
+    The name of a pessoa física is the professional's name, so no name is kept for it, as
+    the FTP path does by ``TP_PFPJ``. Empty when the table or the column is absent.
+    """
+    if "cnes_estabelecimentos" not in lake.tables():
+        return set()
+    con = lake.connect()
+    describe = f"DESCRIBE {lake.alias}.cnes_estabelecimentos"
+    if "pf_pj" not in {row[0] for row in con.execute(describe).fetchall()}:
+        return set()
+    sql = f"SELECT DISTINCT cnes FROM {lake.alias}.cnes_estabelecimentos WHERE pf_pj = '1'"
+    return {row[0] for row in con.execute(sql).fetchall()}
+
+
 def _ensure_master_table(lake: Lake) -> None:
     """Create ``cnes_master`` if it doesn't exist yet (idempotent)."""
     lake.connect().execute(
@@ -223,7 +239,12 @@ def import_cnes_master(
         codes = list(dict.fromkeys(str(code).zfill(7) for code in codes))
         if any(len(code) != 7 or not code.isascii() or not code.isdigit() for code in codes):
             raise ValueError("CNES codes must contain seven ASCII digits")
-        logger.info("cnes_master.start", codes=len(codes), only_missing=only_missing)
+        pessoa_fisica = _pessoa_fisica_codes(lake)
+        skipped = sum(code in pessoa_fisica for code in codes)
+        codes = [code for code in codes if code not in pessoa_fisica]
+        logger.info(
+            "cnes_master.start", codes=len(codes), pessoa_fisica=skipped, only_missing=only_missing
+        )
 
         records = run_sync(lambda: _fetch_all(codes, concurrency=concurrency, progress=progress))
         _prepare_master_rows(records)

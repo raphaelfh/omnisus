@@ -436,3 +436,45 @@ def test_import_cnes_master_runs_inside_a_running_event_loop(tmp_path: Path) -> 
         return import_cnes_master(target=target)
 
     assert asyncio.run(notebook_cell()) == 1
+
+
+def _seed_with_pf_pj(lake: Lake, rows: list[tuple[str, str]]) -> None:
+    """cnes_estabelecimentos with the PF_PJ column of the ST (1 pessoa física, 3 jurídica)."""
+    con = lake.connect()
+    con.execute(
+        f"CREATE TABLE {lake.alias}.cnes_estabelecimentos "
+        "(cnes VARCHAR, pf_pj VARCHAR, tp_unid VARCHAR, codufmun VARCHAR, ano INTEGER, mes INTEGER)"
+    )
+    con.executemany(
+        f"INSERT INTO {lake.alias}.cnes_estabelecimentos VALUES (?, ?, '22', '355030', 2023, 12)",
+        rows,
+    )
+
+
+@pytest.mark.parametrize("explicit", [False, True])
+@respx.mock
+def test_import_cnes_master_keeps_no_name_for_pessoa_fisica(tmp_path: Path, explicit) -> None:
+    """The name of a pessoa física is the professional's name: the API path keeps none, as the
+    FTP path does. A code the lake marks PF_PJ = 1 is not fetched, discovered or listed."""
+    target = f"ducklake:{tmp_path}/x.ducklake"
+    with Lake.local(target) as lake:
+        _seed_with_pf_pj(lake, [("1111111", "1"), ("2222222", "3")])
+    pf = respx.get(_api_url("1111111")).mock(
+        return_value=httpx.Response(
+            200,
+            content=json.dumps(_api_response(1111111, nome_fantasia="DR FULANO", razao="FULANO")),
+        )
+    )
+    respx.get(_api_url("2222222")).mock(
+        return_value=httpx.Response(
+            200, content=json.dumps(_api_response(2222222, nome_fantasia="HOSPITAL", razao="H SA"))
+        )
+    )
+
+    n = import_cnes_master(codes=["1111111", "2222222"] if explicit else None, target=target)
+
+    assert n == 1
+    assert not pf.called
+    with Lake.local(target) as lake:
+        rows = lake.connect().execute(f"SELECT cnes FROM {lake.alias}.cnes_master").fetchall()
+    assert rows == [("2222222",)]

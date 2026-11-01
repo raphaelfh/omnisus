@@ -32,7 +32,9 @@
   `fonte_nome` next to `nome`. The name is the one of the loaded competência, not of the
   code's last month in ST (#150). A pessoa física (`TP_PFPJ=1`) gets no name, a row with no
   name is skipped, and a `CO_CNES` repeated with another name is an error; the counts of
-  skipped rows go to the `cnes_master_ftp.rows_skipped` log.
+  skipped rows go to the `cnes_master_ftp.rows_skipped` log. `import_cnes_master` (API)
+  also keeps no name for a pessoa física: it does not fetch a code `cnes_estabelecimentos`
+  marks `pf_pj = '1'`, discovered or listed, and logs how many it left out.
 
 ### Dictionaries
 
