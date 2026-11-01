@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import warnings
 from collections.abc import Callable, Iterable, Mapping, Sequence
+from pathlib import Path
 from urllib.parse import urlparse
 
 import polars as pl
@@ -642,6 +643,59 @@ def import_cnes_master(
     )
 
 
+def import_cnes_master_ftp(
+    competencia: str,
+    *,
+    zip_path: Path | None = None,
+    download_dir: Path | None = None,
+    target: str | None = None,
+    only_missing: bool = True,
+) -> int:
+    """Fill ``cnes_master`` from one month of the full CNES base on the DATASUS FTP.
+
+    ``BASE_DE_DADOS_CNES_AAAAMM.ZIP`` (about 576 MB for 202312) carries the razão social
+    and nome fantasia of every establishment in that competência, so one file replaces the
+    one-request-per-code of :func:`import_cnes_master`. The result is joined into the
+    ``aux_cnes`` view. Each row records the file, its SHA-256 and the competência the name
+    reflects; a file downloaded here also records the server URL and its ``MDTM``.
+    Establishments that are a pessoa física (``TP_PFPJ=1``) get no name, and a row with no
+    name at all is skipped; both counts go to the ``cnes_master_ftp.rows_skipped`` log.
+
+    Args:
+        competencia: ``AAAAMM`` of the base, e.g. ``"202312"``.
+        zip_path: an already downloaded ``BASE_DE_DADOS_CNES_AAAAMM.ZIP``; when ``None``
+            the file is downloaded into ``download_dir``.
+        download_dir: where to download; required when ``zip_path`` is ``None``.
+        target: DuckLake target; ``None`` (default) is ``data/raw/omnisus.ducklake``
+            under the working directory, or under ``$OMNISUS_DATA_DIR``.
+        only_missing: ``True`` (default) keeps names already in ``cnes_master``, so
+            loading a recent month first and older months after only fills gaps.
+
+    Returns:
+        The number of rows written in this run.
+
+    Raises:
+        ValueError: ``competencia`` is not ``AAAAMM``, neither path is given, the zip
+            lacks the month's ``tbEstabelecimento`` file, or one ``CO_CNES`` appears
+            with two different names.
+
+    Examples:
+        >>> import omnisus as sus
+        >>> sus.import_cnes_master_ftp("202312", download_dir=Path("downloads"))  # doctest: +SKIP
+    """
+    from omnisus.sources.cnes.importers.master_ftp import (
+        import_cnes_master_ftp as _impl,
+    )
+
+    return _impl(
+        competencia,
+        zip_path=zip_path,
+        download_dir=download_dir,
+        target=target,
+        only_missing=only_missing,
+    )
+
+
 def outdated(
     dataset: str | Dataset,
     *,
@@ -743,6 +797,7 @@ __all__ = [
     "describe_datasets",
     "display_row",
     "import_cnes_master",
+    "import_cnes_master_ftp",
     "import_dataset",
     "import_ibge_populacao",
     "import_research",

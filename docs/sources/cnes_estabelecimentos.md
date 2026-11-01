@@ -126,7 +126,27 @@ Os dicionários dessas linhas partem do inventário físico do descritor DBF de 
   ([Bases e argumentos](../datasets.md#cnes)).
 - O nome do estabelecimento não está no ST (Informe CNES 2017-06, p. 3–11):
   `sus.import_cnes_master` busca os nomes na API pública e os junta a `aux_cnes`
-  (`src/omnisus/__init__.py`, docstring de `import_cnes_master`).
+  (`src/omnisus/__init__.py`, docstring de `import_cnes_master`). São uma requisição por
+  código, e a API recusava conexões em 25/10/2026. Para o lake inteiro,
+  `sus.import_cnes_master_ftp` lê o
+  `tbEstabelecimentoAAAAMM.csv` da base completa do CNES
+  (`ftp://ftp.datasus.gov.br/cnes/BASE_DE_DADOS_CNES_AAAAMM.ZIP`), com razão social e nome
+  fantasia, e grava em `cnes_master` o arquivo, o SHA-256 e a competência. Quando ela mesma
+  baixa o arquivo (`download_dir`), grava também a URL do servidor (`url`) e o `MDTM` do
+  arquivo (`modificado_em`); um ZIP passado em `zip_path` tem origem desconhecida e fica sem
+  esses dois campos. `aux_cnes` expõe
+  `nome` (fantasia ou razão), `nome_fantasia`, `razao_social`, `competencia_nome` e
+  `fonte_nome`. O nome é o da competência do arquivo, não o do último mês do código no ST.
+  Carregar um mês recente primeiro e meses antigos depois só preenche os códigos sem nome.
+  Estabelecimento de pessoa física (`TP_PFPJ=1`, cerca de 30% das linhas de 202312) fica sem
+  nome: a razão social e o nome fantasia dele trazem o nome do profissional, e a importação
+  ignora essas linhas. O `import_cnes_master` (API) também não busca nome de código que o
+  `cnes_estabelecimentos` marca com `pf_pj = '1'`, mesmo listado à mão.
+  Uma linha sem razão social e sem nome fantasia também é ignorada; as
+  duas contagens saem no log `cnes_master_ftp.rows_skipped`.
+  O arquivo é lido como `latin-1`: o de 202312 não tem nenhum byte entre `0x80` e `0x9F`, a
+  faixa em que `latin-1` e `cp1252` diferem, então as duas leituras coincidem
+  ([medição](https://github.com/raphaelfh/omnisus/blob/main/evidence/2026-10-31-cnes-tbestabelecimento-encoding.md)).
 - `aux_cnes` mostra `tp_unid` e `codufmun` da competência mais recente de cada CNES,
   não os da competência que você analisa
   (`src/omnisus/lake/operations.py`, `ensure_aux_cnes_view`).

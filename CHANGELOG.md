@@ -21,6 +21,20 @@
   before the first import returns `[]`. `None` keeps the SQL and the rows of 0.2.3. The
   data table is pinned by the caller's `FROM` (#101).
 
+- `sus.import_cnes_master_ftp(competencia, zip_path=..., download_dir=...)`
+  fills `cnes_master` from
+  `tbEstabelecimentoAAAAMM.csv` of the full CNES base on the FTP
+  (`BASE_DE_DADOS_CNES_AAAAMM.ZIP`, about 576 MB for 202312) in one pass, instead of one
+  request per code to the open-data API. Each row records `fonte`, `arquivo`, `sha256`,
+  `competencia_nome` and, for a file the importer downloaded, the server `url` and
+  `modificado_em` (MDTM); tables created by `import_cnes_master` gain those columns on the
+  next write. `aux_cnes` exposes `nome_fantasia`, `razao_social`, `competencia_nome` and
+  `fonte_nome` next to `nome`. The name is the one of the loaded competência, not of the
+  code's last month in ST (#150). A pessoa física (`TP_PFPJ=1`) gets no name, a row with no
+  name is skipped, and a `CO_CNES` repeated with another name is an error; the counts of
+  skipped rows go to the `cnes_master_ftp.rows_skipped` log. `import_cnes_master` (API)
+  also keeps no name for a pessoa física: it does not fetch a code `cnes_estabelecimentos`
+  marks `pf_pj = '1'`, discovered or listed, and logs how many it left out.
 - `cite()` and `citation_from_publications()` with `accessed=None` print as the access
   date the UTC day of each row's `published_at` (when the publication was written to the
   lake) or, for IBGE, of `collected_at` (when the HTTP request was made), instead of the
