@@ -21,6 +21,19 @@
   before the first import returns `[]`. `None` keeps the SQL and the rows of 0.2.3. The
   data table is pinned by the caller's `FROM` (#101).
 
+- `cite()` and `citation_from_publications()` with `accessed=None` print as the access
+  date the UTC day of each row's `published_at` (when the publication was written to the
+  lake) or, for IBGE, of `collected_at` (when the HTTP request was made), instead of the
+  day the citation is generated: a file imported on 2026-10-18 and cited a week later
+  stays "acessado em 2026-10-18". A value with an offset is converted to UTC first.
+  `accessed=` still sets one date for every row. A row with neither column prints
+  "(data de acesso desconhecida)"; a value that is not an ISO date raises `ValueError`.
+- `cite(snapshot_id=N)` reads the publications, and the IBGE manifest, as they were at
+  snapshot N: after a `replace`, citing an older snapshot keeps that snapshot's date and
+  run. Without `snapshot_id`, a `LakeReader(snapshot_id=M)` cites M instead of the
+  newest snapshot. A snapshot the lake does not have raises
+  `duckdb.InvalidInputException`.
+
 ### Dictionaries
 
 - `sih_aih_reduzida` (2.13.0) declares `fonte_orc`, which RD files publish from 2025-03
@@ -143,6 +156,12 @@
   with it, as its wheels are, and with the pure-Python loader otherwise. The first load
   of `sih_aih_reduzida` in a process drops from about 0.7 s to 0.1 s, and a cold
   `describe_datasets()` from about 2.5 s to 0.4 s. The parsed dictionaries are the same.
+
+### omnisus-dbf 0.2.2
+
+- The native reader reads D (date) fields with the semantics of dbfread's `parseD`, so
+  SINAN national files no longer fall back to the Python reader. `API_VERSION` stays 2
+  (#149).
 
 ## v0.2.3 — 2026-10-08
 

@@ -5,7 +5,7 @@ use crate::{
 };
 use arrow_array::{
     ArrayRef, NullArray, RecordBatch, RecordBatchOptions,
-    builder::{Float64Builder, Int64Builder, StringBuilder},
+    builder::{Date32Builder, Float64Builder, Int64Builder, StringBuilder},
 };
 use arrow_schema::{Field, Schema};
 use std::sync::Arc;
@@ -15,10 +15,11 @@ enum Column {
     Null(usize),
     Int(Int64Builder),
     Float(Float64Builder),
+    Date(Date32Builder),
 }
 
 impl Column {
-    fn append(&mut self, data: &[u8], encoding: Encoding) -> Result<()> {
+    fn append(&mut self, data: &[u8], kind: u8, encoding: Encoding) -> Result<()> {
         if let Self::Text(builder) = self {
             let value = decode::text(data, encoding)?;
             if builder
@@ -32,6 +33,25 @@ impl Column {
                 ));
             }
             builder.append_value(value);
+            return Ok(());
+        }
+        if kind == b'D' {
+            let value = decode::date(data)?;
+            // A date column stays Arrow null until its first value, like numbers.
+            match self {
+                Self::Null(count) => match value {
+                    None => *count += 1,
+                    Some(days) => {
+                        let mut b = Date32Builder::new();
+                        b.append_nulls(*count);
+                        b.append_value(days);
+                        *self = Self::Date(b);
+                    }
+                },
+                Self::Date(b) => b.append_option(value),
+                // `build` starts a non-`C` column as `Null`, and only this branch changes it.
+                _ => unreachable!("a DBF date column is only Null or Date"),
+            }
             return Ok(());
         }
         let value = decode::number(data)?;
@@ -74,6 +94,7 @@ impl Column {
             Self::Null(n) => Arc::new(NullArray::new(n)),
             Self::Int(mut b) => Arc::new(b.finish()),
             Self::Float(mut b) => Arc::new(b.finish()),
+            Self::Date(mut b) => Arc::new(b.finish()),
         }
     }
 }
@@ -107,7 +128,7 @@ pub fn build(
             let bytes = data
                 .get(start..end)
                 .ok_or_else(|| Error::Invalid("truncated DBF field".into()))?;
-            column.append(bytes, encoding)?;
+            column.append(bytes, field.kind, encoding)?;
         }
     }
     let arrays = columns.into_iter().map(Column::finish).collect::<Vec<_>>();
