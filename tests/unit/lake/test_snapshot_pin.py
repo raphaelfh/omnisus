@@ -131,3 +131,14 @@ def test_reference_join_sql_pins_the_vocabulary_after_its_alias() -> None:
 def test_snapshot_id_must_be_a_non_negative_int(bad: object) -> None:
     with pytest.raises(ValueError, match="snapshot_id"):
         sus.reference_join_sql("sim_obitos", "causabas", snapshot_id=bad)  # type: ignore[arg-type]
+
+
+def test_cite_without_snapshot_id_cites_the_snapshot_the_reader_is_pinned_to(
+    lake: PinnedLake,
+) -> None:
+    """A reader pinned to s1 read run ``r1``; its citation names s1 and r1, not the
+    lake's latest snapshot and the run ``r2`` that replaced it."""
+    with sus.LakeReader(lake.target, snapshot_id=lake.s1) as reader:
+        citation = sus.cite(reader, dataset="sim_obitos")
+    assert citation.snapshot_id == lake.s1
+    assert f"lake snapshot {lake.s1}, execução r1." in citation.text

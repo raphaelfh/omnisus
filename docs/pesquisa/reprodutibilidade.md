@@ -226,18 +226,23 @@ Onde encontrar cada valor:
 
 - `<dataset>`, `<source_uri>`, `<source_sha256>` e `<run_id>`: na publicação, em
   `publications()`; o nome do arquivo é o fim de `source_uri`.
-- `<AAAA-MM-DD>`: `sus.cite` escreve a data de hoje, a menos que você passe
-  `accessed=`. Sugestão deste guia: a data de `published_at`, com
-  `accessed=date.fromisoformat(publicacao["published_at"][:10])`.
+- `<AAAA-MM-DD>`: `sus.cite` escreve o dia (UTC) de `published_at` de cada publicação,
+  a data em que a publicação foi gravada no lake, não a do download. Uma publicação sem
+  essa data sai com "(data de acesso desconhecida)". `accessed=` troca essa data por
+  outra, a mesma para todas.
 - `<versão>`: o omnisus que gera a citação (`sus.__version__`). O lake não grava a versão
   que importou cada escopo; por isso, gere a citação na mesma sessão que importou, como
   fazem os notebooks, ou corrija a versão à mão.
-- `<snapshot_id>`: o snapshot em que você leu os dados.
+- `<snapshot_id>`: o snapshot em que você leu os dados. Sem `snapshot_id=`, `sus.cite`
+  usa o snapshot em que o `LakeReader` está fixado, ou o mais recente; as publicações
+  saem como estavam nesse snapshot.
 
 Nos notebooks, a citação, o próprio notebook e o `uv.lock` (ou `requisitos.txt`)
 bastam para refazer o resultado: o código diz o recorte e cada tabela, a citação diz os
 arquivos, a versão e o `snapshot_id`, e a lista diz as versões das bibliotecas.
 
-Para a população do IBGE, sugestão deste guia: troque o arquivo pelo `url`, o
-`source_sha256` pelo `sha256`, a data pela de `collected_at` e a execução pelo
-`publication_id` de `ibge_population_manifest`.
+Para a população do IBGE, `sus.cite(leitor, dataset="ibge_populacao")` lê
+`ibge_population_manifest` no snapshot e troca o arquivo pelo `url`, o `source_sha256`
+pelo `sha256` e a execução pelo `publication_id`. A data é o dia (UTC) de
+`collected_at`, o instante da requisição ao IBGE, não o da gravação no lake. O manifesto
+não tem execução, então `run_id=` não filtra o IBGE.

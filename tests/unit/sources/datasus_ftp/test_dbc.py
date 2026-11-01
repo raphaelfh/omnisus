@@ -112,14 +112,17 @@ def test_microdatasus_vector_decodes_to_the_same_dbf(backend):
     )
 
 
-def test_microdatasus_vector_keeps_blank_numbers_dates_and_leading_zeros():
+@pytest.mark.parametrize("backend", BACKENDS)
+def test_microdatasus_vector_keeps_blank_numbers_dates_and_leading_zeros(backend, request):
     """microdatasus's own expectations (test-read_dbc.R at 7109ec2): CODE "001"/"010",
     VALUE 1.5/NA, WHEN 2020-01-02/NA. The second record stores VALUE as 19 ``*`` and
-    WHEN as ``00000000``; both read as null. DBF read in Python: the native reader
-    does not support ``D`` fields (UnsupportedDbfError)."""
+    WHEN as ``00000000``; both read as null. The native reader reads ``D`` fields from
+    omnisus-dbf 0.2.2; an older installed wheel skips the ``rust`` case."""
+    if backend == "rust":
+        request.getfixturevalue("native_reads_date")
     dbf = dbc.decompress_bytes(MICRODATASUS, backend="python")
     assert dbf[129 + 32 :] == b" 010 " + b"*" * 19 + b"0" * 8
-    with open_dbf_batches(dbf, encoding="latin-1", batch_rows=10, backend="python") as stream:
+    with open_dbf_batches(dbf, encoding="latin-1", batch_rows=10, backend=backend) as stream:
         rows = [row for batch in stream for row in batch.to_pylist()]
     assert rows == [
         {"CODE": "001", "VALUE": 1.5, "WHEN": dt.date(2020, 1, 2)},
