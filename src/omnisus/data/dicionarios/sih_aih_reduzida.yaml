@@ -27755,9 +27755,9 @@ schema:
             AIH"), e nenhum dos 39 DEF empacotados (RD2008.DEF, RJ2008.DEF, os RD.DEF da era
             1992-2007 e os demais) cita HOMONIMO. O mapa anterior, ''0'' Não e ''1'' Sim, não tinha
             fonte e contrariava os dados: o RD publica ''0'' e ''2'' (RR 2024-01: ''2'' em 39 AIHs; RR
-            2022: 138, evidence/2026-09-23-colunas-e-linkage.md), e o RJ publica ''0'' e ''1''. Saiu
-            na issue #10.
-            Dois documentos registrados dão ''0'' não e ''1'' sim para a marca de homônimo: o Layout_REDUZIDA.pdf, o layout dos arquivos RD de 2006-04 a 2007-12 (sihsus-f6084d22de30, p. 2: "MARCA DE HOMONIMO ( 0 = não , 1 = sim)"), e o dicionário de dados das tabelas TB_AIH e TB_HAIH (sihsus-f70974716de8, pp. 8-9, coluna AH_ST_DUPLICIDADE: "Marca de homônimo, onde: 0 = não. 1 = sim."). Nos 238 arquivos RD lidos de 2008-01 a 2026-07 (222 deles de Roraima; evidence/2026-11-18-rd-medidas), ''0'' em 1.922.238 registros, ''2'' em 72.418 e ''1'' em 34, todos de RDAP2607; nos 24 arquivos RDRR de 2006 e 2007, ''0'' em 40.242 e ''2'' em 1.305, sem ''1''. Os arquivos lidos publicam ''2'' desde 2006, inclusive os 21 de Roraima dos meses do layout que diz 0 e 1, e por isso a lista dos dois documentos não virou mapa.'
+            2022: 138, evidence/2026-09-23-colunas-e-linkage.md), e os 58 arquivos RJ lidos publicam
+            ''0'', ''1'', ''2'' e ''3'' (evidence/2026-11-28-sih-homonimo). Saiu na issue #10.
+            Quatro documentos registrados dão ''0'' não e ''1'' sim para a marca de homônimo, e nenhum dá ''2'' nem ''3'': o Layout_REDUZIDA.pdf, o layout dos arquivos RD de 2006-04 a 2007-12 (sihsus-f6084d22de30, p. 2: "MARCA DE HOMONIMO ( 0 = não , 1 = sim)"), o dicionário de dados das tabelas TB_AIH e TB_HAIH (sihsus-f70974716de8, pp. 8-9, coluna AH_ST_DUPLICIDADE: "Marca de homônimo, onde: 0 = não. 1 = sim."), o dicionário de dados do SIHD (sihsus-a3d8bb97b272, pp. 4 e 10, colunas AH_AIH_HM e HAH_AIH_HM: "0 = não , 1 = sim") e a tabela 66 do pacote de tabelas do SIHD (sihsus-6c9729278673, DSIHD006.TXT, linhas 1686 e 1687: "NAO É HOMONIMO" e "É HOMONIMO"). Nos 238 arquivos RD lidos de 2008-01 a 2026-07 (222 deles de Roraima; evidence/2026-11-18-rd-medidas), ''0'' em 1.922.238 registros, ''2'' em 72.418 e ''1'' em 34, todos de RDAP2607; nos 24 arquivos RDRR de 2006 e 2007, ''0'' em 40.242 e ''2'' em 1.305, sem ''1''. Os arquivos lidos publicam ''2'' desde 2006, inclusive os 21 de Roraima dos meses do layout que diz 0 e 1, e por isso a lista dos quatro documentos não virou mapa. Em outros 175 arquivos RD de 2008 a 2025 (evidence/2026-11-28-sih-homonimo), ''1'' está em 5.309 AIH de 8 arquivos e ''2'' em 353.891. Associação medida, que não é definição nem autoriza rótulo: nos 30 arquivos RJ lidos até 2015-07, ''1'' vem com st_bloq 2 em 17.612 de 17.618 linhas, ''2'' com st_bloq 5 em 16.448 de 17.190 e ''3'' com st_bloq 4 em 95 de 95 (evidence/2026-11-28-sih-homonimo); nenhum documento lido dá o sentido de ''2'' nem de ''3''.'
 
     # ========================================================================
     # Internação
@@ -31892,7 +31892,7 @@ schema:
 x-source-format: dbc
 x-source-family: datasus_ftp
 x-source-prefix: RD
-x-version: "2.31.0"
+x-version: "2.31.1"
 
 x-analytics:
   version: 1.3.0

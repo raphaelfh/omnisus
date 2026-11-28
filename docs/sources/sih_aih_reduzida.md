@@ -64,22 +64,26 @@ SUS (SIH/SUS), nos arquivos RD que o DATASUS publica um por UF e mês de process
 - O que os arquivos lidos mostram sobre `homonimo` é associação, não definição
   (`evidence/2026-11-28-sih-homonimo/`: 175 arquivos `RD`, 58 `RJ` e 14 `ER` de 2008 a
   2025, e 28 `RD` de 2006 e 2007). Nos 30 arquivos `RJ` até 2015-07 (SP, RJ, MG, DF e RR),
-  `1` está em 17.618 AIH, 17.612 delas com `st_bloq` 2 (Bloqueio AIH); `2` em 17.190,
+  `1` está em 17.618 linhas, 17.612 delas com `st_bloq` 2 (Bloqueio AIH); `2` em 17.190,
   16.448 com `st_bloq` 5 (Liberação bloqueio AIH); `3` em 95, todas com `st_bloq` 4
-  (Cancelamento AIH). Das 4.225 AIH que os `ER` de SP e RJ de 2012-01, 2014-12 e 2015-07
-  trazem com o erro "AIH BLOQUEADA POR DUPLICIDADE", sozinho ou com outros motivos, 4.211
-  têm `1` no `RJ` do mesmo mês. Das 4.219 AIH rejeitadas com `1` em seis arquivos `RJ` até
-  2015-06, 1.823 estão no `RD` do mês seguinte, 1.371 com `2` e 451 com `0`. Nos 74 `RD`
-  até 2015-07, as 355.588 AIH com `homonimo` diferente de 0 têm todas `gestor_cpf`
-  preenchido (5,5% das com 0) e nenhuma tem `ident` 5; 88,6% delas têm `nasc`, `sexo` e
-  `cep` iguais aos de outra AIH do mesmo arquivo (2,0% das com 0). Nos três `RDRR` de
-  2006-01 a 2006-03, `cpf_aut` vem preenchido nas 146 AIH com `2` e em nenhuma das 4.418
-  com `0`. Com os quatro relatórios do manual do SIHD2, isso é coerente com `1` para a
-  duplicidade bloqueada, `2` para a liberada e `3` para a cancelada, e o RD, que traz as
-  AIH aprovadas, quase não teria `1`; nenhum documento lido diz isso, e o campo segue sem
-  rótulo. Ficam fora dessa leitura as 5.309 AIH aprovadas com `1` em 8 dos 175 `RD` (5.105
-  em `RDBA1201` e `RDRS1201`), em cada arquivo todas de um só gestor (`uf_zi`), e 746
-  linhas de `RJ` com `2` e `st_bloq` 2.
+  (Cancelamento AIH). A associação não é uniforme: em `RJRJ0801`, 542 das 967 linhas com
+  `2` têm `st_bloq` 2, e `st_bloq` 5 também cobre liberações por outros motivos (9.089
+  linhas com `homonimo` 0). Das 4.225 AIH que os `ER` de SP e RJ de 2012-01, 2014-12 e
+  2015-07 trazem com o erro "AIH BLOQUEADA POR DUPLICIDADE", sozinho ou com outros
+  motivos, 4.211 têm `1` no `RJ` do mesmo mês. Das 4.219 AIH rejeitadas com `1` em seis
+  arquivos `RJ` até 2015-06, 1.823 estão no `RD` do mês seguinte, 1.371 com `2` e 451 com
+  `0`. Nos 74 `RD` até 2015-07, as 355.588 AIH com `homonimo` diferente de 0 têm todas
+  `gestor_cpf` preenchido (5,5% das com 0) e nenhuma tem `ident` 5; 88,6% delas têm
+  `nasc`, `sexo` e `cep` iguais aos de outra AIH do mesmo arquivo (2,0% das com 0). Nos
+  três `RDRR` de 2006-01 a 2006-03, `cpf_aut` vem preenchido nas 146 AIH com `2` e em
+  nenhuma das 4.418 com `0`. Nos seis arquivos de 2006-04 a 2006-08 (cinco `RDRR` e
+  `RDRJ0607`), `cpf_aut` vem preenchido em 635 AIH com `0` e em 36 das 2.162 com `2`; nos
+  19 de 2006-09 a 2007-12, em nenhuma. Com os quatro relatórios do manual do SIHD2, isso é
+  coerente com `1` para a duplicidade bloqueada, `2` para a liberada e `3` para a
+  cancelada, e o RD, que traz as AIH aprovadas, quase não teria `1`; nenhum documento lido
+  diz isso, e o campo segue sem rótulo. Ficam fora dessa leitura as 5.309 AIH aprovadas
+  com `1` em 8 dos 175 `RD` (5.105 em `RDBA1201` e `RDRS1201`), em cada arquivo todas de
+  um só gestor (`uf_zi`), e 746 linhas de `RJ` com `2` e `st_bloq` 2.
 - A frequência de `homonimo` diferente de 0 cai em 2015-08, o mês da nota técnica. Nos
   `RDRR`, `2` está em 3.657 das 19.931 AIH de 2015-01 a 2015-07 (18,3%) e em 182 das
   14.903 de 2015-08 a 2015-12 (1,2%); de 2008-01 a 2015-07, em 29.532 de 229.443
