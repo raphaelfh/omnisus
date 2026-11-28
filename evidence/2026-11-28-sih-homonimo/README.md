@@ -61,10 +61,11 @@ and 28 have a match. The passages:
   "00660 NAO É HOMONIMO" and "00661 É HOMONIMO" (lines 1686 and 1687); line 1737, of the
   index table 0099, is "MARCA DE HOMONIMO". The member of the same name in
   `Programas/Tabelas740.zip` (June 2013) has no line of table 66 and no line with
-  "HOMONIMO". - **Who sets the mark.** `Manuais/Manual_SIHD_19_05_06.zip`, member
-  `Manual-SIHD atualizada 19.05.06.doc` ("Manual Operacional do Sistema de Informação
-  Hospitalar Descentralizado (SIHD), versão atualizada (19/05/2006)"; a Word file, so no
-  page numbers): on importing AIH, "Se a origem dos dados informados é a Regional [...] as
+  "HOMONIMO".
+- **Who sets the mark.** `Manuais/Manual_SIHD_19_05_06.zip`, member `Manual-SIHD
+  atualizada 19.05.06.doc` ("Manual Operacional do Sistema de Informação Hospitalar
+  Descentralizado (SIHD), versão atualizada (19/05/2006)"; a Word file, so no page
+  numbers): on importing AIH, "Se a origem dos dados informados é a Regional [...] as
   marcas de homônimo são mantidas para o processamento posterior, para que as duplicidades
   sejam revistas" and "Se a origem dos dados informada é o Estabelecimento (formato de
   arquivo TXT), as marcas de homônimo são zeradas na importação, e o procedimento de
@@ -82,24 +83,28 @@ and 28 have a match. The passages:
   SISAIH01 layouts read has a matching line (19 files of `Manuais/` whose name starts with
   `layout_sisaih01`, `Layout_SISAIH01` or `Layout_do_SISAIH01`, whatever the case, from
   the competence 2010-01 to 2026-07 and two undated, in `documentos.csv`): the file the
-  hospital sends has no homonym field in them. - **Four states.**
-  `MNL-PDOC-SIHD2-ManualOperacao-Edicao1.0.pdf` ("SIHD2 Manual de Operação", product
-  version 2.40, July 2009), printed p. 106 (115th of the PDF), lists the reports of
-  "Gerenciar Informações": "Duplicidade" with "Encontradas", "Bloqueadas", "Canceladas"
-  and "Liberadas". Printed pp. 89-90: "Liberar. 1. Selecione o código da AIH e clique em
-  Liberar. [...] 2. Selecione o CPF do autorizador e clique em OK. O sistema libera a
-  AIH". Printed pp. 91-92: the buttons "Bloquear todas" and "Liberar todas" "são
-  habilitados apenas quando a opção “Duplicidade” é selecionada". The figures of the
-  manual are images and were not read. - **Which AIH are blocked.** Manual SIH 2012
-  (`sihsus-7429b011ee2a`), p. 11, items 5.10 and 5.11: a new AIH for the same patient in
-  the same stay is blocked "por “duplicidade” (homônimo), mas o gestor autoriza", and an
-  AIH issued less than 3 days after another stay "vai ser bloqueada por “duplicidade”,
-  desde que a outra AIH seja emitida pelo mesmo gestor"; item 63.8, p. 74, is on the same
-  block. The manuals of 2009 to 2011, 2013 and 2015 in `Manuais/` have matching lines too
-  (`documentos.csv`). `Programas/leiame.txt` (release notes of the SIHD), version 2.31,
-  "COMPETENCIA JUNHO/2006": "Acerto no Gerenciador de Informacoes para nao realizar
-  verificacao de homonimo entre aihs tipo 1 e 5 para o mesmo numero de aih". - **The
-  change of 08/2015.** Nota Técnica SIHD2 001/2015 (`sihsus-6de69835fef0`).
+  hospital sends has no homonym field in them.
+- **Four reports.** `MNL-PDOC-SIHD2-ManualOperacao-Edicao1.0.pdf` ("SIHD2 Manual de
+  Operação", product version 2.40, July 2009), printed p. 106 (115th of the PDF), lists
+  the reports of "Gerenciar Informações": "Duplicidade" with "Encontradas", "Bloqueadas",
+  "Canceladas" and "Liberadas". The same page lists the same four reports for the other
+  kinds of block ("Solicitação de liberação", "Agravos", "Partos sem VDRL"), so the four
+  are not particular to duplicates. Printed pp. 89-90: "Liberar. 1. Selecione o código da
+  AIH e clique em Liberar. [...] 2. Selecione o CPF do autorizador e clique em OK. O
+  sistema libera a AIH"; the procedure is for any blocked AIH, whatever the reason.
+  Printed pp. 91-92: the buttons "Bloquear todas" and "Liberar todas" "são habilitados
+  apenas quando a opção “Duplicidade” é selecionada". The figures of the manual are images
+  and were not read.
+- **Which AIH are blocked.** Manual SIH 2012 (`sihsus-7429b011ee2a`), p. 11, items 5.10
+  and 5.11: a new AIH for the same patient in the same stay is blocked "por “duplicidade”
+  (homônimo), mas o gestor autoriza", and an AIH issued less than 3 days after another
+  stay "vai ser bloqueada por “duplicidade”, desde que a outra AIH seja emitida pelo mesmo
+  gestor"; item 63.8, p. 74, is on the same block. The manuals of 2009 to 2011, 2013 and
+  2015 in `Manuais/` have matching lines too (`documentos.csv`). `Programas/leiame.txt`
+  (release notes of the SIHD), version 2.31, "COMPETENCIA JUNHO/2006": "Acerto no
+  Gerenciador de Informacoes para nao realizar verificacao de homonimo entre aihs tipo 1 e
+  5 para o mesmo numero de aih".
+- **The change of 08/2015.** Nota Técnica SIHD2 001/2015 (`sihsus-6de69835fef0`).
   `Programas/leiame_SIHD2.txt` (release notes of the SIHD2), "VERSÃO 10.10 - 08/09/2015 -
   COMPETENCIA 08/2015", item 04: "Novos Bloqueios por Internação sobreposta ou com
   intervalo de até 3 dias; Alterado o Bloqueio de Duplicidade (homonimo) para ser
@@ -112,17 +117,18 @@ and 28 have a match. The passages:
   se para um mesmo número de CNS, existem AIH com datas de internação / saída sobrepostas
   ou com intervalo de até 3 dias entre elas. Esta verificação é realizada para as AIH de
   um mesmo gestor apresentadas na competência atual"; 58.2.2, the same against "todo o
-  estado em até 3 meses anteriores". - **Tables of the TabWin package.** `TAB_SIH.zip`
-  (`sih-tab-2491e8d4f2db`): `CNV/sitbloqueio.cnv`, the table `RJ2008.DEF` links to
-  `ST_BLOQ`, has "0 AIH autorizada", "2 Bloqueio AIH", "4 Cancelamento AIH" and "5
-  Liberação bloqueio AIH"; `CNV/motbloqueio.cnv` (`ST_MOT_BLO`) has "01 DUPLICIDADE" and
-  the odd codes up to 15 with "DUPLICIDADE" and another reason; `DBF/MOTERRO.dbf`
-  (`CO_ERRO` of the `ER` files) has "020001 AIH BLOQUEADA POR DUPLICIDADE", "030001 AIH
-  CANCELADA POR DUPLICIDADE", "020081 AIH BLOQUEADA POR PERÍODOS DE INTERNAÇÃO SOBREPOSTOS
-  NO MOVIMENTO" and "020082 [...] NO ESTADO"; `DBF/LIBGESTOR.dbf`, which `RD2008.DEF`
-  links to `GESTOR_COD`, labels the codes 134 to 243 "CNS", alone or with other reasons.
-  `Docs/erroebloqueio.xlsx` is the dump of tables 0024 and 0027 of `TB_C_D`. No member of
-  the package names `HOMONIMO` (issue `homonimo-sem-fonte`).
+  estado em até 3 meses anteriores".
+- **Tables of the TabWin package.** `TAB_SIH.zip` (`sih-tab-2491e8d4f2db`):
+  `CNV/sitbloqueio.cnv`, the table `RJ2008.DEF` links to `ST_BLOQ`, has "0 AIH
+  autorizada", "2 Bloqueio AIH", "4 Cancelamento AIH" and "5 Liberação bloqueio AIH";
+  `CNV/motbloqueio.cnv` (`ST_MOT_BLO`) has "01 DUPLICIDADE" and the odd codes up to 15
+  with "DUPLICIDADE" and another reason; `DBF/MOTERRO.dbf` (`CO_ERRO` of the `ER` files)
+  has "020001 AIH BLOQUEADA POR DUPLICIDADE", "030001 AIH CANCELADA POR DUPLICIDADE",
+  "020081 AIH BLOQUEADA POR PERÍODOS DE INTERNAÇÃO SOBREPOSTOS NO MOVIMENTO" and "020082
+  [...] NO ESTADO"; `DBF/LIBGESTOR.dbf`, which `RD2008.DEF` links to `GESTOR_COD`, labels
+  the codes 134 to 243 "CNS", alone or with other reasons. `Docs/erroebloqueio.xlsx` is
+  the dump of tables 0024 and 0027 of `TB_C_D`. No member of the package names `HOMONIMO`
+  (issue `homonimo-sem-fonte`).
 
 No document read says which code the mark takes when a duplicate is found, blocked,
 released or cancelled, nor which column of the SIHD2 the RD field is written from.
@@ -195,7 +201,8 @@ with `1`. From 2015-08 (101 files, 9,094,229 AIH), 3,612 are marked: 3,503 with 
 109 with `1`.
 
 `1` is in 8 of the 175 files, and in each of them all its AIH are of one manager
-(`uf_zi_distinct` 1) and, in 7 of the 8, have one `gestor_cpf` (`gestor_cpf_distinct`):
+(`uf_zi_distinct` 1) and, in 7 of the 8, have one `gestor_cpf` (`gestor_cpf_distinct`);
+`cnes_distinct` is the last column:
 
 | File | AIH | `1` | `2` | Managers (`uf_zi`) in the file | Hospitals (`cnes`) with `1` |
 | --- | ---: | ---: | ---: | ---: | ---: |
@@ -241,8 +248,8 @@ the fields of the key; it is `near` when another `n_aih` of the same `nasc`, `se
 - To 2015-07, of the 377,784 AIH with `other` on `nasc`, `sexo` and `cep`, 314,977 are
   marked (83.4%); from 2015-08, 3,087 of 1,407,641 (0.2%).
 - The mark comes in groups: to 2015-07, 314,445 marked AIH have another marked row with
-  the same `nasc`, `sexo` and `cep` (`other_marked`), and 3,747 unmarked AIH have one
-  (0.1% of the unmarked).
+  the same `nasc`, `sexo` and `cep` (`other_marked_nasc_sexo_cep`), and 3,747 unmarked AIH
+  have one (0.1% of the unmarked).
 - The same six UFs before and after (SP, RJ, MG, RR, DF, PE): in 2015-06 and 2015-07,
   115,242 of 891,851 AIH have `other` on `nasc`, `sexo` and `cep` (12.9%), 99,649 of them
   marked (86.5%); in 2015-08 to 2015-10, 173,252 of 1,298,139 (13.3%), 1,035 of them
@@ -304,9 +311,18 @@ From 2015-08, 28 files, 124,743 rows:
 
 The AIH numbers an `ER` file has with an error of `MOTERRO.dbf`, by the `homonimo` they
 have in the `RJ` of the same UF and month (key `links`, `ER...>RJ...`). "duplicidade":
-"AIH BLOQUEADA POR DUPLICIDADE", alone or with other reasons (16 codes);
-"duplicidade_cancelada": "AIH CANCELADA POR DUPLICIDADE", the same (8 codes);
-"sobrepostos": 020081 and 020082. "Mixed" are AIH with rows of two values.
+"AIH BLOQUEADA POR DUPLICIDADE", alone or with the reasons of `motbloqueio.cnv` and with
+"SEXO INCOMPATÍVEL C/ PROCEDIMENTO": the 16 codes 020001 to 020015 odd and 020018 to
+020032 even. "duplicidade_cancelada": "AIH CANCELADA POR DUPLICIDADE", the same: the 8
+codes 030001 to 030015 odd. "sobrepostos": 020081 and 020082. "Mixed" are AIH with rows
+of two values.
+
+`MOTERRO.dbf` has six more codes with "AIH BLOQUEADA POR DUPLICIDADE" in the text, and
+they were left out because they name another kind of duplicate, not the one of the
+patient's name: 020054 ("INT. NO MESMO PERÍODO EM PSIQUIATRIA"), 020055 ("ALTA ADM.
+INDEVIDA"), 020077 ("DE CNS DE PACIENTE") and 020078 to 020080 ("DE ACORDO COM PT", the
+sequential procedures of oncology, neurosurgery and orthopaedics). The same goes for
+030054, 030055 and 030077. Nothing was counted for them.
 
 | ER file | error | AIH | `0` | `1` | `2` | `3` | mixed |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -344,8 +360,7 @@ have `0`, as do the 243 with "duplicidade_cancelada" and the 7,202 with "sobrepo
 ### (g) From a rejected AIH to the RD of the next months
 
 The `n_aih` of an `RJ` file, by its `homonimo` there, that are in the `RD` of the same UF
-one month later, by the `homonimo` they have there (key `links`, `RJ...>RD...`; the key
-also has the RD of 2, 3 and 4 months later when they are in the folder).
+one month later, by the `homonimo` they have there (key `links`, `RJ...>RD...`).
 
 | Pairs of files | `homonimo` in RJ | AIH | In the next RD | with `0` | with `2` | both |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
@@ -387,7 +402,7 @@ is filled mostly in AIH with `0`, until 2006-08. The 335 AIH with `1` are of `RD
 
 ## What the files are consistent with
 
-With the four states the SIHD2 manual lists, one reading fits the files read: `1` a
+With the four reports the SIHD2 manual lists, one reading fits the files read: `1` a
 duplicate found and blocked, `2` a duplicate whose block an authoriser released, `3` a
 duplicate cancelled. It fits (e) and (f) in the rejected files, the manager's CPF in
 every marked AIH of the RD (b), the pairs of (c), the drop of 2015-08 with the marked AIH

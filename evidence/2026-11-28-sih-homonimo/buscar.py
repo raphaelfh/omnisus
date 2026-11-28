@@ -5,7 +5,8 @@
         > evidence/2026-11-28-sih-homonimo/documentos.csv
 
 DIR holds the files downloaded from ftp2.datasus.gov.br/public/sistemas/dsweb/SIHD/, in
-the folders they have there (Manuais/, Outros/, Portarias/, Programas/, SiteArquivos/).
+the folders they have there (Manuais/, Outros/, Portarias/portaria2004/ and the other
+years, Programas/, SiteArquivos/).
 One row per file and per member of a ZIP: SHA-256, bytes, pages (PDF) and the number of
 text lines that match `hom[oôó]nim` or `duplicidade`, whatever the case. A file whose text
 was not read has that column empty. PDF text comes from pypdf; .doc and .docx from the
