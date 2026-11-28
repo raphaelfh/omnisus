@@ -8,6 +8,20 @@
   SINAN national files no longer fall back to the Python reader. `API_VERSION` stays 2
   (#149).
 
+### Dictionaries
+
+- `registry.json` registers five SIHD documents the page of `sih_aih_reduzida` now cites
+  on `homonimo`: the SIHD manual of 2006 (`sihsus-13954d36eb2b`), the SIHD2 operation
+  manual of 2009 (`sihsus-0e6bb434e7f2`), the SIH manual of January 2017
+  (`sihsus-b51eb51dde1d`), the SIHD data dictionary (`sihsus-a3d8bb97b272`) and the SIHD
+  table package `Tabelas300.zip` (`sihsus-6c9729278673`). No label or code changes:
+  `homonimo` stays without a map (issue `homonimo-sem-fonte`). The page now says what the
+  manuals tell of the homonym mark and what 275 files show: in the `RJ` files to 2015-07,
+  `1` comes with a blocked AIH, `2` with a released block and `3` with a cancelled AIH;
+  in the `RD` files every AIH with the mark has the manager's CPF, and from 2015-08 the
+  mark is in 0.04% of the AIH. `evidence/2026-11-28-sih-homonimo/` has the counts, the
+  passages and the list of the documents read.
+
 ## v0.5.1 — 2026-11-28
 
 **Upgrading from 0.5.0:** no parser version changed (the import still reads the same
