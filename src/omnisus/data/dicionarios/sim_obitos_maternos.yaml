@@ -2,7 +2,7 @@ name: sim_obitos_maternos
 title: SIM — Óbitos maternos (DOMAT), nacional
 profile: tabular-data-resource
 encoding: latin-1
-x-version: 1.11.0
+x-version: 1.11.1
 x-source-format: dbc
 x-evidence:
   physical_schema: sim_domat_br_2023_mini.dbc, 87 fields; observed 2026-09-22
@@ -27,11 +27,11 @@ schema:
       claims:
       - target: /field/codes
         value_sha256: 2a575282e815c11490547293aba879fa7968b5349f64f344b4b00b3f93e6bea4
-        status: unreviewed
-        checked_at: '2026-11-18'
-        method: Leitura do PDF oficial e comparação dos códigos e rótulos com o x-decode, feita por agente;
-          sem revisor humano
-        reviewer: null
+        status: verified_in_source
+        checked_at: '2026-11-25'
+        method: Comparação dos códigos e rótulos do x-decode com o Estrutura do SIM do FTP do DATASUS e
+          o do Portal de Dados Abertos do SUS, conferida por revisora humana
+        reviewer: marcelaqs
         evidence:
         - source_id: sim-b014389eca62
           pages:
@@ -43,8 +43,13 @@ schema:
           - 5
           locator: 'ORIGEM, Caracter 1: 01 Oracle, 02 Banco estadual disponibilizado via FTP, 03 Banco SEADE,
             9 Ignorado'
-        note: A edição de 12/2019 escreve 1, 2, 3 e 9, como o x-decode; a de 07/2025 escreve 01, 02 e 03
-          (e 9) para um campo de 1 caractere. Os rótulos são abreviações do texto.
+        - source_id: sim-2177e17cf20b
+          pages:
+          - 6
+          locator: 'ORIGEM, Caracter 1: 01- Oracle, 02 Banco estadual diponibilizado via FTP, 03 Banco SEADE
+            9 Ignorado'
+        note: A edição de 12/2019 escreve 1, 2, 3 e 9, como o x-decode; as de 06/2025 e 07/2025 escrevem
+          01, 02 e 03 (e 9) para um campo de 1 caractere. Os rótulos são abreviações do texto.
       - target: /field/description
         value_sha256: fd1e53ff65f8f7987c099ba78065ce3dcbda0bcbf2dd39818c2054c39e46c65e
         status: unreviewed
@@ -584,11 +589,11 @@ schema:
       claims:
       - target: /field/codes
         value_sha256: 3f62f8acbc3b5fb8d9d538446c2fadf44abd5f65c9be4f54433a595e2e1768f2
-        status: unreviewed
-        checked_at: '2026-11-18'
-        method: Leitura do PDF oficial e comparação dos códigos e rótulos com o x-decode, feita por agente;
-          sem revisor humano
-        reviewer: null
+        status: verified_in_source
+        checked_at: '2026-11-25'
+        method: Comparação dos códigos e rótulos do x-decode com o Estrutura do SIM do FTP do DATASUS, conferida
+          por revisora humana
+        reviewer: marcelaqs
         evidence:
         - source_id: sim-b4195ac8e0f8
           pages:
@@ -968,11 +973,11 @@ schema:
       claims:
       - target: /field/codes
         value_sha256: 3f62f8acbc3b5fb8d9d538446c2fadf44abd5f65c9be4f54433a595e2e1768f2
-        status: unreviewed
-        checked_at: '2026-11-18'
-        method: Leitura do PDF oficial e comparação dos códigos e rótulos com o x-decode, feita por agente;
-          sem revisor humano
-        reviewer: null
+        status: verified_in_source
+        checked_at: '2026-11-25'
+        method: Comparação dos códigos e rótulos do x-decode com o Estrutura do SIM do FTP do DATASUS, conferida
+          por revisora humana
+        reviewer: marcelaqs
         evidence:
         - source_id: sim-b4195ac8e0f8
           pages:
@@ -1515,11 +1520,11 @@ schema:
       claims:
       - target: /field/codes
         value_sha256: ba4c4540ade0bc08b200748ac04aceb58cfa915241b368ef9341cd637bad18be
-        status: unreviewed
-        checked_at: '2026-11-15'
-        method: Leitura do PDF oficial e comparação dos códigos e rótulos com o x-decode, feita por agente;
-          sem revisor humano
-        reviewer: null
+        status: verified_in_source
+        checked_at: '2026-11-25'
+        method: Comparação dos códigos e rótulos do x-decode com o Estrutura do SIM do FTP do DATASUS, conferida
+          por revisora humana
+        reviewer: marcelaqs
         evidence:
         - source_id: sim-b4195ac8e0f8
           pages:
@@ -2022,7 +2027,7 @@ schema:
       claims:
       - target: /field/codes
         value_sha256: f352632d7d1acf143d91f8c0952e362267a947a6856fc485d1f4d43818d50b2d
-        status: conflicting
+        status: verified_in_source
         checked_at: '2026-09-21'
         method: cnv-parse
         reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -2030,7 +2035,9 @@ schema:
         - source_id: sim-tab-bb1c9f02668e
           pages: []
           locator: 'Obito_1996_CID10.def: XObito investigado, TPPOS, 1, INVESTIG.CNV; OBITOS_CID10_TAB/tabdo/INVESTIG.CNV'
-        note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+        note: Mapa do CNV, com as chaves que os arquivos gravam. Os conflitos com o Estrutura do SIM e com
+          o mapa anterior foram encerrados em 2026-11-25; texto nos issues tppos-codigos-divergem-do-pdf
+          e cnv-difere-do-mapa-anterior.
       - target: /field/description
         value_sha256: e5c350acaa9926c1dbae45cfbdcf1829e09f011649a1702314acd42578a668b0
         status: unreviewed
@@ -2047,19 +2054,26 @@ schema:
           a cada arquivo não foi conferida.
       issues:
       - id: tppos-codigos-divergem-do-pdf
-        status: open
-        description: O Estrutura_do_SIM_2025.pdf (p. 8) dá a TPPOS os códigos '1 – sim; 2 – não'. DORR2022,
+        status: resolved
+        description: 'O Estrutura_do_SIM_2025.pdf (p. 8) dá a TPPOS os códigos ''1 – sim; 2 – não''. DORR2022,
           DORR2023 e os excertos de DOEXT, DOINF e DOMAT de 2023 gravam S, N ou branco, as chaves do INVESTIG.CNV,
           que o Obito_1996_CID10.def liga ao campo numa linha X (a ressalva dessas linhas está no issue
           def-liga-por-linha-x de seriescfal). O mapa é o do CNV; 1 e 2 ficam sem rótulo. Nos arquivos DO
           de AC, AP, DF, RR, SE e TO de cada ano de 1996 a 2024 e de BA, PA, RS e SP de 2006, 2015 e 2023
           (evidence/2026-11-18-sim-valores-do/), TPPOS tem S em 374.509 registros, N em 951.045 e branco
-          em 950.059, e nenhum 1 ou 2.
+          em 950.059, e nenhum 1 ou 2. Resolvido em 2026-11-25 pela revisora marcelaqs: os códigos diferem,
+          1 e 2 no documento e S e N nos arquivos, e quem decide são os arquivos, que nos registros contados
+          acima gravam S 374.509 vezes, N 951.045 vezes e nenhuma vez 1 ou 2. Segundo a revisora, os dois
+          pares dizem se o óbito foi investigado. O mapa fica com as chaves que os arquivos gravam; 1 e
+          2 seguem sem rótulo.'
       - id: cnv-difere-do-mapa-anterior
-        status: open
+        status: resolved
         description: 'Mapa anterior sem fonte substituído pelo CNV: ''S'' era ''Sim'', CNV ''Investigado'';
           ''N'' era ''Não'', CNV ''Nao Investigado''; ''1'' era ''Sim'', CNV não lista; ''2'' era ''Não'',
-          CNV não lista'
+          CNV não lista. Resolvido em 2026-11-25 pela revisora marcelaqs: para S e N os rótulos dizem o
+          mesmo e vale o CNV, que o DEF liga ao campo numa linha X (ressalva no issue def-liga-por-linha-x
+          de seriescfal). 1 e 2 não são outra grafia: são códigos do documento que os arquivos não gravam,
+          e ficam sem rótulo (issue tppos-codigos-divergem-do-pdf).'
   - name: dtinvestig
     type: date
     label: Data da investigação
@@ -2229,7 +2243,7 @@ schema:
       claims:
       - target: /field/codes
         value_sha256: 84428dba1e8943e5c653d365dad765579149b2146711067f716692a438f77d51
-        status: conflicting
+        status: verified_in_source
         checked_at: '2026-09-21'
         method: cnv-parse
         reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -2237,7 +2251,8 @@ schema:
         - source_id: sim-tab-bb1c9f02668e
           pages: []
           locator: 'Obito_1996_CID10.def: XMedico Atest, ATESTANTE, 1, ATESTANT.CNV; OBITOS_CID10_TAB/tabdo/ATESTANT.CNV'
-        note: Mapa do CNV; diverge do Estrutura do SIM no código 1, ver o issue cnv-difere-do-mapa-anterior.
+        note: Mapa do CNV. O conflito com o Estrutura do SIM no código 1 foi encerrado em 2026-11-25; texto
+          no issue cnv-difere-do-mapa-anterior.
       - target: /field/description
         value_sha256: a5e2105c0567a798a51fb23958dba37e03843c089a6af0077199569c446adc11
         status: unreviewed
@@ -2254,11 +2269,19 @@ schema:
           a cada arquivo não foi conferida.
       issues:
       - id: cnv-difere-do-mapa-anterior
-        status: open
+        status: resolved
         description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''Assistente'', CNV ''Sim''.
           O Estrutura_do_SIM_2025.pdf (p. 5) escreve ''1 - Assistente; 2 – Substituto; 3 – IML; 4 – SVO;
-          5 – Outro''; o ATESTANT.CNV rotula 1 como ''Sim''. A diferença é de significado, não de grafia,
-          e fica aberta.'
+          5 – Outro''; o ATESTANT.CNV rotula 1 como ''Sim''. Resolvido em 2026-11-25 pela revisora marcelaqs:
+          segundo a revisora, ''Assistente'' e ''Sim'' respondem à mesma pergunta da DO, se o médico que
+          assina atendeu o falecido (nenhum formulário ou manual da DO está registrado como fonte; o dicionário
+          da tabela DOM, sim-dom-fb396a277981, p. 6, liga ATESTANTE ao ATESTANT.CNV e escreve ''Indica se
+          o médico que assina atendeu o paciente: 1 – Sim; 2 – Substituto; 3 – IML; 4 – SVO; 5 – Outros'');
+          vale o CNV. O Obito_1996_CID10.def liga o campo ao ATESTANT.CNV numa linha X, ''XMedico Atest,
+          ATESTANTE, 1, ATESTANT.CNV'' (a ressalva dessas linhas está no issue def-liga-por-linha-x de seriescfal);
+          o Obito_1979_95_CID-09.DEF, do mesmo OBITOS_CID10_TAB/tabdo, liga ATESTANTE ao ATESTANT.CNV em
+          linhas T e S, que têm função definida: ''TAtestante, ATESTANTE, 1, ATESTANT.CNV'' e ''SAtestante,
+          ATESTANTE, 1, ATESTANT.CNV''.'
   - name: stcodifica
     type: string
     label: Status codificação
@@ -2313,11 +2336,11 @@ schema:
       claims:
       - target: /field/codes
         value_sha256: 9ba2685b831819fd5247b6b228dc10f83f5fc3671c83581db0e377741f553661
-        status: unreviewed
-        checked_at: '2026-11-15'
-        method: Leitura do PDF oficial e comparação dos códigos e rótulos com o x-decode, feita por agente;
-          sem revisor humano
-        reviewer: null
+        status: verified_in_source
+        checked_at: '2026-11-25'
+        method: Comparação dos códigos e rótulos do x-decode com o Estrutura do SIM do FTP do DATASUS, conferida
+          por revisora humana
+        reviewer: marcelaqs
         evidence:
         - source_id: sim-b4195ac8e0f8
           pages:
@@ -3156,16 +3179,25 @@ schema:
       claims:
       - target: /field/codes
         value_sha256: 6f160ac6b49de2dd353f3d4f4192cd413fe99f399d0dd2724e3e8c75f3bc7c9c
-        status: unreviewed
-        checked_at: '2026-11-15'
-        method: Leitura do PDF oficial e comparação dos códigos e rótulos com o x-decode, feita por agente;
-          sem revisor humano
-        reviewer: null
+        status: verified_in_source
+        checked_at: '2026-11-25'
+        method: Comparação dos códigos e rótulos do x-decode com o Estrutura do SIM do FTP do DATASUS, o
+          do Portal de Dados Abertos do SUS e o dicionário da tabela DOM, conferida por revisora humana
+        reviewer: marcelaqs
         evidence:
         - source_id: sim-b4195ac8e0f8
           pages:
           - 8
           locator: 'TPNIVELINV, Caracter 1: E estadual; R regional; M municipal'
+        - source_id: sim-2177e17cf20b
+          pages:
+          - 8
+          locator: 'TPNIVELINV, Caracter 1: E – estadual; R- regional; M- Municipal'
+        - source_id: sim-dom-fb396a277981
+          pages:
+          - 2
+          locator: 'TPNIVELINV, nivel_inv.cnv, Caracter 1: Tipo de nível investigador. Valores: E – estadual;
+            R- regional; M- Municipal.'
         note: Códigos do PDF iguais aos do x-decode; os rótulos são abreviações do texto do PDF.
       - target: /field/description
         value_sha256: 8fae1b7bd99dd2a625e464e6cc4b2199cb6fe5cea66ba80d1e3c9cf13fd0438b
@@ -3315,16 +3347,20 @@ schema:
       claims:
       - target: /field/codes
         value_sha256: a17f1a8e06a68a94fa326f0b10f14f65af03854772aa2d768bc0c081db04828f
-        status: unreviewed
-        checked_at: '2026-11-15'
-        method: Leitura do PDF oficial e comparação dos códigos e rótulos com o x-decode, feita por agente;
-          sem revisor humano
-        reviewer: null
+        status: verified_in_source
+        checked_at: '2026-11-25'
+        method: Comparação dos códigos e rótulos do x-decode com o Estrutura do SIM do FTP do DATASUS e
+          o do Portal de Dados Abertos do SUS, conferida por revisora humana
+        reviewer: marcelaqs
         evidence:
         - source_id: sim-b4195ac8e0f8
           pages:
           - 8
           locator: 'MORTEPARTO, Caracter 1: 1 antes; 2 durante; 3 após; 9 ignorado'
+        - source_id: sim-2177e17cf20b
+          pages:
+          - 8
+          locator: 'MORTEPARTO, Caracter 1: 1 - antes; 2– durante; 3–após; 9– Ignorado'
         note: Códigos do PDF iguais aos do x-decode; os rótulos são abreviações do texto do PDF.
       - target: /field/description
         value_sha256: 437422721b2307c9a1488ca493dd693ec85b6a08370a195caadd574bdb1e0818
@@ -3472,16 +3508,20 @@ schema:
       claims:
       - target: /field/codes
         value_sha256: 08d71f6a6e09d2e9b5edf81dadcecb4a0b1a74d447bda01930f553295475512c
-        status: unreviewed
-        checked_at: '2026-11-15'
-        method: Leitura do PDF oficial e comparação dos códigos e rótulos com o x-decode, feita por agente;
-          sem revisor humano
-        reviewer: null
+        status: verified_in_source
+        checked_at: '2026-11-25'
+        method: Comparação dos códigos e rótulos do x-decode com o Estrutura do SIM do FTP do DATASUS e
+          o do Portal de Dados Abertos do SUS, conferida por revisora humana
+        reviewer: marcelaqs
         evidence:
         - source_id: sim-b4195ac8e0f8
           pages:
           - 8
           locator: 'ALTCAUSA, Caracter 1: 1 Sim; 2 Não'
+        - source_id: sim-2177e17cf20b
+          pages:
+          - 8
+          locator: 'ALTCAUSA, Caracter 1: 1- Sim; 2 – Não'
         note: Códigos do PDF iguais aos do x-decode; os rótulos são abreviações do texto do PDF.
       - target: /field/description
         value_sha256: b0d58782250a8e2a3535e12f82bb3a92244a0a0e83cc62ee5adf1bf1da450af5

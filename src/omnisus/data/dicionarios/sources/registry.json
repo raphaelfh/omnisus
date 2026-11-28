@@ -240,7 +240,21 @@
       "edition": null,
       "published_on": null,
       "retrieved_on": "2026-09-14",
-      "last_checked_on": "2026-11-18"
+      "last_checked_on": "2026-11-28"
+    },
+    {
+      "id": "sim-2177e17cf20b",
+      "category": "SIM",
+      "title": "Dicionario_SIM_2025.pdf — Estrutura do SIM (Portal de Dados Abertos do SUS)",
+      "publisher": "Ministério da Saúde",
+      "authority": "official",
+      "url": "https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SIM/Dicionario_SIM_2025.pdf",
+      "sha256": "2177e17cf20b6f665334f8bcc84fc2e703e79364412161ebfd1992b2d2268e31",
+      "bytes": 635539,
+      "edition": "06/2025",
+      "published_on": null,
+      "retrieved_on": "2026-11-25",
+      "last_checked_on": "2026-11-28"
     },
     {
       "id": "sim-anterior-13cabba0b9a1",
@@ -633,6 +647,34 @@
       "published_on": null,
       "retrieved_on": "2026-09-23",
       "last_checked_on": "2026-11-18"
+    },
+    {
+      "id": "sinasc-5956ea4d8e89",
+      "category": "SINASC",
+      "title": "Declaração de Nascido Vivo: manual de instruções para preenchimento, 4ª edição (2022)",
+      "publisher": "Ministério da Saúde",
+      "authority": "official",
+      "url": "https://svs.aids.gov.br/daent/cgiae/coesv/sistemas-informacao/sinasc/documentacao/declaracao-nascido-vivo-manual-instrucoes-preenchimento.pdf",
+      "sha256": "5956ea4d8e89ee6c3720b9769c83be09e6017cf2d1c3aa18a55898ee32e4deaf",
+      "bytes": 6188796,
+      "edition": "2022",
+      "published_on": null,
+      "retrieved_on": "2026-11-26",
+      "last_checked_on": "2026-11-26"
+    },
+    {
+      "id": "sinasc-0ffc45994687",
+      "category": "SINASC",
+      "title": "SINASC - Estrutura.pdf — SINASC: Estrutura de 1996 a 2019, dicionário de dados e evolução temporal dos campos",
+      "publisher": "Ministério da Saúde",
+      "authority": "official",
+      "url": "https://diaad.s3.sa-east-1.amazonaws.com/sinasc/SINASC+-+Estrutura.pdf",
+      "sha256": "0ffc459946872d704cb4073a2e3b2d0f96706e1e18e272d7186f18b077cdcee4",
+      "bytes": 146566,
+      "edition": null,
+      "published_on": null,
+      "retrieved_on": "2026-11-26",
+      "last_checked_on": "2026-11-26"
     },
     {
       "id": "sinasc-9ac143d5eae6",

@@ -25,7 +25,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: 0973f400fb85e55b5def3fd52ba8aae7134ecdec6a92c4b8bd1f42ced9ba0def
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -37,10 +37,10 @@ schema:
           note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''Oracle'', CNV ''Oracle (fed)'';
             ''2'' era ''SINASC Web'', CNV ''FTP (est)''; ''3'' era ''SINASC Local'', CNV ''SEADE (SP)''; ''9''
-            era ''Ignorado'', CNV não lista'
+            era ''Ignorado'', CNV não lista. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim, e o sinasc-0ffc45994687 (p. 1) dá aos códigos o mesmo significado que o CNV. Vale o CNV.'
     - name: codestab
       type: string
       label: Estabelecimento (CNES)
@@ -66,7 +66,7 @@ schema:
         '2': Outro Estab de Saúde
         '3': Domicílio
         '4': Outros
-        '5': Ignorado
+        '5': Aldeia indígena
         '6': Ignorado
         '7': Ignorado
         '8': Ignorado
@@ -74,22 +74,39 @@ schema:
       x-metadata:
         claims:
         - target: /field/codes
-          value_sha256: 1f80da7ba19d0f9baea1f3134493642467c49f8b6bd30fda1869880776ac1dfa
-          status: conflicting
-          checked_at: '2026-09-21'
-          method: cnv-parse
-          reviewer: scripts/metadados/gerar_decode_cnv.py
+          value_sha256: 105821a845bf700e5fff65fc5f67462990b0fa13538d9b968850c40051336d93
+          status: verified_in_source
+          checked_at: '2026-11-26'
+          method: cnv-read
+          reviewer: marcelaqs
           evidence:
           - source_id: sinasc-tab-de43d0c99630
             pages: []
             locator: 'NASCIDO.def: TLocal Ocorrencia, LOCNASC, 1, LOCOCOR.CNV; Arquivos Auxiliares para Tabulação
               a partir de 1996/LOCOCOR.CNV'
-          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+          - source_id: sinasc-5956ea4d8e89
+            pages:
+            - 23
+            locator: 'campo 7, Local da ocorrência: "5. Aldeia indígena: se o nascimento ocorreu em aldeia indígena."'
+          - source_id: sinasc-0ffc45994687
+            pages:
+            - 1
+            locator: 'posição 2, LOCNASC: "Local de nascimento: 1 – Hospital; 2 – Outros estabelecimentos de saúde;
+              3 – Domicílio; 4 – Outros; 5- Aldeia Indígena."'
+          note: 'Mapa mantido à mão (pull request 246 do repositório, decisão 1 do mantenedor). ''5'' vem dos dois
+            documentos, o manual de preenchimento da DN e o SINASC - Estrutura; o rótulo é o texto do manual, "Aldeia
+            indígena", sem o número, como o CNV escreve os outros. LOCOCOR.CNV junta o 5 aos códigos ignorados, na linha
+            "Ignorado 0,5,6,7,8,9". Os outros códigos e rótulos são as linhas de LOCOCOR.CNV,
+            como o CNV as escreve: ''0'', ''6'', ''7'' e ''8'', que nenhum dos dois documentos lista, continuam com o
+            "Ignorado" dessa linha, e o ''9'' também (o manual escreve "9. Ignorado"; o Estrutura não lista o 9).
+            tests/unit/test_codes_claims.py compara o mapa com o CNV empacotado. A revisora conferiu os dois documentos
+            em 2026-11-26; o mapa foi escrito em 2026-11-28. O mapa anterior ao CNV, sem fonte, está no issue
+            cnv-difere-do-mapa-anterior.'
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''2'' era ''Outro estabelecimento de
-            saúde'', CNV ''Outro Estab de Saúde''; ''5'' era ''Aldeia indígena'', CNV ''Ignorado'''
+            saúde'', CNV ''Outro Estab de Saúde''; ''5'' era ''Aldeia indígena'', CNV ''Ignorado''. Em 2026-11-26 a revisora marcelaqs conferiu o sinasc-0ffc45994687 (p. 1): o campo tem ''5- Aldeia Indígena'', código que o CNV rotula como Ignorado. O manual de preenchimento da DN, 4ª edição (sinasc-5956ea4d8e89, p. 23), também dá ''5. Aldeia indígena: se o nascimento ocorreu em aldeia indígena''. Resolvido em 2026-11-28: o mantenedor decidiu que os dois documentos valem para o código 5. ''5'' recebe o rótulo ''Aldeia indígena'', e o mapa de LOCNASC passa a ser mantido à mão, fora dos campos que scripts/metadados/gerar_decode_cnv.py gera (sem_cnv em sources/cnv/vinculos.json). No DNRR2022.dbc (tests/fixtures/dbc/sinasc_rr_2022_mini.dbc), 740 das 13.091 linhas trazem 5 e 1 traz 9.'
     - name: contador
       type: integer
       label: Contador
@@ -204,7 +221,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: 863a611620700ae2039f8b7f0d90e96ba00b6fffdf4f82759666dc6e57e05a1f
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -216,10 +233,10 @@ schema:
           note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''Solteira'', CNV ''Solteiro'';
             ''2'' era ''Casada'', CNV ''Casado''; ''3'' era ''Viúva'', CNV ''Viúvo''; ''4'' era ''Separada/Divorciada'',
-            CNV ''Separado jud''; ''5'' era ''União estável'', CNV ''Uniao estavel'''
+            CNV ''Separado jud''; ''5'' era ''União estável'', CNV ''Uniao estavel''. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim, e o sinasc-0ffc45994687 (p. 1) dá aos códigos o mesmo significado que o CNV. Vale o CNV.'
     - name: escmae
       type: string
       label: Escolaridade da mãe (faixas)
@@ -240,7 +257,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: 51ad326dc266ca77450e28894bcc897bee1cca1888d3d1a5cb725c996e4e0bbc
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -252,10 +269,10 @@ schema:
           note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''2'' era ''1 a 3 anos'', CNV ''01-03'';
             ''3'' era ''4 a 7 anos'', CNV ''04-07''; ''4'' era ''8 a 11 anos'', CNV ''08-11''; ''5'' era ''12
-            anos ou mais'', CNV ''12 e+''; ''9'' era ''Ignorado'', CNV ''Ign'''
+            anos ou mais'', CNV ''12 e+''; ''9'' era ''Ignorado'', CNV ''Ign''. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim, e o sinasc-0ffc45994687 (p. 1) dá aos códigos o mesmo significado que o CNV. Vale o CNV.'
     - name: escmae2010
       type: string
       label: Escolaridade da mãe (2010)
@@ -273,7 +290,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: 7052fb578640de2f4bc168674940ed138e637d1f419c0cf7114bbdad057c1dcc
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -285,12 +302,12 @@ schema:
           note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''0'' era ''Sem escolaridade'', CNV
             ''Sem Escolaridade''; ''1'' era ''Fundamental I (1-5 ano)'', CNV ''Fundamental I  (1 a 4 Serie)'';
             ''2'' era ''Fundamental II (6-9 ano)'', CNV ''Fundamental II (5 a 8 Serie)''; ''3'' era ''Médio'',
             CNV ''Medio (Antigo 2 Grau)''; ''4'' era ''Superior incompleto'', CNV ''Superior Incompleto'';
-            ''5'' era ''Superior completo'', CNV ''Superior Completo''; ''9'' era ''Ignorado'', CNV ''Ign'''
+            ''5'' era ''Superior completo'', CNV ''Superior Completo''; ''9'' era ''Ignorado'', CNV ''Ign''. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim, e o sinasc-0ffc45994687 (p. 2) dá aos códigos o mesmo significado que o CNV. Vale o CNV.'
     - name: escmaeagr1
       type: string
       label: Escolaridade da mãe agregada
@@ -324,7 +341,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: c7f928086ad5eaada7e52946d464545b8da4b0f8909cb3299f03ef9ae8fcbcd4
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -336,7 +353,7 @@ schema:
           note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''00'' era ''Sem escolaridade'', CNV
             ''Sem Escolaridade''; ''01'' era ''Fundamental I incompleto'', CNV ''Fundamental I Incompleto'';
             ''02'' era ''Fundamental I completo'', CNV ''Fundamental I Completo''; ''03'' era ''Fundamental
@@ -346,7 +363,7 @@ schema:
             CNV ''Superior Incompleto''; ''08'' era ''Superior completo'', CNV ''Superior Completo''; ''10''
             era ''Fundamental completo (inespecífico)'', CNV ''Fundamental I Incompleto ou Inespecif''; ''11''
             era ''Médio (inespecífico)'', CNV ''Fundamental II Incompleto ou Inespecif''; ''12'' era ''Superior
-            (inespecífico)'', CNV ''Ensino Medio Incompleto ou Inespecif'''
+            (inespecífico)'', CNV ''Ensino Medio Incompleto ou Inespecif''. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim, e o sinasc-0ffc45994687 (p. 2) dá aos códigos o mesmo significado que o CNV. Vale o CNV.'
     - name: seriescmae
       type: string
       label: Série escolar da mãe
@@ -368,7 +385,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: 70f1460a3cb1a3ba63a16b6c71c014b4bdecaf4dd4cbdc59f48cfa169cf4986f
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -380,8 +397,8 @@ schema:
           note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
-          description: 'Mapa anterior sem fonte substituído pelo CNV: ''9'' era ''Ignorado'', CNV não lista'
+          status: resolved
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''9'' era ''Ignorado'', CNV não lista. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim, e o sinasc-0ffc45994687 (p. 2) dá aos códigos o mesmo significado que o CNV. Vale o CNV.'
     - name: codmunres
       type: string
       label: Município de residência
@@ -446,7 +463,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: d68181264b7ba7595ab9bdf6a554542fa9f58501475c824b771ee05e6049781b
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -458,11 +475,11 @@ schema:
           note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''< 22 semanas'', CNV ''Menos
             22''; ''2'' era ''22 a 27 semanas'', CNV ''22 a 27''; ''3'' era ''28 a 31 semanas'', CNV ''28
             a 31''; ''4'' era ''32 a 36 semanas'', CNV ''32 a 36''; ''5'' era ''37 a 41 semanas'', CNV ''37
-            a 41''; ''6'' era ''42+ semanas'', CNV ''42 e +'''
+            a 41''; ''6'' era ''42+ semanas'', CNV ''42 e +''. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim, e o sinasc-0ffc45994687 (p. 1) dá aos códigos o mesmo significado que o CNV. Vale o CNV.'
     - name: semagestac
       type: integer
       label: Semanas de gestação
@@ -480,7 +497,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: 2ccb941f99e1cb7cdc841793f05f41a4abdfb52b88ae3f053b5c98451c2c8e9a
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -492,9 +509,9 @@ schema:
           note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''Exame físico'', CNV ''Exame
-            Fisico''; ''2'' era ''Outro método'', CNV ''Outro Metodo''; ''9'' era ''Ignorado'', CNV ''Ign'''
+            Fisico''; ''2'' era ''Outro método'', CNV ''Outro Metodo''; ''9'' era ''Ignorado'', CNV ''Ign''. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim, e o sinasc-0ffc45994687 (p. 2) dá aos códigos o mesmo significado que o CNV. Vale o CNV.'
     - name: dtultmenst
       type: date
       label: Data última menstruação
@@ -522,7 +539,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: a6f514918a6e13724869f347a0ac98c7cefa7bf0e1c5cb5f4fb919162b43d3e4
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -534,10 +551,10 @@ schema:
           note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''2'' era ''1 a 3 consultas'', CNV ''1-3
             vezes''; ''3'' era ''4 a 6 consultas'', CNV ''4-6 vezes''; ''4'' era ''7 ou mais consultas'',
-            CNV ''7 e +'''
+            CNV ''7 e +''. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim, e o sinasc-0ffc45994687 (p. 1) dá aos códigos o mesmo significado que o CNV. Vale o CNV.'
     - name: consprenat
       type: integer
       label: Consultas pré-natal (exato)
@@ -555,7 +572,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: c4985b8293ef7cda3f5bf206c46afeddfee1d5efdb54fd8959447f0e07b1ca49
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -567,12 +584,12 @@ schema:
           note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''Inadequado'', CNV ''Não
             fez pré-natal (Campo33=0)''; ''2'' era ''Intermediário'', CNV ''Inadequado (Campo34>3 ou Campo34<=3
             e Campo33<3)''; ''3'' era ''Adequado'', CNV ''Intermediário (Campo34<=3 e Campo33 entre 3 e 5)'';
             ''4'' era ''Mais que adequado'', CNV ''Adequado (Campo34<=3 e Campo33=6)''; ''9'' era ''Ignorado'',
-            CNV ''Não Classificados (campos 33 ou 34, Nulo ou Ign)'''
+            CNV ''Não Classificados (campos 33 ou 34, Nulo ou Ign)''. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim e deslocava as categorias em uma posição. O SINASC - Estrutura (p. 2) não lista códigos para KOTELCHUCK; a revisora comparou o mapa só com o KOTELCHUCK.CNV. Vale o CNV.'
 
     # ========================================================================
     # Parto
@@ -597,7 +614,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: b817cf9fb462f311033a6a8c395c050a5fadf5a955c206189e1ebcb3b4eb942e
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -609,9 +626,9 @@ schema:
           note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''3'' era ''Tripla ou mais'', CNV ''Tripla
-            e+''; ''9'' era ''Ignorada'', CNV ''Ignorado'''
+            e+''; ''9'' era ''Ignorada'', CNV ''Ignorado''. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim, e o sinasc-0ffc45994687 (p. 1) dá aos códigos o mesmo significado que o CNV. Vale o CNV.'
     - name: parto
       type: string
       label: Tipo de parto
@@ -632,7 +649,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: d49eae9e60d210839640ed81382f58e1829ed477c7ea4650737865e26bbadaf2
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -644,9 +661,9 @@ schema:
           note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''2'' era ''Cesáreo'', CNV ''Cesário'';
-            ''9'' era ''Ignorado'', CNV ''Ign'''
+            ''9'' era ''Ignorado'', CNV ''Ign''. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim, e o sinasc-0ffc45994687 (p. 1) dá aos códigos o mesmo significado que o CNV. Vale o CNV.'
     - name: stcesparto
       type: string
       label: Cesárea antes do trabalho de parto
@@ -661,7 +678,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: 81f245f9ba111b8bed51ad609732e4687192614a1094cdc8a8ca00a40f1145d6
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -673,10 +690,10 @@ schema:
           note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''Sim'', CNV ''Cesarea antes
             TP iniciar''; ''2'' era ''Não'', CNV ''Cesarea apos  TP iniciar''; ''3'' era ''Não se aplica'',
-            CNV ''Nao se aplica''; ''9'' era ''Ignorado'', CNV ''Ign'''
+            CNV ''Nao se aplica''; ''9'' era ''Ignorado'', CNV ''Ign''. Resolvido em 2026-11-26 pela revisora marcelaqs: o sinasc-0ffc45994687 (p. 2) pergunta se a cesárea ocorreu antes do trabalho de parto iniciar (1 Sim; 2 Não; 3 Não se aplica; 9 Ignorado), o mesmo que os rótulos do CNV e do mapa anterior, que não tinha claim. Vale o CNV.'
     - name: sttrabpart
       type: string
       label: Trabalho de parto induzido
@@ -690,7 +707,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: 3422606b95b81313902f1103a41cfa99757b2781f730bca8f24722d56acc3807
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -702,9 +719,18 @@ schema:
           note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''3'' era ''Não se aplica'', CNV não
-            lista; ''9'' era ''Ignorado'', CNV ''Ign'''
+            lista; ''9'' era ''Ignorado'', CNV ''Ign''. Em 2026-11-26 a revisora marcelaqs conferiu o sinasc-0ffc45994687 (p. 2): o campo tem ''3– Não se aplica'', código que o CNV não lista. Já o manual de preenchimento da DN, 4ª edição (sinasc-5956ea4d8e89), não traz o 3 no campo 37: a p. 34 escreve só ''9 – Ignorado'' e a p. 52, as respostas ''SIM'' e ''NÃO''; o ''3 – Não se aplica'' do manual é do campo 39 (STCESPARTO). As fontes oficiais divergem entre si. Resolvido em 2026-11-28: o mantenedor decidiu que vale o CNV, que o manual não contradiz; o mapa anterior não tinha claim. O 3 continua sem rótulo, e o issue sttrabpart-3-so-no-estrutura diz onde ele foi lido.'
+        - id: sttrabpart-3-so-no-estrutura
+          status: open
+          description: '''3'' não tem rótulo. O SINASC - Estrutura (sinasc-0ffc45994687, p. 2, posição 52) escreve
+            "Trabalho de parto induzido? Valores: 1– Sim; 2– Não; 3– Não se aplica; 9– Ignorado." ANOMAL.CNV, que o
+            NASCIDO.def (linha 161) liga a STTRABPART, lista só 1, 2 e 9. O manual de preenchimento da DN, 4ª edição
+            (sinasc-5956ea4d8e89), também não traz o 3: no campo 37 (p. 34) escreve só "9 – Ignorado", e na p. 52,
+            as respostas "SIM" e "NÃO". Nenhuma das 13.091 linhas do DNRR2022.dbc
+            (tests/fixtures/dbc/sinasc_rr_2022_mini.dbc) traz 3: são 1.255 com 1, 11.824 com 2 e 12 com 9. O 3 fica
+            sem rótulo até um arquivo real trazê-lo.'
     - name: tpapresent
       type: string
       label: Apresentação fetal
@@ -719,7 +745,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: 37b4ef8f0ce62bbd840c38ba8cf090612fd673083d01757cf293e801f7cdcc62
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -731,9 +757,9 @@ schema:
           note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''Cefálico'', CNV ''Cefalica'';
-            ''2'' era ''Pélvica ou podálica'', CNV ''Pelvica ou Podalica''; ''9'' era ''Ignorado'', CNV ''Ign'''
+            ''2'' era ''Pélvica ou podálica'', CNV ''Pelvica ou Podalica''; ''9'' era ''Ignorado'', CNV ''Ign''. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim, e o sinasc-0ffc45994687 (p. 2) dá aos códigos o mesmo significado que o CNV. Vale o CNV.'
     - name: tpnascassi
       type: string
       label: Assistência ao nascimento
@@ -749,7 +775,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: 86e7f5b97d952c57311e06aa72d3ea865ad5bb39de6447ad4e6df0768746ade3
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -761,9 +787,9 @@ schema:
           note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''Médico'', CNV ''Medico'';
-            ''2'' era ''Enfermeira/obstetriz'', CNV ''Enferm/Obstetriz''; ''9'' era ''Ignorado'', CNV ''Ign'''
+            ''2'' era ''Enfermeira/obstetriz'', CNV ''Enferm/Obstetriz''; ''9'' era ''Ignorado'', CNV ''Ign''. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim, e o sinasc-0ffc45994687 (p. 2) dá aos códigos o mesmo significado que o CNV. Vale o CNV.'
     - name: tprobson
       type: string
       label: Classificação de Robson
@@ -783,7 +809,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: 805eca82d3f58c31cc3107dff039329627f2619b8da91085cb5d6494a39017fc
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -795,7 +821,7 @@ schema:
           note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''01'' era ''Grupo 1 — Nulípara, única
             cefálica, ≥ 37 sem, TP espontâneo'', CNV ''01 Nulípara, gest un, cefál >37sem, tp espontaneo'';
             ''02'' era ''Grupo 2 — Nulípara, única cefálica, ≥ 37 sem, TP induzido ou cesárea eletiva'', CNV
@@ -810,7 +836,7 @@ schema:
             — Gestação múltipla (incl. c/ cesárea anterior)'', CNV ''08 Todas gest múltiplas (incluindo CS
             prévia''; ''09'' era ''Grupo 9 — Única transversa/oblíqua (incl. c/ cesárea anterior)'', CNV ''09
             Todas apres anormais (incluindo CS prévia''; ''10'' era ''Grupo 10 — Única cefálica, < 37 sem
-            (incl. c/ cesárea anterior)'', CNV ''10 Todas gest unic cefal <36sem (incl CS prévia'''
+            (incl. c/ cesárea anterior)'', CNV ''10 Todas gest unic cefal <36sem (incl CS prévia''. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim e diz os mesmos grupos de Robson com outras palavras. O SINASC - Estrutura (p. 2) não lista códigos para TPROBSON; a revisora comparou o mapa só com o ROBSON.CNV. Vale o CNV. Os cortes de idade gestacional são a escrita do CNV: ">37sem" nos códigos 01 a 03 (">37s" no 04, "> 37 semanas" no 05) e "<36sem" no 10, onde o mapa anterior dizia "≥ 37 sem" e "< 37 sem". Os rótulos ficam como o CNV os escreve.'
     - name: paridade
       type: string
       label: Paridade
@@ -823,15 +849,26 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: e8c023815d59f63261fa958d4b225263c71fb3ef4bd17ef5beee78aec9a4479a
-          status: unreviewed
-          checked_at: '2026-11-15'
-          method: 'Leitura do PDF oficial e comparação dos códigos e rótulos com o x-decode, feita por agente; sem revisor humano'
-          reviewer: null
+          status: verified_in_source
+          checked_at: '2026-11-26'
+          method: 'Comparação dos códigos e rótulos do x-decode com o Estrutura_SINASC_para_CD.pdf e o SINASC - Estrutura de 1996 a 2019, conferida por revisora humana'
+          reviewer: marcelaqs
           evidence:
           - source_id: sinasc-9ac143d5eae6
             pages: [6]
             locator: 'PARIDADE, Caracter 1: 0 nulípara; 1 multípara; 9 ignorado (variável calculada pelo sistema)'
+          - source_id: sinasc-0ffc45994687
+            pages: [2]
+            locator: 'PARIDADE: 1 – Multípara; 0- Nulípara'
           note: 'Os códigos 0 e 1 e os rótulos batem. O PDF lista também o 9 (ignorado), que o x-decode não rotula.'
+        issues:
+        - id: paridade-9-so-no-estrutura-para-cd
+          status: open
+          description: '''9'' não tem rótulo. O Estrutura_SINASC_para_CD.pdf (sinasc-9ac143d5eae6, p. 6) lista
+            "9 ignorado" para PARIDADE, variável calculada pelo sistema. O SINASC - Estrutura (sinasc-0ffc45994687,
+            p. 2, posição 68) escreve só "1 – Multípara; 0- Nulípara." Nenhuma das 13.091 linhas do DNRR2022.dbc
+            (tests/fixtures/dbc/sinasc_rr_2022_mini.dbc) traz 9: são 3.739 com 0 e 9.352 com 1. O 9 fica sem
+            rótulo até um arquivo real trazê-lo.'
     - name: dtnasc
       type: date
       label: Data de nascimento
@@ -854,7 +891,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: 3fb5a2ff2558c1ab146ecf75a446acaad0015c4c51f9c9f544ee38aec7010bdf
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -866,11 +903,11 @@ schema:
           note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''0'' era ''Ignorado'', CNV ''I''; ''1''
             era ''Masculino'', CNV ''M''; ''2'' era ''Feminino'', CNV ''F''; ''9'' era ''Ignorado'', CNV não
             lista; ''M'' era ''Masculino'', CNV ''M''; ''F'' era ''Feminino'', CNV ''F''; ''I'' era ''Ignorado'',
-            CNV ''I'''
+            CNV ''I''. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim, e o sinasc-0ffc45994687 (p. 1) dá aos códigos o mesmo significado que o CNV. Vale o CNV.'
     - name: racacor
       type: string
       label: Raça/cor do recém-nascido
@@ -886,7 +923,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: 70f1460a3cb1a3ba63a16b6c71c014b4bdecaf4dd4cbdc59f48cfa169cf4986f
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -898,8 +935,8 @@ schema:
           note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
-          description: 'Mapa anterior sem fonte substituído pelo CNV: ''9'' era ''Ignorado'', CNV não lista'
+          status: resolved
+          description: 'Mapa anterior sem fonte substituído pelo CNV: ''9'' era ''Ignorado'', CNV não lista. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim, e o sinasc-0ffc45994687 (p. 1) dá aos códigos o mesmo significado que o CNV. Vale o CNV.'
     - name: peso
       type: integer
       label: Peso ao nascer (g)
@@ -930,7 +967,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: 1f730622e0a9fa8e103dfe540ba4c23fd0b31f3543c85e1dd84f91e631b67fc9
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -942,9 +979,9 @@ schema:
           note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''2'' era ''Não'', CNV ''Nao''; ''9''
-            era ''Ignorado'', CNV ''Ign'''
+            era ''Ignorado'', CNV ''Ign''. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim, e o sinasc-0ffc45994687 (p. 1) dá aos códigos o mesmo significado que o CNV. Vale o CNV.'
     - name: codanomal
       type: string
       label: Código da anomalia (CID-10)
@@ -974,7 +1011,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: df3ec0ba20a76893457a43b6b01e643f18c377da4890865566d7a94d3130035d
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -986,9 +1023,9 @@ schema:
           note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''1'' era ''Médico'', CNV ''Medico'';
-            ''4'' era ''Funcionário do cartório'', CNV ''Func Cartorio'''
+            ''4'' era ''Funcionário do cartório'', CNV ''Func Cartorio''. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim, e o sinasc-0ffc45994687 (p. 2) dá aos códigos o mesmo significado que o CNV. Vale o CNV.'
     - name: tpdocresp
       type: string
       label: Tipo de documento do responsável
@@ -1051,38 +1088,44 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: 46544b8609bf9423688dea275b19781ac716ede9102e3fe953299269e93fd2d2
-          status: unreviewed
-          checked_at: '2026-11-15'
-          method: 'Leitura do PDF oficial e comparação dos códigos e rótulos com o x-decode, feita por agente; sem revisor humano'
-          reviewer: null
+          status: verified_in_source
+          checked_at: '2026-11-26'
+          method: 'Comparação dos códigos e rótulos do x-decode com o Estrutura_SINASC_para_CD.pdf e o SINASC - Estrutura de 1996 a 2019, conferida por revisora humana'
+          reviewer: marcelaqs
           evidence:
           - source_id: sinasc-9ac143d5eae6
             pages: [5]
             locator: 'STDNEPIDEM, Caracter 1: 1 SIM; 0 NÃO (status de DN Epidemiológica)'
+          - source_id: sinasc-0ffc45994687
+            pages: [2]
+            locator: 'STDNEPIDEM: Status de DO Epidemiológica. Valores: 1 – SIM; 0 – NÃO'
           note: 'Códigos e rótulos batem com o PDF. O NASCIDO.def (linha 19) liga o campo a DNNOVA.CNV, que escreve o código na coluna 60, fora do layout (ver o sem_cnv de vinculos.json).'
     - name: stdnnova
       type: string
       label: Status DN nova
       x-decode:
-        "0": "Formulário antigo"
-        "1": "Formulário novo (pós-2011)"
+        "0": "Não"
+        "1": "Sim"
       x-metadata:
         claims:
         - target: /field/codes
-          value_sha256: 102c005aa0bcc3fc070871886f610aedb1d3d2c7fd10c5195d816cc33bda760a
-          status: conflicting
-          checked_at: '2026-11-15'
-          method: 'Leitura do PDF oficial e comparação dos códigos e rótulos com o x-decode, feita por agente; sem revisor humano'
-          reviewer: null
+          value_sha256: 46544b8609bf9423688dea275b19781ac716ede9102e3fe953299269e93fd2d2
+          status: verified_in_source
+          checked_at: '2026-11-26'
+          method: 'Comparação dos códigos e rótulos do x-decode com o Estrutura_SINASC_para_CD.pdf e o SINASC - Estrutura de 1996 a 2019, conferida por revisora humana'
+          reviewer: marcelaqs
           evidence:
           - source_id: sinasc-9ac143d5eae6
             pages: [5]
             locator: 'STDNNOVA, Caracter 1: 1 SIM; 0 NÃO (status de DN Nova)'
-          note: 'Os códigos batem, mas o x-decode diz ''Formulário antigo'' e ''Formulário novo (pós-2011)'', e o PDF diz só SIM e NÃO para o status de DN Nova. O ''pós-2011'' não está no PDF.'
+          - source_id: sinasc-0ffc45994687
+            pages: [2]
+            locator: 'STDNNOVA: Status de DO Nova. Valores: 1 – SIM; 0 – NÃO'
+          note: 'Rótulos do documento: STDNNOVA é o status de DN Nova, 1 Sim e 0 Não.'
         issues:
         - id: stdnnova-rotulo-sem-fonte
-          status: open
-          description: 'O Estrutura_SINASC_para_CD.pdf (p. 5) dá STDNNOVA como ''1 SIM; 0 NÃO'', status de DN Nova. Os rótulos ''Formulário antigo'' e ''Formulário novo (pós-2011)'' do x-decode e o ano 2011 não estão no PDF nem em DEF algum (NASCIDO.def não cita o campo). O mapa fica como estava até o mantenedor escolher entre o PDF (Não/Sim) e o rótulo atual.'
+          status: resolved
+          description: 'O Estrutura_SINASC_para_CD.pdf (p. 5) dá STDNNOVA como ''1 SIM; 0 NÃO'', status de DN Nova. Os rótulos ''Formulário antigo'' e ''Formulário novo (pós-2011)'' do x-decode e o ano 2011 não estão no PDF nem em DEF algum (NASCIDO.def não cita o campo). O mapa fica como estava até o mantenedor escolher entre o PDF (Não/Sim) e o rótulo atual. Resolvido em 2026-11-26 pela revisora marcelaqs: o sinasc-0ffc45994687 (p. 2) dá também ''1 – SIM; 0 – NÃO''; o x-decode passa a Não/Sim.'
     - name: difdata
       type: integer
       label: Diferença de datas (dias)
@@ -1125,7 +1168,7 @@ schema:
 x-source-format: dbc
 x-source-family: datasus_ftp
 x-source-prefix: DN
-x-version: "2.7.0"
+x-version: "2.8.0"
 x-analytics:
   version: 1.0.0
   applicability_policy: exact_audited_source_identity

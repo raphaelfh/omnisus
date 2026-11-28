@@ -182,6 +182,13 @@ qual. É o caso de `espec` no RD e no RJ do SIH: o `17` vem da Portaria SAES/MS 
 (issue #254, decisão 4). Como `gerar_decode_cnv.py --check` deixa de conferir o campo,
 `tests/unit/transforms/test_sih_rd_fields.py` compara o mapa com o `LEITOS.CNV` empacotado.
 
+O mesmo vale para um código que o CNV lista com um rótulo e dois documentos registrados
+escrevem com outro: o mapa guarda as linhas do CNV e troca só o rótulo desse código. É o
+caso de `locnasc` no SINASC: `LOCOCOR.CNV` junta o `5` aos ignorados
+(`Ignorado 0,5,6,7,8,9`), e o manual de preenchimento da DN (p. 23) e o SINASC - Estrutura
+(p. 1) escrevem aldeia indígena (pull request #246, decisão 1 do mantenedor).
+`tests/unit/test_codes_claims.py` compara o mapa com o `LOCOCOR.CNV` empacotado.
+
 Os campos de `sim_obitos_infantis`, `sim_obitos_maternos` e `sim_obitos_externos` são os
 de `sim_obitos` (os registros são do DO), menos a `derivation` de `idade`: sem
 `x-analytics`, os subconjuntos não criam as colunas harmonizadas. Depois de mudar `sim_obitos.yaml`,

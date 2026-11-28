@@ -47,6 +47,21 @@ not publish it or authorize a tag/push.
 uv build --wheel --sdist --out-dir dist
 ```
 
+### Choosing the version
+
+The version rises slowly, one patch at a time.
+
+- The next release is the next patch (`0.5.1` → `0.5.2`), also when it carries a
+  breaking change. Mark that entry `**Breaking:**` in the CHANGELOG and say there
+  what a user of the previous version must do.
+- A new minor (`0.5.x` → `0.6.0`) is for a large change only, and a new major the
+  same. Either needs the maintainer's explicit yes in the release PR; without it
+  the PR proposes a patch. Never skip a number.
+- A merged pull request is not a release. Changes wait under `## Unreleased` until
+  the maintainer asks for a release, and one release carries all of them.
+
+### Procedure
+
 The version has one home, `src/omnisus/_version.py`. Update the changelog and
 lockfile with it, and the `omnisus[colab]==<version>` pin that `notebooks/colab.ipynb` installs, the
 `omnisus==<version>` pin of the PEP 723 header of every notebook (tests check both). The docs

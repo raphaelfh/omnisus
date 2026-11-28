@@ -4,7 +4,7 @@ profile: tabular-data-resource
 # Gerado do header DBF REAL (PSRR2401.dbf), nao do informe tecnico.
 # latin-1 obrigatorio: cifra do CNS usa 0x7B-0x84 (0x81 quebra cp1252).
 encoding: latin-1
-x-version: "0.5.0"
+x-version: "0.5.1"
 schema:
   fields:
     - name: cnes_exec
@@ -137,7 +137,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: 11f9e1a29e3a04fb0a890a686809c331693322d2b5badf0fc35f78a4b193f082
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -145,14 +145,14 @@ schema:
           - source_id: sia-tab-e5812b51d802
             pages: []
             locator: 'RAAS_Psicossocial.def: LRaça/Cor Paciente, RACACOR, 1, CNV/RACA_COR.CNV; CNV/RACA_COR.CNV'
-          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+          note: Mapa do CNV. O conflito com o mapa anterior, que não tinha claim, foi encerrado em 2026-11-26 pela revisora marcelaqs; texto no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''01'' era ''Branca'', CNV ''BRANCA'';
             ''02'' era ''Preta'', CNV ''PRETA''; ''03'' era ''Parda'', CNV ''PARDA''; ''04'' era ''Amarela'',
             CNV ''AMARELA''; ''05'' era ''Indígena'', CNV ''INDIGENA''; ''99'' era ''Sem informação'', CNV
-            ''SEM INFORMAÇÃO'''
+            ''SEM INFORMAÇÃO''. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim e diz o mesmo que o CNV com outras palavras. Vale o CNV.'
     - name: etnia
       type: string
       label: Etnia
@@ -240,7 +240,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: 694c023c50452a20868e25f318399ba00a863d813a83f28fd07191aa22332639
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -248,12 +248,12 @@ schema:
           - source_id: sia-tab-e5812b51d802
             pages: []
             locator: 'RAAS_Psicossocial.def: XSituação Rua (S/N), SIT_RUA, 1, CNV/SIT_RUA.CNV; CNV/SIT_RUA.CNV'
-          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+          note: Mapa do CNV. O conflito com o mapa anterior, que não tinha claim, foi encerrado em 2026-11-26 pela revisora marcelaqs; texto no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''S'' era ''Sim'', CNV ''SIM''; ''N''
-            era ''Não'', CNV ''NÃO'''
+            era ''Não'', CNV ''NÃO''. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim e diz o mesmo que o CNV com outras palavras. Vale o CNV.'
     - name: tp_droga
       type: string
       label: Substância (álcool/crack/outras)

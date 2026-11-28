@@ -4,7 +4,7 @@ profile: tabular-data-resource
 # Gerado do header DBF REAL (AQRR2401.dbf), nao do informe tecnico.
 # latin-1 obrigatorio: cifra do CNS usa 0x7B-0x84 (0x81 quebra cp1252).
 encoding: latin-1
-x-version: "0.6.0"
+x-version: "0.6.1"
 schema:
   fields:
     - name: ap_mvm
@@ -132,7 +132,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: 11f9e1a29e3a04fb0a890a686809c331693322d2b5badf0fc35f78a4b193f082
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -140,14 +140,14 @@ schema:
           - source_id: sia-tab-e5812b51d802
             pages: []
             locator: 'APAC_Quimioterapia.DEF: XRaça/Cor Paciente, AP_RACACOR, 1, CNV/RACA_COR.CNV; CNV/RACA_COR.CNV'
-          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+          note: Mapa do CNV. O conflito com o mapa anterior, que não tinha claim, foi encerrado em 2026-11-26 pela revisora marcelaqs; texto no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''01'' era ''Branca'', CNV ''BRANCA'';
             ''02'' era ''Preta'', CNV ''PRETA''; ''03'' era ''Parda'', CNV ''PARDA''; ''04'' era ''Amarela'',
             CNV ''AMARELA''; ''05'' era ''Indígena'', CNV ''INDIGENA''; ''99'' era ''Sem informação'', CNV
-            ''SEM INFORMAÇÃO'''
+            ''SEM INFORMAÇÃO''. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim e diz o mesmo que o CNV com outras palavras. Vale o CNV.'
     - name: ap_munpcn
       type: string
       label: Município de residência (UF+IBGE)
@@ -169,7 +169,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: e50f214e8c49075d2672a183e5995237d51ee9f06cdf659957ead39c951de0a2
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -177,12 +177,12 @@ schema:
           - source_id: sia-tab-e5812b51d802
             pages: []
             locator: 'APAC_Quimioterapia.DEF: TInvasão Estadual, AP_UFDIF, 1, CNV/INVASAO.CNV; CNV/Invasao.CNV'
-          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+          note: Mapa do CNV. O conflito com o mapa anterior, que não tinha claim, foi encerrado em 2026-11-26 pela revisora marcelaqs; texto no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''0'' era ''Mesma UF'', CNV ''Não houve
-            invasão''; ''1'' era ''UF diferente'', CNV ''Sim (houve invasão)'''
+            invasão''; ''1'' era ''UF diferente'', CNV ''Sim (houve invasão)''. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim e diz o mesmo que o CNV com outras palavras. Vale o CNV.'
     - name: ap_mndif
       type: string
       label: Ap mndif
@@ -195,7 +195,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: e50f214e8c49075d2672a183e5995237d51ee9f06cdf659957ead39c951de0a2
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -203,12 +203,12 @@ schema:
           - source_id: sia-tab-e5812b51d802
             pages: []
             locator: 'APAC_Quimioterapia.DEF: TInvasão Municipal, AP_MNDIF, 1, CNV/INVASAO.CNV; CNV/Invasao.CNV'
-          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+          note: Mapa do CNV. O conflito com o mapa anterior, que não tinha claim, foi encerrado em 2026-11-26 pela revisora marcelaqs; texto no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''0'' era ''Mesmo município'', CNV ''Não
-            houve invasão''; ''1'' era ''Município diferente'', CNV ''Sim (houve invasão)'''
+            houve invasão''; ''1'' era ''Município diferente'', CNV ''Sim (houve invasão)''. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim e diz o mesmo que o CNV com outras palavras. Vale o CNV.'
     - name: ap_dtinic
       type: date
       label: Início da validade da APAC
@@ -231,7 +231,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: 3e77daea55811733897715a900abbd46206b82c9b91ee962ce2620d3fac105c7
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -239,12 +239,12 @@ schema:
           - source_id: sia-tab-e5812b51d802
             pages: []
             locator: 'APAC_Quimioterapia.DEF: XTipo de APAC, AP_TPAPAC, 1, CNV/TP_APAC.CNV; CNV/TP_APAC.CNV'
-          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+          note: Mapa do CNV. O conflito com o mapa anterior, que não tinha claim, foi encerrado em 2026-11-26 pela revisora marcelaqs; texto no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''4'' era ''Fora de rede (encerramento)'',
-            CNV não lista'
+            CNV não lista. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim; 1, 2 e 3 dizem o mesmo que o CNV, e o ''4'' sem fonte segue no issue ap_tpapac-4-sem-fonte. Vale o CNV.'
         - id: ap_tpapac-4-sem-fonte
           status: open
           description: '''4'' fica sem rótulo: TP_APAC.CNV (TAB_SIA) lista só 1 Inicial, 2 Continuidade e
@@ -264,7 +264,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: f5896878b93ad73959088576ab8ceaa69528b4d54f750cd3759ec97717f18e7e
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -272,12 +272,12 @@ schema:
           - source_id: sia-tab-e5812b51d802
             pages: []
             locator: 'APAC_Quimioterapia.DEF: XMotivo Saída-Óbito, AP_OBITO, 1, CNV/OBITO.CNV; CNV/OBITO.CNV'
-          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+          note: Mapa do CNV. O conflito com o mapa anterior, que não tinha claim, foi encerrado em 2026-11-26 pela revisora marcelaqs; texto no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''0'' era ''Não'', CNV ''Nao houve ÓBITO'';
-            ''1'' era ''Sim'', CNV ''Sim (motivo de saída-ÓBITO)'''
+            ''1'' era ''Sim'', CNV ''Sim (motivo de saída-ÓBITO)''. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim e diz o mesmo que o CNV com outras palavras. Vale o CNV.'
     - name: ap_encerr
       type: string
       label: Ap encerr
@@ -288,7 +288,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: e635d1da58b87ea0ec3801d432e2b2ff8c11f90d86601aca7e2edd9e41c0d6c9
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -297,12 +297,12 @@ schema:
             pages: []
             locator: 'APAC_Quimioterapia.DEF: XMotivo Saída-Encerramento, AP_ENCERR, 1, CNV/ENCERRAM.CNV;
               CNV/ENCERRAM.CNV'
-          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+          note: Mapa do CNV. O conflito com o mapa anterior, que não tinha claim, foi encerrado em 2026-11-26 pela revisora marcelaqs; texto no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''0'' era ''Não'', CNV ''Nao houve ENCERRAMENTO'';
-            ''1'' era ''Sim'', CNV ''Sim (motivo de saída-ENCERRAMENTO)'''
+            ''1'' era ''Sim'', CNV ''Sim (motivo de saída-ENCERRAMENTO)''. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim e diz o mesmo que o CNV com outras palavras. Vale o CNV.'
     - name: ap_perman
       type: string
       label: Ap perman
@@ -313,7 +313,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: fa823e6bcb07e76b0a6d4d83367443c3e034857df377dc01fe721632f97911ee
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -321,12 +321,12 @@ schema:
           - source_id: sia-tab-e5812b51d802
             pages: []
             locator: 'APAC_Quimioterapia.DEF: XMotivo Saída-Permanência, AP_PERMAN, 1, CNV/PERMANEN.CNV; CNV/PERMANEN.CNV'
-          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+          note: Mapa do CNV. O conflito com o mapa anterior, que não tinha claim, foi encerrado em 2026-11-26 pela revisora marcelaqs; texto no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''0'' era ''Não'', CNV ''Nao houve a
-            PERMANÊNCIA do paciente na unidade''; ''1'' era ''Sim'', CNV ''Sim (motivo de saída-PERMANÊNCIA)'''
+            PERMANÊNCIA do paciente na unidade''; ''1'' era ''Sim'', CNV ''Sim (motivo de saída-PERMANÊNCIA)''. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim e diz o mesmo que o CNV com outras palavras. Vale o CNV.'
     - name: ap_alta
       type: string
       label: Ap alta
@@ -337,7 +337,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: cc9bf92868dea681ca88cae93255f8d624435f2ce36d34a9a13c45dfa4a6fb79
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -345,12 +345,12 @@ schema:
           - source_id: sia-tab-e5812b51d802
             pages: []
             locator: 'APAC_Quimioterapia.DEF: XMotivo Saída-Alta, AP_ALTA, 1, CNV/ALTA.CNV; CNV/ALTA.CNV'
-          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+          note: Mapa do CNV. O conflito com o mapa anterior, que não tinha claim, foi encerrado em 2026-11-26 pela revisora marcelaqs; texto no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''0'' era ''Não'', CNV ''Nao foi dado
-            ALTA ao paciente''; ''1'' era ''Sim'', CNV ''Sim (motivo de saída-ALTA)'''
+            ALTA ao paciente''; ''1'' era ''Sim'', CNV ''Sim (motivo de saída-ALTA)''. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim e diz o mesmo que o CNV com outras palavras. Vale o CNV.'
     - name: ap_transf
       type: string
       label: Ap transf
@@ -361,7 +361,7 @@ schema:
         claims:
         - target: /field/codes
           value_sha256: 798a13f55c387349e223abc2e3856a3924595eb6d7cc80a312297326d79d9fc1
-          status: conflicting
+          status: verified_in_source
           checked_at: '2026-09-21'
           method: cnv-parse
           reviewer: scripts/metadados/gerar_decode_cnv.py
@@ -370,12 +370,12 @@ schema:
             pages: []
             locator: 'APAC_Quimioterapia.DEF: XMotivo Saída-Transferência, AP_TRANSF, 1, CNV/TRANSFER.CNV;
               CNV/TRANSFER.CNV'
-          note: Mapa do CNV; o mapa anterior está no issue cnv-difere-do-mapa-anterior.
+          note: Mapa do CNV. O conflito com o mapa anterior, que não tinha claim, foi encerrado em 2026-11-26 pela revisora marcelaqs; texto no issue cnv-difere-do-mapa-anterior.
         issues:
         - id: cnv-difere-do-mapa-anterior
-          status: open
+          status: resolved
           description: 'Mapa anterior sem fonte substituído pelo CNV: ''0'' era ''Não'', CNV ''Nao houve TRANSFERÊNCIA
-            do paciente''; ''1'' era ''Sim'', CNV ''Sim (motivo de saída-TRANSFERÊNCIA)'''
+            do paciente''; ''1'' era ''Sim'', CNV ''Sim (motivo de saída-TRANSFERÊNCIA)''. Resolvido em 2026-11-26 pela revisora marcelaqs: o mapa anterior não tinha claim e diz o mesmo que o CNV com outras palavras. Vale o CNV.'
     - name: ap_dtocor
       type: date
       label: Data da ocorrência de saída

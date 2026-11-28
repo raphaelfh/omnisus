@@ -1378,7 +1378,6 @@
         "gravidez": "sinasc/GRAVIDEZ.CNV",
         "idanomal": "sinasc/idanomal.cnv",
         "kotelchuck": "sinasc/KOTELCHUCK.CNV",
-        "locnasc": "sinasc/LOCOCOR.CNV",
         "origem": "sinasc/ORIGEM.CNV",
         "parto": "sinasc/PARTO.CNV",
         "racacor": "sinasc/RACA.CNV",
@@ -1393,6 +1392,7 @@
         "tprobson": "sinasc/ROBSON.CNV"
       },
       "sem_cnv": {
+        "locnasc": "NASCIDO.def (linhas 56-57) liga LOCNASC a LOCOCOR.CNV, empacotado, que junta o código 5 aos ignorados na linha 'Ignorado 0,5,6,7,8,9'; o manual de preenchimento da DN e o SINASC - Estrutura dão ao 5 o rótulo de aldeia indígena. O mapa do campo é o do CNV com o rótulo desse código trocado, mantido à mão; a claim de códigos do campo cita as três fontes. Pull request 246, decisão 1.",
         "stdnepidem": "DNNOVA.CNV escreve o c\u00f3digo na coluna 60, fora do layout do manual TabWin (c\u00f3digos a partir da coluna 61)."
       }
     },

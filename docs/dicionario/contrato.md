@@ -96,9 +96,13 @@ rótulo. É o caso de `cod_idade` no RD e no RJ do SIH (`IDADEDET.CNV` rotula a 
 junto com a quantidade).
 
 `method: cnv-read` marca um mapa de códigos mantido à mão a partir de um CNV oficial e de
-outra fonte registrada, quando o gerador não pode escrever o campo: a afirmação traz uma
-evidência por fonte, e a nota diz qual código vem de qual. É o caso de `espec` no RD e no
-RJ do SIH (as linhas de `LEITOS.CNV` e o `17` da Portaria SAES/MS nº 245/2020).
+outra fonte registrada, quando o mapa do campo não é só o do CNV: falta ao CNV um código
+que a outra fonte inclui, ou o CNV dá a um código um rótulo que a outra fonte escreve de
+outro modo. O campo sai dos que o gerador escreve; a afirmação traz uma evidência por
+fonte, e a nota diz qual código vem de qual. É o caso de `espec` no RD e no
+RJ do SIH (as linhas de `LEITOS.CNV` e o `17` da Portaria SAES/MS nº 245/2020) e de
+`locnasc` no SINASC (as linhas de `LOCOCOR.CNV` e o `5` do manual de preenchimento da DN e do
+SINASC - Estrutura).
 
 `verified_in_source` **não confirma** vigência nos dados. A dimensão separada
 `applicability.status` pode ser `unknown`, `confirmed`, `conflicting` ou

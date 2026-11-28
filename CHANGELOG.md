@@ -10,17 +10,48 @@
 
 ### Dictionaries
 
-- `registry.json` registers five SIHD documents the page of `sih_aih_reduzida` now cites
-  on `homonimo`: the SIHD manual of 2006 (`sihsus-13954d36eb2b`), the SIHD2 operation
-  manual of 2009 (`sihsus-0e6bb434e7f2`), the SIH manual of January 2017
-  (`sihsus-b51eb51dde1d`), the SIHD data dictionary (`sihsus-a3d8bb97b272`) and the SIHD
-  table package `Tabelas300.zip` (`sihsus-6c9729278673`). No label or code changes:
-  `homonimo` stays without a map (issue `homonimo-sem-fonte`). The page now says what the
-  manuals tell of the homonym mark and what 275 files show: in the `RJ` files to 2015-07,
-  `1` comes with a blocked AIH, `2` with a released block and `3` with a cancelled AIH;
-  in the `RD` files every AIH with the mark has the manager's CPF, and from 2015-08 the
-  mark is in 0.04% of the AIH. `evidence/2026-11-28-sih-homonimo/` has the counts, the
-  passages and the list of the documents read.
+- `sim_obitos` 2.16.1 and `sim_obitos_externos`, `sim_obitos_infantis` and
+  `sim_obitos_maternos` 1.11.1: the code maps of `altcausa`, `assistmed`, `atestante`,
+  `codificado`, `esc2010`, `escmae2010`, `morteparto`, `origem`, `tp_altera`,
+  `tpnivelinv` and `tppos` (`tp_altera` only in `sim_obitos`) become
+  `verified_in_source` after a human review against the registered documents. The conflicts of `atestante` and `tppos` are closed: the document
+  and the CNV word code 1 of `atestante` differently, and for `tppos` the document lists
+  1 and 2 where the files write S and N, so the files decide; each resolved issue keeps
+  the previous text. No label or code changes. New source `sim-2177e17cf20b`, the
+  Estrutura do SIM of 06/2025 on the Portal de Dados Abertos do SUS (#245).
+- `sinasc_nascidos_vivos` 2.8.0: code `5` of `locnasc` gains the label "Aldeia indígena",
+  which the manual of the DN (4th edition, p. 23) and the SINASC Estrutura of 1996 to
+  2019 (p. 1) give it; `LOCOCOR.CNV` groups it under "Ignorado", and 740 of the 13,091
+  rows of `DNRR2022.dbc` publish it. The map of `locnasc` is now kept by hand, the lines
+  of the CNV with that one label replaced, outside the fields `gerar_decode_cnv.py`
+  generates. `stdnnova` becomes `0` "Não" and `1` "Sim". 25 of the 26 code-map claims
+  become `verified_in_source`: 23 reviewed by a human reviewer, and `locnasc` and
+  `sttrabpart` by decision of the maintainer on her findings. Code `3` of `sttrabpart`
+  stays unlabelled: only the Estrutura lists it and no row of that file publishes it
+  (issue `sttrabpart-3-so-no-estrutura`), and so does code `9` of `paridade`, which only
+  `Estrutura_SINASC_para_CD.pdf` lists (issue `paridade-9-so-no-estrutura-para-cd`). New sources: `sinasc-0ffc45994687` and
+  `sinasc-5956ea4d8e89` (#246).
+- `sia_apac_cirurgia_bariatrica`, `sia_apac_laudos_diversos`, `sia_apac_medicamentos`,
+  `sia_apac_quimioterapia` and `sia_apac_tratamento_dialitico` 0.6.1 and
+  `sia_psicossocial` 0.5.1: 48 `cnv-parse` claims on `/field/codes` go from
+  `conflicting` to `verified_in_source` after a human review, and on each of these
+  fields the issue `cnv-difere-do-mapa-anterior` is resolved. No label or code changes.
+  `am_gestant` of `sia_apac_medicamentos` stays `conflicting`, with the issue open:
+  `GESTANTE.CNV` labels `N` "Nao - (O paciente é gestante)" (#247).
+- `sih_aih_reduzida` 2.31.1: the issue `homonimo-sem-fonte` now says what was read and
+  measured, and stays open. No label or code changes: `homonimo` stays without a map, and
+  `sih_aih_rejeitada` (1.12.0) is unchanged, since it has no text on the field. Four
+  registered documents give `0` no and `1` yes and none gives `2` or `3`; the `RJ` files
+  read publish `0`, `1`, `2` and `3`. `registry.json` registers five SIHD documents the
+  page of `sih_aih_reduzida` now cites: the SIHD manual of 2006 (`sihsus-13954d36eb2b`),
+  the SIHD2 operation manual of 2009 (`sihsus-0e6bb434e7f2`), the SIH manual of January
+  2017 (`sihsus-b51eb51dde1d`), the SIHD data dictionary (`sihsus-a3d8bb97b272`) and the
+  SIHD table package `Tabelas300.zip` (`sihsus-6c9729278673`). The page says what the
+  manuals tell of the homonym mark and what 275 files show, as an association: in the
+  `RJ` files to 2015-07, `1` comes with a blocked AIH, `2` with a released block and `3`
+  with a cancelled AIH; in the `RD` files every AIH with the mark has the manager's CPF,
+  and from 2015-08 the mark is in 0.04% of the AIH. `evidence/2026-11-28-sih-homonimo/`
+  has the counts, the passages and the list of the documents read.
 
 ## v0.5.1 — 2026-11-28
 

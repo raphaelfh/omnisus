@@ -75,6 +75,14 @@ o Brasil. A documentação dessa era no servidor é `Doc/NASC98.HLP`. Os dicion�
   (Estrutura do SINASC para CD, p. 1).
 - `sexo` usa 0 = ignorado, 1 = masculino e 2 = feminino
   (Estrutura do SINASC para CD, p. 2).
+- `locnasc` 5 é "Aldeia indígena" pelo manual de preenchimento da DN (4ª edição, p. 23)
+  e pelo SINASC: Estrutura de 1996 a 2019 (p. 1), embora a tabela do TabWin
+  (`LOCOCOR.CNV`) junte o 5 aos ignorados, na linha `Ignorado 0,5,6,7,8,9`. No
+  `DNRR2022.dbc`, 740 das 13.091 linhas trazem 5 e 1 traz 9. Os códigos 0, 6, 7 e 8, que
+  os dois documentos não listam, continuam com o "Ignorado" dessa linha
+  (`tests/unit/test_codes_claims.py`).
+- `stdnnova` usa 0 = Não e 1 = Sim (SINASC: Estrutura de 1996 a 2019, p. 2); as 13.091
+  linhas do `DNRR2022.dbc` trazem 1 (`tests/unit/test_codes_claims.py`).
 - `numerodn` é sequencial por UF informante e por ano (Estrutura do SINASC para CD,
   p. 1), e o dicionário não declara chave primária para a base
   (`src/omnisus/data/dicionarios/sinasc_nascidos_vivos.yaml`, sem `primaryKey`).
@@ -109,6 +117,10 @@ o Brasil. A documentação dessa era no servidor é `Doc/NASC98.HLP`. Os dicion�
 - Se `numerodn` identifica um registro sozinho: o documento o descreve como sequencial
   por UF informante e por ano (p. 1), e o dicionário não declara chave primária. Compare
   `count(*)` com `count(DISTINCT numerodn)` antes de usá-lo como chave.
+- O código 3 de `sttrabpart` não tem rótulo: o SINASC: Estrutura de 1996 a 2019 (p. 2)
+  lista "3– Não se aplica", e a tabela do TabWin (`ANOMAL.CNV`) e o manual de
+  preenchimento da DN (4ª edição, p. 34, campo 37) não. Nenhuma das 13.091 linhas do
+  `DNRR2022.dbc` traz 3 (`tests/unit/test_codes_claims.py`).
 - Onde passa a fronteira entre as duas estruturas: o título da segunda diz "até 2005"
   (p. 3), mas o documento não diz se 2005 já usa a primeira, se uma única estrutura vale
   para todos os anos até 2005 (o código 5 de `estcivmae` é marcado "versões
@@ -141,6 +153,18 @@ Passo a passo com análise e procedência:
   — consultado em 2026-09-10; SHA-256
   `24e0d4388ea1d5fbe58a328136f1cb464e461985d3ed737210e0ecda5000cb08`, conferido de novo
   em 2026-09-13. Registro: `src/omnisus/data/dicionarios/sources/registry.json`.
+- SINASC: Estrutura de 1996 a 2019 (`SINASC - Estrutura.pdf`), Coordenação-Geral de
+  Informações e Análise Epidemiológicas / SVS / MS:
+  <https://diaad.s3.sa-east-1.amazonaws.com/sinasc/SINASC+-+Estrutura.pdf>
+  — consultado em 2026-11-26; SHA-256
+  `0ffc459946872d704cb4073a2e3b2d0f96706e1e18e272d7186f18b077cdcee4`. Registro:
+  `sinasc-0ffc45994687`.
+- Declaração de Nascido Vivo: manual de instruções para preenchimento, 4ª edição,
+  Ministério da Saúde, 2022:
+  <https://svs.aids.gov.br/daent/cgiae/coesv/sistemas-informacao/sinasc/documentacao/declaracao-nascido-vivo-manual-instrucoes-preenchimento.pdf>
+  — consultado em 2026-11-26; SHA-256
+  `5956ea4d8e89ee6c3720b9769c83be09e6017cf2d1c3aa18a55898ee32e4deaf`. Registro:
+  `sinasc-5956ea4d8e89`.
 - [Bases e argumentos](../datasets.md#sinasc), página gerada do registro da biblioteca.
 
 ## Detalhes técnicos
