@@ -28,34 +28,74 @@ SUS (SIH/SUS), nos arquivos RD que o DATASUS publica um por UF e mês de process
   (Informe SIH 2016-03, p. 1–4); `aud_just` e `sis_just` guardam a justificativa para
   aceitar a AIH sem esse número (p. 3).
 - `homonimo` indica se o paciente da AIH é homônimo do paciente de outra AIH
-  (Informe SIH 2016-03, p. 3). Nenhum documento do RD de 2008 em diante dá os códigos de `homonimo`
-  nem de `gestor_tp`, e nenhum DEF empacotado cita os dois campos: eles ficam sem
-  rótulo. O RD publica `homonimo` `0` e `2`, e o RJ `0` e `1`; não suponha que `2`
-  e `1` querem dizer a mesma coisa (issues `homonimo-sem-fonte` e
-  `gestor_tp-sem-fonte`, #10). Dois documentos registrados dão `0` não e `1` sim
-  para a marca de homônimo: o layout dos arquivos RD de 2006-04 a 2007-12
-  (`Layout_REDUZIDA.pdf`, p. 2) e o dicionário de dados das tabelas `TB_AIH` e `TB_HAIH`
-  (`dicionario_de_dados_AIH.pdf`, pp. 8-9). Os arquivos lidos publicam `0` e `2` em
-  todos os anos de 2006 a 2026, inclusive os 21 de Roraima dos meses do layout que diz 0
-  e 1, e `1` só em `RDAP2607` (34 registros); por isso a lista dos dois documentos não virou mapa
-  (`evidence/2026-11-18-sih-codigos-em-outros-documentos/`,
-  `evidence/2026-11-18-rd-medidas/`). A Nota Técnica SIHD2 nº 001/2015 (DATASUS-RJ,
-  25/08/2015, "Válido a partir da competência 08/2015") muda o bloqueio de homônimos: o
-  gerenciador do SIHD2 passa a "realizar o bloqueio de DUPLICIDADES (homônimos) apenas
-  nas AIHs que NÃO POSSUAM número de CNS do paciente", e dois bloqueios novos pegam AIH
-  com internações sobrepostas ou com até 3 dias de intervalo: entre as AIH do mesmo CNS
-  no próprio movimento e contra o histórico de internações do estado. A nota não dá os
-  códigos do campo. Nos arquivos lidos, a frequência de `2` cai no mesmo mês: nos `RDRR`,
-  `homonimo` `2` está em 3.657 das 19.931 AIH de 2015-01 a 2015-07 (18,3%) e em 182 das
+  (Informe SIH 2016-03, p. 3). Nenhum documento do RD de 2008 em diante dá os códigos de
+  `homonimo` nem de `gestor_tp`, e nenhum DEF empacotado cita os dois campos: eles ficam
+  sem rótulo (issues `homonimo-sem-fonte` e `gestor_tp-sem-fonte`, #10). O RD publica
+  `homonimo` `0`, `2` e, em poucos arquivos, `1`; o RJ publica `0`, `1`, `2` e `3`. Quatro
+  documentos registrados dão `0` não e `1` sim para a marca de homônimo, e nenhum dá `2`
+  nem `3`: o layout dos arquivos RD de 2006-04 a 2007-12 (`Layout_REDUZIDA.pdf`, p. 2), o
+  dicionário de dados das tabelas `TB_AIH` e `TB_HAIH` (`dicionario_de_dados_AIH.pdf`,
+  pp. 8-9), o dicionário de dados do SIHD (`sihd1_dicionario_de_dados.pdf`, pp. 4 e 10)
+  e a tabela 66 do pacote de tabelas do SIHD (`Tabelas300.zip`, `DSIHD006.TXT`: "NAO É
+  HOMONIMO" e "É HOMONIMO"). Os arquivos RD lidos publicam `2` em todos os anos de 2006 a
+  2026, inclusive os 21 de Roraima dos meses do layout que diz 0 e 1; por isso a lista
+  dos documentos não virou mapa (`evidence/2026-11-18-sih-codigos-em-outros-documentos/`,
+  `evidence/2026-11-18-rd-medidas/`, `evidence/2026-11-28-sih-homonimo/`).
+- Os manuais dizem como a marca de homônimo nasce, sem dar os códigos. No sistema do
+  gestor, a "pesquisa de duplicidades" "verifica se existem nomes e datas de nascimento
+  iguais em registros diferentes e marca os registros como bloqueados ou liberados", e o
+  autorizador analisa cada registro bloqueado "para decidir sobre manter o bloqueio ou
+  liberá-lo" (Manual SIHD 2006, procedimento "Gerenciar Informações"). O manual do SIHD2
+  lista quatro relatórios de duplicidade, "Encontradas", "Bloqueadas", "Canceladas" e
+  "Liberadas", e para liberar uma AIH pede o CPF do autorizador (Manual SIHD2 2009,
+  pp. 89-90 e 106). Na nova AIH do mesmo paciente na mesma internação, "o sistema
+  bloqueia a AIH por “duplicidade” (homônimo), mas o gestor autoriza", e a AIH emitida
+  menos de 3 dias depois de outra internação é bloqueada "desde que a outra AIH seja
+  emitida pelo mesmo gestor" (Manual SIH 2012, p. 11, itens 5.10 e 5.11). A Nota Técnica
+  SIHD2 nº 001/2015 (DATASUS-RJ, 25/08/2015, "Válido a partir da competência 08/2015")
+  muda o bloqueio: o gerenciador do SIHD2 passa a "realizar o bloqueio de DUPLICIDADES
+  (homônimos) apenas nas AIHs que NÃO POSSUAM número de CNS do paciente", e dois
+  bloqueios novos pegam AIH com internações sobrepostas ou com até 3 dias de intervalo:
+  entre as AIH do mesmo CNS no próprio movimento e contra o histórico de internações do
+  estado. O Manual SIH 2017 traz os dois como bloqueios separados, "DUPLICIDADE DE NOME"
+  e "INTERNAÇÃO SOBREPOSTA" (pp. 85-86, itens 58.1 e 58.2). Nenhum documento lido diz que
+  código a marca recebe quando a duplicidade é encontrada, bloqueada, liberada ou
+  cancelada.
+- O que os arquivos lidos mostram sobre `homonimo` é associação, não definição
+  (`evidence/2026-11-28-sih-homonimo/`: 175 arquivos `RD`, 58 `RJ` e 14 `ER` de 2008 a
+  2025, e 28 `RD` de 2006 e 2007). Nos 30 arquivos `RJ` até 2015-07 (SP, RJ, MG, DF e RR),
+  `1` está em 17.618 linhas, 17.612 delas com `st_bloq` 2 (Bloqueio AIH); `2` em 17.190,
+  16.448 com `st_bloq` 5 (Liberação bloqueio AIH); `3` em 95, todas com `st_bloq` 4
+  (Cancelamento AIH). A associação não é uniforme: em `RJRJ0801`, 542 das 967 linhas com
+  `2` têm `st_bloq` 2, e `st_bloq` 5 também cobre liberações por outros motivos (9.089
+  linhas com `homonimo` 0). Das 4.225 AIH que os `ER` de SP e RJ de 2012-01, 2014-12 e
+  2015-07 trazem com o erro "AIH BLOQUEADA POR DUPLICIDADE", sozinho ou com outros
+  motivos, 4.211 têm `1` no `RJ` do mesmo mês. Das 4.219 AIH rejeitadas com `1` em seis
+  arquivos `RJ` até 2015-06, 1.823 estão no `RD` do mês seguinte, 1.371 com `2` e 451 com
+  `0`. Nos 74 `RD` até 2015-07, as 355.588 AIH com `homonimo` diferente de 0 têm todas
+  `gestor_cpf` preenchido (5,5% das com 0) e nenhuma tem `ident` 5; 88,6% delas têm
+  `nasc`, `sexo` e `cep` iguais aos de outra AIH do mesmo arquivo (2,0% das com 0). Nos
+  três `RDRR` de 2006-01 a 2006-03, `cpf_aut` vem preenchido nas 146 AIH com `2` e em
+  nenhuma das 4.418 com `0`. Nos seis arquivos de 2006-04 a 2006-08 (cinco `RDRR` e
+  `RDRJ0607`), `cpf_aut` vem preenchido em 635 AIH com `0` e em 36 das 2.162 com `2`; nos
+  19 de 2006-09 a 2007-12, em nenhuma. Com os quatro relatórios do manual do SIHD2, isso é
+  coerente com `1` para a duplicidade bloqueada, `2` para a liberada e `3` para a
+  cancelada, e o RD, que traz as AIH aprovadas, quase não teria `1`; nenhum documento lido
+  diz isso, e o campo segue sem rótulo. Ficam fora dessa leitura as 5.309 AIH aprovadas
+  com `1` em 8 dos 175 `RD` (5.105 em `RDBA1201` e `RDRS1201`), em cada arquivo todas de
+  um só gestor (`uf_zi`), e 746 linhas de `RJ` com `2` e `st_bloq` 2.
+- A frequência de `homonimo` diferente de 0 cai em 2015-08, o mês da nota técnica. Nos
+  `RDRR`, `2` está em 3.657 das 19.931 AIH de 2015-01 a 2015-07 (18,3%) e em 182 das
   14.903 de 2015-08 a 2015-12 (1,2%); de 2008-01 a 2015-07, em 29.532 de 229.443
-  (12,9%), e de 2015-08 a 2026-06, em 3.244 de 452.253 (0,7%). Nos arquivos de janeiro
-  de São Paulo, Rio de Janeiro e Distrito Federal, `2` está em 11,4%, 6,3% e 14,4% das
-  AIH em 2012 e em 0,01%, 0,4% e 0,2% em 2016
-  (`evidence/2026-11-18-rd-medidas/2008-2026/medidas.csv`). Sobre homônimos, o Manual SIH
-  2012 diz que, na nova AIH do mesmo paciente na mesma internação, "o sistema bloqueia a
-  AIH por “duplicidade” (homônimo), mas o gestor autoriza" (p. 11, item 5.10). Nenhum
-  documento lido liga o código `2` ao bloqueio; compare `homonimo` antes e depois de
-  2015-08 com essa ressalva.
+  (12,9%), e de 2015-08 a 2026-06, em 3.244 de 452.253 (0,7%)
+  (`evidence/2026-11-18-rd-medidas/2008-2026/medidas.csv`). Nos arquivos de SP, RJ, MG,
+  RR, DF e PE, a marca está em 109.998 das 891.851 AIH de 2015-06 e 2015-07 (12,3%) e em
+  1.183 das 1.298.139 de 2015-08 a 2015-10 (0,1%). De 2015-08 em diante (101 arquivos),
+  3.188 das 3.612 AIH marcadas (88,3%) têm em `gestor_cod` um código que a tabela
+  `LIBGESTOR.dbf` do `TAB_SIH.zip` rotula "CNS" (0,4% das não marcadas), em linha com a
+  nota técnica; até 2015-07 a proporção é a mesma nas marcadas e nas outras (0,4%)
+  (`evidence/2026-11-28-sih-homonimo/`). Compare `homonimo` antes e depois de 2015-08
+  com essa ressalva.
 - `diag_princ` é o código do diagnóstico principal pela CID-10, com 4 caracteres
   (Informe SIH 2016-03, p. 2), e o dicionário o liga à tabela `aux_cid10`
   (`src/omnisus/data/dicionarios/sih_aih_reduzida.yaml`).
@@ -496,8 +536,21 @@ Em `sih_aih_reduzida` e `sih_aih_rejeitada`, `CONTRAC.CNV` (`contracep1` e `cont
   também repete `n_aih` em mais de uma linha (45 valores em 2023-03, 174 em 2023-06),
   nos sete arquivos de São Paulo lidos com um só `dt_inter` por valor
   (`evidence/2026-11-28-rd-medidas-da-revisao/`). Isso vale para esses arquivos; outros
-  meses e outras UFs não foram comparados. Não conte internações como linhas sem olhar
-  `ident`, `seq_aih5`, `cobranca`, `n_aih` e `dt_inter` nos seus dados.
+  meses e outras UFs não foram comparados. `homonimo` não liga as AIH: não diz qual é a
+  outra AIH nem se é a mesma internação. Nos 175 arquivos `RD` lidos de 2008 a 2025,
+  nenhuma AIH com `ident` 5 tem a marca. Nos 74 até 2015-07, a marca está em 314.977 das
+  377.784 AIH que têm `nasc`, `sexo` e `cep` iguais aos de outra AIH do arquivo (83,4%),
+  e 198.720 das 355.588 AIH marcadas (55,9%) têm outra AIH de mesmo `nasc`, `sexo` e
+  `munic_res` com internação sobreposta ou a até 3 dias; nos 101 de 2015-08 em diante, a
+  marca está em 3.087 das 1.407.641 AIH com `nasc`, `sexo` e `cep` iguais aos de outra
+  (0,2%) (`evidence/2026-11-28-sih-homonimo/`). Até 2015-07 ela é pista de que o
+  movimento do mesmo gestor tem outra AIH de paciente de mesmo nome (Manual SIHD 2006;
+  Manual SIH 2012, p. 11); de 2015-08 em diante, só entre AIH sem CNS (Nota Técnica SIHD2
+  nº 001/2015), e o bloqueio por internação sobreposta, feito pelo CNS, não tem campo no
+  RD (Informe SIH 2016-03, p. 1–4). Três campos iguais não são uma pessoa: duas pessoas
+  nascidas no mesmo dia, do mesmo sexo e com o mesmo CEP também os têm. Não conte
+  internações como linhas sem olhar `ident`, `seq_aih5`, `cobranca`, `n_aih` e
+  `dt_inter` nos seus dados.
 - Se o mês do arquivo (`mes`) é sempre igual a `mes_cmpt`: o documento não explica o
   nome do arquivo. Compare as duas colunas antes de supor.
 - Os códigos de `ident`: o informe não os lista; o Manual SIH 2012 dá os tipos 1 e 5
@@ -635,6 +688,40 @@ Passo a passo com análise e procedência:
   <ftp://ftp2.datasus.gov.br/public/sistemas/dsweb/SIHD/Manuais/SIHD2_NotaTecnica_2015-001.pdf>
   — consultado em 2026-11-26; SHA-256
   `6de69835fef0be45475182f945a716b7b39354f1eb6fde9a56c095b0be4a9eca`, 262.952 bytes.
+- Manual Operacional do Sistema de Informação Hospitalar Descentralizado (SIHD), versão
+  atualizada em 19/05/2006, Ministério da Saúde / Secretaria de Atenção à Saúde / DRAC /
+  CGSI e DATASUS (Manual SIHD 2006), no arquivo `Manual-SIHD atualizada 19.05.06.doc` de
+  <ftp://ftp2.datasus.gov.br/public/sistemas/dsweb/SIHD/Manuais/Manual_SIHD_19_05_06.zip>
+  — consultado em 2026-11-28; SHA-256 do ZIP
+  `13954d36eb2b53bf818cabb61592d70ff89a6cda02ed7c2891d964b51c9b6e37`, 2.026.032 bytes.
+  É um arquivo do Word, sem páginas numeradas; os trechos citados estão em
+  `evidence/2026-11-28-sih-homonimo/README.md`. Descreve o SIHD, o sistema do gestor, em
+  2006, não o arquivo RD.
+- SIHD2: Manual de Operação, versão do produto 2.40, edição 1.0, julho de 2009,
+  Ministério da Saúde / Secretaria Executiva / DATASUS (Manual SIHD2 2009):
+  <ftp://ftp2.datasus.gov.br/public/sistemas/dsweb/SIHD/Manuais/MNL-PDOC-SIHD2-ManualOperacao-Edicao1.0.pdf>
+  — consultado em 2026-11-28; SHA-256
+  `0e6bb434e7f2312e4a67a8ce287dc430a3f44a57b2477a7c4d1ffbda466b0c2f`, 12.898.826 bytes.
+  As páginas citadas são as impressas no rodapé, nove a menos que as do PDF (p. 106 é a
+  115ª página do arquivo). As figuras do manual são imagens e não foram lidas.
+- Manual Técnico Operacional do Sistema de Informação Hospitalar do SUS, janeiro de 2017,
+  Ministério da Saúde / Secretaria de Atenção à Saúde / DRAC / CGSI (Manual SIH 2017):
+  <ftp://ftp2.datasus.gov.br/public/sistemas/dsweb/SIHD/Manuais/MANUAL_SIH_janeiro_2017.pdf>
+  — consultado em 2026-11-28; SHA-256
+  `b51eb51dde1de7ff8b9d0079dffb4f7a48a0361051649d362419bf8f3ee690d1`, 1.658.142 bytes.
+  As páginas citadas são as impressas, uma a menos que as do PDF. Só a seção 58 foi
+  lida para esta página.
+- Dicionário de Dados SIHD (`sihd1_dicionario_de_dados.pdf`), Ministério da Saúde /
+  DATASUS, da página de manuais do SIHD:
+  <ftp://ftp2.datasus.gov.br/public/sistemas/dsweb/SIHD/Manuais/sihd1_dicionario_de_dados.pdf>
+  — consultado em 2026-11-28; SHA-256
+  `a3d8bb97b272ef8b2439d6c25bf63b4237aa5be12c1cf2deeb7977ad1534dfb1`, 151.990 bytes.
+- Pacote de tabelas do SIHD (`Tabelas300.zip`), Ministério da Saúde / DATASUS, da pasta
+  de programas do SIHD:
+  <ftp://ftp2.datasus.gov.br/public/sistemas/dsweb/SIHD/Programas/Tabelas300.zip>
+  — consultado em 2026-11-28; SHA-256
+  `6c97292786735aedd78329dbf5e56a9bc0067755a7251b3c285fdd5e77b9c62e`, 574.429 bytes.
+  As linhas da tabela 66 estão no arquivo `DSIHD006.TXT`, linhas 1686 e 1687.
 - Portaria SAS/MS nº 1.324, de 27 de novembro de 2014, Ministério da Saúde / Secretaria de
   Atenção à Saúde, na impressão do Saúde Legis hospedada pela SES-DF:
   <https://www.saude.df.gov.br/documents/37101/75753/Portaria+MS+n%C2%BA+1.324_2014_Conceitos+de+diagn%C3%B3stico+utilizados+no+Programa+de+Apoio+%C3%A0+Entrada+de+Dados+das+Autoriza%C3%A7%C3%B5es+de+Interna%C3%A7%C3%A3o+Hospitalar.pdf>

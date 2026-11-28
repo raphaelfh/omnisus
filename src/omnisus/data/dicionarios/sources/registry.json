@@ -969,6 +969,76 @@
       "published_on": null,
       "retrieved_on": "2026-11-26",
       "last_checked_on": "2026-11-26"
+    },
+    {
+      "id": "sihsus-13954d36eb2b",
+      "category": "SIHSUS",
+      "title": "Manual Operacional do Sistema de Informação Hospitalar Descentralizado (SIHD), versão atualizada em 19/05/2006 (Manual_SIHD_19_05_06.zip)",
+      "publisher": "Ministério da Saúde / Secretaria de Atenção à Saúde / DRAC / CGSI e DATASUS",
+      "authority": "official",
+      "url": "ftp://ftp2.datasus.gov.br/public/sistemas/dsweb/SIHD/Manuais/Manual_SIHD_19_05_06.zip",
+      "sha256": "13954d36eb2b53bf818cabb61592d70ff89a6cda02ed7c2891d964b51c9b6e37",
+      "bytes": 2026032,
+      "edition": "2006-05-19",
+      "published_on": null,
+      "retrieved_on": "2026-11-28",
+      "last_checked_on": "2026-11-28"
+    },
+    {
+      "id": "sihsus-0e6bb434e7f2",
+      "category": "SIHSUS",
+      "title": "SIHD2: Manual de Operação, versão do produto 2.40, edição 1.0 (MNL-PDOC-SIHD2-ManualOperacao-Edicao1.0.pdf)",
+      "publisher": "Ministério da Saúde / Secretaria Executiva / DATASUS",
+      "authority": "official",
+      "url": "ftp://ftp2.datasus.gov.br/public/sistemas/dsweb/SIHD/Manuais/MNL-PDOC-SIHD2-ManualOperacao-Edicao1.0.pdf",
+      "sha256": "0e6bb434e7f2312e4a67a8ce287dc430a3f44a57b2477a7c4d1ffbda466b0c2f",
+      "bytes": 12898826,
+      "edition": "2009-07",
+      "published_on": null,
+      "retrieved_on": "2026-11-28",
+      "last_checked_on": "2026-11-28"
+    },
+    {
+      "id": "sihsus-b51eb51dde1d",
+      "category": "SIHSUS",
+      "title": "Manual Técnico Operacional do Sistema de Informação Hospitalar do SUS, janeiro de 2017 (MANUAL_SIH_janeiro_2017.pdf)",
+      "publisher": "Ministério da Saúde / Secretaria de Atenção à Saúde / DRAC / CGSI",
+      "authority": "official",
+      "url": "ftp://ftp2.datasus.gov.br/public/sistemas/dsweb/SIHD/Manuais/MANUAL_SIH_janeiro_2017.pdf",
+      "sha256": "b51eb51dde1de7ff8b9d0079dffb4f7a48a0361051649d362419bf8f3ee690d1",
+      "bytes": 1658142,
+      "edition": "2017-01",
+      "published_on": null,
+      "retrieved_on": "2026-11-28",
+      "last_checked_on": "2026-11-28"
+    },
+    {
+      "id": "sihsus-a3d8bb97b272",
+      "category": "SIHSUS",
+      "title": "Dicionário de Dados SIHD (sihd1_dicionario_de_dados.pdf)",
+      "publisher": "Ministério da Saúde / DATASUS",
+      "authority": "official",
+      "url": "ftp://ftp2.datasus.gov.br/public/sistemas/dsweb/SIHD/Manuais/sihd1_dicionario_de_dados.pdf",
+      "sha256": "a3d8bb97b272ef8b2439d6c25bf63b4237aa5be12c1cf2deeb7977ad1534dfb1",
+      "bytes": 151990,
+      "edition": null,
+      "published_on": null,
+      "retrieved_on": "2026-11-28",
+      "last_checked_on": "2026-11-28"
+    },
+    {
+      "id": "sihsus-6c9729278673",
+      "category": "SIHSUS",
+      "title": "Tabelas300.zip (pacote de tabelas do SIHD)",
+      "publisher": "Ministério da Saúde / DATASUS",
+      "authority": "official",
+      "url": "ftp://ftp2.datasus.gov.br/public/sistemas/dsweb/SIHD/Programas/Tabelas300.zip",
+      "sha256": "6c97292786735aedd78329dbf5e56a9bc0067755a7251b3c285fdd5e77b9c62e",
+      "bytes": 574429,
+      "edition": null,
+      "published_on": null,
+      "retrieved_on": "2026-11-28",
+      "last_checked_on": "2026-11-28"
     }
   ]
 }
