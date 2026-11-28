@@ -31,6 +31,13 @@
   (issue `sttrabpart-3-so-no-estrutura`), and so does code `9` of `paridade`, which only
   `Estrutura_SINASC_para_CD.pdf` lists (issue `paridade-9-so-no-estrutura-para-cd`). New sources: `sinasc-0ffc45994687` and
   `sinasc-5956ea4d8e89` (#246).
+- `sia_apac_cirurgia_bariatrica`, `sia_apac_laudos_diversos`, `sia_apac_medicamentos`,
+  `sia_apac_quimioterapia` and `sia_apac_tratamento_dialitico` 0.6.1 and
+  `sia_psicossocial` 0.5.1: 48 `cnv-parse` claims on `/field/codes` go from
+  `conflicting` to `verified_in_source` after a human review, and on each of these
+  fields the issue `cnv-difere-do-mapa-anterior` is resolved. No label or code changes.
+  `am_gestant` of `sia_apac_medicamentos` stays `conflicting`, with the issue open:
+  `GESTANTE.CNV` labels `N` "Nao - (O paciente é gestante)" (#247).
 
 ## v0.5.1 — 2026-11-28
 

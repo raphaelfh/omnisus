@@ -344,3 +344,74 @@ def test_paridade_9_stays_unlabelled_until_a_real_file_publishes_it(dbc_fixture)
             "9.352",
         )
     )
+
+
+SIA_APAC_WITH_THE_COMMON_BLOCK = [
+    "sia_apac_cirurgia_bariatrica",
+    "sia_apac_laudos_diversos",
+    "sia_apac_medicamentos",
+    "sia_apac_quimioterapia",
+    "sia_apac_tratamento_dialitico",
+]
+SIA_APAC_CLOSED_BY_REVIEW = [
+    "ap_racacor",
+    "ap_ufdif",
+    "ap_mndif",
+    "ap_tpapac",
+    "ap_obito",
+    "ap_encerr",
+    "ap_perman",
+    "ap_alta",
+    "ap_transf",
+]
+SIA_CNV_MAPS_CLOSED_BY_REVIEW = [
+    (dataset, name)
+    for dataset in SIA_APAC_WITH_THE_COMMON_BLOCK
+    for name in SIA_APAC_CLOSED_BY_REVIEW
+] + [
+    ("sia_apac_medicamentos", "am_transpl"),
+    ("sia_psicossocial", "racacor"),
+    ("sia_psicossocial", "sit_rua"),
+]
+
+
+def _codes_claim_and_cnv_issue(dataset: str, name: str) -> tuple[dict, dict]:
+    metadata = _field(dataset, name)["x-metadata"]
+    (claim,) = [c for c in metadata["claims"] if c["target"] == "/field/codes"]
+    (issue,) = [i for i in metadata["issues"] if i["id"] == "cnv-difere-do-mapa-anterior"]
+    return claim, issue
+
+
+@pytest.mark.parametrize(("dataset", "name"), SIA_CNV_MAPS_CLOSED_BY_REVIEW)
+def test_a_sia_cnv_map_whose_conflict_a_reviewer_closed_is_verified(dataset, name) -> None:
+    """The older map had no claim: the claim and the issue both say who closed it and when."""
+    claim, issue = _codes_claim_and_cnv_issue(dataset, name)
+    assert (claim["method"], claim["status"]) == ("cnv-parse", "verified_in_source")
+    assert "encerrado em 2026-11-26 pela revisora marcelaqs" in claim["note"]
+    assert issue["status"] == "resolved" and "revisora marcelaqs" in issue["description"]
+
+
+@pytest.mark.parametrize("dataset", SIA_APAC_WITH_THE_COMMON_BLOCK)
+def test_the_closed_ap_tpapac_issue_says_the_4_of_the_older_map_has_no_label(dataset) -> None:
+    """The older map had a '4' that TP_APAC.CNV does not list: not the same meaning."""
+    _, issue = _codes_claim_and_cnv_issue(dataset, "ap_tpapac")
+    older, closing = issue["description"].split("Resolvido em 2026-11-26")
+    assert "'4' era 'Fora de rede (encerramento)', CNV não lista" in older
+    assert "'4'" in closing and "sem fonte" in closing
+    assert "4" not in _field(dataset, "ap_tpapac")["x-decode"]
+
+
+def test_am_gestant_stays_conflicting_because_the_cnv_contradicts_itself(dbc_fixture) -> None:
+    """AMRR2401 gives N to every male patient, so N cannot mean pregnant (FIXTURES.md)."""
+    claim, issue = _codes_claim_and_cnv_issue("sia_apac_medicamentos", "am_gestant")
+    assert (claim["status"], issue["status"]) == ("conflicting", "open")
+    assert "GESTANTE.CNV" in issue["description"]
+    assert "sia_am_rr_2024_01_mini.dbc" in issue["description"]
+    frame = dbc_bytes_to_lazyframe(
+        dbc_fixture("sia_am_rr_2024_01_mini").read_bytes(), dataset="sia_apac_medicamentos"
+    ).collect()
+    counts = Counter(zip(frame["am_gestant"], frame["ap_sexo"], strict=True))
+    assert counts == {("N", "F"): 1234, ("N", "M"): 841, ("S", "F"): 8}
+    assert _field("sia_apac_medicamentos", "ap_sexo")["x-decode"]["M"] == "Masculino"
+    for quoted in ("2.083 linhas", "'N' em 2.075", "'S' em 8", "1.234", "841"):
+        assert quoted in issue["description"]
